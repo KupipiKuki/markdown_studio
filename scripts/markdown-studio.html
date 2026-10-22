@@ -1213,8 +1213,8 @@
     background: var(--success);
   }
 
-  /* Safety Rule: Never allow Mermaid fallback SVGs to inject outside workspace */
-  body > svg, body > [id^="dmmd-"], body > [id^="mmd-"], body > .error-icon, body > [aria-roledescription="error"] {
+  /* Safety Rule: Never allow Mermaid fallback error badges to inject into document.body */
+  body > svg.error-icon, body > svg[aria-roledescription="error"], body > [id*="mermaid-error"], body > .error-icon, body > [aria-roledescription="error"] {
     display: none !important;
   }
 
@@ -2393,8 +2393,7 @@
   function cleanStrayMermaidElements() {
     try {
       // Remove any rogue error SVGs injected by Mermaid directly into document.body
-      document.querySelectorAll('body > svg').forEach(el => el.remove());
-      document.querySelectorAll('body > [id^="dmmd-"], body > [id^="mmd-"], body > [id*="mermaid-error"], body > .error-icon, body > [aria-roledescription="error"]').forEach(el => el.remove());
+      document.querySelectorAll('body > svg.error-icon, body > svg[aria-roledescription="error"], body > [id*="mermaid-error"], body > .error-icon, body > [aria-roledescription="error"]').forEach(el => el.remove());
     } catch (e) {}
   }
 
@@ -2428,10 +2427,10 @@
     renderErrorLogUI();
   }
 
-  function dismissError(id) {
+  window.dismissError = function(id) {
     errorLogs = errorLogs.filter(e => e.id !== id);
     renderErrorLogUI();
-  }
+  };
 
   function clearErrorLog() {
     errorLogs = [];
@@ -2448,11 +2447,11 @@
     drawer.style.display = shouldOpen ? 'flex' : 'none';
   }
 
-  function copyErrorText(text) {
+  window.copyErrorText = function(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => showToast('Error details copied to clipboard'));
     }
-  }
+  };
 
   function renderErrorLogUI() {
     const indicator = document.getElementById('statusErrorIndicator');
@@ -2561,6 +2560,7 @@
 
   async function renderAllPreviewDiagrams() {
     if (typeof mermaid === 'undefined') return;
+    const theme = getMermaidTheme();
 
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
@@ -2594,8 +2594,32 @@
 
       try {
         // Attempt rendering with Mermaid
-        const { svg } = await mermaid.render(uniqueId, code);
-        canvas.innerHTML = svg;
+        let renderedSvg;
+        try {
+          const res = await mermaid.render(uniqueId, code);
+          renderedSvg = res.svg;
+        } catch (firstErr) {
+          if (firstErr && String(firstErr.message || firstErr).includes('suitable point')) {
+            const fallbackId = 'mmd-fallback-' + uid();
+            mermaid.initialize({
+              startOnLoad: false,
+              securityLevel: 'loose',
+              suppressErrorRendering: true,
+              theme: theme,
+              fontFamily: 'Inter, sans-serif',
+              fontSize: 14,
+              flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'linear' },
+              sequence: { useMaxWidth: false, showSequenceNumbers: true },
+              gantt: { useMaxWidth: false }
+            });
+            const res = await mermaid.render(fallbackId, code);
+            renderedSvg = res.svg;
+            initMermaid(theme);
+          } else {
+            throw firstErr;
+          }
+        }
+        canvas.innerHTML = renderedSvg;
 
         // Ensure rendered SVG has proper scalable attributes
         const svgEl = canvas.querySelector('svg');
@@ -2632,7 +2656,25 @@
   // --------------------------------------------------------------------------
   // Diagram Viewport Pan & Zoom Interactivity
   // --------------------------------------------------------------------------
+  let activeDragViewport = null;
   function setupPreviewDiagramInteractivity() {
+    // Global drag state for diagrams
+    if (!window._diagramListenersAttached) {
+      window._diagramListenersAttached = true;
+      window.addEventListener('mousemove', (e) => {
+        if (!activeDragViewport) return;
+        activeDragViewport.panX = e.clientX - activeDragViewport.startX;
+        activeDragViewport.panY = e.clientY - activeDragViewport.startY;
+        activeDragViewport.updateTransform();
+      });
+      window.addEventListener('mouseup', () => {
+        if (activeDragViewport) {
+          activeDragViewport.viewport.classList.remove('grabbing');
+          activeDragViewport = null;
+        }
+      });
+    }
+
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
 
     cards.forEach(card => {
@@ -2640,8 +2682,6 @@
       const canvas = card.querySelector('.mermaid-canvas');
       if (!viewport || !canvas) return;
 
-      let isDragging = false;
-      let startX, startY;
       let panX = parseFloat(viewport.dataset.panX || 0);
       let panY = parseFloat(viewport.dataset.panY || 0);
       let zoom = parseFloat(viewport.dataset.zoom || 1);
@@ -2656,26 +2696,19 @@
       // Mouse Drag to Pan
       viewport.onmousedown = (e) => {
         if (e.target.closest('.diag-action-btn') || e.target.closest('button')) return;
-        isDragging = true;
         viewport.classList.add('grabbing');
-        startX = e.clientX - panX;
-        startY = e.clientY - panY;
+        activeDragViewport = {
+          viewport: viewport,
+          startX: e.clientX - panX,
+          startY: e.clientY - panY,
+          set panX(val) { panX = val; },
+          get panX() { return panX; },
+          set panY(val) { panY = val; },
+          get panY() { return panY; },
+          updateTransform: updateTransform
+        };
         e.preventDefault();
       };
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        panX = e.clientX - startX;
-        panY = e.clientY - startY;
-        updateTransform();
-      });
-
-      window.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          viewport.classList.remove('grabbing');
-        }
-      });
 
       // Mouse Wheel to Zoom
       viewport.onwheel = (e) => {
@@ -3055,6 +3088,9 @@
   const previewEl = document.getElementById('previewContent');
 
   editorEl.addEventListener('scroll', () => {
+    const gutter = document.getElementById('lineNumbers');
+    if (gutter) gutter.scrollTop = editorEl.scrollTop;
+
     if (!syncScrollEnabled || isScrollingPreview) return;
     isScrollingEditor = true;
 
@@ -3869,8 +3905,32 @@
     try {
       initMermaid(customTheme);
       await mermaid.parse(code);
-      const { svg } = await mermaid.render(uniqueId, code);
-      builderCanvas.innerHTML = svg;
+      let renderedSvg;
+      try {
+        const res = await mermaid.render(uniqueId, code);
+        renderedSvg = res.svg;
+      } catch (firstErr) {
+        if (firstErr && String(firstErr.message || firstErr).includes('suitable point')) {
+          const fallbackId = 'builder-fallback-' + uid();
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'loose',
+            suppressErrorRendering: true,
+            theme: customTheme || getMermaidTheme(),
+            fontFamily: 'Inter, sans-serif',
+            fontSize: 14,
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'linear' },
+            sequence: { useMaxWidth: false, showSequenceNumbers: true },
+            gantt: { useMaxWidth: false }
+          });
+          const res = await mermaid.render(fallbackId, code);
+          renderedSvg = res.svg;
+          initMermaid(customTheme);
+        } else {
+          throw firstErr;
+        }
+      }
+      builderCanvas.innerHTML = renderedSvg;
 
       builderValidationBadge.className = 'validation-status-badge valid';
       builderValidationBadge.innerHTML = '<span>✓ Diagram Valid</span>';
