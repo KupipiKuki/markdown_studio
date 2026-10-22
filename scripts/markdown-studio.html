@@ -1885,6 +1885,7 @@
     </div>
 
     <!-- File Management -->
+    <button class="btn" id="btnLoadExamples" title="Load Welcome & Mermaid Demo Document">📚 Examples</button>
     <button class="btn" id="btnNewTab" title="Create New Document Tab (Ctrl+N)">
       <svg class="icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
       <span>New</span>
@@ -3089,6 +3090,27 @@
     return tabs.find(t => t.id === activeId);
   }
 
+  const STARTER_MARKDOWN = `# Welcome to MarkFlow Studio 🚀\n\nA modern, high-performance **Markdown Editor** with an **Advanced Mermaid Diagram Studio** and live mathematical typesetting.\n\n---\n\n## ✨ Core Features\n\n- 📊 **Mermaid Diagram Studio**: Visual builder, real-time syntax checking, interactive pan & zoom.\n- 📐 **Diagram Export**: Download any diagram directly as **SVG** or **Retina PNG**.\n- 🗂️ **Multi-Tab Workspace**: Switch between documents, rename tabs on double-click.\n- ⚡ **Full Markdown Support**: GitHub Flavored Markdown, task lists, code highlighting, tables.\n- 🧮 **LaTeX Mathematics**: Type inline equations like $E = mc^2$ or full display blocks.\n\n---\n\n## 📊 Live Interactive Mermaid Diagrams\n\nHover over the diagram below to **Zoom**, **Pan**, **View Fullscreen**, or click **✏️ Edit** to customize it in the visual studio!\n\n\`\`\`mermaid\nflowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])\n\`\`\`\n\n---\n\n## 🔄 Sequence Interaction Flow\n\n\`\`\`mermaid\nsequenceDiagram\n  autonumber\n  actor User\n  participant Editor as MarkFlow Editor\n  participant Studio as Diagram Studio\n  participant Engine as Mermaid Engine\n\n  User->>Editor: Click 'Diagram Studio'\n  Editor->>Studio: Open Visual Builder Modal\n  User->>Studio: Select Flowchart / Sequence / ER Template\n  Studio->>Engine: Live Parse & Render\n  Engine-->>Studio: Return Interactive SVG\n  User->>Studio: Click 'Insert into Document'\n  Studio-->>Editor: Inject \`\`\`mermaid Code Block\n\`\`\`\n\n---\n\n## 🧮 Mathematical Formulas (MathJax)\n\nGaussian Integral display equation:\n\n$$\n\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}\n$$\n\nEuler's identity: $e^{i\\pi} + 1 = 0$\n\n---\n\n## 💻 Polyglot Syntax Highlighting\n\n\`\`\`python\ndef calculate_fibonacci(n: int) -> list[int]:\n    \"\"\"Generate Fibonacci sequence up to n numbers.\"\"\"\n    seq = [0, 1]\n    while len(seq) < n:\n        seq.append(seq[-1] + seq[-2])\n    return seq[:n]\n\`\`\`\n\n\`\`\`typescript\ninterface DiagramConfig {\n  theme: 'dark' | 'default' | 'neutral';\n  zoomLevel: number;\n  enablePan: boolean;\n}\n\`\`\`\n\nEnjoy editing!\n`;
+
+  function loadStarterExamples() {
+    const existing = tabs.find(t => t.name === 'welcome.md');
+    if (existing) {
+      activeId = existing.id;
+      const reset = confirm('welcome.md is already open. Reset its contents to the default demo document?');
+      if (reset) {
+        existing.content = STARTER_MARKDOWN;
+        existing.savedContent = STARTER_MARKDOWN;
+        renderAll();
+        persistState();
+      }
+      renderTabs();
+      showToast('Welcome & Mermaid demo tab is open!');
+      return;
+    }
+    addTab('welcome.md', STARTER_MARKDOWN);
+    showToast('Loaded Welcome & Mermaid Demo!');
+  }
+
   function loadState() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -3104,10 +3126,7 @@
       console.warn('Could not read saved localStorage state:', e);
     }
 
-    // Default starter document highlighting markdown, math & mermaid features
-    const starterMarkdown = `# Welcome to MarkFlow Studio 🚀\n\nA modern, high-performance **Markdown Editor** with an **Advanced Mermaid Diagram Studio** and live mathematical typesetting.\n\n---\n\n## ✨ Core Features\n\n- 📊 **Mermaid Diagram Studio**: Visual builder, real-time syntax checking, interactive pan & zoom.\n- 📐 **Diagram Export**: Download any diagram directly as **SVG** or **Retina PNG**.\n- 🗂️ **Multi-Tab Workspace**: Switch between documents, rename tabs on double-click.\n- ⚡ **Full Markdown Support**: GitHub Flavored Markdown, task lists, code highlighting, tables.\n- 🧮 **LaTeX Mathematics**: Type inline equations like $E = mc^2$ or full display blocks.\n\n---\n\n## 📊 Live Interactive Mermaid Diagrams\n\nHover over the diagram below to **Zoom**, **Pan**, **View Fullscreen**, or click **✏️ Edit** to customize it in the visual studio!\n\n\`\`\`mermaid\nflowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])\n\`\`\`\n\n---\n\n## 🔄 Sequence Interaction Flow\n\n\`\`\`mermaid\nsequenceDiagram\n  autonumber\n  actor User\n  participant Editor as MarkFlow Editor\n  participant Studio as Diagram Studio\n  participant Engine as Mermaid Engine\n\n  User->>Editor: Click 'Diagram Studio'\n  Editor->>Studio: Open Visual Builder Modal\n  User->>Studio: Select Flowchart / Sequence / ER Template\n  Studio->>Engine: Live Parse & Render\n  Engine-->>Studio: Return Interactive SVG\n  User->>Studio: Click 'Insert into Document'\n  Studio-->>Editor: Inject \`\`\`mermaid Code Block\n\`\`\`\n\n---\n\n## 🧮 Mathematical Formulas (MathJax)\n\nGaussian Integral display equation:\n\n$$\n\\int_{-\\infty}^{\\infty} e^{-x^2} \\, dx = \\sqrt{\\pi}\n$$\n\nEuler's identity: $e^{i\\pi} + 1 = 0$\n\n---\n\n## 💻 Polyglot Syntax Highlighting\n\n\`\`\`python\ndef calculate_fibonacci(n: int) -> list[int]:\n    \"\"\"Generate Fibonacci sequence up to n numbers.\"\"\"\n    seq = [0, 1]\n    while len(seq) < n:\n        seq.append(seq[-1] + seq[-2])\n    return seq[:n]\n\`\`\`\n\n\`\`\`typescript\ninterface DiagramConfig {\n  theme: 'dark' | 'default' | 'neutral';\n  zoomLevel: number;\n  enablePan: boolean;\n}\n\`\`\`\n\nEnjoy editing!\n`;
-
-    const defaultTab = makeTab('welcome.md', starterMarkdown);
+    const defaultTab = makeTab('welcome.md', STARTER_MARKDOWN);
     tabs = [defaultTab];
     activeId = defaultTab.id;
   }
@@ -3171,6 +3190,7 @@
     renderAll();
     document.getElementById('editor').focus();
     showToast(`Created new tab: ${t.name}`);
+    return t;
   }
 
   function closeTab(id) {
@@ -4724,6 +4744,7 @@ ${previewContent}
   });
 
   document.getElementById('btnNewTab').addEventListener('click', () => addTab());
+  document.getElementById('btnLoadExamples').addEventListener('click', () => loadStarterExamples());
   document.getElementById('btnTabAdd').addEventListener('click', () => addTab());
 
   // --------------------------------------------------------------------------
@@ -4919,9 +4940,8 @@ ${previewContent}
       try {
         const file = await handle.getFile();
         const text = await file.text();
-        addTab(file.name, text);
-        const t = getActiveTab();
-        if (t && t.name === file.name) fileHandles.set(t.id, handle);
+        const newTab = addTab(file.name, text);
+        if (newTab) fileHandles.set(newTab.id, handle);
       } catch (err) {
         showToast('Could not open file: ' + (err.message || err));
       }
@@ -5077,6 +5097,7 @@ ${previewContent}
   const COMMANDS = [
     { title: 'New Tab', category: 'File', shortcut: 'Ctrl+N', action: () => addTab() },
     { title: 'Open File', category: 'File', action: () => openFileNativeOrFallback() },
+    { title: 'Load Welcome & Mermaid Examples', category: 'File', action: () => loadStarterExamples() },
     { title: 'Save Markdown', category: 'File', shortcut: 'Ctrl+S', action: () => saveMarkdownNativeOrFallback(false) },
     { title: 'Save Markdown As...', category: 'File', action: () => saveMarkdownNativeOrFallback(true) },
     { title: 'Export Standalone HTML', category: 'Export', action: () => document.getElementById('btnExportHtml').click() },
