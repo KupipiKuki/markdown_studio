@@ -13,6 +13,9 @@
 <!-- Marked for Markdown Parsing -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 
+<!-- DOMPurify for XSS-sanitizing rendered Markdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+
 <!-- Highlight.js for Code Highlighting -->
 <link rel="stylesheet" id="hljs-theme" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -623,6 +626,11 @@
     overflow-y: auto;
     white-space: pre-wrap;
     word-break: break-word;
+  }
+  #editor.nowrap {
+    white-space: pre;
+    word-break: normal;
+    overflow-x: auto;
   }
 
   /* Draggable Split Divider */
@@ -1799,6 +1807,11 @@
     <span>Sync Scroll</span>
   </button>
 
+  <!-- Word Wrap Toggle -->
+  <button class="tool-btn active" id="btnToggleWrap" title="Toggle Word Wrap (Alt+Z)">
+    <span>&#8617; Wrap</span>
+  </button>
+
   <div class="tool-divider"></div>
 
   <!-- Hide/Show Editor & Viewer Quick Toggles -->
@@ -2868,7 +2881,8 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ tabs, activeId }));
     } catch (e) {
-      console.warn('LocalStorage save failed:', e);
+      logError('Storage', 'Browser storage quota exceeded: ' + e.message, '');
+      showToast('Storage warning: ' + e.message);
     }
   }
 
@@ -3012,6 +3026,12 @@
     try {
       const { text, mathStore } = extractMath(t.content);
       let html = marked.parse(text);
+
+      if (typeof DOMPurify !== 'undefined') {
+        html = DOMPurify.sanitize(html, {
+          ADD_ATTR: ['data-diagram-index', 'data-mermaid-code', 'data-action', 'data-zoom', 'data-pan-x', 'data-pan-y', 'target']
+        });
+      }
 
       // Restore Math segments
       html = html.replace(/@@MATH(\d+)@@/g, (_, i) => escapeHtml(mathStore[Number(i)]));
@@ -3328,6 +3348,7 @@
         if (typeof parsed.editorVisible === 'boolean') editorVisible = parsed.editorVisible;
         if (typeof parsed.viewerVisible === 'boolean') viewerVisible = parsed.viewerVisible;
         if (typeof parsed.lastSplitRatio === 'number') lastSplitRatio = parsed.lastSplitRatio;
+        if (typeof parsed.wordWrap === 'boolean') wordWrap = parsed.wordWrap;
       }
     } catch (e) {
       console.warn('Could not read view state from localStorage:', e);
@@ -3339,7 +3360,8 @@
       localStorage.setItem(VIEW_STORAGE_KEY, JSON.stringify({
         editorVisible,
         viewerVisible,
-        lastSplitRatio
+        lastSplitRatio,
+        wordWrap
       }));
     } catch (e) {
       console.warn('Could not persist view state:', e);
@@ -3646,6 +3668,32 @@
     btnSyncScroll.classList.toggle('active', syncScrollEnabled);
     showToast(syncScrollEnabled ? 'Synchronized scroll ON' : 'Synchronized scroll OFF');
   });
+
+  // Word Wrap Toggle
+  let wordWrap = true;
+  const editorTextarea = document.getElementById('editor');
+  const btnToggleWrap = document.getElementById('btnToggleWrap');
+
+  function applyWordWrap(persist = true) {
+    if (wordWrap) {
+      editorTextarea.classList.remove('nowrap');
+      btnToggleWrap.classList.add('active');
+    } else {
+      editorTextarea.classList.add('nowrap');
+      btnToggleWrap.classList.remove('active');
+    }
+    if (persist) {
+      persistViewState();
+      showToast(wordWrap ? 'Word Wrap ON' : 'Word Wrap OFF (1:1 Line Gutter)');
+    }
+  }
+
+  function toggleWordWrap() {
+    wordWrap = !wordWrap;
+    applyWordWrap();
+  }
+
+  btnToggleWrap.addEventListener('click', toggleWordWrap);
 
   // --------------------------------------------------------------------------
   // Find and Replace
@@ -4261,6 +4309,7 @@ ${previewContent}
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('markflow_theme', theme); } catch (e) {}
     if (theme === 'light') {
       sunIcon.style.display = 'inline-block';
       moonIcon.style.display = 'none';
@@ -4279,6 +4328,12 @@ ${previewContent}
   // --------------------------------------------------------------------------
   document.addEventListener('keydown', (e) => {
     const ctrl = e.ctrlKey || e.metaKey;
+
+    if (e.altKey && !e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      toggleWordWrap();
+      return;
+    }
 
     if (ctrl && e.shiftKey && e.key.toLowerCase() === 'e' || (e.altKey && e.key.toLowerCase() === 'e')) {
       e.preventDefault();
@@ -4348,9 +4403,13 @@ ${previewContent}
   // --------------------------------------------------------------------------
   // Application Bootstrap
   // --------------------------------------------------------------------------
+  const savedMarkFlowTheme = localStorage.getItem('markflow_theme') || 'dark';
+  applyTheme(savedMarkFlowTheme);
+
   initMermaid();
   loadState();
   loadViewState();
+  applyWordWrap(false);
   renderAll();
   setPaneVisibility({
     editor: editorVisible,
