@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-11-03T13:06:28.266378+00:00",
+  "source_sha256": "11eaec367bb698f557abefafd359a5983d5ef0e08d1fce4e45ea08ec7277a83c",
+  "size_bytes": 155945,
+  "line_count": 4316,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "dependencies": [
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js",
+    "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"
+  ],
+  "source_library_file_id": "libfile_80752652d9c48191a6b93000475d2e51",
+  "source_library_version": "not supplied; not inferred",
+  "plan_library_file_id": "libfile_eae156c41398819198c59c5fd351ea57"
+}

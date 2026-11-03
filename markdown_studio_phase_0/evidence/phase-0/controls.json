@@ -1,0 +1,1299 @@
+[
+  {
+    "id": "C001",
+    "tag": "button",
+    "line": 1653,
+    "attributes": {
+      "class": "btn btn-gradient",
+      "id": "btnOpenStudio",
+      "title": "Open Mermaid Diagram Builder & Studio"
+    },
+    "expected": "Open Mermaid Diagram Builder & Studio",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C002",
+    "tag": "button",
+    "line": 1662,
+    "attributes": {
+      "class": "btn",
+      "id": "btnQuickDiagram",
+      "title": "Insert Quick Mermaid Diagram"
+    },
+    "expected": "Insert Quick Mermaid Diagram",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C003",
+    "tag": "button",
+    "line": 1667,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "flowchart"
+    },
+    "expected": "flowchart",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C004",
+    "tag": "button",
+    "line": 1668,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "sequence"
+    },
+    "expected": "sequence",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C005",
+    "tag": "button",
+    "line": 1669,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "classDiagram"
+    },
+    "expected": "classDiagram",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C006",
+    "tag": "button",
+    "line": 1670,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "stateDiagram"
+    },
+    "expected": "stateDiagram",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C007",
+    "tag": "button",
+    "line": 1671,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "erDiagram"
+    },
+    "expected": "erDiagram",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C008",
+    "tag": "button",
+    "line": 1672,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "gantt"
+    },
+    "expected": "gantt",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C009",
+    "tag": "button",
+    "line": 1673,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "gitGraph"
+    },
+    "expected": "gitGraph",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C010",
+    "tag": "button",
+    "line": 1674,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "mindmap"
+    },
+    "expected": "mindmap",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C011",
+    "tag": "button",
+    "line": 1675,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "pie"
+    },
+    "expected": "pie",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C012",
+    "tag": "button",
+    "line": 1676,
+    "attributes": {
+      "class": "dropdown-item",
+      "data-template": "architecture"
+    },
+    "expected": "architecture",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C013",
+    "tag": "button",
+    "line": 1681,
+    "attributes": {
+      "class": "btn",
+      "id": "btnNewTab",
+      "title": "Create New Document Tab (Ctrl+N)"
+    },
+    "expected": "Create New Document Tab (Ctrl+N)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C014",
+    "tag": "label",
+    "line": 1686,
+    "attributes": {
+      "class": "btn",
+      "for": "fileInput",
+      "title": "Load Markdown or Text File"
+    },
+    "expected": "Load Markdown or Text File",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C015",
+    "tag": "input",
+    "line": 1690,
+    "attributes": {
+      "type": "file",
+      "id": "fileInput",
+      "accept": ".md,.markdown,.txt",
+      "multiple": null,
+      "style": "display:none;"
+    },
+    "expected": "fileInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C016",
+    "tag": "button",
+    "line": 1694,
+    "attributes": {
+      "class": "btn btn-primary",
+      "id": "btnExportMenu",
+      "title": "Export or Save Document"
+    },
+    "expected": "Export or Save Document",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C017",
+    "tag": "button",
+    "line": 1699,
+    "attributes": {
+      "class": "dropdown-item",
+      "id": "btnSaveMd"
+    },
+    "expected": "btnSaveMd",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C018",
+    "tag": "button",
+    "line": 1700,
+    "attributes": {
+      "class": "dropdown-item",
+      "id": "btnExportHtml"
+    },
+    "expected": "btnExportHtml",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C019",
+    "tag": "button",
+    "line": 1701,
+    "attributes": {
+      "class": "dropdown-item",
+      "id": "btnPrintPdf"
+    },
+    "expected": "btnPrintPdf",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C020",
+    "tag": "button",
+    "line": 1703,
+    "attributes": {
+      "class": "dropdown-item",
+      "id": "btnCopyHtml"
+    },
+    "expected": "btnCopyHtml",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C021",
+    "tag": "button",
+    "line": 1704,
+    "attributes": {
+      "class": "dropdown-item",
+      "id": "btnCopyMd"
+    },
+    "expected": "btnCopyMd",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C022",
+    "tag": "button",
+    "line": 1712,
+    "attributes": {
+      "class": "seg-btn active",
+      "id": "btnToggleEditor",
+      "data-action": "toggle-editor",
+      "title": "Hide/Show Editor (Ctrl+Shift+E)",
+      "aria-pressed": "true"
+    },
+    "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C023",
+    "tag": "button",
+    "line": 1716,
+    "attributes": {
+      "class": "seg-btn active",
+      "id": "btnLayoutSplit",
+      "data-action": "split",
+      "title": "Split View (Both Visible)"
+    },
+    "expected": "Split View (Both Visible)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C024",
+    "tag": "button",
+    "line": 1720,
+    "attributes": {
+      "class": "seg-btn active",
+      "id": "btnToggleViewer",
+      "data-action": "toggle-viewer",
+      "title": "Hide/Show Viewer (Ctrl+Shift+V)",
+      "aria-pressed": "true"
+    },
+    "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C025",
+    "tag": "button",
+    "line": 1727,
+    "attributes": {
+      "class": "btn btn-icon",
+      "id": "btnThemeToggle",
+      "title": "Toggle Light / Dark Theme"
+    },
+    "expected": "Toggle Light / Dark Theme",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C026",
+    "tag": "button",
+    "line": 1739,
+    "attributes": {
+      "class": "tab-add-btn",
+      "id": "btnTabAdd",
+      "title": "New Tab"
+    },
+    "expected": "New Tab",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C027",
+    "tag": "button",
+    "line": 1747,
+    "attributes": {
+      "class": "tool-btn",
+      "id": "btnToggleToc",
+      "title": "Toggle Table of Contents Outline"
+    },
+    "expected": "Toggle Table of Contents Outline",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C028",
+    "tag": "button",
+    "line": 1755,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "bold",
+      "title": "Bold (Ctrl+B)"
+    },
+    "expected": "Bold (Ctrl+B)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C029",
+    "tag": "button",
+    "line": 1756,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "italic",
+      "title": "Italic (Ctrl+I)"
+    },
+    "expected": "Italic (Ctrl+I)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C030",
+    "tag": "button",
+    "line": 1757,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "strike",
+      "title": "Strikethrough"
+    },
+    "expected": "Strikethrough",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C031",
+    "tag": "button",
+    "line": 1758,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "code",
+      "title": "Inline Code"
+    },
+    "expected": "Inline Code",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C032",
+    "tag": "button",
+    "line": 1763,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "h1",
+      "title": "Heading 1"
+    },
+    "expected": "Heading 1",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C033",
+    "tag": "button",
+    "line": 1764,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "h2",
+      "title": "Heading 2"
+    },
+    "expected": "Heading 2",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C034",
+    "tag": "button",
+    "line": 1765,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "h3",
+      "title": "Heading 3"
+    },
+    "expected": "Heading 3",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C035",
+    "tag": "button",
+    "line": 1770,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "ul",
+      "title": "Bulleted List"
+    },
+    "expected": "Bulleted List",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C036",
+    "tag": "button",
+    "line": 1771,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "ol",
+      "title": "Numbered List"
+    },
+    "expected": "Numbered List",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C037",
+    "tag": "button",
+    "line": 1772,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "task",
+      "title": "Checklist / Task List"
+    },
+    "expected": "Checklist / Task List",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C038",
+    "tag": "button",
+    "line": 1773,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "quote",
+      "title": "Blockquote"
+    },
+    "expected": "Blockquote",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C039",
+    "tag": "button",
+    "line": 1778,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "table",
+      "title": "Insert Table"
+    },
+    "expected": "Insert Table",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C040",
+    "tag": "button",
+    "line": 1782,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "link",
+      "title": "Insert Link (Ctrl+K)"
+    },
+    "expected": "Insert Link (Ctrl+K)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C041",
+    "tag": "button",
+    "line": 1783,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "image",
+      "title": "Insert Image"
+    },
+    "expected": "Insert Image",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C042",
+    "tag": "button",
+    "line": 1784,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "codeblock",
+      "title": "Insert Code Block"
+    },
+    "expected": "Insert Code Block",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C043",
+    "tag": "button",
+    "line": 1785,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "math",
+      "title": "Insert LaTeX Equation"
+    },
+    "expected": "Insert LaTeX Equation",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C044",
+    "tag": "button",
+    "line": 1786,
+    "attributes": {
+      "class": "tool-btn",
+      "data-action": "hr",
+      "title": "Horizontal Divider"
+    },
+    "expected": "Horizontal Divider",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C045",
+    "tag": "button",
+    "line": 1791,
+    "attributes": {
+      "class": "tool-btn",
+      "id": "btnToggleFind",
+      "title": "Find & Replace (Ctrl+F)"
+    },
+    "expected": "Find & Replace (Ctrl+F)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C046",
+    "tag": "button",
+    "line": 1797,
+    "attributes": {
+      "class": "tool-btn active",
+      "id": "btnSyncScroll",
+      "title": "Toggle Synchronized Scrolling"
+    },
+    "expected": "Toggle Synchronized Scrolling",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C047",
+    "tag": "button",
+    "line": 1805,
+    "attributes": {
+      "class": "tool-btn active",
+      "id": "btnToolbarToggleEditor",
+      "title": "Hide/Show Editor (Ctrl+Shift+E)"
+    },
+    "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C048",
+    "tag": "button",
+    "line": 1810,
+    "attributes": {
+      "class": "tool-btn active",
+      "id": "btnToolbarToggleViewer",
+      "title": "Hide/Show Viewer (Ctrl+Shift+V)"
+    },
+    "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C049",
+    "tag": "input",
+    "line": 1820,
+    "attributes": {
+      "type": "text",
+      "class": "find-input",
+      "id": "findInput",
+      "placeholder": "Find in document..."
+    },
+    "expected": "findInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C050",
+    "tag": "button",
+    "line": 1822,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFindPrev"
+    },
+    "expected": "btnFindPrev",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C051",
+    "tag": "button",
+    "line": 1823,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFindNext"
+    },
+    "expected": "btnFindNext",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C052",
+    "tag": "input",
+    "line": 1825,
+    "attributes": {
+      "type": "text",
+      "class": "find-input",
+      "id": "replaceInput",
+      "placeholder": "Replace with..."
+    },
+    "expected": "replaceInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C053",
+    "tag": "button",
+    "line": 1826,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnReplace"
+    },
+    "expected": "btnReplace",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C054",
+    "tag": "button",
+    "line": 1827,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnReplaceAll"
+    },
+    "expected": "btnReplaceAll",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C055",
+    "tag": "button",
+    "line": 1828,
+    "attributes": {
+      "class": "btn btn-sm btn-icon",
+      "id": "btnCloseFind",
+      "style": "margin-left:auto;"
+    },
+    "expected": "btnCloseFind",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C056",
+    "tag": "button",
+    "line": 1839,
+    "attributes": {
+      "class": "btn btn-sm btn-icon",
+      "id": "btnCloseToc"
+    },
+    "expected": "btnCloseToc",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C057",
+    "tag": "button",
+    "line": 1853,
+    "attributes": {
+      "class": "pane-action-btn btn-restore",
+      "id": "btnShowViewerInline",
+      "title": "Show Viewer (Ctrl+Shift+V)",
+      "style": "display:none;"
+    },
+    "expected": "Show Viewer (Ctrl+Shift+V)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C058",
+    "tag": "button",
+    "line": 1857,
+    "attributes": {
+      "class": "pane-action-btn",
+      "id": "btnHideEditor",
+      "title": "Hide Editor (Ctrl+Shift+E)"
+    },
+    "expected": "Hide Editor (Ctrl+Shift+E)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C059",
+    "tag": "textarea",
+    "line": 1865,
+    "attributes": {
+      "id": "editor",
+      "spellcheck": "false",
+      "placeholder": "Type Markdown here..."
+    },
+    "expected": "editor",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C060",
+    "tag": "div",
+    "line": 1870,
+    "attributes": {
+      "class": "split-resizer",
+      "id": "splitResizer",
+      "title": "Drag to resize panes (Double click to reset 50/50)"
+    },
+    "expected": "Drag to resize panes (Double click to reset 50/50)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C061",
+    "tag": "button",
+    "line": 1881,
+    "attributes": {
+      "class": "pane-action-btn btn-restore",
+      "id": "btnShowEditorInline",
+      "title": "Show Editor (Ctrl+Shift+E)",
+      "style": "display:none;"
+    },
+    "expected": "Show Editor (Ctrl+Shift+E)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C062",
+    "tag": "button",
+    "line": 1885,
+    "attributes": {
+      "class": "pane-action-btn",
+      "id": "btnToggleViewerWidth",
+      "title": "Toggle Full Width / Centered Reading Width"
+    },
+    "expected": "Toggle Full Width / Centered Reading Width",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C063",
+    "tag": "button",
+    "line": 1889,
+    "attributes": {
+      "class": "pane-action-btn",
+      "id": "btnHideViewer",
+      "title": "Hide Viewer (Ctrl+Shift+V)"
+    },
+    "expected": "Hide Viewer (Ctrl+Shift+V)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C064",
+    "tag": "button",
+    "line": 1905,
+    "attributes": {
+      "class": "btn btn-primary",
+      "id": "btnEmptyShowEditor"
+    },
+    "expected": "btnEmptyShowEditor",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C065",
+    "tag": "button",
+    "line": 1909,
+    "attributes": {
+      "class": "btn btn-primary",
+      "id": "btnEmptyShowViewer"
+    },
+    "expected": "btnEmptyShowViewer",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C066",
+    "tag": "button",
+    "line": 1913,
+    "attributes": {
+      "class": "btn btn-gradient",
+      "id": "btnEmptyRestoreSplit"
+    },
+    "expected": "btnEmptyRestoreSplit",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C067",
+    "tag": "button",
+    "line": 1936,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnClearErrorLog",
+      "title": "Clear all logged errors"
+    },
+    "expected": "Clear all logged errors",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C068",
+    "tag": "button",
+    "line": 1940,
+    "attributes": {
+      "class": "btn btn-sm btn-icon",
+      "id": "btnCloseErrorLog",
+      "title": "Close Error Log (Esc)"
+    },
+    "expected": "Close Error Log (Esc)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C069",
+    "tag": "div",
+    "line": 1955,
+    "attributes": {
+      "class": "status-item clickable status-error-toggle",
+      "id": "statusErrorIndicator",
+      "title": "Click to open/close Error Log",
+      "style": "cursor:pointer;"
+    },
+    "expected": "Click to open/close Error Log",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C070",
+    "tag": "div",
+    "line": 1971,
+    "attributes": {
+      "class": "status-item clickable",
+      "id": "statusViewMode",
+      "title": "Click to cycle or restore split view",
+      "style": "cursor:pointer;"
+    },
+    "expected": "Click to cycle or restore split view",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C071",
+    "tag": "button",
+    "line": 1998,
+    "attributes": {
+      "class": "modal-close-btn",
+      "id": "btnCloseStudio",
+      "title": "Close Studio (Esc)"
+    },
+    "expected": "Close Studio (Esc)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C072",
+    "tag": "select",
+    "line": 2005,
+    "attributes": {
+      "class": "select-styled",
+      "id": "builderTypeSelect"
+    },
+    "expected": "builderTypeSelect",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C073",
+    "tag": "select",
+    "line": 2023,
+    "attributes": {
+      "class": "select-styled",
+      "id": "builderTemplateSelect"
+    },
+    "expected": "builderTemplateSelect",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C074",
+    "tag": "select",
+    "line": 2030,
+    "attributes": {
+      "class": "select-styled",
+      "id": "builderDirectionSelect"
+    },
+    "expected": "builderDirectionSelect",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C075",
+    "tag": "select",
+    "line": 2040,
+    "attributes": {
+      "class": "select-styled",
+      "id": "builderThemeSelect"
+    },
+    "expected": "builderThemeSelect",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C076",
+    "tag": "button",
+    "line": 2051,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnBuilderFormat",
+      "title": "Format and Clean Indentation"
+    },
+    "expected": "Format and Clean Indentation",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C077",
+    "tag": "button",
+    "line": 2060,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "[Rectangle]"
+    },
+    "expected": "[Rectangle]",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C078",
+    "tag": "button",
+    "line": 2061,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "(Rounded)"
+    },
+    "expected": "(Rounded)",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C079",
+    "tag": "button",
+    "line": 2062,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "([Stadium])"
+    },
+    "expected": "([Stadium])",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C080",
+    "tag": "button",
+    "line": 2063,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "[[Subroutine]]"
+    },
+    "expected": "[[Subroutine]]",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C081",
+    "tag": "button",
+    "line": 2064,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "[(Database)]"
+    },
+    "expected": "[(Database)]",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C082",
+    "tag": "button",
+    "line": 2065,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "((Circle))"
+    },
+    "expected": "((Circle))",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C083",
+    "tag": "button",
+    "line": 2066,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "{'Decision?'}"
+    },
+    "expected": "{'Decision?'}",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C084",
+    "tag": "button",
+    "line": 2067,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": "{{Hexagon}}"
+    },
+    "expected": "{{Hexagon}}",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C085",
+    "tag": "button",
+    "line": 2072,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " --> "
+    },
+    "expected": " --> ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C086",
+    "tag": "button",
+    "line": 2073,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " --- "
+    },
+    "expected": " --- ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C087",
+    "tag": "button",
+    "line": 2074,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " -.-> "
+    },
+    "expected": " -.-> ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C088",
+    "tag": "button",
+    "line": 2075,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " ==> "
+    },
+    "expected": " ==> ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C089",
+    "tag": "button",
+    "line": 2076,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " -->|Text| "
+    },
+    "expected": " -->|Text| ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C090",
+    "tag": "button",
+    "line": 2077,
+    "attributes": {
+      "class": "palette-btn",
+      "data-insert": " ~~~ "
+    },
+    "expected": " ~~~ ",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C091",
+    "tag": "button",
+    "line": 2082,
+    "attributes": {
+      "class": "palette-btn",
+      "style": "grid-column: span 2;",
+      "data-insert": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n"
+    },
+    "expected": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C092",
+    "tag": "button",
+    "line": 2083,
+    "attributes": {
+      "class": "palette-btn",
+      "style": "grid-column: span 2;",
+      "data-insert": "style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff"
+    },
+    "expected": "style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C093",
+    "tag": "textarea",
+    "line": 2093,
+    "attributes": {
+      "id": "builderCodeInput",
+      "spellcheck": "false",
+      "placeholder": "Enter Mermaid diagram code..."
+    },
+    "expected": "builderCodeInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C094",
+    "tag": "button",
+    "line": 2114,
+    "attributes": {
+      "class": "builder-zoom-btn",
+      "id": "btnBuilderZoomOut",
+      "title": "Zoom Out"
+    },
+    "expected": "Zoom Out",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C095",
+    "tag": "button",
+    "line": 2115,
+    "attributes": {
+      "class": "builder-zoom-btn",
+      "id": "btnBuilderZoomReset",
+      "title": "Reset Zoom"
+    },
+    "expected": "Reset Zoom",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C096",
+    "tag": "button",
+    "line": 2116,
+    "attributes": {
+      "class": "builder-zoom-btn",
+      "id": "btnBuilderZoomIn",
+      "title": "Zoom In"
+    },
+    "expected": "Zoom In",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C097",
+    "tag": "button",
+    "line": 2124,
+    "attributes": {
+      "class": "btn",
+      "id": "btnBuilderCopyCode"
+    },
+    "expected": "btnBuilderCopyCode",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C098",
+    "tag": "button",
+    "line": 2125,
+    "attributes": {
+      "class": "btn",
+      "id": "btnBuilderExportSvg"
+    },
+    "expected": "btnBuilderExportSvg",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C099",
+    "tag": "button",
+    "line": 2126,
+    "attributes": {
+      "class": "btn",
+      "id": "btnBuilderExportPng"
+    },
+    "expected": "btnBuilderExportPng",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C100",
+    "tag": "button",
+    "line": 2130,
+    "attributes": {
+      "class": "btn",
+      "id": "btnBuilderCancel"
+    },
+    "expected": "btnBuilderCancel",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C101",
+    "tag": "button",
+    "line": 2131,
+    "attributes": {
+      "class": "btn btn-primary",
+      "id": "btnBuilderInsert"
+    },
+    "expected": "btnBuilderInsert",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C102",
+    "tag": "button",
+    "line": 2148,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFsZoomOut"
+    },
+    "expected": "btnFsZoomOut",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C103",
+    "tag": "button",
+    "line": 2149,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFsZoomReset"
+    },
+    "expected": "btnFsZoomReset",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C104",
+    "tag": "button",
+    "line": 2150,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFsZoomIn"
+    },
+    "expected": "btnFsZoomIn",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C105",
+    "tag": "button",
+    "line": 2152,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFsExportSvg"
+    },
+    "expected": "btnFsExportSvg",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C106",
+    "tag": "button",
+    "line": 2153,
+    "attributes": {
+      "class": "btn btn-sm",
+      "id": "btnFsExportPng"
+    },
+    "expected": "btnFsExportPng",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C107",
+    "tag": "button",
+    "line": 2155,
+    "attributes": {
+      "class": "modal-close-btn",
+      "id": "btnCloseFsModal"
+    },
+    "expected": "btnCloseFsModal",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C108",
+    "tag": "input",
+    "line": 2172,
+    "attributes": {
+      "type": "number",
+      "class": "dialog-input",
+      "id": "tableRowsInput",
+      "value": "3",
+      "min": "1",
+      "max": "50"
+    },
+    "expected": "tableRowsInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C109",
+    "tag": "input",
+    "line": 2176,
+    "attributes": {
+      "type": "number",
+      "class": "dialog-input",
+      "id": "tableColsInput",
+      "value": "3",
+      "min": "1",
+      "max": "20"
+    },
+    "expected": "tableColsInput",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C110",
+    "tag": "button",
+    "line": 2179,
+    "attributes": {
+      "class": "btn",
+      "id": "btnCancelTable"
+    },
+    "expected": "btnCancelTable",
+    "result": "unrun; browser unavailable"
+  },
+  {
+    "id": "C111",
+    "tag": "button",
+    "line": 2180,
+    "attributes": {
+      "class": "btn btn-primary",
+      "id": "btnConfirmTable"
+    },
+    "expected": "btnConfirmTable",
+    "result": "unrun; browser unavailable"
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "platform": "linux",
+  "node": "v24.22.1",
+  "playwright": "1.62.1",
+  "candidateSha256": "11eaec367bb698f557abefafd359a5983d5ef0e08d1fce4e45ea08ec7277a83c",
+  "results": [
+    {
+      "browser": "chromium",
+      "status": "blocked",
+      "phase": "launch",
+      "origins": [
+        "file",
+        "http"
+      ],
+      "error": "browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+      "timestamp": "2026-11-03T12:15:15.763Z"
+    },
+    {
+      "browser": "firefox",
+      "status": "blocked",
+      "phase": "launch",
+      "origins": [
+        "file",
+        "http"
+      ],
+      "error": "browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/firefox-1538/firefox/firefox\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+      "timestamp": "2026-11-03T12:15:15.765Z"
+    }
+  ]
+}

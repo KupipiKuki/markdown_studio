@@ -1,0 +1,10 @@
+commit 71da52263f325195561b8cbe1ffd969779c0c5c6
+Author:     Markdown Studio Revisions <markdown-studio@localhost>
+AuthorDate: Tue Nov 3 13:15:31 2026 +0100
+Commit:     Markdown Studio Revisions <markdown-studio@localhost>
+CommitDate: Tue Nov 3 13:15:31 2026 +0100
+
+    Preserve reviewed baseline for Phase 0
+
+Working-copy status: clean
+Application source byte comparison: identical to supplied source and baseline

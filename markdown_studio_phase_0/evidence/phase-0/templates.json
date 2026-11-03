@@ -1,0 +1,93 @@
+{
+  "count": 16,
+  "templates": {
+    "flowchart": {
+      "default": {
+        "title": "Standard Process Flow",
+        "code": "flowchart TD\n  Start([Start Request]) --> Auth{Authenticated?}\n  Auth -->|Yes| Fetch[Fetch User Profile]\n  Auth -->|No| Login[Redirect to Login]\n  Fetch --> Process[Process Request Data]\n  Process --> DB[(Update Database)]\n  DB --> Success([Return 200 OK])\n  Login --> Finish([End])"
+      },
+      "microservices": {
+        "title": "Microservices Architecture",
+        "code": "flowchart LR\n  Client([Web / Mobile Client]) --> CDN[CloudFront CDN]\n  CDN --> Gateway[API Gateway]\n  \n  subgraph Services [Internal Core Services]\n    Gateway --> AuthSvc[Auth Service]\n    Gateway --> OrderSvc[Order Service]\n    Gateway --> InventorySvc[Inventory Service]\n  end\n  \n  subgraph DataLayer [Data Persistence & Cache]\n    OrderSvc --> OrderDB[(PostgreSQL DB)]\n    InventorySvc --> Redis[(Redis Cache)]\n    AuthSvc --> UserDB[(Users MongoDB)]\n  end"
+      },
+      "decision": {
+        "title": "Decision Tree / Algorithm",
+        "code": "flowchart TD\n  Input[/Input Features/] --> ConditionA{Feature X > Threshold?}\n  ConditionA -->|True| Leaf1[Assign Class A]\n  ConditionA -->|False| ConditionB{Feature Y is Valid?}\n  ConditionB -->|Yes| Leaf2[Assign Class B]\n  ConditionB -->|No| Leaf3[Assign Class C]"
+      }
+    },
+    "sequence": {
+      "default": {
+        "title": "OAuth 2.0 / JWT Auth Flow",
+        "code": "sequenceDiagram\n  autonumber\n  actor User\n  participant Client as Web App\n  participant Auth as Auth Server\n  participant API as Resource API\n\n  User->>Client: Click Login\n  Client->>Auth: Request Auth Code (/oauth/authorize)\n  Auth-->>User: Present Login & Consent Screen\n  User->>Auth: Submit Credentials\n  Auth-->>Client: Return Auth Code in Redirect\n  Client->>Auth: Exchange Code for Access Token (POST /token)\n  Auth-->>Client: Return JWT Access & Refresh Token\n  Client->>API: Request Protected Data (Bearer Token)\n  API-->>Client: Return JSON Payload\n  Client-->>User: Render Dashboard"
+      },
+      "payment": {
+        "title": "Payment Processing Flow",
+        "code": "sequenceDiagram\n  actor Customer\n  participant Shop as Storefront App\n  participant Engine as Checkout Engine\n  participant Stripe as Stripe Gateway\n  \n  Customer->>Shop: Click Checkout\n  Shop->>Engine: Create Payment Intent\n  Engine->>Stripe: Init Intent ($89.00)\n  Stripe-->>Engine: Client Secret\n  Engine-->>Shop: Pass Client Secret\n  Shop->>Customer: Render Card Element\n  Customer->>Stripe: Confirm Card Details Direct\n  Stripe-->>Engine: Webhook: payment_intent.succeeded\n  Engine->>Shop: Mark Order Paid\n  Shop-->>Customer: Display Order Confirmation"
+      }
+    },
+    "classDiagram": {
+      "default": {
+        "title": "E-Commerce Domain Model",
+        "code": "classDiagram\n  class User {\n    +String id\n    +String email\n    +String passwordHash\n    +login()\n    +logout()\n  }\n  class Order {\n    +String orderId\n    +Date createdAt\n    +Float totalAmount\n    +OrderStatus status\n    +calculateTotal()\n  }\n  class OrderItem {\n    +Int quantity\n    +Float unitPrice\n  }\n  class Product {\n    +String sku\n    +String title\n    +Float price\n    +Int stockCount\n  }\n\n  User \"1\" --> \"*\" Order : places\n  Order \"1\" *-- \"*\" OrderItem : contains\n  OrderItem \"*\" --> \"1\" Product : references"
+      },
+      "pattern": {
+        "title": "Strategy Design Pattern",
+        "code": "classDiagram\n  class PaymentContext {\n    -PaymentStrategy strategy\n    +setStrategy(PaymentStrategy)\n    +executePayment(amount)\n  }\n  class PaymentStrategy {\n    <<interface>>\n    +pay(amount)*\n  }\n  class CreditCardPayment {\n    -String cardNumber\n    +pay(amount)\n  }\n  class PayPalPayment {\n    -String email\n    +pay(amount)\n  }\n  class CryptoPayment {\n    -String walletAddress\n    +pay(amount)\n  }\n\n  PaymentContext o-- PaymentStrategy\n  PaymentStrategy <|.. CreditCardPayment\n  PaymentStrategy <|.. PayPalPayment\n  PaymentStrategy <|.. CryptoPayment"
+      }
+    },
+    "stateDiagram": {
+      "default": {
+        "title": "Order Lifecycle State Machine",
+        "code": "stateDiagram-v2\n  [*] --> PendingPayment\n  PendingPayment --> Processing : Payment Verified\n  PendingPayment --> Cancelled : Payment Failed / Timeout\n  \n  state Processing {\n    [*] --> Packaging\n    Packaging --> QualityCheck\n    QualityCheck --> ReadyForDispatch\n  }\n  \n  Processing --> Shipped : Carrier Picked Up\n  Shipped --> OutForDelivery : Local Hub\n  OutForDelivery --> Delivered : Customer Signed\n  Delivered --> [*]\n  Cancelled --> [*]"
+      }
+    },
+    "erDiagram": {
+      "default": {
+        "title": "Database Relational Schema",
+        "code": "erDiagram\n  USERS ||--o{ ORDERS : places\n  USERS {\n    uuid id PK\n    string email UK\n    string full_name\n    timestamp created_at\n  }\n  ORDERS ||--|{ ORDER_ITEMS : contains\n  ORDERS {\n    uuid id PK\n    uuid user_id FK\n    decimal total_amount\n    string status\n  }\n  PRODUCTS ||--o{ ORDER_ITEMS : includes\n  PRODUCTS {\n    uuid id PK\n    string sku UK\n    string name\n    decimal unit_price\n    int inventory\n  }\n  ORDER_ITEMS {\n    uuid id PK\n    uuid order_id FK\n    uuid product_id FK\n    int quantity\n    decimal price\n  }"
+      }
+    },
+    "gantt": {
+      "default": {
+        "title": "Software Release Roadmap",
+        "code": "gantt\n  title Q4 Product Roadmap & Delivery\n  dateFormat YYYY-MM-DD\n  section Planning\n  System Architecture      :done, plan1, 2026-10-01, 2026-10-10\n  UI/UX Design Wireframes  :done, plan2, 2026-10-05, 2026-10-18\n  section Core Development\n  API Gateway & Auth       :active, dev1, 2026-10-15, 2026-11-05\n  Mermaid Visual Builder   :active, dev2, 2026-10-20, 2026-11-12\n  Database Optimization    :dev3, 2026-11-01, 2026-11-20\n  section QA & Launch\n  End-to-End Testing       :qa1, 2026-11-15, 2026-11-28\n  Production Deployment    :milestone, m1, 2026-12-01, 0d"
+      }
+    },
+    "gitGraph": {
+      "default": {
+        "title": "Git Feature Branch Workflow",
+        "code": "gitGraph\n  commit id: \"Initial Commit\"\n  commit id: \"Add Core Engine\"\n  branch feature/mermaid-studio\n  checkout feature/mermaid-studio\n  commit id: \"Implement Live Preview\"\n  commit id: \"Add Visual Palettes\"\n  checkout main\n  commit id: \"Documentation Updates\"\n  checkout feature/mermaid-studio\n  commit id: \"Robust Error Handling\"\n  checkout main\n  merge feature/mermaid-studio tag: \"v2.0-rc1\"\n  commit id: \"Production Release v2.0\""
+      }
+    },
+    "mindmap": {
+      "default": {
+        "title": "Modern Web Stack Mindmap",
+        "code": "mindmap\n  root((Full-Stack Engineering))\n    Frontend\n      Modern JavaScript / TS\n      Component Architecture\n      CSS Design Systems\n      Performance Optimization\n    Backend\n      REST & GraphQL APIs\n      Microservices\n      Authentication & Security\n    Data & Cloud\n      PostgreSQL / Distributed SQL\n      Redis In-Memory Caching\n      Docker & Kubernetes\n      CI / CD Pipelines"
+      }
+    },
+    "pie": {
+      "default": {
+        "title": "Technology Stack Usage Breakdown",
+        "code": "pie title Tech Stack Distribution in 2026\n  \"TypeScript / JavaScript\" : 42\n  \"Python Data Services\" : 26\n  \"Go Microservices\" : 18\n  \"Rust High-Performance\" : 14"
+      }
+    },
+    "journey": {
+      "default": {
+        "title": "User Onboarding Experience",
+        "code": "journey\n  title User Onboarding Journey\n  section Discovery\n    Visit Landing Page: 5: User\n    View Feature Demos: 4: User\n  section Signup\n    Click Start Free: 5: User\n    Fill Signup Form: 3: User\n    Verify Email: 3: User\n  section First Diagram\n    Open Diagram Studio: 5: User\n    Select Template: 5: User\n    Export High-Res PNG: 5: User"
+      }
+    },
+    "timeline": {
+      "default": {
+        "title": "Platform Milestone History",
+        "code": "timeline\n  title Platform Evolution & Releases\n  2024 : Initial Release : Basic Markdown Editing\n  2025 : MathJax Support : Syntax Highlighting\n  2026 : Mermaid Studio : Interactive Pan & Zoom : Advanced Export (SVG/PNG)"
+      }
+    },
+    "architecture": {
+      "default": {
+        "title": "Cloud Infrastructure Flow",
+        "code": "flowchart TD\n  subgraph Public [Public Network]\n    Users[Web & Mobile Clients]\n    DNS[Route 53 DNS]\n  end\n  \n  subgraph Edge [Edge & Security]\n    WAF[AWS WAF]\n    CloudFront[CloudFront CDN / Edge]\n    ALB[Application Load Balancer]\n  end\n  \n  subgraph VPC [Private Virtual Cloud]\n    subgraph EKS [Kubernetes Cluster]\n      Pod1[Frontend Pods]\n      Pod2[API Gateway Pods]\n      Pod3[Worker Services]\n    end\n    \n    subgraph Storage [Persistent Storage]\n      Aurora[(Amazon Aurora PostgreSQL)]\n      ElastiCache[(Redis Cluster)]\n      S3[(S3 Object Storage)]\n    end\n  end\n  \n  Users --> DNS\n  Users --> CloudFront\n  CloudFront --> WAF\n  WAF --> ALB\n  ALB --> Pod1\n  ALB --> Pod2\n  Pod2 --> Pod3\n  Pod2 --> Aurora\n  Pod2 --> ElastiCache\n  Pod3 --> S3"
+      }
+    }
+  }
+}
