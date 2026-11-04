@@ -2359,10 +2359,9 @@
               <button class="diag-action-btn" data-action="export-png" title="Export as PNG">PNG</button>
             </div>
           </div>
+          <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
           <div class="mermaid-viewport" data-zoom="1" data-pan-x="0" data-pan-y="0">
-            <div class="mermaid-canvas">
-              <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
-            </div>
+            <div class="mermaid-canvas"></div>
           </div>
         </div>
       `;
@@ -2448,11 +2447,40 @@
     drawer.style.display = shouldOpen ? 'flex' : 'none';
   }
 
-  function copyErrorText(text) {
+  function copyToClipboard(text, successToast = 'Copied to clipboard!') {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => showToast('Error details copied to clipboard'));
+      navigator.clipboard.writeText(text)
+        .then(() => showToast(successToast))
+        .catch(err => {
+          showToast('Clipboard copy failed: ' + (err && err.message ? err.message : 'Permission denied'));
+        });
+    } else {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (success) {
+          showToast(successToast);
+        } else {
+          showToast('Clipboard copy unavailable in this environment');
+        }
+      } catch (e) {
+        showToast('Clipboard copy unavailable in this environment');
+      }
     }
   }
+
+  function copyErrorText(text) {
+    copyToClipboard(text, 'Error details copied to clipboard');
+  }
+
+  window.dismissError = dismissError;
+  window.copyErrorText = copyErrorText;
 
   function renderErrorLogUI() {
     const indicator = document.getElementById('statusErrorIndicator');
@@ -2496,7 +2524,6 @@
           const sourceClass = (item.source || '').toLowerCase();
           const countPill = item.count > 1 ? `<span style="background:var(--bg-panel); border:1px solid var(--border); border-radius:999px; padding:0 5px; font-size:10px; font-weight:700; margin-left:4px;">×${item.count}</span>` : '';
           const escapedSnippet = item.snippet ? escapeHtml(item.snippet.slice(0, 120)) + (item.snippet.length > 120 ? '...' : '') : '';
-          const copyMsg = item.message.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
           return `
             <div class="error-log-row" data-id="${item.id}">
               <span class="error-log-time">${escapeHtml(item.time)}</span>
@@ -2505,8 +2532,8 @@
                 <span>${escapeHtml(item.message)}</span>${countPill}
                 ${escapedSnippet ? `<div style="opacity:0.75; font-size:10.5px; margin-top:2px; font-family:var(--font-mono);">${escapedSnippet}</div>` : ''}
               </div>
-              <button class="error-log-copy-btn" onclick="copyErrorText('${copyMsg}')" title="Copy Error Message">📋</button>
-              <button class="error-log-dismiss-btn" onclick="dismissError('${item.id}')" title="Dismiss">✕</button>
+              <button class="error-log-copy-btn" data-error-id="${item.id}" title="Copy Error Message">📋</button>
+              <button class="error-log-dismiss-btn" data-error-id="${item.id}" title="Dismiss">✕</button>
             </div>
           `;
         }).join('');
@@ -2559,16 +2586,31 @@
   // --------------------------------------------------------------------------
   let renderDebounceTimer = null;
 
+  function getCardMermaidCode(card) {
+    if (!card) return '';
+    if (card.dataset && card.dataset.mermaidCode) {
+      try {
+        return decodeURIComponent(card.dataset.mermaidCode).trim();
+      } catch (e) {
+        // Fallback to DOM element
+      }
+    }
+    const rawEl = card.querySelector('.mermaid-raw-code');
+    if (rawEl && rawEl.textContent) {
+      return rawEl.textContent.trim();
+    }
+    return '';
+  }
+
   async function renderAllPreviewDiagrams() {
     if (typeof mermaid === 'undefined') return;
 
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
       const canvas = card.querySelector('.mermaid-canvas');
-      const rawCodeEl = card.querySelector('.mermaid-raw-code');
-      if (!canvas || !rawCodeEl) continue;
+      const code = getCardMermaidCode(card);
+      if (!canvas || !code) continue;
 
-      const code = rawCodeEl.textContent.trim();
       const uniqueId = 'mmd-' + uid();
       const cardIndex = card.dataset.diagramIndex ? parseInt(card.dataset.diagramIndex, 10) + 1 : 1;
 
@@ -2583,7 +2625,7 @@
           <div class="mermaid-error-card">
             <div class="mermaid-error-header">
               <span>⚠️ Mermaid Syntax Error</span>
-              <button class="btn btn-sm btn-primary" data-action="edit-diagram">Fix in Studio</button>
+              <button class="btn btn-sm btn-primary diag-action-btn" data-action="edit-diagram">Fix in Studio</button>
             </div>
             <div class="mermaid-error-msg">${escapeHtml(errMessage)}</div>
             <pre style="background:var(--bg-surface); padding:8px; border-radius:6px; font-size:11px; margin:0; overflow-x:auto;">${escapeHtml(code)}</pre>
@@ -2614,7 +2656,7 @@
           <div class="mermaid-error-card">
             <div class="mermaid-error-header">
               <span>⚠️ Mermaid Syntax Error</span>
-              <button class="btn btn-sm btn-primary" data-action="edit-diagram">Fix in Studio</button>
+              <button class="btn btn-sm btn-primary diag-action-btn" data-action="edit-diagram">Fix in Studio</button>
             </div>
             <div class="mermaid-error-msg">${escapeHtml(errMessage)}</div>
             <pre style="background:var(--bg-surface); padding:8px; border-radius:6px; font-size:11px; margin:0; overflow-x:auto;">${escapeHtml(code)}</pre>
@@ -2686,38 +2728,38 @@
         updateTransform();
       };
 
-      // Button Controls
-      card.querySelectorAll('.diag-action-btn').forEach(btn => {
-        btn.onclick = (e) => {
-          e.stopPropagation();
-          const action = btn.dataset.action;
-          const rawCode = card.querySelector('.mermaid-raw-code') ? card.querySelector('.mermaid-raw-code').textContent.trim() : '';
+      // Delegated Action Button Controls on Card
+      card.onclick = (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn || !card.contains(btn)) return;
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        const rawCode = getCardMermaidCode(card);
 
-          if (action === 'zoom-in') {
-            zoom = Math.min(zoom * 1.25, 5.0);
-            updateTransform();
-          } else if (action === 'zoom-out') {
-            zoom = Math.max(zoom * 0.8, 0.3);
-            updateTransform();
-          } else if (action === 'zoom-reset') {
-            zoom = 1;
-            panX = 0;
-            panY = 0;
-            updateTransform();
-          } else if (action === 'fullscreen') {
-            openFullscreenDiagram(canvas.innerHTML);
-          } else if (action === 'copy-code') {
-            navigator.clipboard.writeText(rawCode).then(() => showToast('Mermaid code copied to clipboard!'));
-          } else if (action === 'export-svg') {
-            exportDiagramSvg(canvas, 'mermaid-diagram.svg');
-          } else if (action === 'export-png') {
-            exportDiagramPng(canvas, 'mermaid-diagram.png');
-          } else if (action === 'edit-diagram') {
-            const index = parseInt(card.dataset.diagramIndex, 10);
-            openStudioWithCode(rawCode, index);
-          }
-        };
-      });
+        if (action === 'zoom-in') {
+          zoom = Math.min(zoom * 1.25, 5.0);
+          updateTransform();
+        } else if (action === 'zoom-out') {
+          zoom = Math.max(zoom * 0.8, 0.3);
+          updateTransform();
+        } else if (action === 'zoom-reset') {
+          zoom = 1;
+          panX = 0;
+          panY = 0;
+          updateTransform();
+        } else if (action === 'fullscreen') {
+          openFullscreenDiagram(canvas.innerHTML);
+        } else if (action === 'copy-code') {
+          copyToClipboard(rawCode, 'Mermaid code copied to clipboard!');
+        } else if (action === 'export-svg') {
+          exportDiagramSvg(canvas, 'mermaid-diagram.svg');
+        } else if (action === 'export-png') {
+          exportDiagramPng(canvas, 'mermaid-diagram.png');
+        } else if (action === 'edit-diagram') {
+          const index = card.dataset.diagramIndex !== undefined ? parseInt(card.dataset.diagramIndex, 10) : 0;
+          openStudioWithCode(rawCode, index);
+        }
+      };
     });
   }
 
@@ -4136,14 +4178,14 @@ ${previewContent}
   // Copy Rendered HTML
   document.getElementById('btnCopyHtml').addEventListener('click', () => {
     const html = document.getElementById('previewContent').innerHTML;
-    navigator.clipboard.writeText(html).then(() => showToast('Rendered HTML copied to clipboard!'));
+    copyToClipboard(html, 'Rendered HTML copied to clipboard!');
   });
 
   // Copy Raw Markdown
   document.getElementById('btnCopyMd').addEventListener('click', () => {
     const t = getActiveTab();
     if (!t) return;
-    navigator.clipboard.writeText(t.content).then(() => showToast('Raw Markdown copied to clipboard!'));
+    copyToClipboard(t.content, 'Raw Markdown copied to clipboard!');
   });
 
   // File Loader (Open files)
@@ -4307,6 +4349,27 @@ ${previewContent}
 
   const statusErrorInd = document.getElementById('statusErrorIndicator');
   if (statusErrorInd) statusErrorInd.onclick = () => toggleErrorLog();
+
+  const errorLogListEl = document.getElementById('errorLogList');
+  if (errorLogListEl) {
+    errorLogListEl.addEventListener('click', (e) => {
+      const copyBtn = e.target.closest('.error-log-copy-btn');
+      if (copyBtn) {
+        const errorId = copyBtn.dataset.errorId;
+        const item = errorLogs.find(x => x.id === errorId);
+        if (item) {
+          copyToClipboard(item.message, 'Error details copied to clipboard');
+        }
+        return;
+      }
+      const dismissBtn = e.target.closest('.error-log-dismiss-btn');
+      if (dismissBtn) {
+        const errorId = dismissBtn.dataset.errorId;
+        dismissError(errorId);
+        return;
+      }
+    });
+  }
 
   renderErrorLogUI();
 
