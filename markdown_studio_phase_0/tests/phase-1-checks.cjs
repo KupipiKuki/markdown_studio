@@ -216,31 +216,35 @@ try {
     const copyBtn0 = { dataset: { action: 'copy-code' }, closest: () => copyBtn0 };
     item1.card.onclick({ target: copyBtn0, stopPropagation() {} });
     assert.equal(clipboardText, diagCode1, 'Copy Code on Card 0 must copy Diagram 0 source');
+    const card0Copied = clipboardText === diagCode1;
 
     // Test Copy button on Card 1
     const copyBtn1 = { dataset: { action: 'copy-code' }, closest: () => copyBtn1 };
     item2.card.onclick({ target: copyBtn1, stopPropagation() {} });
     assert.equal(clipboardText, diagCode2, 'Copy Code on Card 1 must copy Diagram 1 source');
+    const card1CopiedExact = clipboardText === diagCode2;
 
     // Test Edit button on Card 0
     const editBtn0 = { dataset: { action: 'edit-diagram' }, closest: () => editBtn0 };
     item1.card.onclick({ target: editBtn0, stopPropagation() {} });
     assert.equal(openedStudioCode, diagCode1, 'Edit on Card 0 must open Studio with Diagram 0 source');
     assert.equal(openedStudioIndex, 0, 'Edit on Card 0 must pass index 0');
+    const card0EditExact = openedStudioCode === diagCode1 && openedStudioIndex === 0;
 
     // Test Edit button on Card 1
     const editBtn1 = { dataset: { action: 'edit-diagram' }, closest: () => editBtn1 };
     item2.card.onclick({ target: editBtn1, stopPropagation() {} });
     assert.equal(openedStudioCode, diagCode2, 'Edit on Card 1 must open Studio with Diagram 1 source');
     assert.equal(openedStudioIndex, 1, 'Edit on Card 1 must pass index 1');
+    const card1EditExact = openedStudioCode === diagCode2 && openedStudioIndex === 1;
 
     record('P1-03', ['R01'], 'Action Button Exact Source Matching',
       'Trigger Copy and Edit actions on multi-diagram cards through delegated handlers.',
       {
-        card0Copied: clipboardText === diagCode2 ? false : true,
-        card1CopiedExact: clipboardText === diagCode2,
-        card0EditExact: openedStudioCode === diagCode2 ? false : true,
-        card1EditExact: openedStudioCode === diagCode2 && openedStudioIndex === 1
+        card0Copied,
+        card1CopiedExact,
+        card0EditExact,
+        card1EditExact
       }
     );
     console.log('✓ P1-03: Delegated Copy and Edit return exact corresponding source per diagram.');

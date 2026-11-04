@@ -1,0 +1,170 @@
+{
+  "environment": {
+    "runtime": "v24.20.0",
+    "platform": "win32",
+    "arch": "x64",
+    "browser": "none; executables unavailable",
+    "origin": "not applicable; extracted source"
+  },
+  "candidateSha256": "11eaec367bb698f557abefafd359a5983d5ef0e08d1fce4e45ea08ec7277a83c",
+  "results": [
+    {
+      "id": "B00",
+      "issues": [],
+      "gate": "G0",
+      "status": "pass",
+      "procedure": "Compile inline scripts with vm.Script; compare source hash to plan.",
+      "observation": {
+        "sha256": "11eaec367bb698f557abefafd359a5983d5ef0e08d1fce4e45ea08ec7277a83c",
+        "inlineSyntax": "valid",
+        "templatesExtracted": 16
+      },
+      "timestamp": "2026-11-04T00:38:32.289Z"
+    },
+    {
+      "id": "B10",
+      "issues": [
+        "R10"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.291Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Execute actual wrapSelection with empty selection and divider snippet.",
+      "observation": {
+        "actual": "\n\n---\n\ntext",
+        "unwantedSuffix": "text"
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B11",
+      "issues": [
+        "R11"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.291Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Execute actual image case with synthetic URL and empty selection.",
+      "observation": {
+        "actual": "![Alt text](texthttps://example.test/image.png)",
+        "expectedMarkdown": "![Alt text](https://example.test/image.png)"
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B12",
+      "issues": [
+        "R12"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.291Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Read Subgraph Box attribute as literal HTML attribute text.",
+      "observation": {
+        "attribute": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n",
+        "literalBackslashNCount": 5,
+        "actualNewlines": 0
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B05",
+      "issues": [
+        "R05"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.299Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Parse mixed-fences fixture with baseline Marked 12.0.2; compare actual replacement regex.",
+      "observation": {
+        "previewDiagramCount": 2,
+        "replacementCount": 1,
+        "previewIndex0": "flowchart LR\n A[Tilde] --> B",
+        "replacementIndex0": "```mermaid\r\nflowchart TD\r\n C[Backtick] --> D\r\n```",
+        "consequence": "Editing preview index 0 targets the second diagram."
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B01",
+      "issues": [
+        "R01",
+        "R02"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.300Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Run actual preview render twice on a DOM contract that removes child source on innerHTML replacement.",
+      "observation": {
+        "sourceBefore": "flowchart TD\n A --> B",
+        "sourceAfter": null,
+        "parseCallsAfterTwoRenders": 1,
+        "canvas": "<svg></svg>"
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B09",
+      "issues": [
+        "R09"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.300Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Call actual interactivity setup twice for one card; count registered window handlers.",
+      "observation": {
+        "calls": 2,
+        "windowListenersAdded": [
+          "mousemove",
+          "mouseup",
+          "mousemove",
+          "mouseup"
+        ]
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B03",
+      "issues": [
+        "R03"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.300Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Compare generated Fix in Studio class with actual action-binding selector.",
+      "observation": {
+        "generatedClass": "btn btn-sm btn-primary",
+        "bindingSelector": ".diag-action-btn",
+        "matches": false,
+        "browserClick": "unverified"
+      },
+      "status": "reproduced"
+    },
+    {
+      "id": "B04",
+      "issues": [
+        "R04"
+      ],
+      "gate": "G0",
+      "method": "Node extracted-function or parser reproduction; no browser",
+      "timestamp": "2026-11-04T00:38:32.301Z",
+      "expected": "Baseline defect is observable; no remediation expected in Phase 0",
+      "procedure": "Invoke actual inline handler names in global scope after evaluating error functions within application closure.",
+      "observation": {
+        "errors": [
+          "copyErrorText is not defined",
+          "dismissError is not defined"
+        ],
+        "browserConsole": "not captured; these are Node scope errors"
+      },
+      "status": "reproduced"
+    }
+  ]
+}
