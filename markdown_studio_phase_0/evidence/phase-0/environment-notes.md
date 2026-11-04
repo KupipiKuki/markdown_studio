@@ -15,6 +15,7 @@ restored and the rerun preserved as a separate run-stamped file.
 | `test-results-rerun-2026-11-04.json` | win32 x64 | Node v24.20.0 | 2026-11-04T00:38Z | Rerun that overwrote the canonical file during the Phase 1 checkpoint; observations identical |
 | `browser-results.json`, phase 0 report | linux x86-64 | Node v24.22.1 | 2026-11-03 | Sandbox where browser launch was attempted and blocked |
 | QAQC audit (`reports/qaqc_audit_phase_0_phase_1.md`) | linux x86-64 | Node v22.23.4 | 2026-11-04 | Independent rerun; both suites reproduced committed observations |
+| D001 remediation (`reports/d001_remediation_report.md`) | linux x86-64 (X11) | Node v22.23.4 (local install) | 2026-11-04 | Browser verification (in-app Chromium 152.0.7977.167 / Electron 44.9.1, OpenCode 2.2.5, viewport 1296×866 @1x, origin `http://127.0.0.1:8931`) and suite reruns; both suites reproduced committed observations; new canonical phase-1 record for candidate `55cb1264…` |
 
 The disagreement is between packaging/execution environments, not between
 recorded observations: the B-series observations in the original and rerun

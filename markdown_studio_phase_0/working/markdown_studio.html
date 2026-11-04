@@ -1213,8 +1213,14 @@
     background: var(--success);
   }
 
-  /* Safety Rule: Never allow Mermaid fallback SVGs to inject outside workspace */
-  body > svg, body > [id^="dmmd-"], body > [id^="mmd-"], body > .error-icon, body > [aria-roledescription="error"] {
+  /* Safety Rule: Never allow Mermaid fallback error artifacts to inject outside workspace.
+     D001: the previous "body > svg", [id^="dmmd-"], and [id^="mmd-"] selectors were removed —
+     Mermaid 10.9 appends its in-flight render container (d<uniqueId>) and sequence-diagram
+     measurement SVGs directly to document.body; hiding them makes getBBox() return 0x0 and
+     breaks sequence diagrams ("svg element not in render tree") and edge-labeled flowcharts
+     ("Could not find a suitable point for the given distance"). Stray error artifacts stay
+     covered by suppressErrorRendering (initMermaid) and cleanStrayMermaidElements(). */
+  body > .error-icon, body > [aria-roledescription="error"] {
     display: none !important;
   }
 
