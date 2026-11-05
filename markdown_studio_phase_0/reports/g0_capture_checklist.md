@@ -55,10 +55,10 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 
 ## 6. Environment matrix rows (plan §3)
 
-- [ ] Windows + current Edge: `blocked` unless run on Windows — record actual OS/browser if run.
-- [ ] Windows + current Chrome: same rule.
+- [ ] Windows + current Edge: `node tests/g0-capture-routine.cjs --origin both --headed --browser edge` (channel `msedge`; requires Edge installed on the host — if missing, Playwright errors and the row stays `blocked`).
+- [ ] Windows + current Chrome (branded): same with `--browser chrome` (channel `chrome`). Playwright's bundled Chromium (`--browser chromium`, default) is a separate row and must be labeled as such — it is not branded Chrome/Edge.
 - [ ] Firefox (secondary): `blocked` unless a Firefox binary exists — `--browser firefox`.
-- [ ] Any row not genuinely executed stays `blocked`; do not borrow another environment's result.
+- [ ] Any row not genuinely executed stays `blocked`; do not borrow another environment's result. Each browser row needs its own run-stamped manifest (§6b).
 
 ## 6b. Multi-browser evidence rules
 

@@ -10,6 +10,8 @@
 //   node tests/g0-capture-routine.cjs --origin file        # file:// only
 //   node tests/g0-capture-routine.cjs --origin both        # both launch modes
 //   node tests/g0-capture-routine.cjs --browser firefox --stop-on-fail
+//   node tests/g0-capture-routine.cjs --browser edge            # branded Edge (channel msedge, needs Edge installed)
+//   node tests/g0-capture-routine.cjs --browser chrome          # branded Chrome (channel chrome, needs Chrome installed)
 //
 // Safety: serves only 127.0.0.1 loopback; uses an isolated browser context
 // with synthetic documents; never touches a real user profile or storage.
@@ -26,8 +28,14 @@ const opt = (name, dflt) => {
 const DRY_RUN = args.includes('--dry-run');
 const HEADED = args.includes('--headed'); // focused visible window: required for G1-CLIP-SUCCESS
 const ORIGIN = String(opt('origin', 'both')); // file | http | both
-const BROWSER = String(opt('browser', 'chromium'));
+const BROWSER = String(opt('browser', 'chromium')); // chromium | firefox | edge | chrome
+// Branded browsers are reached through the chromium launcher's channel option.
+const CHANNELS = { edge: 'msedge', chrome: 'chrome' };
 const STOP_ON_FAIL = args.includes('--stop-on-fail');
+if (!DRY_RUN && !['chromium', 'firefox', 'edge', 'chrome'].includes(BROWSER)) {
+  console.error(`unknown --browser "${BROWSER}"; use chromium | firefox | edge | chrome`);
+  process.exit(2);
+}
 const OUT = path.resolve(root, String(opt('out', 'evidence/phase-0/g0-capture')));
 
 const workingPath = path.join(root, 'working/markdown_studio.html');
@@ -163,8 +171,10 @@ async function runBrowser() {
   const baseHttp = `http://127.0.0.1:${port}`;
   const targetUrl = origin => origin === 'http' ? `${baseHttp}/working/markdown_studio.html` : 'file://' + workingPath;
 
-  const browser = await playwright[BROWSER].launch({ headless: !HEADED });
-  BROWSER_VERSION = browser.version();
+  const channel = CHANNELS[BROWSER] || null;
+  const launcher = channel ? playwright.chromium : playwright[BROWSER];
+  const browser = await launcher.launch({ headless: !HEADED, ...(channel ? { channel } : {}) });
+  BROWSER_VERSION = `${browser.browserType().name()}${channel ? ' channel=' + channel : ''} ${browser.version()}`;
   const records = buildStopPoints().map(makeRecord);
   const resourceErrors = [];
 
@@ -401,7 +411,8 @@ async function runBrowser() {
 function envRecord() {
   return {
     platform: process.platform, arch: process.arch, node: process.version,
-    browserRequested: BROWSER, browserVersion: BROWSER_VERSION || null, headed: HEADED,
+    browserRequested: BROWSER + (CHANNELS[BROWSER] ? ' (channel ' + CHANNELS[BROWSER] + ')' : ''),
+    browserVersion: BROWSER_VERSION || null, headed: HEADED,
     origin: ORIGIN, dryRun: DRY_RUN,
     note: 'Record exactly what ran: Playwright chromium on win32 is a Chromium build on Windows, not branded Edge/Chrome; those stay separate matrix rows. Do not label another OS as Windows coverage.',
   };
