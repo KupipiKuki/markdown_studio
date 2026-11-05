@@ -60,6 +60,12 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 - [ ] Firefox (secondary): `blocked` unless a Firefox binary exists — `--browser firefox`.
 - [ ] Any row not genuinely executed stays `blocked`; do not borrow another environment's result.
 
+## 6b. Multi-browser evidence rules
+
+- [ ] Each browser run gets its own run-stamped manifest under `g0-capture/runs/manifest-<browser>-<origin>-<ts>.json` (the routine does this automatically) — a second browser never overwrites the first. `manifest.json` is only the latest pointer.
+- [ ] Firefox coverage requires a Firefox manifest + env record with the Firefox version; a commit message saying "tested on Firefox" is not evidence. Until then the Firefox row stays `blocked`.
+- [ ] Repo hygiene: do not commit Playwright scaffold that targets external URLs (e.g. an `e2e` spec visiting `https://playwright.dev`) or nested `.github/workflows/` files — GitHub only reads workflows from the repo-root `.github/workflows/`, so a nested workflow is inert. Any CI must run loopback-only app tests with no external URLs.
+
 ## 7. Close-out
 
 - [ ] `manifest.json` totals reviewed: pass/fail/blocked/unrun counts separated (plan §11.4).

@@ -100,12 +100,15 @@ function makeRecord(sp) {
   };
 }
 
+const relPosix = p => path.relative(root, p).split(path.sep).join('/');
+
 function writeManifest(records, env) {
   fs.mkdirSync(OUT, { recursive: true });
+  const generatedAt = new Date().toISOString();
   const manifest = {
     routine: 'tests/g0-capture-routine.cjs',
     candidateSha256: CANDIDATE_SHA,
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     environment: env,
     stopOnFail: STOP_ON_FAIL,
     totals: {
@@ -117,6 +120,12 @@ function writeManifest(records, env) {
     },
     records,
   };
+  // Write-once discipline: every run is also preserved run-stamped under runs/ (per browser+origin),
+  // so a second browser run never overwrites the first (environment-notes.md rule).
+  for (const r of manifest.records) r.artifacts = r.artifacts.map(a => a.split(path.sep).join('/'));
+  const stamp = `${env.browserRequested || 'browser'}-${String(env.origin || ORIGIN)}-${generatedAt.replace(/[:.]/g, '-')}`;
+  fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
+  fs.writeFileSync(path.join(OUT, 'runs', `manifest-${stamp}.json`), JSON.stringify(manifest, null, 2) + '\n');
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   const lines = ['# G0/G1-exception capture stop points', '',
     `Candidate: \`${CANDIDATE_SHA}\`  Generated: ${manifest.generatedAt}`, '',
@@ -197,7 +206,7 @@ async function runBrowser() {
   async function shoot(page, rec) {
     const f = `${art(rec.id)}.png`;
     await page.screenshot({ path: f, fullPage: true });
-    rec.artifacts.push(path.relative(root, f));
+    rec.artifacts.push(relPosix(f));
   }
   async function finish(rec, status, observation) {
     rec.status = status;
@@ -244,7 +253,7 @@ async function runBrowser() {
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
         await shoot(page, rec);
         fs.writeFileSync(`${art(rec.id)}-counts.json`, JSON.stringify({ ...c, consoleErrors: errs.length }, null, 2));
-        rec.artifacts.push(path.relative(root, `${art(rec.id)}-counts.json`));
+        rec.artifacts.push(relPosix(`${art(rec.id)}-counts.json`));
         const isInvalid = rec.fixture === 'invalid.md';
         const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) : (c.errorCards === 0 && errs.length === 0);
         if (await finish(rec, ok ? 'pass' : 'fail', c)) break;
