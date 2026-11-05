@@ -131,7 +131,7 @@ function writeManifest(records, env) {
   // Write-once discipline: every run is also preserved run-stamped under runs/ (per browser+origin),
   // so a second browser run never overwrites the first (environment-notes.md rule).
   for (const r of manifest.records) r.artifacts = r.artifacts.map(a => a.split(path.sep).join('/'));
-  const stamp = `${env.browserRequested || 'browser'}-${String(env.origin || ORIGIN)}-${generatedAt.replace(/[:.]/g, '-')}`;
+  const stamp = `${String(env.browserRequested || 'browser').split(' ')[0]}-${String(env.origin || ORIGIN)}-${generatedAt.replace(/[:.]/g, '-')}`;
   fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
   fs.writeFileSync(path.join(OUT, 'runs', `manifest-${stamp}.json`), JSON.stringify(manifest, null, 2) + '\n');
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
