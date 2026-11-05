@@ -24,6 +24,7 @@ const opt = (name, dflt) => {
   return i >= 0 ? (args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : true) : dflt;
 };
 const DRY_RUN = args.includes('--dry-run');
+const HEADED = args.includes('--headed'); // focused visible window: required for G1-CLIP-SUCCESS
 const ORIGIN = String(opt('origin', 'both')); // file | http | both
 const BROWSER = String(opt('browser', 'chromium'));
 const STOP_ON_FAIL = args.includes('--stop-on-fail');
@@ -149,12 +150,14 @@ async function runBrowser() {
   const baseHttp = `http://127.0.0.1:${port}`;
   const targetUrl = origin => origin === 'http' ? `${baseHttp}/working/markdown_studio.html` : 'file://' + workingPath;
 
-  const browser = await playwright[BROWSER].launch({ headless: true });
+  const browser = await playwright[BROWSER].launch({ headless: !HEADED });
   const records = buildStopPoints().map(makeRecord);
 
   async function newPage(origin) {
     const ctx = await browser.newContext({ viewport: { width: 1296, height: 866 } });
+    if (HEADED) { try { await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseHttp }); } catch (e) {} }
     const page = await ctx.newPage();
+    if (HEADED) { try { await page.bringToFront(); } catch (e) {} }
     page.on('console', m => consoleLog.push({ stop: currentId, type: m.type(), text: m.text() }));
     page.on('pageerror', e => consoleLog.push({ stop: currentId, type: 'pageerror', text: String(e) }));
     await page.goto(targetUrl(origin), { waitUntil: 'load' });
@@ -228,21 +231,73 @@ async function runBrowser() {
         const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) : (c.errorCards === 0 && errs.length === 0);
         if (await finish(rec, ok ? 'pass' : 'fail', c)) break;
       } else if (rec.area === 'control') {
-        const sel = rec.selector;
-        const exists = await page.$(sel);
-        if (!exists) { await finish(rec, 'blocked', { reason: `selector not found: ${sel}` }); continue; }
-        await page.evaluate(s => {
-          const el = document.querySelector(s);
-          if (el.tagName === 'SELECT') { el.selectedIndex = (el.selectedIndex + 1) % el.options.length; el.dispatchEvent(new Event('change', { bubbles: true })); }
-          else if (el.tagName === 'INPUT') { if (el.type === 'checkbox' || el.type === 'radio') { el.click(); } else { el.value = 'qaqc-probe'; el.dispatchEvent(new Event('input', { bubbles: true })); } }
-          else if (el.tagName !== 'TEXTAREA') { el.click(); }
-        }, sel);
-        await page.waitForTimeout(600);
-        const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
-        await shoot(page, rec);
-        await page.keyboard.press('Escape');
-        await page.evaluate(() => { const m = document.querySelector('.modal.open, .modal[style*="flex"]'); if (m) m.style.display = 'none'; });
-        await finish(rec, 'pass', { executed: true, modalOrDropdownOpened: modalOpen, note: 'behavioral assertion manual-review; see screenshot' });
+        const a = rec.controlSpec.attributes || {};
+        // Hidden file input (C015): setting .value throws in browsers; use setInputFiles with a synthetic file.
+        if (a.type === 'file') {
+          const synth = path.join(OUT, 'artifacts', 'synthetic-upload.md');
+          fs.mkdirSync(path.dirname(synth), { recursive: true });
+          fs.writeFileSync(synth, '# QAQC synthetic upload\n\n```mermaid\nflowchart TD\n  U --> V\n```\n');
+          const tabsBefore = await page.evaluate(() => document.querySelectorAll('.tab').length);
+          await page.setInputFiles('#' + a.id, synth);
+          await page.waitForTimeout(800);
+          const after = await page.evaluate(() => ({ tabs: document.querySelectorAll('.tab').length, editorHead: document.getElementById('editor').value.slice(0, 40) }));
+          await shoot(page, rec);
+          const ok = after.tabs > tabsBefore || after.editorHead.includes('QAQC synthetic');
+          await finish(rec, ok ? 'pass' : 'fail', { tabsBefore, ...after, note: 'file load via setInputFiles on hidden #' + a.id + '; label C014 routes here' });
+          continue;
+        }
+        // Resolve by id, else by EXACT data-* attribute equality in-page. CSS attribute-string selectors are
+        // unsafe here: values contain literal backslash sequences (e.g. C091 data-insert "\\n...") which CSS
+        // would unescape, so `[data-insert="..."]` never matches the literal attribute.
+        const key = a['data-action'] !== undefined ? 'data-action' : a['data-template'] !== undefined ? 'data-template' : a['data-insert'] !== undefined ? 'data-insert' : null;
+        const probe = { id: a.id || null, forAttr: a['for'] || null, key, val: key ? a[key] : null };
+        const info = await page.evaluate(o => {
+          let el = null;
+          if (o.id) el = document.getElementById(o.id);
+          if (!el && o.key) el = [...document.querySelectorAll('[' + o.key + ']')].find(e => e.getAttribute(o.key) === o.val) || null;
+          if (!el && o.forAttr) el = document.querySelector('label[for="' + o.forAttr + '"]');
+          if (!el) return null;
+          return { tag: el.tagName, type: el.type || null, id: el.id || null, forAttr: el.getAttribute('for') || null };
+        }, probe);
+        if (!info) { await finish(rec, 'blocked', { reason: 'element not found for ' + JSON.stringify(probe) }); continue; }
+        let observation;
+        if (info.tag === 'LABEL' && info.forAttr) {
+          observation = { wiredTo: info.forAttr, note: 'label activates #' + info.forAttr + '; native file dialog not automatable in-page — actual file load covered by the C015 stop point' };
+          await finish(rec, 'pass', observation);
+        } else if (info.tag === 'SELECT') {
+          await page.selectOption('#' + info.id, { index: 1 }).catch(async () => page.evaluate(o => { const el = document.getElementById(o.id); el.selectedIndex = (el.selectedIndex + 1) % el.options.length; el.dispatchEvent(new Event('change', { bubbles: true })); }, probe));
+          await page.waitForTimeout(600);
+          const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
+          await shoot(page, rec);
+          await page.keyboard.press('Escape');
+          await finish(rec, 'pass', { executed: 'select->next option', modalOrDropdownOpened: modalOpen });
+        } else if (info.tag === 'INPUT' && (info.type === 'checkbox' || info.type === 'radio')) {
+          await page.evaluate(o => { const el = o.id ? document.getElementById(o.id) : [...document.querySelectorAll('input')].find(e => e.type === o.type); if (el) el.click(); }, probe);
+          await page.waitForTimeout(400);
+          await shoot(page, rec);
+          await finish(rec, 'pass', { executed: 'click ' + info.type });
+        } else if (info.tag === 'INPUT') {
+          await page.evaluate(o => { const el = document.getElementById(o.id); el.value = 'qaqc-probe'; el.dispatchEvent(new Event('input', { bubbles: true })); }, probe);
+          await page.waitForTimeout(400);
+          await shoot(page, rec);
+          await finish(rec, 'pass', { executed: 'set value + input event' });
+        } else if (info.tag === 'TEXTAREA') {
+          await page.evaluate(o => { const el = document.getElementById(o.id); el.focus(); }, probe);
+          await finish(rec, 'pass', { executed: 'focus-only probe', note: 'textarea behavior covered by editor-level fixture stop points' });
+        } else {
+          await page.evaluate(o => {
+            let el = o.id ? document.getElementById(o.id) : null;
+            if (!el && o.key) el = [...document.querySelectorAll('[' + o.key + ']')].find(e => e.getAttribute(o.key) === o.val);
+            if (el) el.click();
+          }, probe);
+          await page.waitForTimeout(600);
+          const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
+          await shoot(page, rec);
+          await page.keyboard.press('Escape');
+          await page.evaluate(() => { const m = document.querySelector('.modal.open, .modal[style*="flex"]'); if (m) m.style.display = 'none'; });
+          await finish(rec, 'pass', { executed: 'click', modalOrDropdownOpened: modalOpen, note: 'behavioral assertion manual-review; see screenshot' });
+        }
+        continue;
       } else if (rec.area === 'update-isolation') {
         const docs = {
           tildeFirst: '~~~mermaid\nflowchart TD\n  T1 --> T2\n~~~\n\nmid text\n\n```mermaid\nsequenceDiagram\n  Alice->>Bob: hi\n```\n',
@@ -290,7 +345,7 @@ async function runBrowser() {
         });
         await shoot(page, rec);
         const ok = r.match === true;
-        await finish(rec, ok ? 'pass' : 'blocked', { ...r, note: ok ? 'focused-window clipboard success verified' : 'success path needs a focused visible window; rejection path recorded in P1-06' });
+        await finish(rec, ok ? 'pass' : 'blocked', { ...r, headed: HEADED, note: ok ? 'focused-window clipboard success verified (--headed)' : 'success path needs a focused visible window; rerun with --headed on a real display. Rejection path is mock-verified (P1-06)' });
       }
     } catch (e) {
       const stop = await finish(rec, 'blocked', { reason: String(e && e.message || e) });

@@ -40,6 +40,8 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 - [ ] Each control executed on a synthetic document; observation + screenshot per control; modals/dropdowns closed after each probe (Escape + cleanup in the routine).
 - [ ] Buttons with `data-action`/`data-template`/`data-insert` (46 dynamic-family controls) verified against their expected label/behavior, not just clicked.
 - [ ] Selects/inputs: value changed + `change`/`input` dispatched; checkbox/radio clicked. Textareas (2): focus-only probe unless a behavioral check is defined — record as manual if so.
+- [ ] **C015** (`input[type=file]#fileInput`, hidden): probed via `setInputFiles` with a synthetic fixture (`artifacts/synthetic-upload.md`) — setting `.value` on a file input throws in browsers, which is why a naive probe reports blocked. Pass = new tab/document appears. **C014** (its label) records the `for` wiring; the native file dialog itself is not automatable — covered by C015.
+- [ ] **C091 and the other `data-insert`/`data-template`/`data-action` controls**: the routine resolves them by *exact in-page attribute equality*, not CSS attribute-string selectors — literal backslash sequences in `data-insert` (e.g. C091's `\n` subgraph payload, the R12 subject) are unescaped by CSS and would never match.
 - [ ] Keyboard routes (shortcuts, find/replace, tab switch, pane toggles) — cover via dedicated probes after the 111; record as extra stop points if added.
 - [ ] Any control that fails gets a preserved before-state record (plan §10) and a follow-up ID.
 
@@ -47,7 +49,7 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 
 - [ ] `G1-X4-WELCOME-FULLPAGE`: full-page (not viewport) capture of welcome.md showing both diagrams — closes the N1/G1-X4 evidence gap from the earlier viewport-only JPEGs.
 - [ ] `G1-X1-ISOLATION-BROWSER`: post-R05-fix browser check of update isolation on (a) tilde-first mixed-fence doc — must pass; (b) blockquote-fence-first doc — expected to show the **known G1-X2 residual**; record actual behavior, never claim fixed.
-- [ ] `G1-CLIP-SUCCESS`: clipboard **success** path in a focused visible window (headed); headless runs record `blocked` with the rejection reason. Rejection path is already mock-verified (P1-06).
+- [ ] `G1-CLIP-SUCCESS`: clipboard **success** path requires a focused visible window — rerun with `--headed` on a real display (the routine grants clipboard permissions and brings the page to front). Headless runs correctly record `blocked` with the rejection reason. Rejection path is already mock-verified (P1-06).
 
 ## 6. Environment matrix rows (plan §3)
 
