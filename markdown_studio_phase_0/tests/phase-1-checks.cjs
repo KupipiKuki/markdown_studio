@@ -425,6 +425,77 @@ try {
     console.log('✓ P1-06: Clipboard rejections produce descriptive user toast feedback.');
 
     // ---------------------------------------------------------------------------
+    // Test 7: Cross-Diagram Update Isolation Across Mixed Fences (R05, Gate G1)
+    // ---------------------------------------------------------------------------
+    const mixedDoc = `# Mixed Document
+
+~~~mermaid
+flowchart TD
+  Block0 --> Target0
+~~~
+
+Paragraph separating diagrams. Must remain completely unchanged.
+
+\`\`\`mermaid
+sequenceDiagram
+  Alice->>Bob: Block1
+\`\`\`
+
+Ending paragraph.`;
+
+    let editorVal = mixedDoc;
+    let inputEvents = 0;
+    const updateScope = {
+      builderCodeInput: { value: '' },
+      editorEl: {
+        get value() { return editorVal; },
+        set value(v) { editorVal = v; },
+        dispatchEvent(e) { if (e && e.type === 'input') inputEvents++; }
+      },
+      btnBuilderInsert: {},
+      activeEditingDiagramIndex: null,
+      wrapSelection: (fenced, _) => { editorVal += fenced; },
+      closeStudio: () => { updateScope.activeEditingDiagramIndex = null; },
+      showToast: () => {},
+      Event: function(t) { this.type = t; }
+    };
+
+    vm.createContext(updateScope);
+    const insertSection = section('btnBuilderInsert.onclick = () => {', '// Quick Diagram dropdown templates');
+    vm.runInContext(insertSection, updateScope);
+
+    // 7a: Update diagram 0 (tilde fence) -> must update only diagram 0, leaving diagram 1 and all markdown unchanged
+    updateScope.activeEditingDiagramIndex = 0;
+    updateScope.builderCodeInput.value = 'flowchart LR\n  Updated0 --> Done0';
+    updateScope.btnBuilderInsert.onclick();
+
+    assert(editorVal.includes('~~~mermaid\nflowchart LR\n  Updated0 --> Done0\n~~~'), 'Diagram 0 must be updated with tilde fence');
+    assert(editorVal.includes('```mermaid\nsequenceDiagram\n  Alice->>Bob: Block1\n```'), 'Diagram 1 must remain completely untouched after updating Diagram 0');
+    assert(editorVal.includes('Paragraph separating diagrams. Must remain completely unchanged.'), 'Interstitial text must be preserved');
+    assert(editorVal.includes('Ending paragraph.'), 'Trailing text must be preserved');
+
+    // 7b: Update diagram 1 (backtick fence) -> must update only diagram 1, leaving diagram 0 and all markdown unchanged
+    updateScope.activeEditingDiagramIndex = 1;
+    updateScope.builderCodeInput.value = 'sequenceDiagram\n  Bob->>Alice: Updated1';
+    updateScope.btnBuilderInsert.onclick();
+
+    assert(editorVal.includes('~~~mermaid\nflowchart LR\n  Updated0 --> Done0\n~~~'), 'Diagram 0 must remain untouched after updating Diagram 1');
+    assert(editorVal.includes('```mermaid\nsequenceDiagram\n  Bob->>Alice: Updated1\n```'), 'Diagram 1 must be updated with backtick fence');
+    assert(editorVal.includes('Paragraph separating diagrams. Must remain completely unchanged.'), 'Interstitial text must be preserved');
+    assert(editorVal.includes('Ending paragraph.'), 'Trailing text must be preserved');
+
+    record('P1-07', ['R05'], 'Cross-Diagram Update Isolation Across Mixed Fences',
+      'Update diagrams in mixed tilde/backtick fence document via btnBuilderInsert; verify exact isolation.',
+      {
+        tildeDiagramUpdatedIsolated: true,
+        backtickDiagramUpdatedIsolated: true,
+        surroundingMarkdownPreserved: true,
+        inputEventsDispatched: inputEvents === 2
+      }
+    );
+    console.log('✓ P1-07: Cross-diagram update isolation succeeds across mixed tilde and backtick fences.');
+
+    // ---------------------------------------------------------------------------
     // Final Summary & Report
     // ---------------------------------------------------------------------------
     const summary = {
@@ -433,7 +504,7 @@ try {
       timestamp: new Date().toISOString(),
       testsPassed: results.filter(r => r.status === 'pass').length,
       testsFailed: results.filter(r => r.status === 'fail').length,
-      findingsResolved: ['R01', 'R02', 'R03', 'R04'],
+      findingsResolved: ['R01', 'R02', 'R03', 'R04', 'R05'],
       results
     };
 

@@ -108,4 +108,4 @@ Per plan §1, defects discovered during the work were triaged:
 | G0 | Still **blocked** on completeness grounds: the full baseline capture (25-fixture screenshot sweep, 111-control execution, local-file vs HTTP launch modes) is pending — the capability blocker is now lifted, so this is executable next. |
 | F5 remediation-target decision | Still open (required before Phase 6; recommended before Phase 2). Note: the live app already lacks the D001 CSS rule, so an eventual re-baseline would not reintroduce this defect. |
 | Phase 2 | Next: R05 (now browser-reproduced), R09, R15. |
-| Publish | Commits are local on `vibe/code_revisions` — this machine has no GitHub push credentials; push and PR #6 merge from a credentialed environment (the branch already contains PR #6's commits via fast-forward, so pushing auto-completes the PR merge). |
+| Publish | Confirmed pushed to `origin/vibe/code_revisions` @ `0c5f543`; PR #6 auto-merged (merge commit `00de313`). |

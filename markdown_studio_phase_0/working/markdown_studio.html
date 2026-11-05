@@ -4010,16 +4010,24 @@
     const fenced = `\n\`\`\`mermaid\n${code}\n\`\`\`\n`;
 
     if (activeEditingDiagramIndex !== null) {
-      // Replace existing diagram block by finding corresponding ```mermaid block
+      // Replace existing diagram block by finding corresponding mermaid block.
+      // Supports both backtick (```) and tilde (~~~) fences of any valid length (>=3)
+      // to guarantee update isolation across mixed-fence documents (Gate G1 / R05).
       const fullText = editorEl.value;
-      const mermaidRegex = /```mermaid[\s\S]*?```/g;
+      const mermaidFenceRegex = /(?:^|\n)([ \t]{0,3})(([`~])\3{2,})[ \t]*mermaid\b[^\n]*\n([\s\S]*?)\n[ \t]*\2[~`]*[ \t]*(?=\n|$)/g;
       let match;
       let currentIndex = 0;
       let replaced = false;
 
-      while ((match = mermaidRegex.exec(fullText)) !== null) {
+      while ((match = mermaidFenceRegex.exec(fullText)) !== null) {
         if (currentIndex === activeEditingDiagramIndex) {
-          editorEl.value = fullText.substring(0, match.index) + `\`\`\`mermaid\n${code}\n\`\`\`` + fullText.substring(match.index + match[0].length);
+          const leadingNewline = match[0].startsWith('\n');
+          const matchStart = leadingNewline ? match.index + 1 : match.index;
+          const matchEnd = match.index + match[0].length;
+          const indent = match[1] || '';
+          const fence = match[2];
+          const replacement = `${indent}${fence}mermaid\n${code}\n${indent}${fence}`;
+          editorEl.value = fullText.substring(0, matchStart) + replacement + fullText.substring(matchEnd);
           replaced = true;
           break;
         }

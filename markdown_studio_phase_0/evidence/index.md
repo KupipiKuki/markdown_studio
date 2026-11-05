@@ -17,24 +17,27 @@
 - `../reports/code_diff_report.md`: baseline zero-change comparison.
 
 ## Phase 1
-- `../working/markdown_studio.html`: working application copy incorporating Phase 1 fixes + D001 fix (candidate `55cb1264…`).
-- `../tests/phase-1-checks.cjs`: Phase 1 verification test suite (P1-01 through P1-06).
-- `phase-1/phase-1-results.json`: test execution records for Gate G1 (regenerated 2026-11-04 after the D001 fix; candidate `55cb1264…`). Written by `tests/phase-1-checks.cjs` on every run — reruns overwrite it in place; keep run-stamped copies when contemporaneous records are required (audit F9):
+- `../working/markdown_studio.html`: working application copy incorporating Phase 1 fixes + D001 fix + R05 cross-diagram update isolation fix (candidate `e02aed95…`, 4,390 lines).
+- `../tests/phase-1-checks.cjs`: Phase 1 verification test suite (P1-01 through P1-07).
+- `phase-1/phase-1-results.json`: test execution records for Gate G1 (regenerated 2026-11-04 after R05 update-isolation fix; candidate `e02aed95…`). Written by `tests/phase-1-checks.cjs` on every run — reruns overwrite it in place; keep run-stamped copies when contemporaneous records are required (audit F9):
   - `P1-01`: Inline script syntax validation (pass).
   - `P1-02`: Source preservation across SVG rendering & 3-cycle theme refresh (pass).
   - `P1-03`: Multi-diagram exact source matching on delegated Copy and Edit actions (pass).
   - `P1-04`: Fix in Studio button class and delegated action binding on syntax error cards (pass).
   - `P1-05`: Error log scoped event delegation; zero inline handlers; independent copy/dismiss (pass).
   - `P1-06`: Clipboard rejection and unavailability user toast feedback (pass).
+  - `P1-07`: Cross-diagram update isolation across mixed tilde/backtick fences (pass).
 - `phase-1/phase-1-results-candidate-05de4260-2026-11-04.json`: run-stamped preservation of the prior canonical record (candidate `05de4260…`, pre-D001).
+- `phase-1/phase-1-results-candidate-55cb1264-2026-11-04.json`: run-stamped preservation of candidate `55cb1264…` (post-D001, pre-update-isolation).
 - `phase-1/browser-evidence/`: browser verification screenshots for the D001 fix and G1 criteria (2026-11-04, Linux, in-app Chromium 152.0.7977.167, HTTP origin):
   - `G1-D001-error-state-before.jpeg`: pre-fix state — both welcome.md diagrams as error cards (candidate `05de4260…`).
   - `G1-D001-welcome-rendered-after.jpeg`: post-fix pristine welcome.md, both diagrams rendered.
-  - `G1-D001-multitype-light-after.jpeg`: post-fix 4-type document (labeled flowchart, sequence, state, pie), light theme.
+  - `G1-D001-multitype-light-after.jpeg`: post-fix 7-type document battery viewport capture (labeled flowchart, sequence, state, pie in view), light theme.
   - `G1-D001-multitype-dark-after.jpeg`: same document after theme redraw, dark theme (7/7-type battery results in `reports/d001_remediation_report.md` §4).
-- `../reports/remediation_audit.md`: phase progress and R01–R04 resolution register + D-series discoveries (updated 2026-11-04: browser-verified Phase 1, D001 register entry).
+- `../reports/remediation_audit.md`: phase progress and R01–R05 resolution register + D-series discoveries.
 - `../reports/d001_remediation_report.md`: D001 remediation report — discovery, root-cause experiments, fix, browser and suite verification, R05 browser reproduction, minor-bug sweep, gate impact.
 - `../reports/qaqc_audit_phase_0_phase_1.md`: independent QAQC audit of the Phase 0/Phase 1 checkpoint (findings F1–F9).
 - `../reports/qaqc_audit_response.md`: finding-by-finding response and current gate status.
 - `../reports/qaqc_verification_F1-F8.md`: QAQC re-verification of the F1–F9 remediation (all findings verified remediated at `00e2208`).
-- `checksums.sha256`: regenerated 2026-11-04 over the full phase-0 package including phase-1 results (audit F3); regenerated again after the D001 batch.
+- `../reports/qaqc_d001_verification.md`: QAQC verification of D001 remediation and publish claims @ `0c5f543`.
+- `checksums.sha256`: regenerated 2026-11-04 over the full phase-0 package including phase-1 results and audit reports.

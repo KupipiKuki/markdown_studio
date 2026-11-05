@@ -1,0 +1,116 @@
+{
+  "gate": "G1",
+  "status": "pass",
+  "timestamp": "2026-11-04T02:44:29.458Z",
+  "testsPassed": 6,
+  "testsFailed": 0,
+  "findingsResolved": [
+    "R01",
+    "R02",
+    "R03",
+    "R04"
+  ],
+  "results": [
+    {
+      "id": "P1-01",
+      "issues": [
+        "R01",
+        "R02",
+        "R03",
+        "R04"
+      ],
+      "gate": "G1",
+      "name": "Inline Scripts Syntax Check",
+      "timestamp": "2026-11-04T02:44:29.423Z",
+      "procedure": "Compile all inline scripts in working/markdown_studio.html with vm.Script.",
+      "observation": {
+        "syntaxValid": true,
+        "scriptTagsChecked": 6,
+        "candidateSha256": "55cb126470720d7deac4cc958cdf45a7f4b0c8955b65d8f13f590f97babb1218"
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P1-02",
+      "issues": [
+        "R01",
+        "R02"
+      ],
+      "gate": "G1",
+      "name": "Source Preservation and Theme Refresh",
+      "timestamp": "2026-11-04T02:44:29.424Z",
+      "procedure": "Execute renderAllPreviewDiagrams across 3 consecutive cycles on a multi-card DOM contract.",
+      "observation": {
+        "initialParseCalls": 2,
+        "afterThemeSwitch1": 4,
+        "afterThemeSwitch2": 6,
+        "sourcePreservedCard0": true,
+        "sourcePreservedCard1": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P1-03",
+      "issues": [
+        "R01"
+      ],
+      "gate": "G1",
+      "name": "Action Button Exact Source Matching",
+      "timestamp": "2026-11-04T02:44:29.425Z",
+      "procedure": "Trigger Copy and Edit actions on multi-diagram cards through delegated handlers.",
+      "observation": {
+        "card0Copied": true,
+        "card1CopiedExact": true,
+        "card0EditExact": true,
+        "card1EditExact": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P1-04",
+      "issues": [
+        "R03"
+      ],
+      "gate": "G1",
+      "name": "Fix in Studio Error Button Binding",
+      "timestamp": "2026-11-04T02:44:29.425Z",
+      "procedure": "Render invalid diagram, verify generated button class and trigger delegated click.",
+      "observation": {
+        "errorCardGenerated": true,
+        "hasDiagActionBtnClass": true,
+        "openedStudioCodeMatches": true,
+        "openedIndex": 2
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P1-05",
+      "issues": [
+        "R04"
+      ],
+      "gate": "G1",
+      "name": "Error Log Scoped Delegation and Actions",
+      "timestamp": "2026-11-04T02:44:29.446Z",
+      "procedure": "Render error logs, verify absence of inline handlers, trigger delegated Copy and Dismiss.",
+      "observation": {
+        "noInlineHandlers": true,
+        "copyOperationSuccessful": true,
+        "dismissOperationIndependent": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P1-06",
+      "issues": [],
+      "gate": "G1",
+      "name": "Clipboard Error Feedback",
+      "timestamp": "2026-11-04T02:44:29.458Z",
+      "procedure": "Invoke copyToClipboard with rejecting writeText promise.",
+      "observation": {
+        "errorHandled": true,
+        "toastFeedback": "Clipboard copy failed: NotAllowedError"
+      },
+      "status": "pass"
+    }
+  ]
+}
