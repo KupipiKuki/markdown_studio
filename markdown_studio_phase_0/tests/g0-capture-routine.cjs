@@ -34,6 +34,7 @@ const workingPath = path.join(root, 'working/markdown_studio.html');
 const workingSrc = fs.readFileSync(workingPath, 'utf8');
 const CANDIDATE_SHA = crypto.createHash('sha256').update(workingSrc).digest('hex');
 const consoleLog = [];
+let BROWSER_VERSION = null;
 
 const controls = JSON.parse(fs.readFileSync(path.join(root, 'evidence/phase-0/controls.json'), 'utf8'));
 const fixtureDir = path.join(root, 'evidence/phase-0/fixtures');
@@ -139,7 +140,9 @@ async function runBrowser() {
   }
   const http = require('http');
   const server = http.createServer((req, res) => {
-    const p = path.join(root, decodeURIComponent(req.url.split('?')[0]).replace(/^\/+/, '') || 'working/markdown_studio.html');
+    const urlPath = decodeURIComponent(req.url.split('?')[0]);
+    if (urlPath === '/favicon.ico' || urlPath.endsWith('.ico')) { res.writeHead(204); res.end(); return; } // browsers request favicon on http origins; 404 would pollute the console-error check
+    const p = path.join(root, urlPath.replace(/^\/+/, '') || 'working/markdown_studio.html');
     fs.readFile(p, (err, data) => {
       if (err) { res.writeHead(404); res.end('not found'); return; }
       res.writeHead(200, { 'Content-Type': p.endsWith('.html') ? 'text/html' : 'application/octet-stream' });
@@ -152,7 +155,9 @@ async function runBrowser() {
   const targetUrl = origin => origin === 'http' ? `${baseHttp}/working/markdown_studio.html` : 'file://' + workingPath;
 
   const browser = await playwright[BROWSER].launch({ headless: !HEADED });
+  BROWSER_VERSION = browser.version();
   const records = buildStopPoints().map(makeRecord);
+  const resourceErrors = [];
 
   async function newPage(origin, withClipboardPerms) {
     const ctx = await browser.newContext({ viewport: { width: 1296, height: 866 } });
@@ -165,6 +170,7 @@ async function runBrowser() {
     if (withClipboardPerms) { try { await page.bringToFront(); } catch (e) {} }
     page.on('console', m => consoleLog.push({ stop: currentId, type: m.type(), text: m.text() }));
     page.on('pageerror', e => consoleLog.push({ stop: currentId, type: 'pageerror', text: String(e) }));
+    page.on('response', r => { if (r.status() >= 400) resourceErrors.push({ stop: currentId, url: r.url(), status: r.status() }); });
     await page.goto(targetUrl(origin), { waitUntil: 'load' });
     await page.waitForSelector('#editor', { timeout: 10000 });
     return { ctx, page };
@@ -217,14 +223,15 @@ async function runBrowser() {
         const c = await counts(page);
         const libs = await page.evaluate(() => ({ marked: typeof marked, mermaid: typeof mermaid }));
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const resErrs = resourceErrors.filter(r => r.stop === rec.id && !r.url.endsWith('.ico')); // favicon 404s are browser noise, not app failures
         await shoot(page, rec);
         // Environment block (CDN unreachable) is blocked, not an application failure (plan §3).
         if (libs.mermaid === 'undefined' || libs.marked === 'undefined') {
-          if (await finish(rec, 'blocked', { ...c, libs, consoleErrors: errs.map(e => e.text), reason: 'CDN dependency not loaded (network/loopback isolation?) — environment blocker, not app failure' })) break;
+          if (await finish(rec, 'blocked', { ...c, libs, consoleErrors: errs.map(e => e.text), resourceErrors: resErrs, reason: 'CDN dependency not loaded (network/loopback isolation?) — environment blocker, not app failure' })) break;
           continue;
         }
-        const ok = c.cards === 2 && c.svgCards === 2 && c.errorCards === 0 && errs.length === 0;
-        if (await finish(rec, ok ? 'pass' : 'fail', { ...c, libs, consoleErrors: errs.map(e => e.text) })) break;
+        const ok = c.cards === 2 && c.svgCards === 2 && c.errorCards === 0 && errs.length === 0 && resErrs.length === 0;
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...c, libs, consoleErrors: errs.map(e => e.text), resourceErrors: resErrs })) break;
       } else if (rec.area === 'fixture-render') {
         const text = fs.readFileSync(path.join(fixtureDir, rec.fixture), 'utf8');
         await page.evaluate(t => {
@@ -362,7 +369,8 @@ async function runBrowser() {
             await new Promise(r2 => setTimeout(r2, 300));
             let read = null;
             try { read = await navigator.clipboard.readText(); } catch (e) { read = 'READ-REJECTED: ' + e.message; }
-            return { expected, read, match: read === expected };
+            const norm = s => s.replace(/\r\n/g, '\n');
+            return { expected, read, rawMatch: read === expected, match: norm(read) === norm(expected), note: 'Windows clipboard normalizes LF to CRLF on round-trip; compare normalized, record raw' };
           } catch (e) { return { error: String(e) }; }
         });
         await shoot(page, rec);
@@ -384,8 +392,9 @@ async function runBrowser() {
 function envRecord() {
   return {
     platform: process.platform, arch: process.arch, node: process.version,
-    browserRequested: BROWSER, origin: ORIGIN, dryRun: DRY_RUN,
-    note: 'Windows Edge/Chrome and Firefox targets are separate rows in the checklist; do not label this environment as Windows coverage.',
+    browserRequested: BROWSER, browserVersion: BROWSER_VERSION || null, headed: HEADED,
+    origin: ORIGIN, dryRun: DRY_RUN,
+    note: 'Record exactly what ran: Playwright chromium on win32 is a Chromium build on Windows, not branded Edge/Chrome; those stay separate matrix rows. Do not label another OS as Windows coverage.',
   };
 }
 

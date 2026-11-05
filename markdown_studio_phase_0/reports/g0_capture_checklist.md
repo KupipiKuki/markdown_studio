@@ -7,7 +7,8 @@ The routine generates one **stop point** per capture in `evidence/phase-0/g0-cap
 ## 0. Pre-flight (do once, record in the manifest environment block)
 
 - [ ] Record actual environment: OS, browser + version, launch origin, viewport, Node. Do **not** label a Linux run as Windows coverage (plan §3). Windows Edge/Chrome and Firefox rows stay `blocked` unless genuinely run there.
-- [ ] Verify candidate hash: `sha256sum working/markdown_studio.html` must equal the hash in `reports/remediation_audit.md` (`e02aed95…`).
+- [ ] Verify candidate hash: `sha256sum working/markdown_studio.html` must equal the hash in `reports/remediation_audit.md` (`e02aed95…`). The routine embeds the candidate hash in the manifest — if they disagree, the run was against a different file: record the actual hash or rerun against the audited candidate.
+- [ ] The manifest environment block records platform/browser/version exactly as run. Playwright Chromium on win32 is a Chromium build on Windows — record it as such; branded Edge/Chrome rows stay separate.
 - [ ] Verify baseline hash unchanged: `sha256sum baseline/markdown_studio.original.html` = `11eaec36…`.
 - [ ] Browser-capable environment provisioned (Playwright + browser binary). In this sandbox: not available → every browser stop point is `blocked`, emit manifest with `--dry-run` and record the blocker.
 - [ ] Use an isolated browser profile/context with synthetic documents only; never open a real saved profile (plan §1, §10).
@@ -49,7 +50,8 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 
 - [ ] `G1-X4-WELCOME-FULLPAGE`: full-page (not viewport) capture of welcome.md showing both diagrams — closes the N1/G1-X4 evidence gap from the earlier viewport-only JPEGs.
 - [ ] `G1-X1-ISOLATION-BROWSER`: post-R05-fix browser check of update isolation on (a) tilde-first mixed-fence doc — must pass; (b) blockquote-fence-first doc — expected to show the **known G1-X2 residual**; record actual behavior, never claim fixed.
-- [ ] `G1-CLIP-SUCCESS`: clipboard **success** path requires a focused visible window — rerun with `--headed` on a real display (the routine grants clipboard permissions and brings the page to front). Headless runs correctly record `blocked` with the rejection reason. Rejection path is already mock-verified (P1-06).
+- [ ] `G1-CLIP-SUCCESS`: clipboard **success** path requires a focused visible window — rerun with `--headed` on a real display (the routine grants clipboard permissions and brings the page to front). Headless runs correctly record `blocked` with the rejection reason. Rejection path is already mock-verified (P1-06). Compare **normalized** text: the Windows clipboard round-trips LF as CRLF, so record `rawMatch` and `match` (normalized) separately — a raw-only mismatch on Windows is platform newline normalization, not an app defect.
+- [ ] Favicon note: browsers request `/favicon.ico` on http origins only; the routine's loopback server answers 204, and the launch check ignores `.ico` 404s while still failing on any other console error or ≥400 resource response.
 
 ## 6. Environment matrix rows (plan §3)
 
