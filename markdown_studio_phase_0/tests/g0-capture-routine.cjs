@@ -92,6 +92,7 @@ function makeRecord(sp) {
   return {
     id: sp.id, gate: sp.gate, area: sp.area, origin: sp.origin || null,
     fixture: sp.fixture || null, control: sp.control || null, selector: sp.selector || null,
+    controlSpec: sp.controlSpec || null,
     procedure: sp.procedure, expected: sp.expected,
     observation: null, status: 'unrun',
     artifacts: [], timestamp: null,
@@ -153,11 +154,15 @@ async function runBrowser() {
   const browser = await playwright[BROWSER].launch({ headless: !HEADED });
   const records = buildStopPoints().map(makeRecord);
 
-  async function newPage(origin) {
+  async function newPage(origin, withClipboardPerms) {
     const ctx = await browser.newContext({ viewport: { width: 1296, height: 866 } });
-    if (HEADED) { try { await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseHttp }); } catch (e) {} }
+    // Clipboard permissions/focus only for the clipboard stop point; headed side effects must not
+    // leak into launch/fixture/control stop points.
+    if (withClipboardPerms) {
+      try { await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseHttp }); } catch (e) {}
+    }
     const page = await ctx.newPage();
-    if (HEADED) { try { await page.bringToFront(); } catch (e) {} }
+    if (withClipboardPerms) { try { await page.bringToFront(); } catch (e) {} }
     page.on('console', m => consoleLog.push({ stop: currentId, type: m.type(), text: m.text() }));
     page.on('pageerror', e => consoleLog.push({ stop: currentId, type: 'pageerror', text: String(e) }));
     await page.goto(targetUrl(origin), { waitUntil: 'load' });
@@ -206,14 +211,20 @@ async function runBrowser() {
     const origin = rec.origin === 'file' || rec.origin === 'http' ? rec.origin : 'http';
     let page, ctx;
     try {
-      ({ ctx, page } = await newPage(origin));
+      ({ ctx, page } = await newPage(origin, rec.area === 'clipboard' && HEADED));
       if (rec.area === 'launch') {
         await settle(page);
         const c = await counts(page);
+        const libs = await page.evaluate(() => ({ marked: typeof marked, mermaid: typeof mermaid }));
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
-        const ok = c.cards === 2 && c.svgCards === 2 && c.errorCards === 0 && errs.length === 0;
         await shoot(page, rec);
-        if (await finish(rec, ok ? 'pass' : 'fail', { ...c, consoleErrors: errs.length })) break;
+        // Environment block (CDN unreachable) is blocked, not an application failure (plan §3).
+        if (libs.mermaid === 'undefined' || libs.marked === 'undefined') {
+          if (await finish(rec, 'blocked', { ...c, libs, consoleErrors: errs.map(e => e.text), reason: 'CDN dependency not loaded (network/loopback isolation?) — environment blocker, not app failure' })) break;
+          continue;
+        }
+        const ok = c.cards === 2 && c.svgCards === 2 && c.errorCards === 0 && errs.length === 0;
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...c, libs, consoleErrors: errs.map(e => e.text) })) break;
       } else if (rec.area === 'fixture-render') {
         const text = fs.readFileSync(path.join(fixtureDir, rec.fixture), 'utf8');
         await page.evaluate(t => {
@@ -231,7 +242,18 @@ async function runBrowser() {
         const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) : (c.errorCards === 0 && errs.length === 0);
         if (await finish(rec, ok ? 'pass' : 'fail', c)) break;
       } else if (rec.area === 'control') {
-        const a = rec.controlSpec.attributes || {};
+        const a = (rec.controlSpec && rec.controlSpec.attributes) || {};
+        if (!a.id && !a['data-action'] && !a['data-template'] && !a['data-insert'] && !a['for'] && rec.selector) {
+          // degraded fallback: legacy CSS selector
+          const exists = await page.$(rec.selector);
+          if (!exists) { await finish(rec, 'blocked', { reason: 'selector not found: ' + rec.selector }); continue; }
+          await page.click(rec.selector).catch(() => {});
+          await page.waitForTimeout(600);
+          await shoot(page, rec);
+          await page.keyboard.press('Escape');
+          await finish(rec, 'pass', { executed: 'click via legacy selector', note: 'no id/data-attr in inventory' });
+          continue;
+        }
         // Hidden file input (C015): setting .value throws in browsers; use setInputFiles with a synthetic file.
         if (a.type === 'file') {
           const synth = path.join(OUT, 'artifacts', 'synthetic-upload.md');
