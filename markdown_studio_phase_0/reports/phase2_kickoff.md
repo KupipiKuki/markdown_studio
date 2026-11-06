@@ -10,14 +10,9 @@ Date: 2026-11-06. Prepared for tomorrow's coding session. Scope per plan §5 (`r
 - Checksums: 239/239 OK over the full package incl. capture evidence.
 - Gates: **G0 completeness captured** (formal re-review still owed in the phase log); **G1 verified with recorded exceptions**; **G2 not started**.
 
-## 2. Required recorded decision before coding (F5)
+## 2. F5 decision — RECORDED 2026-11-06: option 1 (original snapshot)
 
-Phases 0–1 remediated the **original snapshot** (`index.html` @ `1042d77`); the live app `scripts/markdown-studio.html` still contains R01–R04 verbatim and was never touched. Before Phase 2 code lands, record one choice in `remediation_audit.md`:
-
-1. Keep the original snapshot as the remediation target for Phases 2–6 (live-app fix as a separate later effort) — **recommended**, since all verified work and the whole browser matrix target `working/markdown_studio.html`; or
-2. Re-baseline on `scripts/markdown-studio.html` and port fixes into the live app (note: the live app already lacks the D001 CSS rule).
-
-Per plan G0 this must be a named, recorded decision — required before Phase 6, recommended now.
+Decided by the project owner and recorded in `remediation_audit.md` on `vibe/code_revisions` @ `2899678`: **keep the original snapshot (`index.html` @ `1042d77`, `11eaec36…`) as the remediation target for Phases 2–6**. All Phase 2+ work lands only in `working/markdown_studio.html`; the live app `scripts/markdown-studio.html` stays untouched in this effort (its R01–R04 defects are a separate, later live-app effort; it already lacks the D001 CSS rule). No further decision needed before coding.
 
 ## 3. Phase 2 work items (from plan §5 + current evidence)
 
