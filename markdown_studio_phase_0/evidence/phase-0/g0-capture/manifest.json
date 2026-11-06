@@ -1,13 +1,13 @@
 {
   "routine": "tests/g0-capture-routine.cjs",
   "candidateSha256": "b15a4e8b81c58215e87e3f1cd7691bdea3d423e90243b49025542699c9b219bd",
-  "generatedAt": "2026-11-05T23:30:48.829Z",
+  "generatedAt": "2026-11-06T00:30:37.322Z",
   "environment": {
     "platform": "win32",
     "arch": "x64",
     "node": "v24.20.0",
-    "browserRequested": "chromium",
-    "browserVersion": "156.0.8078.4",
+    "browserRequested": "firefox",
+    "browserVersion": "firefox 157.0",
     "headed": true,
     "origin": "both",
     "dryRun": false,
@@ -46,9 +46,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-LAUNCH-FILE.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-FILE.png"
       ],
-      "timestamp": "2026-11-05T23:21:45.213Z"
+      "timestamp": "2026-11-06T00:23:26.238Z"
     },
     {
       "id": "G0-LAUNCH-HTTP",
@@ -74,9 +74,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-LAUNCH-HTTP.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-HTTP.png"
       ],
-      "timestamp": "2026-11-05T23:21:46.980Z"
+      "timestamp": "2026-11-06T00:23:28.389Z"
     },
     {
       "id": "G0-FIX-invalid",
@@ -96,10 +96,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-invalid.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-invalid-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:49.095Z"
+      "timestamp": "2026-11-06T00:23:30.064Z"
     },
     {
       "id": "G0-FIX-labels",
@@ -119,10 +119,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-labels.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-labels-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:51.070Z"
+      "timestamp": "2026-11-06T00:23:32.226Z"
     },
     {
       "id": "G0-FIX-mixed-fences",
@@ -142,10 +142,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-mixed-fences.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-mixed-fences-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:53.247Z"
+      "timestamp": "2026-11-06T00:23:34.315Z"
     },
     {
       "id": "G0-FIX-mixed",
@@ -165,10 +165,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-mixed.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-mixed-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:55.584Z"
+      "timestamp": "2026-11-06T00:23:36.325Z"
     },
     {
       "id": "G0-FIX-multi",
@@ -188,10 +188,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-multi.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-multi-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:57.763Z"
+      "timestamp": "2026-11-06T00:23:38.591Z"
     },
     {
       "id": "G0-FIX-nested",
@@ -211,10 +211,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-nested.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-nested-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested-counts.json"
       ],
-      "timestamp": "2026-11-05T23:21:59.741Z"
+      "timestamp": "2026-11-06T00:23:40.388Z"
     },
     {
       "id": "G0-FIX-outer-fence",
@@ -234,10 +234,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-outer-fence.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-outer-fence-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:01.424Z"
+      "timestamp": "2026-11-06T00:23:42.384Z"
     },
     {
       "id": "G0-FIX-tall",
@@ -257,10 +257,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-tall.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-tall-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:03.591Z"
+      "timestamp": "2026-11-06T00:23:44.575Z"
     },
     {
       "id": "G0-FIX-template-architecture-default",
@@ -280,10 +280,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-architecture-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-architecture-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:05.282Z"
+      "timestamp": "2026-11-06T00:23:47.200Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-default",
@@ -303,10 +303,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-classDiagram-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-classDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:06.941Z"
+      "timestamp": "2026-11-06T00:23:49.025Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-pattern",
@@ -326,10 +326,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-classDiagram-pattern.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-classDiagram-pattern-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:08.627Z"
+      "timestamp": "2026-11-06T00:23:50.993Z"
     },
     {
       "id": "G0-FIX-template-erDiagram-default",
@@ -349,10 +349,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-erDiagram-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-erDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:10.697Z"
+      "timestamp": "2026-11-06T00:23:53.234Z"
     },
     {
       "id": "G0-FIX-template-flowchart-decision",
@@ -372,10 +372,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-decision.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-decision-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:12.302Z"
+      "timestamp": "2026-11-06T00:23:55.358Z"
     },
     {
       "id": "G0-FIX-template-flowchart-default",
@@ -395,10 +395,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:13.933Z"
+      "timestamp": "2026-11-06T00:23:57.562Z"
     },
     {
       "id": "G0-FIX-template-flowchart-microservices",
@@ -418,10 +418,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-microservices.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-flowchart-microservices-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:15.535Z"
+      "timestamp": "2026-11-06T00:23:59.776Z"
     },
     {
       "id": "G0-FIX-template-gantt-default",
@@ -441,10 +441,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-gantt-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-gantt-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:17.239Z"
+      "timestamp": "2026-11-06T00:24:01.902Z"
     },
     {
       "id": "G0-FIX-template-gitGraph-default",
@@ -464,10 +464,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-gitGraph-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-gitGraph-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:20.120Z"
+      "timestamp": "2026-11-06T00:24:03.950Z"
     },
     {
       "id": "G0-FIX-template-journey-default",
@@ -487,10 +487,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-journey-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-journey-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:22.705Z"
+      "timestamp": "2026-11-06T00:24:07.905Z"
     },
     {
       "id": "G0-FIX-template-mindmap-default",
@@ -510,10 +510,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-mindmap-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-mindmap-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:25.683Z"
+      "timestamp": "2026-11-06T00:24:12.747Z"
     },
     {
       "id": "G0-FIX-template-pie-default",
@@ -533,10 +533,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-pie-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-pie-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:27.530Z"
+      "timestamp": "2026-11-06T00:24:15.733Z"
     },
     {
       "id": "G0-FIX-template-sequence-default",
@@ -556,10 +556,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-sequence-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-sequence-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:29.511Z"
+      "timestamp": "2026-11-06T00:24:18.611Z"
     },
     {
       "id": "G0-FIX-template-sequence-payment",
@@ -579,10 +579,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-sequence-payment.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-sequence-payment-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:31.276Z"
+      "timestamp": "2026-11-06T00:24:22.580Z"
     },
     {
       "id": "G0-FIX-template-stateDiagram-default",
@@ -602,10 +602,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-stateDiagram-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-stateDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:33.926Z"
+      "timestamp": "2026-11-06T00:24:25.469Z"
     },
     {
       "id": "G0-FIX-template-timeline-default",
@@ -625,10 +625,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-timeline-default.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-template-timeline-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:36.602Z"
+      "timestamp": "2026-11-06T00:24:29.466Z"
     },
     {
       "id": "G0-FIX-wide",
@@ -648,10 +648,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-wide.png",
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-FIX-wide-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide-counts.json"
       ],
-      "timestamp": "2026-11-05T23:22:39.275Z"
+      "timestamp": "2026-11-06T00:24:33.390Z"
     },
     {
       "id": "G0-CTL-C001",
@@ -678,13 +678,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C001.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C001.png"
       ],
-      "timestamp": "2026-11-05T23:22:42.000Z"
+      "timestamp": "2026-11-06T00:24:35.412Z"
     },
     {
       "id": "G0-CTL-C002",
@@ -711,13 +712,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": true,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C002.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C002.png"
       ],
-      "timestamp": "2026-11-05T23:22:44.791Z"
+      "timestamp": "2026-11-06T00:24:39.045Z"
     },
     {
       "id": "G0-CTL-C003",
@@ -743,13 +745,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C003.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C003.png"
       ],
-      "timestamp": "2026-11-05T23:22:47.460Z"
+      "timestamp": "2026-11-06T00:24:41.644Z"
     },
     {
       "id": "G0-CTL-C004",
@@ -775,13 +778,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C004.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C004.png"
       ],
-      "timestamp": "2026-11-05T23:22:50.049Z"
+      "timestamp": "2026-11-06T00:24:45.206Z"
     },
     {
       "id": "G0-CTL-C005",
@@ -807,13 +811,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C005.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C005.png"
       ],
-      "timestamp": "2026-11-05T23:22:53.729Z"
+      "timestamp": "2026-11-06T00:24:47.831Z"
     },
     {
       "id": "G0-CTL-C006",
@@ -839,13 +844,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C006.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C006.png"
       ],
-      "timestamp": "2026-11-05T23:22:56.527Z"
+      "timestamp": "2026-11-06T00:24:50.074Z"
     },
     {
       "id": "G0-CTL-C007",
@@ -871,13 +877,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C007.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C007.png"
       ],
-      "timestamp": "2026-11-05T23:22:59.479Z"
+      "timestamp": "2026-11-06T00:24:52.661Z"
     },
     {
       "id": "G0-CTL-C008",
@@ -903,13 +910,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C008.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C008.png"
       ],
-      "timestamp": "2026-11-05T23:23:01.589Z"
+      "timestamp": "2026-11-06T00:24:56.294Z"
     },
     {
       "id": "G0-CTL-C009",
@@ -935,13 +943,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C009.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C009.png"
       ],
-      "timestamp": "2026-11-05T23:23:04.516Z"
+      "timestamp": "2026-11-06T00:24:58.962Z"
     },
     {
       "id": "G0-CTL-C010",
@@ -967,13 +976,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C010.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C010.png"
       ],
-      "timestamp": "2026-11-05T23:23:08.207Z"
+      "timestamp": "2026-11-06T00:25:01.800Z"
     },
     {
       "id": "G0-CTL-C011",
@@ -999,13 +1009,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C011.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C011.png"
       ],
-      "timestamp": "2026-11-05T23:23:11.186Z"
+      "timestamp": "2026-11-06T00:25:05.428Z"
     },
     {
       "id": "G0-CTL-C012",
@@ -1031,13 +1042,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C012.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C012.png"
       ],
-      "timestamp": "2026-11-05T23:23:13.299Z"
+      "timestamp": "2026-11-06T00:25:08.325Z"
     },
     {
       "id": "G0-CTL-C013",
@@ -1064,13 +1076,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C013.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C013.png"
       ],
-      "timestamp": "2026-11-05T23:23:15.315Z"
+      "timestamp": "2026-11-06T00:25:10.576Z"
     },
     {
       "id": "G0-CTL-C014",
@@ -1100,7 +1113,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-05T23:23:17.298Z"
+      "timestamp": "2026-11-06T00:25:12.934Z"
     },
     {
       "id": "G0-CTL-C015",
@@ -1134,9 +1147,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C015.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C015.png"
       ],
-      "timestamp": "2026-11-05T23:23:20.239Z"
+      "timestamp": "2026-11-06T00:25:15.787Z"
     },
     {
       "id": "G0-CTL-C016",
@@ -1163,13 +1176,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": true,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C016.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C016.png"
       ],
-      "timestamp": "2026-11-05T23:23:22.216Z"
+      "timestamp": "2026-11-06T00:25:17.830Z"
     },
     {
       "id": "G0-CTL-C017",
@@ -1195,13 +1209,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C017.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C017.png"
       ],
-      "timestamp": "2026-11-05T23:23:24.879Z"
+      "timestamp": "2026-11-06T00:25:20.350Z"
     },
     {
       "id": "G0-CTL-C018",
@@ -1227,13 +1242,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C018.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C018.png"
       ],
-      "timestamp": "2026-11-05T23:23:27.810Z"
+      "timestamp": "2026-11-06T00:25:22.588Z"
     },
     {
       "id": "G0-CTL-C019",
@@ -1259,13 +1275,15 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printInvoked": 1,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C019.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C019.png"
       ],
-      "timestamp": "2026-11-05T23:24:31.729Z"
+      "timestamp": "2026-11-06T00:25:25.303Z"
     },
     {
       "id": "G0-CTL-C020",
@@ -1291,13 +1309,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C020.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C020.png"
       ],
-      "timestamp": "2026-11-05T23:24:35.118Z"
+      "timestamp": "2026-11-06T00:25:27.407Z"
     },
     {
       "id": "G0-CTL-C021",
@@ -1323,13 +1342,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C021.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C021.png"
       ],
-      "timestamp": "2026-11-05T23:24:37.940Z"
+      "timestamp": "2026-11-06T00:25:29.535Z"
     },
     {
       "id": "G0-CTL-C022",
@@ -1358,13 +1378,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C022.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C022.png"
       ],
-      "timestamp": "2026-11-05T23:24:40.578Z"
+      "timestamp": "2026-11-06T00:25:31.700Z"
     },
     {
       "id": "G0-CTL-C023",
@@ -1392,13 +1413,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C023.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C023.png"
       ],
-      "timestamp": "2026-11-05T23:24:43.612Z"
+      "timestamp": "2026-11-06T00:25:33.740Z"
     },
     {
       "id": "G0-CTL-C024",
@@ -1427,13 +1449,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C024.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C024.png"
       ],
-      "timestamp": "2026-11-05T23:24:45.332Z"
+      "timestamp": "2026-11-06T00:25:36.415Z"
     },
     {
       "id": "G0-CTL-C025",
@@ -1460,13 +1483,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C025.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C025.png"
       ],
-      "timestamp": "2026-11-05T23:24:48.001Z"
+      "timestamp": "2026-11-06T00:25:38.548Z"
     },
     {
       "id": "G0-CTL-C026",
@@ -1493,13 +1517,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C026.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C026.png"
       ],
-      "timestamp": "2026-11-05T23:24:51.409Z"
+      "timestamp": "2026-11-06T00:25:40.506Z"
     },
     {
       "id": "G0-CTL-C027",
@@ -1526,13 +1551,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C027.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C027.png"
       ],
-      "timestamp": "2026-11-05T23:24:53.367Z"
+      "timestamp": "2026-11-06T00:25:42.480Z"
     },
     {
       "id": "G0-CTL-C028",
@@ -1559,13 +1585,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C028.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C028.png"
       ],
-      "timestamp": "2026-11-05T23:24:56.291Z"
+      "timestamp": "2026-11-06T00:25:44.919Z"
     },
     {
       "id": "G0-CTL-C029",
@@ -1592,13 +1619,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C029.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C029.png"
       ],
-      "timestamp": "2026-11-05T23:24:59.121Z"
+      "timestamp": "2026-11-06T00:25:47.034Z"
     },
     {
       "id": "G0-CTL-C030",
@@ -1625,13 +1653,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C030.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C030.png"
       ],
-      "timestamp": "2026-11-05T23:25:02.182Z"
+      "timestamp": "2026-11-06T00:25:49.098Z"
     },
     {
       "id": "G0-CTL-C031",
@@ -1658,13 +1687,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C031.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C031.png"
       ],
-      "timestamp": "2026-11-05T23:25:03.987Z"
+      "timestamp": "2026-11-06T00:25:51.398Z"
     },
     {
       "id": "G0-CTL-C032",
@@ -1691,13 +1721,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C032.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C032.png"
       ],
-      "timestamp": "2026-11-05T23:25:06.087Z"
+      "timestamp": "2026-11-06T00:25:53.252Z"
     },
     {
       "id": "G0-CTL-C033",
@@ -1724,13 +1755,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C033.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C033.png"
       ],
-      "timestamp": "2026-11-05T23:25:09.100Z"
+      "timestamp": "2026-11-06T00:25:55.314Z"
     },
     {
       "id": "G0-CTL-C034",
@@ -1757,13 +1789,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C034.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C034.png"
       ],
-      "timestamp": "2026-11-05T23:25:12.759Z"
+      "timestamp": "2026-11-06T00:25:58.058Z"
     },
     {
       "id": "G0-CTL-C035",
@@ -1790,13 +1823,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C035.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C035.png"
       ],
-      "timestamp": "2026-11-05T23:25:15.501Z"
+      "timestamp": "2026-11-06T00:25:59.933Z"
     },
     {
       "id": "G0-CTL-C036",
@@ -1823,13 +1857,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C036.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C036.png"
       ],
-      "timestamp": "2026-11-05T23:25:18.175Z"
+      "timestamp": "2026-11-06T00:26:01.706Z"
     },
     {
       "id": "G0-CTL-C037",
@@ -1856,13 +1891,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C037.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C037.png"
       ],
-      "timestamp": "2026-11-05T23:25:21.050Z"
+      "timestamp": "2026-11-06T00:26:03.646Z"
     },
     {
       "id": "G0-CTL-C038",
@@ -1889,13 +1925,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C038.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C038.png"
       ],
-      "timestamp": "2026-11-05T23:25:24.851Z"
+      "timestamp": "2026-11-06T00:26:05.554Z"
     },
     {
       "id": "G0-CTL-C039",
@@ -1922,13 +1959,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C039.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C039.png"
       ],
-      "timestamp": "2026-11-05T23:25:27.670Z"
+      "timestamp": "2026-11-06T00:26:07.151Z"
     },
     {
       "id": "G0-CTL-C040",
@@ -1955,13 +1993,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C040.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C040.png"
       ],
-      "timestamp": "2026-11-05T23:25:30.527Z"
+      "timestamp": "2026-11-06T00:26:09.064Z"
     },
     {
       "id": "G0-CTL-C041",
@@ -1988,13 +2027,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C041.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C041.png"
       ],
-      "timestamp": "2026-11-05T23:25:33.422Z"
+      "timestamp": "2026-11-06T00:26:10.700Z"
     },
     {
       "id": "G0-CTL-C042",
@@ -2021,13 +2061,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C042.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C042.png"
       ],
-      "timestamp": "2026-11-05T23:25:36.137Z"
+      "timestamp": "2026-11-06T00:26:12.396Z"
     },
     {
       "id": "G0-CTL-C043",
@@ -2054,13 +2095,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C043.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C043.png"
       ],
-      "timestamp": "2026-11-05T23:25:38.810Z"
+      "timestamp": "2026-11-06T00:26:13.980Z"
     },
     {
       "id": "G0-CTL-C044",
@@ -2087,13 +2129,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C044.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C044.png"
       ],
-      "timestamp": "2026-11-05T23:25:42.467Z"
+      "timestamp": "2026-11-06T00:26:16.836Z"
     },
     {
       "id": "G0-CTL-C045",
@@ -2120,13 +2163,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C045.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C045.png"
       ],
-      "timestamp": "2026-11-05T23:25:45.201Z"
+      "timestamp": "2026-11-06T00:26:18.378Z"
     },
     {
       "id": "G0-CTL-C046",
@@ -2153,13 +2197,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C046.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C046.png"
       ],
-      "timestamp": "2026-11-05T23:25:47.891Z"
+      "timestamp": "2026-11-06T00:26:20.179Z"
     },
     {
       "id": "G0-CTL-C047",
@@ -2186,13 +2231,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C047.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C047.png"
       ],
-      "timestamp": "2026-11-05T23:25:50.582Z"
+      "timestamp": "2026-11-06T00:26:21.736Z"
     },
     {
       "id": "G0-CTL-C048",
@@ -2219,13 +2265,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C048.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C048.png"
       ],
-      "timestamp": "2026-11-05T23:25:53.837Z"
+      "timestamp": "2026-11-06T00:26:23.274Z"
     },
     {
       "id": "G0-CTL-C049",
@@ -2255,9 +2302,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C049.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C049.png"
       ],
-      "timestamp": "2026-11-05T23:25:55.315Z"
+      "timestamp": "2026-11-06T00:26:25.091Z"
     },
     {
       "id": "G0-CTL-C050",
@@ -2283,13 +2330,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C050.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C050.png"
       ],
-      "timestamp": "2026-11-05T23:25:58.016Z"
+      "timestamp": "2026-11-06T00:26:27.356Z"
     },
     {
       "id": "G0-CTL-C051",
@@ -2315,13 +2363,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C051.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C051.png"
       ],
-      "timestamp": "2026-11-05T23:26:00.697Z"
+      "timestamp": "2026-11-06T00:26:29.666Z"
     },
     {
       "id": "G0-CTL-C052",
@@ -2351,9 +2400,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C052.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C052.png"
       ],
-      "timestamp": "2026-11-05T23:26:03.213Z"
+      "timestamp": "2026-11-06T00:26:31.336Z"
     },
     {
       "id": "G0-CTL-C053",
@@ -2379,13 +2428,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C053.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C053.png"
       ],
-      "timestamp": "2026-11-05T23:26:05.918Z"
+      "timestamp": "2026-11-06T00:26:33.338Z"
     },
     {
       "id": "G0-CTL-C054",
@@ -2411,13 +2461,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C054.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C054.png"
       ],
-      "timestamp": "2026-11-05T23:26:08.670Z"
+      "timestamp": "2026-11-06T00:26:35.388Z"
     },
     {
       "id": "G0-CTL-C055",
@@ -2444,13 +2495,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C055.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C055.png"
       ],
-      "timestamp": "2026-11-05T23:26:11.401Z"
+      "timestamp": "2026-11-06T00:26:37.648Z"
     },
     {
       "id": "G0-CTL-C056",
@@ -2476,13 +2528,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C056.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C056.png"
       ],
-      "timestamp": "2026-11-05T23:26:13.426Z"
+      "timestamp": "2026-11-06T00:26:39.368Z"
     },
     {
       "id": "G0-CTL-C057",
@@ -2510,13 +2563,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C057.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C057.png"
       ],
-      "timestamp": "2026-11-05T23:26:16.089Z"
+      "timestamp": "2026-11-06T00:26:41.536Z"
     },
     {
       "id": "G0-CTL-C058",
@@ -2543,13 +2597,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C058.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C058.png"
       ],
-      "timestamp": "2026-11-05T23:26:18.886Z"
+      "timestamp": "2026-11-06T00:26:43.407Z"
     },
     {
       "id": "G0-CTL-C059",
@@ -2579,7 +2634,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-05T23:26:20.918Z"
+      "timestamp": "2026-11-06T00:26:44.567Z"
     },
     {
       "id": "G0-CTL-C060",
@@ -2606,13 +2661,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C060.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C060.png"
       ],
-      "timestamp": "2026-11-05T23:26:23.809Z"
+      "timestamp": "2026-11-06T00:26:47.015Z"
     },
     {
       "id": "G0-CTL-C061",
@@ -2640,13 +2696,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C061.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C061.png"
       ],
-      "timestamp": "2026-11-05T23:26:26.596Z"
+      "timestamp": "2026-11-06T00:26:49.056Z"
     },
     {
       "id": "G0-CTL-C062",
@@ -2673,13 +2730,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C062.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C062.png"
       ],
-      "timestamp": "2026-11-05T23:26:28.280Z"
+      "timestamp": "2026-11-06T00:26:51.377Z"
     },
     {
       "id": "G0-CTL-C063",
@@ -2706,13 +2764,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C063.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C063.png"
       ],
-      "timestamp": "2026-11-05T23:26:30.062Z"
+      "timestamp": "2026-11-06T00:26:53.169Z"
     },
     {
       "id": "G0-CTL-C064",
@@ -2738,13 +2797,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C064.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C064.png"
       ],
-      "timestamp": "2026-11-05T23:26:32.695Z"
+      "timestamp": "2026-11-06T00:26:55.210Z"
     },
     {
       "id": "G0-CTL-C065",
@@ -2770,13 +2830,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C065.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C065.png"
       ],
-      "timestamp": "2026-11-05T23:26:34.896Z"
+      "timestamp": "2026-11-06T00:26:57.259Z"
     },
     {
       "id": "G0-CTL-C066",
@@ -2802,13 +2863,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C066.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C066.png"
       ],
-      "timestamp": "2026-11-05T23:26:37.599Z"
+      "timestamp": "2026-11-06T00:26:59.557Z"
     },
     {
       "id": "G0-CTL-C067",
@@ -2835,13 +2897,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C067.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C067.png"
       ],
-      "timestamp": "2026-11-05T23:26:40.393Z"
+      "timestamp": "2026-11-06T00:27:01.211Z"
     },
     {
       "id": "G0-CTL-C068",
@@ -2868,13 +2931,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C068.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C068.png"
       ],
-      "timestamp": "2026-11-05T23:26:42.235Z"
+      "timestamp": "2026-11-06T00:27:03.344Z"
     },
     {
       "id": "G0-CTL-C069",
@@ -2902,13 +2966,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C069.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C069.png"
       ],
-      "timestamp": "2026-11-05T23:26:44.919Z"
+      "timestamp": "2026-11-06T00:27:06.232Z"
     },
     {
       "id": "G0-CTL-C070",
@@ -2936,13 +3001,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C070.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C070.png"
       ],
-      "timestamp": "2026-11-05T23:26:47.735Z"
+      "timestamp": "2026-11-06T00:27:08.164Z"
     },
     {
       "id": "G0-CTL-C071",
@@ -2969,13 +3035,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C071.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C071.png"
       ],
-      "timestamp": "2026-11-05T23:26:50.379Z"
+      "timestamp": "2026-11-06T00:27:10.122Z"
     },
     {
       "id": "G0-CTL-C072",
@@ -3004,9 +3071,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C072.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C072.png"
       ],
-      "timestamp": "2026-11-05T23:27:23.159Z"
+      "timestamp": "2026-11-06T00:27:42.415Z"
     },
     {
       "id": "G0-CTL-C073",
@@ -3035,9 +3102,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C073.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C073.png"
       ],
-      "timestamp": "2026-11-05T23:27:55.915Z"
+      "timestamp": "2026-11-06T00:28:14.714Z"
     },
     {
       "id": "G0-CTL-C074",
@@ -3066,9 +3133,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C074.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C074.png"
       ],
-      "timestamp": "2026-11-05T23:28:27.819Z"
+      "timestamp": "2026-11-06T00:28:47.036Z"
     },
     {
       "id": "G0-CTL-C075",
@@ -3097,9 +3164,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C075.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C075.png"
       ],
-      "timestamp": "2026-11-05T23:29:00.626Z"
+      "timestamp": "2026-11-06T00:29:18.633Z"
     },
     {
       "id": "G0-CTL-C076",
@@ -3126,13 +3193,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C076.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C076.png"
       ],
-      "timestamp": "2026-11-05T23:29:03.517Z"
+      "timestamp": "2026-11-06T00:29:20.327Z"
     },
     {
       "id": "G0-CTL-C077",
@@ -3158,13 +3226,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C077.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C077.png"
       ],
-      "timestamp": "2026-11-05T23:29:06.177Z"
+      "timestamp": "2026-11-06T00:29:21.923Z"
     },
     {
       "id": "G0-CTL-C078",
@@ -3190,13 +3259,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C078.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C078.png"
       ],
-      "timestamp": "2026-11-05T23:29:09.131Z"
+      "timestamp": "2026-11-06T00:29:23.794Z"
     },
     {
       "id": "G0-CTL-C079",
@@ -3222,13 +3292,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C079.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C079.png"
       ],
-      "timestamp": "2026-11-05T23:29:11.732Z"
+      "timestamp": "2026-11-06T00:29:25.701Z"
     },
     {
       "id": "G0-CTL-C080",
@@ -3254,13 +3325,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C080.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C080.png"
       ],
-      "timestamp": "2026-11-05T23:29:14.649Z"
+      "timestamp": "2026-11-06T00:29:27.878Z"
     },
     {
       "id": "G0-CTL-C081",
@@ -3286,13 +3358,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C081.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C081.png"
       ],
-      "timestamp": "2026-11-05T23:29:17.420Z"
+      "timestamp": "2026-11-06T00:29:29.577Z"
     },
     {
       "id": "G0-CTL-C082",
@@ -3318,13 +3391,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C082.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C082.png"
       ],
-      "timestamp": "2026-11-05T23:29:20.776Z"
+      "timestamp": "2026-11-06T00:29:31.590Z"
     },
     {
       "id": "G0-CTL-C083",
@@ -3350,13 +3424,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C083.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C083.png"
       ],
-      "timestamp": "2026-11-05T23:29:23.660Z"
+      "timestamp": "2026-11-06T00:29:34.189Z"
     },
     {
       "id": "G0-CTL-C084",
@@ -3382,13 +3457,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C084.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C084.png"
       ],
-      "timestamp": "2026-11-05T23:29:26.556Z"
+      "timestamp": "2026-11-06T00:29:36.807Z"
     },
     {
       "id": "G0-CTL-C085",
@@ -3414,13 +3490,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C085.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C085.png"
       ],
-      "timestamp": "2026-11-05T23:29:29.327Z"
+      "timestamp": "2026-11-06T00:29:38.576Z"
     },
     {
       "id": "G0-CTL-C086",
@@ -3446,13 +3523,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C086.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C086.png"
       ],
-      "timestamp": "2026-11-05T23:29:32.046Z"
+      "timestamp": "2026-11-06T00:29:40.456Z"
     },
     {
       "id": "G0-CTL-C087",
@@ -3478,13 +3556,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C087.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C087.png"
       ],
-      "timestamp": "2026-11-05T23:29:34.811Z"
+      "timestamp": "2026-11-06T00:29:42.349Z"
     },
     {
       "id": "G0-CTL-C088",
@@ -3510,13 +3589,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C088.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C088.png"
       ],
-      "timestamp": "2026-11-05T23:29:37.448Z"
+      "timestamp": "2026-11-06T00:29:44.318Z"
     },
     {
       "id": "G0-CTL-C089",
@@ -3542,13 +3622,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C089.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C089.png"
       ],
-      "timestamp": "2026-11-05T23:29:40.186Z"
+      "timestamp": "2026-11-06T00:29:46.158Z"
     },
     {
       "id": "G0-CTL-C090",
@@ -3574,13 +3655,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C090.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C090.png"
       ],
-      "timestamp": "2026-11-05T23:29:42.830Z"
+      "timestamp": "2026-11-06T00:29:48.186Z"
     },
     {
       "id": "G0-CTL-C091",
@@ -3607,13 +3689,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C091.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C091.png"
       ],
-      "timestamp": "2026-11-05T23:29:44.698Z"
+      "timestamp": "2026-11-06T00:29:50.699Z"
     },
     {
       "id": "G0-CTL-C092",
@@ -3640,13 +3723,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C092.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C092.png"
       ],
-      "timestamp": "2026-11-05T23:29:47.369Z"
+      "timestamp": "2026-11-06T00:29:52.534Z"
     },
     {
       "id": "G0-CTL-C093",
@@ -3676,7 +3760,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-05T23:29:50.682Z"
+      "timestamp": "2026-11-06T00:29:53.516Z"
     },
     {
       "id": "G0-CTL-C094",
@@ -3703,13 +3787,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C094.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C094.png"
       ],
-      "timestamp": "2026-11-05T23:29:53.326Z"
+      "timestamp": "2026-11-06T00:29:55.652Z"
     },
     {
       "id": "G0-CTL-C095",
@@ -3736,13 +3821,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C095.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C095.png"
       ],
-      "timestamp": "2026-11-05T23:29:55.950Z"
+      "timestamp": "2026-11-06T00:29:57.616Z"
     },
     {
       "id": "G0-CTL-C096",
@@ -3769,13 +3855,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C096.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C096.png"
       ],
-      "timestamp": "2026-11-05T23:29:58.630Z"
+      "timestamp": "2026-11-06T00:29:59.240Z"
     },
     {
       "id": "G0-CTL-C097",
@@ -3801,13 +3888,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C097.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C097.png"
       ],
-      "timestamp": "2026-11-05T23:30:01.467Z"
+      "timestamp": "2026-11-06T00:30:01.031Z"
     },
     {
       "id": "G0-CTL-C098",
@@ -3833,13 +3921,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C098.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C098.png"
       ],
-      "timestamp": "2026-11-05T23:30:04.147Z"
+      "timestamp": "2026-11-06T00:30:03.350Z"
     },
     {
       "id": "G0-CTL-C099",
@@ -3865,13 +3954,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C099.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C099.png"
       ],
-      "timestamp": "2026-11-05T23:30:06.948Z"
+      "timestamp": "2026-11-06T00:30:05.497Z"
     },
     {
       "id": "G0-CTL-C100",
@@ -3897,13 +3987,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C100.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C100.png"
       ],
-      "timestamp": "2026-11-05T23:30:09.829Z"
+      "timestamp": "2026-11-06T00:30:07.623Z"
     },
     {
       "id": "G0-CTL-C101",
@@ -3929,13 +4020,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C101.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C101.png"
       ],
-      "timestamp": "2026-11-05T23:30:12.089Z"
+      "timestamp": "2026-11-06T00:30:09.933Z"
     },
     {
       "id": "G0-CTL-C102",
@@ -3961,13 +4053,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C102.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C102.png"
       ],
-      "timestamp": "2026-11-05T23:30:14.919Z"
+      "timestamp": "2026-11-06T00:30:12.064Z"
     },
     {
       "id": "G0-CTL-C103",
@@ -3993,13 +4086,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C103.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C103.png"
       ],
-      "timestamp": "2026-11-05T23:30:16.949Z"
+      "timestamp": "2026-11-06T00:30:13.998Z"
     },
     {
       "id": "G0-CTL-C104",
@@ -4025,13 +4119,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C104.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C104.png"
       ],
-      "timestamp": "2026-11-05T23:30:19.595Z"
+      "timestamp": "2026-11-06T00:30:16.218Z"
     },
     {
       "id": "G0-CTL-C105",
@@ -4057,13 +4152,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C105.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C105.png"
       ],
-      "timestamp": "2026-11-05T23:30:22.307Z"
+      "timestamp": "2026-11-06T00:30:18.272Z"
     },
     {
       "id": "G0-CTL-C106",
@@ -4089,13 +4185,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C106.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C106.png"
       ],
-      "timestamp": "2026-11-05T23:30:25.587Z"
+      "timestamp": "2026-11-06T00:30:19.929Z"
     },
     {
       "id": "G0-CTL-C107",
@@ -4121,13 +4218,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C107.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C107.png"
       ],
-      "timestamp": "2026-11-05T23:30:28.350Z"
+      "timestamp": "2026-11-06T00:30:21.966Z"
     },
     {
       "id": "G0-CTL-C108",
@@ -4159,9 +4257,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C108.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C108.png"
       ],
-      "timestamp": "2026-11-05T23:30:30.942Z"
+      "timestamp": "2026-11-06T00:30:23.664Z"
     },
     {
       "id": "G0-CTL-C109",
@@ -4193,9 +4291,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C109.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C109.png"
       ],
-      "timestamp": "2026-11-05T23:30:33.666Z"
+      "timestamp": "2026-11-06T00:30:25.075Z"
     },
     {
       "id": "G0-CTL-C110",
@@ -4221,13 +4319,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C110.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C110.png"
       ],
-      "timestamp": "2026-11-05T23:30:36.415Z"
+      "timestamp": "2026-11-06T00:30:26.737Z"
     },
     {
       "id": "G0-CTL-C111",
@@ -4253,13 +4352,14 @@
       "observation": {
         "executed": "click",
         "modalOrDropdownOpened": false,
-        "note": "behavioral assertion manual-review; see screenshot"
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G0-CTL-C111.png"
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C111.png"
       ],
-      "timestamp": "2026-11-05T23:30:39.309Z"
+      "timestamp": "2026-11-06T00:30:28.616Z"
     },
     {
       "id": "G1-X1-ISOLATION-BROWSER",
@@ -4289,9 +4389,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G1-X1-ISOLATION-BROWSER.png"
+        "evidence/phase-0/g0-capture/artifacts/G1-X1-ISOLATION-BROWSER.png"
       ],
-      "timestamp": "2026-11-05T23:30:43.620Z"
+      "timestamp": "2026-11-06T00:30:31.932Z"
     },
     {
       "id": "G1-X4-WELCOME-FULLPAGE",
@@ -4311,9 +4411,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G1-X4-WELCOME-FULLPAGE.png"
+        "evidence/phase-0/g0-capture/artifacts/G1-X4-WELCOME-FULLPAGE.png"
       ],
-      "timestamp": "2026-11-05T23:30:46.346Z"
+      "timestamp": "2026-11-06T00:30:34.253Z"
     },
     {
       "id": "G1-CLIP-SUCCESS",
@@ -4328,17 +4428,17 @@
       "expected": "Clipboard success path returns byte-exact diagram source; rejection path records the exact error toast.",
       "observation": {
         "expected": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
-        "read": "flowchart TD\r\n  Start([User Request]) --> Router{API Route}\r\n  Router -->|/auth| AuthSvc[Authentication Service]\r\n  Router -->|/studio| Studio[Mermaid Studio Engine]\r\n  \r\n  subgraph Engine [Studio Processing Pipeline]\r\n    Studio --> Validator[Syntax Validator]\r\n    Validator --> Renderer[SVG & Canvas Engine]\r\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\r\n  end\r\n  \r\n  PanZoom --> Export[/SVG & Retina PNG Export/]\r\n  Export --> Done([Document Ready!])",
-        "rawMatch": false,
+        "read": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
+        "rawMatch": true,
         "match": true,
         "note": "focused-window clipboard success verified (--headed)",
         "headed": true
       },
       "status": "pass",
       "artifacts": [
-        "evidence\\phase-0\\g0-capture\\artifacts\\G1-CLIP-SUCCESS.png"
+        "evidence/phase-0/g0-capture/artifacts/G1-CLIP-SUCCESS.png"
       ],
-      "timestamp": "2026-11-05T23:30:48.517Z"
+      "timestamp": "2026-11-06T00:30:36.884Z"
     }
   ]
 }
