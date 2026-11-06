@@ -44,6 +44,7 @@ Run: `node tests/g0-capture-routine.cjs --origin http` (captures full-page PNG +
 - [ ] **C015** (`input[type=file]#fileInput`, hidden): probed via `setInputFiles` with a synthetic fixture (`artifacts/synthetic-upload.md`) — setting `.value` on a file input throws in browsers, which is why a naive probe reports blocked. Pass = new tab/document appears. **C014** (its label) records the `for` wiring; the native file dialog itself is not automatable — covered by C015.
 - [ ] **C091 and the other `data-insert`/`data-template`/`data-action` controls**: the routine resolves them by *exact in-page attribute equality*, not CSS attribute-string selectors — literal backslash sequences in `data-insert` (e.g. C091's `\n` subgraph payload, the R12 subject) are unescaped by CSS and would never match.
 - [ ] Keyboard routes (shortcuts, find/replace, tab switch, pane toggles) — cover via dedicated probes after the 111; record as extra stop points if added.
+- [ ] **C019 (`#btnPrintPdf`)**: `window.print` is stubbed by the routine (`__printCalls` counter) because the native print dialog blocks headed automation and requires a manual Cancel. Pass = handler invoked the stub. Actual print/PDF output correctness is **Gate G5** scope, not G0.
 - [ ] Any control that fails gets a preserved before-state record (plan §10) and a follow-up ID.
 
 ## 5. G1 exception re-checks — stop points `G1-*`

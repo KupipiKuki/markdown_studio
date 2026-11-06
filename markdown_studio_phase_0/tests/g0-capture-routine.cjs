@@ -186,6 +186,9 @@ async function runBrowser() {
       try { await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseHttp }); } catch (e) {}
     }
     const page = await ctx.newPage();
+    // Stub window.print: the native print dialog blocks headed automation (C019 #btnPrintPdf).
+    // The stub records invocations; actual print/PDF output validation is Gate G5 scope.
+    await page.addInitScript(() => { window.print = () => { window.__printCalls = (window.__printCalls || 0) + 1; }; });
     if (withClipboardPerms) { try { await page.bringToFront(); } catch (e) {} }
     page.on('console', m => consoleLog.push({ stop: currentId, type: m.type(), text: m.text() }));
     page.on('pageerror', e => consoleLog.push({ stop: currentId, type: 'pageerror', text: String(e) }));
@@ -340,10 +343,11 @@ async function runBrowser() {
           }, probe);
           await page.waitForTimeout(600);
           const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
+          const printCalls = await page.evaluate(() => window.__printCalls || 0);
           await shoot(page, rec);
           await page.keyboard.press('Escape');
           await page.evaluate(() => { const m = document.querySelector('.modal.open, .modal[style*="flex"]'); if (m) m.style.display = 'none'; });
-          await finish(rec, 'pass', { executed: 'click', modalOrDropdownOpened: modalOpen, note: 'behavioral assertion manual-review; see screenshot' });
+          await finish(rec, 'pass', { executed: 'click', modalOrDropdownOpened: modalOpen, printInvoked: printCalls > 0 ? printCalls : undefined, printStubbed: true, note: 'behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope' });
         }
         continue;
       } else if (rec.area === 'update-isolation') {
