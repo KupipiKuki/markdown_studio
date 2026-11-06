@@ -41,6 +41,10 @@ const OUT = path.resolve(root, String(opt('out', 'evidence/phase-0/g0-capture'))
 const workingPath = path.join(root, 'working/markdown_studio.html');
 const workingSrc = fs.readFileSync(workingPath, 'utf8');
 const CANDIDATE_SHA = crypto.createHash('sha256').update(workingSrc).digest('hex');
+// Windows checkouts with autocrlf write CRLF on disk while the committed blob is LF:
+// record the LF-normalized hash too, so a CRLF checkout still provably matches the
+// committed candidate (provenance finding M1: raw b15a4e8b... == committed e02aed95... + CRLF).
+const CANDIDATE_SHA_LF = crypto.createHash('sha256').update(workingSrc.replace(/\r\n/g, '\n')).digest('hex');
 const consoleLog = [];
 let BROWSER_VERSION = null;
 
@@ -116,6 +120,8 @@ function writeManifest(records, env) {
   const manifest = {
     routine: 'tests/g0-capture-routine.cjs',
     candidateSha256: CANDIDATE_SHA,
+    candidateSha256LfNormalized: CANDIDATE_SHA_LF,
+    candidateNote: 'candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.',
     generatedAt,
     environment: env,
     stopOnFail: STOP_ON_FAIL,

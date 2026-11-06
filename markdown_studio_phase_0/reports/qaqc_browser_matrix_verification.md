@@ -17,7 +17,7 @@ All runs have run-stamped manifests under `runs/` (no overwrites), zero non-pass
 
 | ID | Severity | Finding |
 | --- | --- | --- |
-| M1 | Medium (provenance) | All three browser runs used candidate `b15a4e8b…`, but the committed working copy on both `vibe/code_revisions` @ `a8d0a50` and this branch is `e02aed95…`. The runs therefore tested a local, uncommitted variant. Action: either commit the `b15a4e8b` delta with a diff explanation and update the audit's candidate hash, or rerun the matrix against `e02aed95`. Until then the matrix evidence does not attach to the committed candidate. |
+| M1 | Medium → **RESOLVED** | All three browser runs recorded candidate `b15a4e8b…` vs committed `e02aed95…`. Proven: the committed blob is pure LF (0 CR bytes), and LF→CRLF of that blob hashes to exactly `b15a4e8b…` — i.e. the runs executed the committed `e02aed95` content checked out with CRLF line endings (Windows autocrlf), which is also why `git diff` on the test machine was empty. The 141/141 matrix results therefore **do** attach to the committed candidate. The routine now records `candidateSha256LfNormalized` alongside the raw hash in every manifest. Optional hygiene: a `.gitattributes` with `*.html text eol=lf` would make on-disk hashes match the blob. |
 | M2 | Low (closed here) | `evidence/checksums.sha256` did not cover the new `g0-capture/` evidence. Regenerated over the full package: 239 entries, 239/239 verify, and all 65 previously listed entries still match (the capture only added files). |
 
 ## Matrix status after this review
