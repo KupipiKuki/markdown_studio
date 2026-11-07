@@ -19,7 +19,7 @@ Working copy SHA-256: `e02aed95cfa610eac62c5b1e82b37ba1e237731f0c285257acadc191f
 
 Process correction (F1): the previous revision of this log recorded Phase 0 as "Complete" and Phase 1 as "Passed" while G0 was blocked. Per plan §1 ("Do not advance past a failed phase gate… A blocked or unrun test is never a pass"), the log now records G0 as blocked and G1 as a conditional mock-level pass. The Phase 1 code changes themselves were independently re-verified as correct and in-scope by the QAQC audit and by rerunning both suites.
 
-## Remediation target (F5 — decision required before Phase 6)
+## Remediation target (F5 — DECIDED 2026-11-06: option 1)
 
 The Phase 0 baseline is the original `index.html` @ commit `1042d77` (`11eaec36…`, 4,316 lines), not the repository's current application file `scripts/markdown-studio.html` (`c5bfc749c33af0336d44b0b6e9a6ac328687a23111600a16f4760d1454820bd9`, 5,242 lines after stages 1–4.5). Phases 0–1 as executed are an **audit-and-remediation of the original snapshot**: all fixes live in `working/markdown_studio.html`, and the branch does not modify the live app.
 
@@ -30,7 +30,7 @@ Per plan G0 ("If the source differs, establish a new named baseline before proce
 1. Keep the original snapshot as the remediation target for Phases 2–6 and treat the live-app fix as a separate, later effort; or
 2. Re-baseline on `scripts/markdown-studio.html` and port the verified R01–R04 fixes (and subsequent phases) into the live app.
 
-This decision is open; no integration into the live app has been performed or implied. D001 note (2026-11-04): the live app **already lacks** the D001 CSS rule (it was removed there during stages 1–4.5), so a re-baseline on the live app would not reintroduce this defect; see `reports/d001_remediation_report.md` §2.
+**Decision recorded 2026-11-06 (project owner): option 1 — keep the original snapshot as the remediation target for Phases 2–6.** All remediation work (R01–R05, D001, and upcoming Phase 2+) continues exclusively in `working/markdown_studio.html`; the live app `scripts/markdown-studio.html` remains untouched in this effort and its R01–R04/D001-equivalent defects are treated as a separate, later live-app effort. Rationale: the entire verified evidence chain (mock suites, 4-browser 141/141 capture matrix, checksums) targets `working/markdown_studio.html` (`e02aed95…`), so re-baselining now would discard that provenance. No integration into the live app has been performed or implied. D001 note (2026-11-04): the live app **already lacks** the D001 CSS rule (removed during stages 1–4.5), so the later live-app effort will not reintroduce this defect; see `reports/d001_remediation_report.md` §2.
 
 ## Phase 1 Resolved Findings
 

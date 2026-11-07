@@ -1,7 +1,8 @@
 // Reproductions against extracted baseline functions. These are not browser tests.
 const fs=require('fs'), path=require('path'),vm=require('vm'),assert=require('assert'),crypto=require('crypto');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'evidence/phase-0');
-const src=fs.readFileSync(path.join(root,'baseline/markdown_studio.original.html'),'utf8');
+const srcRaw=fs.readFileSync(path.join(root,'baseline/markdown_studio.original.html'),'utf8');
+const src=srcRaw.replace(/\r\n/g,'\n'); // CRLF checkouts: normalize so section()/hashes match the committed LF blob
 const marked=require('./vendor/marked.min.js');
 const results=[];
 function section(a,b){const start=src.indexOf(a);assert(start>=0,a);const end=src.indexOf(b,start+a.length);assert(end>start,b);return src.slice(start,end).trim();}
@@ -11,7 +12,7 @@ const templates=vm.runInNewContext('('+section('const DIAGRAM_TEMPLATES = {','//
 let n=0;for(const [type,variants]of Object.entries(templates))for(const[key,t]of Object.entries(variants)){fs.writeFileSync(path.join(out,'fixtures',`template-${type}-${key}.md`),'```mermaid\n'+t.code+'\n```\n');n++;}
 fs.writeFileSync(path.join(out,'templates.json'),JSON.stringify({count:n,templates},null,2)+'\n');
 for(const [i,m]of [...src.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].entries())new vm.Script(m[1],{filename:`inline-${i}.js`});
-results.push({id:'B00',issues:[],gate:'G0',status:'pass',procedure:'Compile inline scripts with vm.Script; compare source hash to plan.',observation:{sha256:crypto.createHash('sha256').update(src).digest('hex'),inlineSyntax:'valid',templatesExtracted:n},timestamp:new Date().toISOString()});
+results.push({id:'B00',issues:[],gate:'G0',status:'pass',procedure:'Compile inline scripts with vm.Script; compare source hash to plan.',observation:{sha256:crypto.createHash('sha256').update(src).digest('hex'),sha256Raw:crypto.createHash('sha256').update(srcRaw).digest('hex'),lineEndings:srcRaw.includes('\r\n')?'CRLF-on-disk':'LF',inlineSyntax:'valid',templatesExtracted:n},timestamp:new Date().toISOString()});
 const wrap=fn('wrapSelection(before, after)', 'function prependLines');
 const editor={value:'',selectionStart:0,selectionEnd:0,focus(){},dispatchEvent(){}};
 const ctx={editorEl:editor,Event:class{}};vm.createContext(ctx);vm.runInContext(wrap,ctx);
