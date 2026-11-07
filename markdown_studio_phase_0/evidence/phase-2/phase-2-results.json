@@ -1,7 +1,7 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-07T21:36:45.575Z",
+  "timestamp": "2026-11-07T21:39:48.694Z",
   "testsPassed": 1,
   "testsFailed": 0,
   "findingsResolved": [
@@ -18,7 +18,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-07T21:36:45.574Z",
+      "timestamp": "2026-11-07T21:39:48.692Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
