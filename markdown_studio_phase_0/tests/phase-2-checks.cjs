@@ -77,7 +77,7 @@ try {
   // Sub-test 1a: Blockquote-nested fixture (QAQC repro 1)
   // Fixture: > ```mermaid first, followed by top-level ```mermaid
   const bqFixturePath = path.join(out, 'fixtures/blockquote-nested.md');
-  const bqDoc = fs.readFileSync(bqFixturePath, 'utf8');
+  const bqDoc = fs.readFileSync(bqFixturePath, 'utf8').replace(/\r\n/g, '\n');
 
   // Edit Card 0 (blockquote diagram)
   ctx.editorEl.value = bqDoc;
@@ -104,7 +104,7 @@ try {
   // Sub-test 1b: Info-variant fences (QAQC repro 2)
   // Fixture: ```mermaid-x (ignored), ```mermaid title="Architecture Overview", ```mermaid
   const infoFixturePath = path.join(out, 'fixtures/info-variant-fences.md');
-  const infoDoc = fs.readFileSync(infoFixturePath, 'utf8');
+  const infoDoc = fs.readFileSync(infoFixturePath, 'utf8').replace(/\r\n/g, '\n');
 
   // Edit Card 0 (which is the real diagram with title="Architecture Overview", NOT mermaid-x)
   ctx.editorEl.value = infoDoc;
@@ -131,7 +131,7 @@ try {
 
   // Sub-test 1c: Mixed outer-fence fixture (4-backtick outer markdown block containing mermaid)
   const outerFixturePath = path.join(out, 'fixtures/mixed-outer-fence.md');
-  const outerDoc = fs.readFileSync(outerFixturePath, 'utf8');
+  const outerDoc = fs.readFileSync(outerFixturePath, 'utf8').replace(/\r\n/g, '\n');
 
   // The outer 4-backtick markdown block contains an example ```mermaid block which Marked ignores.
   // The first real diagram rendered is the ~~~mermaid diagram (card index 0).

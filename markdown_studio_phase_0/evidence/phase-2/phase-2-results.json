@@ -1,15 +1,15 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-07T16:30:37.968Z",
+  "timestamp": "2026-11-07T21:36:45.575Z",
   "testsPassed": 1,
   "testsFailed": 0,
   "findingsResolved": [
     "R05"
   ],
   "candidateSha256": "ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e",
-  "candidateSha256Raw": "ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e",
-  "lineEndings": "LF",
+  "candidateSha256Raw": "ba4a39a6965b72d249f50334b62ffc1d4c6a1013235b8dcd6451457cf07383ce",
+  "lineEndings": "CRLF-on-disk",
   "results": [
     {
       "id": "P2-01",
@@ -18,7 +18,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-07T16:30:37.967Z",
+      "timestamp": "2026-11-07T21:36:45.574Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
