@@ -1,0 +1,34 @@
+{
+  "gate": "G2",
+  "status": "pass",
+  "timestamp": "2026-11-07T16:30:37.968Z",
+  "testsPassed": 1,
+  "testsFailed": 0,
+  "findingsResolved": [
+    "R05"
+  ],
+  "candidateSha256": "ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e",
+  "candidateSha256Raw": "ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e",
+  "lineEndings": "LF",
+  "results": [
+    {
+      "id": "P2-01",
+      "issues": [
+        "R05"
+      ],
+      "gate": "G2",
+      "name": "Parser-Consistent Source Replacement",
+      "timestamp": "2026-11-07T16:30:37.967Z",
+      "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
+      "observation": {
+        "blockquoteNestedPreserved": true,
+        "infoVariantPreserved": true,
+        "fourBacktickOuterPreserved": true,
+        "nestedBlockquotePreserved": true,
+        "indentAndDelimitersPreserved": true,
+        "inputEventsDispatched": 7
+      },
+      "status": "pass"
+    }
+  ]
+}
