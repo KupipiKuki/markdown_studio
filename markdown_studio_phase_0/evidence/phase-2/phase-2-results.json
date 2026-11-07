@@ -1,14 +1,15 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-07T21:39:48.694Z",
-  "testsPassed": 1,
+  "timestamp": "2026-11-07T22:10:36.851Z",
+  "testsPassed": 2,
   "testsFailed": 0,
   "findingsResolved": [
-    "R05"
+    "R05",
+    "R09"
   ],
-  "candidateSha256": "ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e",
-  "candidateSha256Raw": "ba4a39a6965b72d249f50334b62ffc1d4c6a1013235b8dcd6451457cf07383ce",
+  "candidateSha256": "259cc23bcd912cc83147e57d871067acc9e87dcebfaaa4e10e3b4cfab91ef6df",
+  "candidateSha256Raw": "2b5c6a21f201b03d7b70a6fe4aa19dcaaebd1cb6ea7db2b6a8b059d755abff12",
   "lineEndings": "CRLF-on-disk",
   "results": [
     {
@@ -18,7 +19,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-07T21:39:48.692Z",
+      "timestamp": "2026-11-07T22:10:36.848Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
@@ -27,6 +28,33 @@
         "nestedBlockquotePreserved": true,
         "indentAndDelimitersPreserved": true,
         "inputEventsDispatched": 7
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P2-03",
+      "issues": [
+        "R09"
+      ],
+      "gate": "G2",
+      "name": "Preview Interactivity Setup Listener Cleanup & Retention",
+      "timestamp": "2026-11-07T22:10:36.851Z",
+      "procedure": "Execute setupPreviewDiagramInteractivity across 50 simulated render cycles; verify constant window listener count (zero growth), zero detached card retention, intact interactivity after 50 cycles, and full teardown on cleanup.",
+      "observation": {
+        "cyclesTested": 50,
+        "initialListeners": {
+          "mousemove": 1,
+          "mouseup": 1
+        },
+        "finalListeners": {
+          "mousemove": 0,
+          "mouseup": 0
+        },
+        "listenerGrowthAcross50Cycles": 0,
+        "detachedNodeRetained": false,
+        "cycle50InteractivityPassed": true,
+        "interruptedDragHandled": true,
+        "cleanupTeardownPassed": true
       },
       "status": "pass"
     }

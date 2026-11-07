@@ -192,6 +192,198 @@ try {
 }
 
 // -----------------------------------------------------------------------------
+// Test 2: P2-03 Repeated Preview Setup Listener Cleanup & Detached Retention (W2 / R09)
+// -----------------------------------------------------------------------------
+try {
+  const getCardFn = section('function getCardMermaidCode(card) {', 'async function renderAllPreviewDiagrams()');
+  const interactivityFn = section('function setupPreviewDiagramInteractivity() {', '// --------------------------------------------------------------------------\n  // Diagram Export Helpers');
+
+  function createMockCard(index, code = 'flowchart TD\n  A --> B') {
+    let canvasHtml = '<svg></svg>';
+    const classListSet = new Set();
+    const canvasEl = {
+      style: {},
+      get innerHTML() { return canvasHtml; },
+      set innerHTML(v) { canvasHtml = v; },
+      querySelector: () => ({ style: {} })
+    };
+    const viewportEl = {
+      dataset: { zoom: '1', panX: '0', panY: '0' },
+      classList: {
+        add(c) { classListSet.add(c); },
+        remove(c) { classListSet.delete(c); },
+        contains(c) { return classListSet.has(c); }
+      },
+      style: {},
+      onmousedown: null,
+      onwheel: null
+    };
+    const rawEl = { textContent: code };
+    const card = {
+      dataset: {
+        diagramIndex: String(index),
+        mermaidCode: encodeURIComponent(code)
+      },
+      querySelector(sel) {
+        if (sel === '.mermaid-canvas') return canvasEl;
+        if (sel === '.mermaid-viewport') return viewportEl;
+        if (sel === '.mermaid-raw-code') return rawEl;
+        return null;
+      },
+      querySelectorAll() { return []; },
+      contains() { return true; },
+      onclick: null
+    };
+    return { card, viewport: viewportEl, canvas: canvasEl };
+  }
+
+  const windowListeners = new Map();
+  const mockWindow = {
+    addEventListener(type, handler) {
+      if (!windowListeners.has(type)) windowListeners.set(type, new Set());
+      windowListeners.get(type).add(handler);
+    },
+    removeEventListener(type, handler) {
+      if (windowListeners.has(type)) {
+        windowListeners.get(type).delete(handler);
+      }
+    },
+    trigger(type, event) {
+      if (windowListeners.has(type)) {
+        for (const h of windowListeners.get(type)) {
+          h(event);
+        }
+      }
+    }
+  };
+
+  let currentCards = [];
+  let studioCode = null, studioIdx = null, copiedCode = null;
+
+  const p2Ctx = {
+    document: {
+      querySelectorAll: (sel) => {
+        if (sel.includes('.mermaid-block-card')) return currentCards.map(c => c.card);
+        return [];
+      },
+      getElementById: () => null
+    },
+    window: mockWindow,
+    openStudioWithCode: (code, idx) => { studioCode = code; studioIdx = idx; },
+    copyToClipboard: (code) => { copiedCode = code; },
+    openFullscreenDiagram: () => {},
+    exportDiagramSvg: () => {},
+    exportDiagramPng: () => {},
+    encodeURIComponent,
+    decodeURIComponent,
+    showToast: () => {}
+  };
+
+  vm.createContext(p2Ctx);
+  vm.runInContext(getCardFn, p2Ctx);
+  vm.runInContext(interactivityFn, p2Ctx);
+
+  // 1. Simulate 50 refresh cycles with fresh cards each cycle
+  const cycleCounts = [];
+  let initialMmCount = 0, initialMuCount = 0;
+
+  for (let cycle = 1; cycle <= 50; cycle++) {
+    const cardA = createMockCard(0, `flowchart TD\n  Cycle${cycle}A`);
+    const cardB = createMockCard(1, `flowchart TD\n  Cycle${cycle}B`);
+    currentCards = [cardA, cardB];
+
+    p2Ctx.setupPreviewDiagramInteractivity();
+
+    const mmCount = (windowListeners.get('mousemove') || new Set()).size;
+    const muCount = (windowListeners.get('mouseup') || new Set()).size;
+
+    if (cycle === 1) {
+      initialMmCount = mmCount;
+      initialMuCount = muCount;
+      assert.equal(mmCount, 1, 'First cycle must register at most 1 shared mousemove listener');
+      assert.equal(muCount, 1, 'First cycle must register at most 1 shared mouseup listener');
+    } else {
+      assert.equal(mmCount, initialMmCount, `Cycle ${cycle} mousemove count (${mmCount}) must not grow beyond initial (${initialMmCount})`);
+      assert.equal(muCount, initialMuCount, `Cycle ${cycle} mouseup count (${muCount}) must not grow beyond initial (${initialMuCount})`);
+    }
+
+    assert.equal(p2Ctx.setupPreviewDiagramInteractivity.activePan, null, `Cycle ${cycle} must not retain active pan reference`);
+    cycleCounts.push({ cycle, mmCount, muCount });
+  }
+
+  // 2. Verify interactive panning on cycle 50 card A
+  const card50A = currentCards[0];
+  card50A.viewport.onmousedown({ clientX: 200, clientY: 150, target: card50A.viewport, preventDefault() {} });
+  assert(card50A.viewport.classList.contains('grabbing'), 'Viewport must enter grabbing state on mousedown');
+  assert(p2Ctx.setupPreviewDiagramInteractivity.activePan !== null, 'Active pan state must be set during drag');
+
+  mockWindow.trigger('mousemove', { clientX: 250, clientY: 190 });
+  assert.equal(card50A.viewport.dataset.panX, '50', 'panX must update to delta 50px');
+  assert.equal(card50A.viewport.dataset.panY, '40', 'panY must update to delta 40px');
+  assert(card50A.canvas.style.transform.includes('translate(50px, 40px)'), 'Canvas transform must reflect pan');
+
+  mockWindow.trigger('mouseup', {});
+  assert(!card50A.viewport.classList.contains('grabbing'), 'Grabbing class must be removed on mouseup');
+  assert.equal(p2Ctx.setupPreviewDiagramInteractivity.activePan, null, 'Active pan must be released on mouseup');
+
+  // 3. Verify card action buttons functioning on cycle 50 card A
+  const zoomInBtn = { dataset: { action: 'zoom-in' }, closest: () => zoomInBtn };
+  card50A.card.onclick({ target: zoomInBtn, stopPropagation() {} });
+  assert(parseFloat(card50A.viewport.dataset.zoom) > 1, 'Zoom in must increase zoom factor');
+
+  const resetBtn = { dataset: { action: 'zoom-reset' }, closest: () => resetBtn };
+  card50A.card.onclick({ target: resetBtn, stopPropagation() {} });
+  assert.equal(card50A.viewport.dataset.zoom, '1', 'Zoom reset must reset zoom factor to 1');
+  assert.equal(card50A.viewport.dataset.panX, '0', 'Zoom reset must reset panX to 0');
+  assert.equal(card50A.viewport.dataset.panY, '0', 'Zoom reset must reset panY to 0');
+
+  const editBtn = { dataset: { action: 'edit-diagram' }, closest: () => editBtn };
+  card50A.card.onclick({ target: editBtn, stopPropagation() {} });
+  assert.equal(studioCode, 'flowchart TD\n  Cycle50A', 'Edit diagram must pass exact cycle 50 source');
+  assert.equal(studioIdx, 0, 'Edit diagram must pass diagram index 0');
+
+  const copyBtn = { dataset: { action: 'copy-code' }, closest: () => copyBtn };
+  card50A.card.onclick({ target: copyBtn, stopPropagation() {} });
+  assert.equal(copiedCode, 'flowchart TD\n  Cycle50A', 'Copy code must copy exact cycle 50 source');
+
+  // 4. Verify drag interrupted by new render cycle releases previous card
+  const card50B = currentCards[1];
+  card50B.viewport.onmousedown({ clientX: 100, clientY: 100, target: card50B.viewport, preventDefault() {} });
+  assert(p2Ctx.setupPreviewDiagramInteractivity.activePan !== null, 'Active pan set on card B');
+  // New render pass begins
+  currentCards = [createMockCard(0, 'flowchart TD\n  NewRenderPass')];
+  p2Ctx.setupPreviewDiagramInteractivity();
+  assert.equal(p2Ctx.setupPreviewDiagramInteractivity.activePan, null, 'Dangling pan state must be cleared on re-setup');
+
+  // 5. Explicit lifecycle cleanup
+  p2Ctx.setupPreviewDiagramInteractivity.cleanup();
+  const mmCleanCount = (windowListeners.get('mousemove') || new Set()).size;
+  const muCleanCount = (windowListeners.get('mouseup') || new Set()).size;
+  assert.equal(mmCleanCount, 0, 'mousemove listener must be removed on explicit cleanup');
+  assert.equal(muCleanCount, 0, 'mouseup listener must be removed on explicit cleanup');
+  assert.equal(p2Ctx.window.__previewPanListenersBound, false, '__previewPanListenersBound must be reset on cleanup');
+
+  record('P2-03', ['R09'], 'Preview Interactivity Setup Listener Cleanup & Retention',
+    'Execute setupPreviewDiagramInteractivity across 50 simulated render cycles; verify constant window listener count (zero growth), zero detached card retention, intact interactivity after 50 cycles, and full teardown on cleanup.',
+    {
+      cyclesTested: 50,
+      initialListeners: { mousemove: initialMmCount, mouseup: initialMuCount },
+      finalListeners: { mousemove: (windowListeners.get('mousemove') || new Set()).size, mouseup: (windowListeners.get('mouseup') || new Set()).size },
+      listenerGrowthAcross50Cycles: 0,
+      detachedNodeRetained: false,
+      cycle50InteractivityPassed: true,
+      interruptedDragHandled: true,
+      cleanupTeardownPassed: true
+    }
+  );
+  console.log('✓ P2-03: Repeated preview setup listener cleanup and detached-card release verified across 50 cycles.');
+} catch (e) {
+  record('P2-03', ['R09'], 'Preview Interactivity Setup Listener Cleanup & Retention', 'Execute preview interactivity lifecycle test', { error: e.message, stack: e.stack }, 'fail');
+  console.error('✗ P2-03 Failed:', e.message);
+  process.exitCode = 1;
+}
+
+// -----------------------------------------------------------------------------
 // Write Results
 // -----------------------------------------------------------------------------
 const summary = {
@@ -200,7 +392,7 @@ const summary = {
   timestamp: new Date().toISOString(),
   testsPassed: results.filter(r => r.status === 'pass').length,
   testsFailed: results.filter(r => r.status === 'fail').length,
-  findingsResolved: ['R05'],
+  findingsResolved: ['R05', 'R09'],
   candidateSha256: crypto.createHash('sha256').update(src).digest('hex'),
   candidateSha256Raw: crypto.createHash('sha256').update(srcRaw).digest('hex'),
   lineEndings: srcRaw.includes('\r\n') ? 'CRLF-on-disk' : 'LF',

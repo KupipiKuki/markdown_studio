@@ -2399,11 +2399,14 @@
     return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
   }
 
-  function cleanStrayMermaidElements() {
+  function cleanStrayMermaidElements(targetId) {
     try {
-      // Remove any rogue error SVGs injected by Mermaid directly into document.body
-      document.querySelectorAll('body > svg').forEach(el => el.remove());
-      document.querySelectorAll('body > [id^="dmmd-"], body > [id^="mmd-"], body > [id*="mermaid-error"], body > .error-icon, body > [aria-roledescription="error"]').forEach(el => el.remove());
+      // Remove rogue error elements injected by Mermaid into document.body without wiping unrelated SVGs
+      if (targetId) {
+        const specific = document.getElementById(targetId) || document.getElementById('d' + targetId);
+        if (specific && specific.parentNode === document.body) specific.remove();
+      }
+      document.querySelectorAll('body > [id^="dmmd-error-"], body > [id^="mmd-error-"], body > [id*="mermaid-error"], body > .error-icon, body > [aria-roledescription="error"]').forEach(el => el.remove());
     } catch (e) {}
   }
 
@@ -2679,9 +2682,45 @@
   }
 
   // --------------------------------------------------------------------------
-  // Diagram Viewport Pan & Zoom Interactivity
+  // Diagram Viewport Pan & Zoom Interactivity (Shared Pan Handlers & Lifecycle Cleanup)
   // --------------------------------------------------------------------------
+  let activePreviewPan = null;
+
+  function cleanupPreviewDiagramInteractivity() {
+    if (typeof setupPreviewDiagramInteractivity !== 'undefined' && setupPreviewDiagramInteractivity.cleanup) {
+      setupPreviewDiagramInteractivity.cleanup();
+    }
+  }
+
   function setupPreviewDiagramInteractivity() {
+    // Shared window listeners for preview diagram pan drag — registered at most once on window
+    if (typeof window !== 'undefined' && window.addEventListener && !window.__previewPanListenersBound) {
+      window.__previewPanListenersBound = true;
+
+      setupPreviewDiagramInteractivity._onMouseMove = (e) => {
+        const pan = setupPreviewDiagramInteractivity.activePan;
+        if (!pan) return;
+        pan.onMove(e.clientX, e.clientY);
+      };
+
+      setupPreviewDiagramInteractivity._onMouseUp = () => {
+        const pan = setupPreviewDiagramInteractivity.activePan;
+        if (pan) {
+          if (pan.onEnd) pan.onEnd();
+          setupPreviewDiagramInteractivity.activePan = null;
+        }
+      };
+
+      window.addEventListener('mousemove', setupPreviewDiagramInteractivity._onMouseMove);
+      window.addEventListener('mouseup', setupPreviewDiagramInteractivity._onMouseUp);
+    }
+
+    // Always release any dangling pan reference across render cycles so detached DOM trees cannot be retained
+    if (setupPreviewDiagramInteractivity.activePan && setupPreviewDiagramInteractivity.activePan.onEnd) {
+      setupPreviewDiagramInteractivity.activePan.onEnd();
+    }
+    setupPreviewDiagramInteractivity.activePan = null;
+
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
 
     cards.forEach(card => {
@@ -2689,8 +2728,6 @@
       const canvas = card.querySelector('.mermaid-canvas');
       if (!viewport || !canvas) return;
 
-      let isDragging = false;
-      let startX, startY;
       let panX = parseFloat(viewport.dataset.panX || 0);
       let panY = parseFloat(viewport.dataset.panY || 0);
       let zoom = parseFloat(viewport.dataset.zoom || 1);
@@ -2702,33 +2739,36 @@
         viewport.dataset.zoom = zoom;
       }
 
-      // Mouse Drag to Pan
+      // Mouse Drag to Pan — delegates to shared window listeners without per-card listener accumulation
       viewport.onmousedown = (e) => {
-        if (e.target.closest('.diag-action-btn') || e.target.closest('button')) return;
-        isDragging = true;
+        if (e.target && e.target.closest && (e.target.closest('.diag-action-btn') || e.target.closest('button'))) return;
         viewport.classList.add('grabbing');
-        startX = e.clientX - panX;
-        startY = e.clientY - panY;
-        e.preventDefault();
+        const startX = e.clientX - panX;
+        const startY = e.clientY - panY;
+
+        setupPreviewDiagramInteractivity.activePan = {
+          card,
+          viewport,
+          canvas,
+          startX,
+          startY,
+          onMove(clientX, clientY) {
+            panX = clientX - startX;
+            panY = clientY - startY;
+            updateTransform();
+          },
+          onEnd() {
+            if (viewport.classList && viewport.classList.remove) {
+              viewport.classList.remove('grabbing');
+            }
+          }
+        };
+        if (e.preventDefault) e.preventDefault();
       };
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        panX = e.clientX - startX;
-        panY = e.clientY - startY;
-        updateTransform();
-      });
-
-      window.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          viewport.classList.remove('grabbing');
-        }
-      });
 
       // Mouse Wheel to Zoom
       viewport.onwheel = (e) => {
-        e.preventDefault();
+        if (e.preventDefault) e.preventDefault();
         const factor = e.deltaY < 0 ? 1.15 : 0.87;
         const newZoom = Math.min(Math.max(zoom * factor, 0.3), 5.0);
         zoom = newZoom;
@@ -2737,10 +2777,10 @@
 
       // Delegated Action Button Controls on Card
       card.onclick = (e) => {
-        const btn = e.target.closest('[data-action]');
-        if (!btn || !card.contains(btn)) return;
-        e.stopPropagation();
-        const action = btn.dataset.action;
+        const btn = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+        if (!btn || (card.contains && !card.contains(btn))) return;
+        if (e.stopPropagation) e.stopPropagation();
+        const action = btn.dataset ? btn.dataset.action : null;
         const rawCode = getCardMermaidCode(card);
 
         if (action === 'zoom-in') {
@@ -2763,12 +2803,27 @@
         } else if (action === 'export-png') {
           exportDiagramPng(canvas, 'mermaid-diagram.png');
         } else if (action === 'edit-diagram') {
-          const index = card.dataset.diagramIndex !== undefined ? parseInt(card.dataset.diagramIndex, 10) : 0;
+          const index = card.dataset && card.dataset.diagramIndex !== undefined ? parseInt(card.dataset.diagramIndex, 10) : 0;
           openStudioWithCode(rawCode, index);
         }
       };
     });
   }
+
+  setupPreviewDiagramInteractivity.cleanup = function() {
+    if (typeof window !== 'undefined' && window.__previewPanListenersBound) {
+      if (window.removeEventListener) {
+        if (setupPreviewDiagramInteractivity._onMouseMove) {
+          window.removeEventListener('mousemove', setupPreviewDiagramInteractivity._onMouseMove);
+        }
+        if (setupPreviewDiagramInteractivity._onMouseUp) {
+          window.removeEventListener('mouseup', setupPreviewDiagramInteractivity._onMouseUp);
+        }
+      }
+      window.__previewPanListenersBound = false;
+    }
+    setupPreviewDiagramInteractivity.activePan = null;
+  };
 
   // --------------------------------------------------------------------------
   // Diagram Export Helpers (SVG & High-Res PNG)
