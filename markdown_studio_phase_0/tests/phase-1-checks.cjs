@@ -10,7 +10,12 @@ const out = path.join(root, 'evidence/phase-1');
 fs.mkdirSync(out, { recursive: true });
 
 const workingPath = path.join(root, 'working/markdown_studio.html');
-const src = fs.readFileSync(workingPath, 'utf8');
+// Normalize CRLF->LF: Windows autocrlf checkouts differ on disk but not in git.
+// Section markers below contain literal \n, so raw CRLF breaks indexOf matching.
+// Hashes: candidateSha256 uses the normalized text (matches the committed blob);
+// candidateSha256Raw records the on-disk bytes for provenance.
+const srcRaw = fs.readFileSync(workingPath, 'utf8');
+const src = srcRaw.replace(/\r\n/g, '\n');
 
 const results = [];
 
@@ -38,9 +43,10 @@ try {
     new vm.Script(match[1], { filename: `working-inline-${scriptIndex++}.js` });
   }
   const sha = crypto.createHash('sha256').update(src).digest('hex');
+  const shaRaw = crypto.createHash('sha256').update(srcRaw).digest('hex');
   record('P1-01', ['R01', 'R02', 'R03', 'R04'], 'Inline Scripts Syntax Check',
     'Compile all inline scripts in working/markdown_studio.html with vm.Script.',
-    { syntaxValid: true, scriptTagsChecked: scriptIndex, candidateSha256: sha }
+    { syntaxValid: true, scriptTagsChecked: scriptIndex, candidateSha256: sha, candidateSha256Raw: shaRaw, lineEndings: srcRaw.includes('\r\n') ? 'CRLF-on-disk' : 'LF' }
   );
   console.log('✓ P1-01: Inline script syntax compiles cleanly.');
 } catch (e) {
