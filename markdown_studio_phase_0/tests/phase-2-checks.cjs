@@ -42,6 +42,7 @@ function section(a, b) {
 
 console.log('=== Starting Phase 2 Verification Suite ===\n');
 
+(async () => {
 // -----------------------------------------------------------------------------
 // Test 1: P2-01 Parser-Consistent Source Ranges (W1 / R05 residual)
 // -----------------------------------------------------------------------------
@@ -192,7 +193,192 @@ try {
 }
 
 // -----------------------------------------------------------------------------
-// Test 2: P2-03 Repeated Preview Setup Listener Cleanup & Detached Retention (W2 / R09)
+// Test 2: P2-02 Async Render Generation Guard & Invalidation (W3 / R15)
+// -----------------------------------------------------------------------------
+try {
+  const getCardFn = section('function getCardMermaidCode(card) {', 'async function renderAllPreviewDiagrams()');
+  const renderAllFn = 'async ' + section('function renderAllPreviewDiagrams() {', '// --------------------------------------------------------------------------\n  // Diagram Viewport Pan & Zoom Interactivity');
+  const builderRenderFn = 'async ' + section('function renderBuilderDiagram() {', '// Builder Pan & Zoom Handlers');
+
+  function createDeferred() {
+    let resolve, reject;
+    const promise = new Promise((res, rej) => { resolve = res; reject = rej; });
+    return { promise, resolve, reject };
+  }
+
+  // --- Sub-test 2a: Controlled Out-of-Order Render Completion on Preview ---
+  let canvasHtml = '';
+  const canvasEl = {
+    style: {},
+    get innerHTML() { return canvasHtml; },
+    set innerHTML(val) { canvasHtml = val; },
+    querySelector: () => ({ style: {} })
+  };
+  const cardEl = {
+    dataset: { diagramIndex: '0', mermaidCode: encodeURIComponent('flowchart TD\n  Initial') },
+    querySelector: (s) => (s === '.mermaid-canvas' ? canvasEl : null),
+    isConnected: true,
+    ownerDocument: { contains: () => true }
+  };
+
+  const renderDeferreds = [];
+  let loggedErrors = [];
+
+  const mockMermaid = {
+    parse: async () => {},
+    render: async (id, code) => {
+      const def = createDeferred();
+      renderDeferreds.push({ id, code, def });
+      return def.promise;
+    }
+  };
+
+  let activeTabId = 'tab-1';
+  const p2Ctx = {
+    mermaid: mockMermaid,
+    document: {
+      querySelectorAll: (sel) => (sel.includes('.mermaid-block-card') ? [cardEl] : []),
+      getElementById: () => null,
+      contains: () => true
+    },
+    uid: () => 'uid' + Math.random().toString(36).slice(2, 6),
+    cleanStrayMermaidElements: () => {},
+    logError: (source, msg, snip) => { loggedErrors.push({ source, msg, snip }); },
+    escapeHtml: (s) => s,
+    encodeURIComponent,
+    decodeURIComponent,
+    setupPreviewDiagramInteractivity: () => {},
+    getActiveTab: () => ({ id: activeTabId }),
+    initMermaid: () => {}
+  };
+
+  vm.createContext(p2Ctx);
+  vm.runInContext(getCardFn, p2Ctx);
+  vm.runInContext(renderAllFn, p2Ctx);
+
+  const tick = () => new Promise(r => setTimeout(r, 10));
+
+  // Start Generation 1
+  const p1 = p2Ctx.renderAllPreviewDiagrams();
+  await tick();
+  assert.equal(renderDeferreds.length, 1, 'Generation 1 should invoke mermaid.render');
+
+  // Update diagram code and start Generation 2 before Gen 1 resolves
+  cardEl.dataset.mermaidCode = encodeURIComponent('flowchart TD\n  Gen2Code');
+  const p2 = p2Ctx.renderAllPreviewDiagrams();
+  await tick();
+  assert.equal(renderDeferreds.length, 2, 'Generation 2 should invoke mermaid.render');
+
+  // Resolve Generation 2 FIRST (out-of-order)
+  renderDeferreds[1].def.resolve({ svg: '<svg id="gen2-svg">Gen2 Content</svg>' });
+  await p2;
+  assert.equal(canvasEl.innerHTML, '<svg id="gen2-svg">Gen2 Content</svg>', 'Canvas must display Gen 2 SVG after Gen 2 resolves');
+
+  // Resolve Generation 1 SECOND (stale)
+  renderDeferreds[0].def.resolve({ svg: '<svg id="gen1-svg">Stale Gen1 Content</svg>' });
+  await p1;
+  assert.equal(canvasEl.innerHTML, '<svg id="gen2-svg">Gen2 Content</svg>', 'Canvas must NOT be overwritten by stale Gen 1 resolution');
+  assert.equal(loggedErrors.length, 0, 'No errors should be logged for superseded Gen 1');
+
+  // --- Sub-test 2b: Tab Switch Interleaving ---
+  cardEl.dataset.mermaidCode = encodeURIComponent('flowchart TD\n  Tab1Code');
+  const p3 = p2Ctx.renderAllPreviewDiagrams();
+  await tick();
+  assert.equal(renderDeferreds.length, 3);
+
+  // User switches to 'tab-2' before Gen 3 finishes
+  activeTabId = 'tab-2';
+  renderDeferreds[2].def.resolve({ svg: '<svg id="tab1-stale">Tab1 Stale</svg>' });
+  await p3;
+  assert.equal(canvasEl.innerHTML, '<svg id="gen2-svg">Gen2 Content</svg>', 'Stale render from previous tab must not commit to canvas');
+
+  // --- Sub-test 2c: Studio Modal Reopen & Rapid Input Interleaving ---
+  let builderCanvasHtml = '';
+  const studioBuilderCanvas = {
+    style: {},
+    get innerHTML() { return builderCanvasHtml; },
+    set innerHTML(val) { builderCanvasHtml = val; }
+  };
+  const studioBadge = { className: '', innerHTML: '' };
+  const studioModalEl = {
+    classList: {
+      _classes: new Set(['open']),
+      contains(c) { return this._classes.has(c); },
+      add(c) { this._classes.add(c); },
+      remove(c) { this._classes.delete(c); }
+    }
+  };
+  const studioCodeInput = { value: 'flowchart TD\n  StudioGen1' };
+  const studioThemeSelect = { value: 'default' };
+
+  p2Ctx.builderCanvas = studioBuilderCanvas;
+  p2Ctx.builderValidationBadge = studioBadge;
+  p2Ctx.studioModal = studioModalEl;
+  p2Ctx.builderCodeInput = studioCodeInput;
+  p2Ctx.builderThemeSelect = studioThemeSelect;
+
+  const studioDeferreds = [];
+  p2Ctx.mermaid.render = async (id, code) => {
+    const def = createDeferred();
+    studioDeferreds.push({ id, code, def });
+    return def.promise;
+  };
+
+  vm.runInContext(builderRenderFn, p2Ctx);
+
+  // Studio Stroke 1
+  const sp1 = p2Ctx.renderBuilderDiagram();
+  await tick();
+  assert.equal(studioDeferreds.length, 1);
+
+  // Studio Stroke 2 (rapid typing)
+  studioCodeInput.value = 'flowchart TD\n  StudioGen2';
+  const sp2 = p2Ctx.renderBuilderDiagram();
+  await tick();
+  assert.equal(studioDeferreds.length, 2);
+
+  // Resolve Stroke 2 first
+  studioDeferreds[1].def.resolve({ svg: '<svg id="studio-svg2">Studio Gen 2</svg>' });
+  await sp2;
+  assert.equal(studioBuilderCanvas.innerHTML, '<svg id="studio-svg2">Studio Gen 2</svg>');
+  assert(studioBadge.className.includes('valid'));
+
+  // Resolve Stroke 1 second (out of order)
+  studioDeferreds[0].def.resolve({ svg: '<svg id="studio-svg1">Studio Gen 1</svg>' });
+  await sp1;
+  assert.equal(studioBuilderCanvas.innerHTML, '<svg id="studio-svg2">Studio Gen 2</svg>', 'Studio canvas must NOT be overwritten by stale stroke 1');
+
+  // Studio Closed Interleaving
+  studioCodeInput.value = 'flowchart TD\n  StudioGen3';
+  const sp3 = p2Ctx.renderBuilderDiagram();
+  await tick();
+  assert.equal(studioDeferreds.length, 3);
+  // User closes modal before render settles
+  studioModalEl.classList.remove('open');
+  studioDeferreds[2].def.resolve({ svg: '<svg id="studio-svg3">Studio Gen 3</svg>' });
+  await sp3;
+  assert.equal(studioBuilderCanvas.innerHTML, '<svg id="studio-svg2">Studio Gen 2</svg>', 'Render settling after modal close must not commit');
+
+  record('P2-02', ['R15'], 'Render Generation Guard & Out-of-Order Invalidation',
+    'Start overlapping renders with controllable deferred promises; resolve out-of-order; assert canvas retains newest result only, no stale commits across tab switches or modal closes.',
+    {
+      outOfOrderHandled: true,
+      staleCommitBlocked: true,
+      tabSwitchInterleavingHandled: true,
+      modalCloseInterleavingHandled: true,
+      previewGenCount: p2Ctx.renderAllPreviewDiagrams.generation,
+      studioGenCount: p2Ctx.renderBuilderDiagram.generation
+    }
+  );
+  console.log('✓ P2-02: Render generation guard prevents stale out-of-order commits, tab switch leaks, and modal close overwrites.');
+} catch (e) {
+  record('P2-02', ['R15'], 'Render Generation Guard & Out-of-Order Invalidation', 'Execute generation guard out-of-order test', { error: e.message, stack: e.stack }, 'fail');
+  console.error('✗ P2-02 Failed:', e.message);
+  process.exitCode = 1;
+}
+
+// -----------------------------------------------------------------------------
+// Test 3: P2-03 Repeated Preview Setup Listener Cleanup & Detached Retention (W2 / R09)
 // -----------------------------------------------------------------------------
 try {
   const getCardFn = section('function getCardMermaidCode(card) {', 'async function renderAllPreviewDiagrams()');
@@ -392,7 +578,7 @@ const summary = {
   timestamp: new Date().toISOString(),
   testsPassed: results.filter(r => r.status === 'pass').length,
   testsFailed: results.filter(r => r.status === 'fail').length,
-  findingsResolved: ['R05', 'R09'],
+  findingsResolved: ['R05', 'R09', 'R15'],
   candidateSha256: crypto.createHash('sha256').update(src).digest('hex'),
   candidateSha256Raw: crypto.createHash('sha256').update(srcRaw).digest('hex'),
   lineEndings: srcRaw.includes('\r\n') ? 'CRLF-on-disk' : 'LF',
@@ -402,3 +588,7 @@ const summary = {
 fs.writeFileSync(path.join(out, 'phase-2-results.json'), JSON.stringify(summary, null, 2) + '\n');
 console.log('\n=== Gate G2 Checks Completed ===');
 console.log(`Passed: ${summary.testsPassed}, Failed: ${summary.testsFailed}`);
+})().catch(e => {
+  console.error(e);
+  process.exitCode = 1;
+});

@@ -1,6 +1,6 @@
 # G0/G1-exception capture stop points
 
-Candidate: `ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e`  Generated: 2026-11-07T20:13:49.033Z
+Candidate: `259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d`  Generated: 2026-11-08T00:00:39.310Z
 
 | Stop point | Gate | Area | Origin | Status | Artifacts |
 | --- | --- | --- | --- | --- | --- |
@@ -145,3 +145,5 @@ Candidate: `ab0f99f70463536056c3868eae38c05298db3ba67affbaf5abd1659c7a90070e`  G
 | G1-X1-ISOLATION-BROWSER | G1-exception | update-isolation | http | pass | evidence/phase-0/g0-capture/artifacts/G1-X1-ISOLATION-BROWSER.png |
 | G1-X4-WELCOME-FULLPAGE | G1-exception | visual | http | pass | evidence/phase-0/g0-capture/artifacts/G1-X4-WELCOME-FULLPAGE.png |
 | G1-CLIP-SUCCESS | G1-exception | clipboard | http | pass | evidence/phase-0/g0-capture/artifacts/G1-CLIP-SUCCESS.png |
+| G2-LISTENER-50 | G2 | listener-cleanup | http | pass | evidence/phase-0/g0-capture/artifacts/G2-LISTENER-50.png |
+| G2-RENDER-GEN | G2 | render-generation | http | pass | evidence/phase-0/g0-capture/artifacts/G2-RENDER-GEN.png |

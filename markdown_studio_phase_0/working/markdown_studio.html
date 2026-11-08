@@ -2612,11 +2612,31 @@
     return '';
   }
 
+  let previewRenderGeneration = 0;
+
   async function renderAllPreviewDiagrams() {
     if (typeof mermaid === 'undefined') return;
 
+    const currentGen = (typeof previewRenderGeneration !== 'undefined'
+      ? ++previewRenderGeneration
+      : (renderAllPreviewDiagrams.generation = (renderAllPreviewDiagrams.generation || 0) + 1));
+    renderAllPreviewDiagrams.generation = currentGen;
+
+    const activeTabSnapshot = typeof getActiveTab === 'function' ? getActiveTab() : null;
+    const activeTabIdSnapshot = activeTabSnapshot ? activeTabSnapshot.id : null;
+
+    function isCurrent() {
+      if (renderAllPreviewDiagrams.generation !== currentGen) return false;
+      if (typeof getActiveTab === 'function') {
+        const currentTab = getActiveTab();
+        if (currentTab && activeTabIdSnapshot && currentTab.id !== activeTabIdSnapshot) return false;
+      }
+      return true;
+    }
+
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
+      if (!isCurrent()) return;
       const canvas = card.querySelector('.mermaid-canvas');
       const code = getCardMermaidCode(card);
       if (!canvas || !code) continue;
@@ -2628,7 +2648,10 @@
       try {
         await mermaid.parse(code);
       } catch (parseErr) {
-        cleanStrayMermaidElements();
+        cleanStrayMermaidElements(uniqueId);
+        if (!isCurrent()) return;
+        if (card.isConnected === false || (card.ownerDocument && !card.ownerDocument.contains(card))) continue;
+
         const errMessage = parseErr && (parseErr.str || parseErr.message) ? (parseErr.str || parseErr.message) : String(parseErr);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
         canvas.innerHTML = `
@@ -2644,9 +2667,20 @@
         continue;
       }
 
+      if (!isCurrent()) return;
+
       try {
         // Attempt rendering with Mermaid
         const { svg } = await mermaid.render(uniqueId, code);
+        if (!isCurrent()) {
+          cleanStrayMermaidElements(uniqueId);
+          return;
+        }
+        if (card.isConnected === false || (card.ownerDocument && !card.ownerDocument.contains(card))) {
+          cleanStrayMermaidElements(uniqueId);
+          continue;
+        }
+
         canvas.innerHTML = svg;
 
         // Ensure rendered SVG has proper scalable attributes
@@ -2656,9 +2690,12 @@
           svgEl.style.height = 'auto';
         }
       } catch (err) {
-        cleanStrayMermaidElements();
+        cleanStrayMermaidElements(uniqueId);
         const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
         if (stray) stray.remove();
+
+        if (!isCurrent()) return;
+        if (card.isConnected === false || (card.ownerDocument && !card.ownerDocument.contains(card))) continue;
 
         const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
@@ -2673,12 +2710,14 @@
           </div>
         `;
       } finally {
-        cleanStrayMermaidElements();
+        cleanStrayMermaidElements(uniqueId);
       }
     }
 
-    // Attach pan/zoom handlers to each rendered diagram viewport
-    setupPreviewDiagramInteractivity();
+    // Attach pan/zoom handlers only if this generation is still the latest
+    if (isCurrent()) {
+      setupPreviewDiagramInteractivity();
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -3079,6 +3118,8 @@
     }
 
     renderedDiagramCounter = 0;
+    if (typeof previewRenderGeneration !== 'undefined') ++previewRenderGeneration;
+    if (renderAllPreviewDiagrams.generation) ++renderAllPreviewDiagrams.generation;
 
     try {
       const { text, mathStore } = extractMath(t.content);
@@ -3838,6 +3879,8 @@
   btnBuilderCancel.addEventListener('click', closeStudio);
 
   function openStudioWithCode(codeToEdit, diagramIndex) {
+    if (typeof studioRenderGeneration !== 'undefined') ++studioRenderGeneration;
+    if (renderBuilderDiagram.generation) ++renderBuilderDiagram.generation;
     activeEditingDiagramIndex = diagramIndex;
     studioModal.classList.add('open');
 
@@ -3861,6 +3904,8 @@
   function closeStudio() {
     studioModal.classList.remove('open');
     activeEditingDiagramIndex = null;
+    if (typeof studioRenderGeneration !== 'undefined') ++studioRenderGeneration;
+    if (renderBuilderDiagram.generation) ++renderBuilderDiagram.generation;
   }
 
   function detectDiagramType(code) {
@@ -3959,12 +4004,27 @@
     showToast('Diagram code formatted.');
   });
 
-  // Real-time render inside builder with error handling
+  // Real-time render inside builder with error handling & generation guard
+  let studioRenderGeneration = 0;
+
   async function renderBuilderDiagram() {
     const code = builderCodeInput.value.trim();
     if (!code) {
       builderCanvas.innerHTML = '<div style="color:var(--text-muted); padding:30px;">Empty diagram</div>';
       return;
+    }
+
+    const currentStudioGen = (typeof studioRenderGeneration !== 'undefined'
+      ? ++studioRenderGeneration
+      : (renderBuilderDiagram.generation = (renderBuilderDiagram.generation || 0) + 1));
+    renderBuilderDiagram.generation = currentStudioGen;
+
+    function isStudioCurrent() {
+      if (renderBuilderDiagram.generation !== currentStudioGen) return false;
+      if (typeof studioModal !== 'undefined' && studioModal && studioModal.classList && !studioModal.classList.contains('open')) {
+        return false;
+      }
+      return true;
     }
 
     const uniqueId = 'builder-mmd-' + uid();
@@ -3973,15 +4033,23 @@
     try {
       initMermaid(customTheme);
       await mermaid.parse(code);
-      const { svg } = await mermaid.render(uniqueId, code);
-      builderCanvas.innerHTML = svg;
+      if (!isStudioCurrent()) return;
 
+      const { svg } = await mermaid.render(uniqueId, code);
+      if (!isStudioCurrent()) {
+        cleanStrayMermaidElements(uniqueId);
+        return;
+      }
+
+      builderCanvas.innerHTML = svg;
       builderValidationBadge.className = 'validation-status-badge valid';
       builderValidationBadge.innerHTML = '<span>✓ Diagram Valid</span>';
     } catch (err) {
-      cleanStrayMermaidElements();
+      cleanStrayMermaidElements(uniqueId);
       const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
       if (stray) stray.remove();
+
+      if (!isStudioCurrent()) return;
 
       const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
       builderValidationBadge.className = 'validation-status-badge invalid';
@@ -3994,7 +4062,7 @@
         </div>
       `;
     } finally {
-      cleanStrayMermaidElements();
+      cleanStrayMermaidElements(uniqueId);
     }
   }
 
