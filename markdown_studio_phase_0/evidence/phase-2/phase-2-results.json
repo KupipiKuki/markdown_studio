@@ -1,15 +1,16 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-07T22:10:36.851Z",
-  "testsPassed": 2,
+  "timestamp": "2026-11-08T00:04:32.871Z",
+  "testsPassed": 3,
   "testsFailed": 0,
   "findingsResolved": [
     "R05",
-    "R09"
+    "R09",
+    "R15"
   ],
-  "candidateSha256": "259cc23bcd912cc83147e57d871067acc9e87dcebfaaa4e10e3b4cfab91ef6df",
-  "candidateSha256Raw": "2b5c6a21f201b03d7b70a6fe4aa19dcaaebd1cb6ea7db2b6a8b059d755abff12",
+  "candidateSha256": "1f10e11242f7d42e2acec50ec8616fddd67e24d1c5e36620b380d91c4e00864c",
+  "candidateSha256Raw": "259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d",
   "lineEndings": "CRLF-on-disk",
   "results": [
     {
@@ -19,7 +20,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-07T22:10:36.848Z",
+      "timestamp": "2026-11-08T00:04:32.768Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
@@ -32,13 +33,32 @@
       "status": "pass"
     },
     {
+      "id": "P2-02",
+      "issues": [
+        "R15"
+      ],
+      "gate": "G2",
+      "name": "Render Generation Guard & Out-of-Order Invalidation",
+      "timestamp": "2026-11-08T00:04:32.868Z",
+      "procedure": "Start overlapping renders with controllable deferred promises; resolve out-of-order; assert canvas retains newest result only, no stale commits across tab switches or modal closes.",
+      "observation": {
+        "outOfOrderHandled": true,
+        "staleCommitBlocked": true,
+        "tabSwitchInterleavingHandled": true,
+        "modalCloseInterleavingHandled": true,
+        "previewGenCount": 3,
+        "studioGenCount": 3
+      },
+      "status": "pass"
+    },
+    {
       "id": "P2-03",
       "issues": [
         "R09"
       ],
       "gate": "G2",
       "name": "Preview Interactivity Setup Listener Cleanup & Retention",
-      "timestamp": "2026-11-07T22:10:36.851Z",
+      "timestamp": "2026-11-08T00:04:32.871Z",
       "procedure": "Execute setupPreviewDiagramInteractivity across 50 simulated render cycles; verify constant window listener count (zero growth), zero detached card retention, intact interactivity after 50 cycles, and full teardown on cleanup.",
       "observation": {
         "cyclesTested": 50,

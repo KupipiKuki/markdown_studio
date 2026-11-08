@@ -32,6 +32,7 @@ const BROWSER = String(opt('browser', 'chromium')); // chromium | firefox | edge
 // Branded browsers are reached through the chromium launcher's channel option.
 const CHANNELS = { edge: 'msedge', chrome: 'chrome' };
 const STOP_ON_FAIL = args.includes('--stop-on-fail');
+const FILTER = opt('filter', null);
 if (!DRY_RUN && !['chromium', 'firefox', 'edge', 'chrome'].includes(BROWSER)) {
   console.error(`unknown --browser "${BROWSER}"; use chromium | firefox | edge | chrome`);
   process.exit(2);
@@ -97,6 +98,16 @@ function buildStopPoints() {
     procedure: 'With a focused visible window (headed), click Copy Code on a rendered card and read navigator.clipboard.readText(); otherwise record blocked with the rejection reason.',
     expected: 'Clipboard success path returns byte-exact diagram source; rejection path records the exact error toast.',
   });
+  sps.push({
+    id: 'G2-LISTENER-50', gate: 'G2', area: 'listener-cleanup', origin: 'http',
+    procedure: 'Execute 50 consecutive preview re-render cycles in the browser; spy on window.addEventListener to verify window mousemove/mouseup listeners do not accumulate and diagram drag remains interactive at cycle 50.',
+    expected: 'Window listener count remains constant (zero listener growth) across 50 cycles; diagram interactivity remains fully operational.',
+  });
+  sps.push({
+    id: 'G2-RENDER-GEN', gate: 'G2', area: 'render-generation', origin: 'http',
+    procedure: 'Verify generation guards and invalidation in live browser: rapid typing in editor commits only newest result without console errors; intercepted out-of-order renders do not overwrite newer canvas content; closing/reopening Studio modal cancels in-flight renders.',
+    expected: 'Only the newest render generation commits to preview/studio canvas; out-of-order completions discarded cleanly; zero console errors.',
+  });
   return sps;
 }
 
@@ -137,9 +148,14 @@ function writeManifest(records, env) {
   // Write-once discipline: every run is also preserved run-stamped under runs/ (per browser+origin),
   // so a second browser run never overwrites the first (environment-notes.md rule).
   for (const r of manifest.records) r.artifacts = r.artifacts.map(a => a.split(path.sep).join('/'));
-  const stamp = `${String(env.browserRequested || 'browser').split(' ')[0]}-${String(env.origin || ORIGIN)}-${generatedAt.replace(/[:.]/g, '-')}`;
-  fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
-  fs.writeFileSync(path.join(OUT, 'runs', `manifest-${stamp}.json`), JSON.stringify(manifest, null, 2) + '\n');
+  if (FILTER) {
+    return manifest;
+  }
+  if (!env.dryRun) {
+    const stamp = `${String(env.browserRequested || 'browser').split(' ')[0]}-${String(env.origin || ORIGIN)}-${generatedAt.replace(/[:.]/g, '-')}`;
+    fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
+    fs.writeFileSync(path.join(OUT, 'runs', `manifest-${stamp}.json`), JSON.stringify(manifest, null, 2) + '\n');
+  }
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   const lines = ['# G0/G1-exception capture stop points', '',
     `Candidate: \`${CANDIDATE_SHA}\`  Generated: ${manifest.generatedAt}`, '',
@@ -181,7 +197,8 @@ async function runBrowser() {
   const launcher = channel ? playwright.chromium : playwright[BROWSER];
   const browser = await launcher.launch({ headless: !HEADED, ...(channel ? { channel } : {}) });
   BROWSER_VERSION = `${browser.browserType().name()}${channel ? ' channel=' + channel : ''} ${browser.version()}`;
-  const records = buildStopPoints().map(makeRecord);
+  let records = buildStopPoints().map(makeRecord);
+  if (FILTER) records = records.filter(r => r.id.includes(FILTER) || r.gate === FILTER);
   const resourceErrors = [];
 
   async function newPage(origin, withClipboardPerms) {
@@ -405,6 +422,181 @@ async function runBrowser() {
         await shoot(page, rec);
         const ok = r.match === true;
         await finish(rec, ok ? 'pass' : 'blocked', { ...r, headed: HEADED, note: ok ? 'focused-window clipboard success verified (--headed)' : 'success path needs a focused visible window; rerun with --headed on a real display. Rejection path is mock-verified (P1-06)' });
+      } else if (rec.area === 'listener-cleanup') {
+        await settle(page);
+        const res = await page.evaluate(async () => {
+          let addedListeners = 0;
+          const origAdd = window.addEventListener;
+          window.addEventListener = function(type, fn, opts) {
+            if (type === 'mousemove' || type === 'mouseup') {
+              addedListeners++;
+            }
+            return origAdd.call(this, type, fn, opts);
+          };
+
+          const editor = document.getElementById('editor');
+          const listenerSamples = [];
+
+          for (let i = 0; i < 50; i++) {
+            editor.value = `# 50-Cycle Test - Run ${i}\n\n\`\`\`mermaid\nflowchart TD\n  N${i} --> M${i}\n\`\`\`\n`;
+            editor.dispatchEvent(new Event('input', { bubbles: true }));
+            // Yield for debounce (150ms in app) and render tick
+            await new Promise(r => setTimeout(r, 175));
+            if ((i + 1) % 10 === 0 || i === 0) {
+              listenerSamples.push({ cycle: i + 1, addedListeners });
+            }
+          }
+
+          // Wait for final cycle to settle
+          await new Promise(r => setTimeout(r, 300));
+
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          const hasSvg = !!svg;
+
+          // Test pan drag on cycle 50 card
+          let panned = false;
+          const viewport = card ? card.querySelector('.mermaid-viewport') : null;
+          if (viewport && canvas) {
+            const down = new MouseEvent('mousedown', { clientX: 200, clientY: 200, bubbles: true });
+            viewport.dispatchEvent(down);
+            const move = new MouseEvent('mousemove', { clientX: 240, clientY: 260, bubbles: true });
+            window.dispatchEvent(move);
+            const up = new MouseEvent('mouseup', { clientX: 240, clientY: 260, bubbles: true });
+            window.dispatchEvent(up);
+            panned = canvas.style.transform && canvas.style.transform.includes('translate');
+          }
+
+          window.addEventListener = origAdd;
+
+          return {
+            totalCycles: 50,
+            addedListenersDuring50Cycles: addedListeners,
+            listenerSamples,
+            hasSvg,
+            interactivityFunctional: panned,
+            previewPanListenersBound: !!window.__previewPanListenersBound
+          };
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = res.totalCycles === 50 && res.addedListenersDuring50Cycles === 0 && res.hasSvg && res.interactivityFunctional && errs.length === 0;
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...res, consoleErrors: errs.length })) break;
+      } else if (rec.area === 'render-generation') {
+        await settle(page);
+        const res = await page.evaluate(async () => {
+          const results = {};
+
+          // --- Step 1: Preview Out-of-Order Render Completion ---
+          const origRender = mermaid.render;
+          let renderCount = 0;
+          let delayedResolve1 = null;
+
+          mermaid.render = async function(id, text) {
+            renderCount++;
+            const thisCall = renderCount;
+            if (thisCall === 1) {
+              // Generation 1: delay resolve until delayedResolve1 is called
+              const rendered = await origRender.call(this, id, text);
+              await new Promise(r => { delayedResolve1 = () => r(rendered); });
+              return rendered;
+            } else {
+              return await origRender.call(this, id, text);
+            }
+          };
+
+          const editor = document.getElementById('editor');
+          // Trigger Gen 1
+          editor.value = '# Gen 1\n\n```mermaid\nflowchart TD\n  Gen1Node --> Gen1Target\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 180)); // let Gen 1 enter mermaid.render and pause
+
+          // Trigger Gen 2 while Gen 1 is paused
+          editor.value = '# Gen 2\n\n```mermaid\nflowchart TD\n  Gen2Node --> Gen2Target\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 250)); // let Gen 2 resolve and commit
+
+          const canvasAfterGen2 = document.querySelector('#previewContent .mermaid-canvas svg')?.innerHTML || '';
+          const gen2Committed = canvasAfterGen2.includes('Gen2Node');
+
+          // Now resolve Gen 1 out-of-order
+          if (delayedResolve1) delayedResolve1();
+          await new Promise(r => setTimeout(r, 250)); // give Gen 1 time to try to commit
+
+          const canvasAfterStaleGen1 = document.querySelector('#previewContent .mermaid-canvas svg')?.innerHTML || '';
+          const staleDidNotOverwrite = canvasAfterStaleGen1.includes('Gen2Node') && !canvasAfterStaleGen1.includes('Gen1Node');
+
+          // Restore mermaid.render
+          mermaid.render = origRender;
+
+          results.previewOutOfOrder = {
+            gen2Committed,
+            staleDidNotOverwrite
+          };
+
+          // --- Step 2: Rapid Typing Debounce and Settle ---
+          for (let k = 0; k < 5; k++) {
+            editor.value = `# Rapid Typing\n\n\`\`\`mermaid\nflowchart TD\n  Rapid_${k} --> Finish_${k}\n\`\`\`\n`;
+            editor.dispatchEvent(new Event('input', { bubbles: true }));
+            await new Promise(r => setTimeout(r, 20));
+          }
+          await new Promise(r => setTimeout(r, 400));
+          const canvasAfterRapid = document.querySelector('#previewContent .mermaid-canvas svg')?.innerHTML || '';
+          results.rapidTypingSettled = canvasAfterRapid.includes('Rapid_4');
+
+          // --- Step 3: Studio Modal Interleaving ---
+          const editBtn = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn) editBtn.click();
+          await new Promise(r => setTimeout(r, 300));
+
+          const builderInput = document.getElementById('builderCodeInput');
+          const builderBadge = document.getElementById('builderValidationBadge');
+          const studioModal = document.getElementById('studioModal');
+
+          if (builderInput && studioModal) {
+            // Rapid type in builder then immediately close
+            builderInput.value = 'flowchart TD\n  StudioClosed --> Lost';
+            builderInput.dispatchEvent(new Event('input', { bubbles: true }));
+            const cancelBtn = document.getElementById('btnBuilderCancel');
+            if (cancelBtn) cancelBtn.click();
+            await new Promise(r => setTimeout(r, 300));
+
+            // Reopen studio
+            if (editBtn) editBtn.click();
+            await new Promise(r => setTimeout(r, 300));
+
+            builderInput.value = 'flowchart TD\n  StudioActive --> ValidSession';
+            builderInput.dispatchEvent(new Event('input', { bubbles: true }));
+            await new Promise(r => setTimeout(r, 400));
+
+            const builderCanvas = document.getElementById('builderDiagramCanvas');
+            const studioSvg = builderCanvas ? (builderCanvas.querySelector('svg')?.innerHTML || builderCanvas.innerHTML || '') : '';
+            const badgeValid = builderBadge ? builderBadge.className.includes('valid') : false;
+
+            results.studioInterleaving = {
+              includesActive: studioSvg.includes('StudioActive'),
+              includesClosed: studioSvg.includes('StudioClosed'),
+              reopenedCleanly: studioSvg.includes('StudioActive') && !studioSvg.includes('StudioClosed'),
+              badgeValid
+            };
+
+            // Close studio modal to clean up
+            if (cancelBtn) cancelBtn.click();
+          }
+
+          return results;
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = res.previewOutOfOrder.staleDidNotOverwrite &&
+                   res.rapidTypingSettled &&
+                   res.studioInterleaving && res.studioInterleaving.reopenedCleanly && res.studioInterleaving.badgeValid &&
+                   errs.length === 0;
+        if (!ok) console.log('G2-RENDER-GEN failure details:', JSON.stringify(res, null, 2), 'consoleErrors:', errs);
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...res, consoleErrors: errs.length })) break;
       }
     } catch (e) {
       const stop = await finish(rec, 'blocked', { reason: String(e && e.message || e) });
@@ -431,10 +623,11 @@ function envRecord() {
 (async () => {
   const sps = buildStopPoints();
   if (DRY_RUN) {
-    const records = sps.map(makeRecord);
+    let records = sps.map(makeRecord);
+    if (FILTER) records = records.filter(r => r.id.includes(FILTER) || r.gate === FILTER);
     const m = writeManifest(records, envRecord());
     console.log(`dry-run: ${m.totals.stopPoints} stop points emitted to ${path.relative(root, OUT)}/manifest.json + stop-points.md`);
-    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}`);
+    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}`);
     return;
   }
   const records = await runBrowser();
