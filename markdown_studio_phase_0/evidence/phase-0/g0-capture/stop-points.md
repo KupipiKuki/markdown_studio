@@ -1,6 +1,6 @@
 # G0/G1-exception capture stop points
 
-Candidate: `259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d`  Generated: 2026-11-08T00:00:39.310Z
+Candidate: `47075740b67969cf1e434737109b1d77c033b50bc09336600a8cdb4b59f629fb`  Generated: 2026-11-09T00:43:50.867Z
 
 | Stop point | Gate | Area | Origin | Status | Artifacts |
 | --- | --- | --- | --- | --- | --- |
@@ -8,6 +8,7 @@ Candidate: `259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d`  G
 | G0-LAUNCH-HTTP | G0 | launch | http | pass | evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-HTTP.png |
 | G0-FIX-invalid | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid-counts.json |
 | G0-FIX-labels | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-labels.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-labels-counts.json |
+| G0-FIX-long-labels | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels-counts.json |
 | G0-FIX-mixed-fences | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences-counts.json |
 | G0-FIX-mixed | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-counts.json |
 | G0-FIX-multi | G0 | fixture-render | http | pass | evidence/phase-0/g0-capture/artifacts/G0-FIX-multi.png, evidence/phase-0/g0-capture/artifacts/G0-FIX-multi-counts.json |
@@ -147,3 +148,7 @@ Candidate: `259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d`  G
 | G1-CLIP-SUCCESS | G1-exception | clipboard | http | pass | evidence/phase-0/g0-capture/artifacts/G1-CLIP-SUCCESS.png |
 | G2-LISTENER-50 | G2 | listener-cleanup | http | pass | evidence/phase-0/g0-capture/artifacts/G2-LISTENER-50.png |
 | G2-RENDER-GEN | G2 | render-generation | http | pass | evidence/phase-0/g0-capture/artifacts/G2-RENDER-GEN.png |
+| G3-FIT-TALL-WIDE | G3 | diagram-fit | http | pass | evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-tall-preview.png, evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-tall-studio.png, evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-wide-preview.png, evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-wide-studio.png, evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE.png |
+| G3-THEME-ISOLATION-3X | G3 | theme-isolation | http | pass | evidence/phase-0/g0-capture/artifacts/G3-THEME-ISOLATION-3X.png |
+| G3-TYPOGRAPHY-LABELS | G3 | typography-isolation | http | pass | evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-preview.png, evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-studio.png, evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS.png |
+| G3-RESIZE-VIEWPORT-REFIT | G3 | resize-refit | http | pass | evidence/phase-0/g0-capture/artifacts/G3-RESIZE-VIEWPORT-REFIT.png |
