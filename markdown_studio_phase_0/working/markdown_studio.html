@@ -3490,17 +3490,32 @@
   });
 
   // --------------------------------------------------------------------------
-  // Formatting Ribbon Actions
+  // Formatting Ribbon Actions & Snippet Insertion
   // --------------------------------------------------------------------------
+  function insertSnippet(snippet) {
+    const start = editorEl.selectionStart;
+    const end = editorEl.selectionEnd;
+    const text = editorEl.value;
+
+    editorEl.value = text.substring(0, start) + snippet + text.substring(end);
+    editorEl.selectionStart = editorEl.selectionEnd = start + snippet.length;
+    editorEl.focus();
+    editorEl.dispatchEvent(new Event('input'));
+  }
+
   function wrapSelection(before, after) {
     const start = editorEl.selectionStart;
     const end = editorEl.selectionEnd;
     const text = editorEl.value;
-    const selected = text.substring(start, end) || 'text';
+    const selected = text.substring(start, end);
 
     editorEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
-    editorEl.selectionStart = start + before.length;
-    editorEl.selectionEnd = start + before.length + selected.length;
+    if (start !== end) {
+      editorEl.selectionStart = start + before.length;
+      editorEl.selectionEnd = start + before.length + selected.length;
+    } else {
+      editorEl.selectionStart = editorEl.selectionEnd = start + before.length;
+    }
     editorEl.focus();
     editorEl.dispatchEvent(new Event('input'));
   }
@@ -3541,14 +3556,19 @@
         case 'quote': prependLines('> '); break;
         case 'codeblock': wrapSelection('```javascript\n', '\n```'); break;
         case 'math': wrapSelection('$$\n', '\n$$'); break;
-        case 'hr': wrapSelection('\n\n---\n\n', ''); break;
+        case 'hr': insertSnippet('\n\n---\n\n'); break;
         case 'link':
           const url = prompt('Enter link URL:', 'https://');
           if (url) wrapSelection('[', `](${url})`);
           break;
         case 'image':
           const imgUrl = prompt('Enter image URL:', 'https://');
-          if (imgUrl) wrapSelection('![Alt text](', `${imgUrl})`);
+          if (imgUrl) {
+            const start = editorEl.selectionStart;
+            const end = editorEl.selectionEnd;
+            const alt = (start !== end) ? editorEl.value.substring(start, end) : 'Alt text';
+            insertSnippet(`![${alt}](${imgUrl})`);
+          }
           break;
         case 'table':
           document.getElementById('tableModal').classList.add('open');
@@ -3582,7 +3602,7 @@
     }
     tableMd += '\n';
 
-    wrapSelection(tableMd, '');
+    insertSnippet(tableMd);
     document.getElementById('tableModal').classList.remove('open');
   };
 
@@ -4168,7 +4188,8 @@
   // Builder Quick Palette Inserts
   document.querySelectorAll('#builderSidebar .palette-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const snippet = btn.dataset.insert;
+      let snippet = btn.dataset.insert || '';
+      snippet = snippet.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
       const start = builderCodeInput.selectionStart;
       const end = builderCodeInput.selectionEnd;
       const val = builderCodeInput.value;
@@ -4584,11 +4605,11 @@
         }
 
         if (!replaced) {
-          wrapSelection(fenced, '');
+          insertSnippet(fenced);
         }
       }
     } else {
-      wrapSelection(fenced, '');
+      insertSnippet(fenced);
     }
 
     editorEl.dispatchEvent(new Event('input'));
@@ -4605,7 +4626,7 @@
       if (templates) {
         const firstKey = Object.keys(templates)[0];
         const code = templates[firstKey].code;
-        wrapSelection(`\n\`\`\`mermaid\n${code}\n\`\`\`\n`, '');
+        insertSnippet(`\n\`\`\`mermaid\n${code}\n\`\`\`\n`);
         showToast(`Inserted ${type} template`);
       }
     });
@@ -4823,6 +4844,31 @@ ${previewContent}
   document.addEventListener('keydown', (e) => {
     const ctrl = e.ctrlKey || e.metaKey;
 
+    // Check if user is typing in Studio, an input field, or an open modal
+    const activeEl = document.activeElement;
+    const isStudioOpen = document.getElementById('studioModal') && document.getElementById('studioModal').classList.contains('open');
+    const isOtherInput = activeEl && activeEl !== editorEl && (
+      activeEl.tagName === 'INPUT' ||
+      activeEl.tagName === 'TEXTAREA' ||
+      activeEl.tagName === 'SELECT' ||
+      activeEl.isContentEditable
+    );
+
+    // Global dialog dismissals work everywhere
+    if (e.key === 'Escape') {
+      closeStudio();
+      document.getElementById('fsModal').classList.remove('open');
+      document.getElementById('tableModal').classList.remove('open');
+      findBar.classList.remove('show');
+      toggleErrorLog(false);
+      return;
+    }
+
+    // Do not intercept editor/document shortcuts while typing in Studio or other inputs
+    if (isStudioOpen || isOtherInput) {
+      return;
+    }
+
     if (ctrl && e.shiftKey && e.key.toLowerCase() === 'e' || (e.altKey && e.key.toLowerCase() === 'e')) {
       e.preventDefault();
       toggleEditor();
@@ -4850,12 +4896,6 @@ ${previewContent}
     } else if (ctrl && e.key.toLowerCase() === 'n') {
       e.preventDefault();
       addTab();
-    } else if (e.key === 'Escape') {
-      closeStudio();
-      document.getElementById('fsModal').classList.remove('open');
-      document.getElementById('tableModal').classList.remove('open');
-      findBar.classList.remove('show');
-      toggleErrorLog(false);
     }
   });
 

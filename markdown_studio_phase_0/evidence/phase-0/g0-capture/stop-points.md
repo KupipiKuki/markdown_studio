@@ -1,6 +1,6 @@
 # G0/G1-exception capture stop points
 
-Candidate: `47075740b67969cf1e434737109b1d77c033b50bc09336600a8cdb4b59f629fb`  Generated: 2026-11-09T00:43:50.867Z
+Candidate: `96d14ee79e42d9a5473d1baf8f99a05e529155968b14c6cdda938269c5eaecd1`  Generated: 2026-11-09T02:34:13.945Z
 
 | Stop point | Gate | Area | Origin | Status | Artifacts |
 | --- | --- | --- | --- | --- | --- |
@@ -152,3 +152,6 @@ Candidate: `47075740b67969cf1e434737109b1d77c033b50bc09336600a8cdb4b59f629fb`  G
 | G3-THEME-ISOLATION-3X | G3 | theme-isolation | http | pass | evidence/phase-0/g0-capture/artifacts/G3-THEME-ISOLATION-3X.png |
 | G3-TYPOGRAPHY-LABELS | G3 | typography-isolation | http | pass | evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-preview.png, evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-studio.png, evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS.png |
 | G3-RESIZE-VIEWPORT-REFIT | G3 | resize-refit | http | pass | evidence/phase-0/g0-capture/artifacts/G3-RESIZE-VIEWPORT-REFIT.png |
+| G4-INSERT-COMMANDS | G4 | insertion-commands | http | pass | evidence/phase-0/g0-capture/artifacts/G4-INSERT-COMMANDS.png |
+| G4-SHORTCUT-GUARDS | G4 | shortcut-guards | http | pass | evidence/phase-0/g0-capture/artifacts/G4-SHORTCUT-GUARDS.png |
+| G4-PERSISTENCE-ROUNDTRIP | G4 | persistence-roundtrip | http | pass | evidence/phase-0/g0-capture/artifacts/G4-PERSISTENCE-ROUNDTRIP.png |

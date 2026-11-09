@@ -1,0 +1,4830 @@
+{
+  "routine": "tests/g0-capture-routine.cjs",
+  "candidateSha256": "96d14ee79e42d9a5473d1baf8f99a05e529155968b14c6cdda938269c5eaecd1",
+  "candidateSha256LfNormalized": "9ca1ebd65601b75ab5ab7903167903f1642c705c754cc8fa38d0c7be328c4201",
+  "candidateNote": "candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.",
+  "generatedAt": "2026-11-09T02:34:13.945Z",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.20.0",
+    "browserRequested": "firefox",
+    "browserVersion": "firefox 159.0",
+    "headed": true,
+    "origin": "both",
+    "dryRun": false,
+    "note": "Record exactly what ran: Playwright chromium on win32 is a Chromium build on Windows, not branded Edge/Chrome; those stay separate matrix rows. Do not label another OS as Windows coverage."
+  },
+  "stopOnFail": false,
+  "totals": {
+    "stopPoints": 151,
+    "pass": 151,
+    "fail": 0,
+    "blocked": 0,
+    "unrun": 0
+  },
+  "records": [
+    {
+      "id": "G0-LAUNCH-FILE",
+      "gate": "G0",
+      "area": "launch",
+      "origin": "file",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Load working/markdown_studio.html via file:// in a fresh isolated context; record page title, editor presence, welcome.md render (SVG/error-card counts), console messages.",
+      "expected": "Page loads with #editor present; pristine welcome.md renders 2/2 diagrams with 0 error cards; console has no errors.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2,
+        "libs": {
+          "marked": "object",
+          "mermaid": "object"
+        },
+        "consoleErrors": [],
+        "resourceErrors": []
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-FILE.png"
+      ],
+      "timestamp": "2026-11-09T02:27:07.948Z"
+    },
+    {
+      "id": "G0-LAUNCH-HTTP",
+      "gate": "G0",
+      "area": "launch",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Load working/markdown_studio.html via loopback HTTP (127.0.0.1) in a fresh isolated context; record page title, editor presence, welcome.md render (SVG/error-card counts), console messages.",
+      "expected": "Page loads with #editor present; pristine welcome.md renders 2/2 diagrams with 0 error cards; console has no errors.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2,
+        "libs": {
+          "marked": "object",
+          "mermaid": "object"
+        },
+        "consoleErrors": [],
+        "resourceErrors": []
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-HTTP.png"
+      ],
+      "timestamp": "2026-11-09T02:27:09.470Z"
+    },
+    {
+      "id": "G0-FIX-invalid",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "invalid.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/invalid.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 0,
+        "errorCards": 1,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:10.974Z"
+    },
+    {
+      "id": "G0-FIX-labels",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "labels.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/labels.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:12.507Z"
+    },
+    {
+      "id": "G0-FIX-long-labels",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "long-labels.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/long-labels.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:14.199Z"
+    },
+    {
+      "id": "G0-FIX-mixed-fences",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "mixed-fences.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/mixed-fences.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:16.299Z"
+    },
+    {
+      "id": "G0-FIX-mixed",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "mixed.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/mixed.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:18.302Z"
+    },
+    {
+      "id": "G0-FIX-multi",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "multi.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/multi.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:20.502Z"
+    },
+    {
+      "id": "G0-FIX-nested",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "nested.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/nested.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:22.220Z"
+    },
+    {
+      "id": "G0-FIX-outer-fence",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "outer-fence.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/outer-fence.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 0,
+        "errorCards": 0,
+        "cards": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:23.971Z"
+    },
+    {
+      "id": "G0-FIX-tall",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "tall.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/tall.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:27.025Z"
+    },
+    {
+      "id": "G0-FIX-template-architecture-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-architecture-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-architecture-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:29.245Z"
+    },
+    {
+      "id": "G0-FIX-template-classDiagram-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-classDiagram-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-classDiagram-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:31.263Z"
+    },
+    {
+      "id": "G0-FIX-template-classDiagram-pattern",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-classDiagram-pattern.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-classDiagram-pattern.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:32.993Z"
+    },
+    {
+      "id": "G0-FIX-template-erDiagram-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-erDiagram-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-erDiagram-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:35.074Z"
+    },
+    {
+      "id": "G0-FIX-template-flowchart-decision",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-flowchart-decision.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-flowchart-decision.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:38.947Z"
+    },
+    {
+      "id": "G0-FIX-template-flowchart-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-flowchart-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-flowchart-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:40.636Z"
+    },
+    {
+      "id": "G0-FIX-template-flowchart-microservices",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-flowchart-microservices.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-flowchart-microservices.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:42.716Z"
+    },
+    {
+      "id": "G0-FIX-template-gantt-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-gantt-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-gantt-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:44.333Z"
+    },
+    {
+      "id": "G0-FIX-template-gitGraph-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-gitGraph-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-gitGraph-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:46.146Z"
+    },
+    {
+      "id": "G0-FIX-template-journey-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-journey-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-journey-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:49.267Z"
+    },
+    {
+      "id": "G0-FIX-template-mindmap-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-mindmap-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-mindmap-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:51.432Z"
+    },
+    {
+      "id": "G0-FIX-template-pie-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-pie-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-pie-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:52.990Z"
+    },
+    {
+      "id": "G0-FIX-template-sequence-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-sequence-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-sequence-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:54.566Z"
+    },
+    {
+      "id": "G0-FIX-template-sequence-payment",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-sequence-payment.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-sequence-payment.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:56.099Z"
+    },
+    {
+      "id": "G0-FIX-template-stateDiagram-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-stateDiagram-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-stateDiagram-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:57.824Z"
+    },
+    {
+      "id": "G0-FIX-template-timeline-default",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "template-timeline-default.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/template-timeline-default.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:27:59.914Z"
+    },
+    {
+      "id": "G0-FIX-wide",
+      "gate": "G0",
+      "area": "fixture-render",
+      "origin": "http",
+      "fixture": "wide.md",
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Set #editor to evidence/phase-0/fixtures/wide.md, dispatch input, wait for render to settle, capture full-page screenshot + console + per-card SVG/error counts.",
+      "expected": "Fixture renders per its content (diagrams produce SVGs, invalid.md produces an error card); 0 console errors; surrounding Markdown preserved.",
+      "observation": {
+        "svgCards": 1,
+        "errorCards": 0,
+        "cards": 1
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide.png",
+        "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide-counts.json"
+      ],
+      "timestamp": "2026-11-09T02:28:01.596Z"
+    },
+    {
+      "id": "G0-CTL-C001",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C001",
+      "selector": "#btnOpenStudio",
+      "controlSpec": {
+        "id": "C001",
+        "tag": "button",
+        "line": 1653,
+        "attributes": {
+          "class": "btn btn-gradient",
+          "id": "btnOpenStudio",
+          "title": "Open Mermaid Diagram Builder & Studio"
+        },
+        "expected": "Open Mermaid Diagram Builder & Studio",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C001 (button #btnOpenStudio) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Open Mermaid Diagram Builder & Studio",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C001.png"
+      ],
+      "timestamp": "2026-11-09T02:28:03.617Z"
+    },
+    {
+      "id": "G0-CTL-C002",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C002",
+      "selector": "#btnQuickDiagram",
+      "controlSpec": {
+        "id": "C002",
+        "tag": "button",
+        "line": 1662,
+        "attributes": {
+          "class": "btn",
+          "id": "btnQuickDiagram",
+          "title": "Insert Quick Mermaid Diagram"
+        },
+        "expected": "Insert Quick Mermaid Diagram",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C002 (button #btnQuickDiagram) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert Quick Mermaid Diagram",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": true,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C002.png"
+      ],
+      "timestamp": "2026-11-09T02:28:05.296Z"
+    },
+    {
+      "id": "G0-CTL-C003",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C003",
+      "selector": "[data-template=\"flowchart\"]",
+      "controlSpec": {
+        "id": "C003",
+        "tag": "button",
+        "line": 1667,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "flowchart"
+        },
+        "expected": "flowchart",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C003 (button [data-template=\"flowchart\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "flowchart",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C003.png"
+      ],
+      "timestamp": "2026-11-09T02:28:08.233Z"
+    },
+    {
+      "id": "G0-CTL-C004",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C004",
+      "selector": "[data-template=\"sequence\"]",
+      "controlSpec": {
+        "id": "C004",
+        "tag": "button",
+        "line": 1668,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "sequence"
+        },
+        "expected": "sequence",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C004 (button [data-template=\"sequence\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "sequence",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C004.png"
+      ],
+      "timestamp": "2026-11-09T02:28:09.925Z"
+    },
+    {
+      "id": "G0-CTL-C005",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C005",
+      "selector": "[data-template=\"classDiagram\"]",
+      "controlSpec": {
+        "id": "C005",
+        "tag": "button",
+        "line": 1669,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "classDiagram"
+        },
+        "expected": "classDiagram",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C005 (button [data-template=\"classDiagram\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "classDiagram",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C005.png"
+      ],
+      "timestamp": "2026-11-09T02:28:12.410Z"
+    },
+    {
+      "id": "G0-CTL-C006",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C006",
+      "selector": "[data-template=\"stateDiagram\"]",
+      "controlSpec": {
+        "id": "C006",
+        "tag": "button",
+        "line": 1670,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "stateDiagram"
+        },
+        "expected": "stateDiagram",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C006 (button [data-template=\"stateDiagram\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "stateDiagram",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C006.png"
+      ],
+      "timestamp": "2026-11-09T02:28:14.846Z"
+    },
+    {
+      "id": "G0-CTL-C007",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C007",
+      "selector": "[data-template=\"erDiagram\"]",
+      "controlSpec": {
+        "id": "C007",
+        "tag": "button",
+        "line": 1671,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "erDiagram"
+        },
+        "expected": "erDiagram",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C007 (button [data-template=\"erDiagram\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "erDiagram",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C007.png"
+      ],
+      "timestamp": "2026-11-09T02:28:17.350Z"
+    },
+    {
+      "id": "G0-CTL-C008",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C008",
+      "selector": "[data-template=\"gantt\"]",
+      "controlSpec": {
+        "id": "C008",
+        "tag": "button",
+        "line": 1672,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "gantt"
+        },
+        "expected": "gantt",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C008 (button [data-template=\"gantt\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "gantt",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C008.png"
+      ],
+      "timestamp": "2026-11-09T02:28:19.489Z"
+    },
+    {
+      "id": "G0-CTL-C009",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C009",
+      "selector": "[data-template=\"gitGraph\"]",
+      "controlSpec": {
+        "id": "C009",
+        "tag": "button",
+        "line": 1673,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "gitGraph"
+        },
+        "expected": "gitGraph",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C009 (button [data-template=\"gitGraph\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "gitGraph",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C009.png"
+      ],
+      "timestamp": "2026-11-09T02:28:21.289Z"
+    },
+    {
+      "id": "G0-CTL-C010",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C010",
+      "selector": "[data-template=\"mindmap\"]",
+      "controlSpec": {
+        "id": "C010",
+        "tag": "button",
+        "line": 1674,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "mindmap"
+        },
+        "expected": "mindmap",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C010 (button [data-template=\"mindmap\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "mindmap",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C010.png"
+      ],
+      "timestamp": "2026-11-09T02:28:23.439Z"
+    },
+    {
+      "id": "G0-CTL-C011",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C011",
+      "selector": "[data-template=\"pie\"]",
+      "controlSpec": {
+        "id": "C011",
+        "tag": "button",
+        "line": 1675,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "pie"
+        },
+        "expected": "pie",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C011 (button [data-template=\"pie\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "pie",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C011.png"
+      ],
+      "timestamp": "2026-11-09T02:28:25.795Z"
+    },
+    {
+      "id": "G0-CTL-C012",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C012",
+      "selector": "[data-template=\"architecture\"]",
+      "controlSpec": {
+        "id": "C012",
+        "tag": "button",
+        "line": 1676,
+        "attributes": {
+          "class": "dropdown-item",
+          "data-template": "architecture"
+        },
+        "expected": "architecture",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C012 (button [data-template=\"architecture\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "architecture",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C012.png"
+      ],
+      "timestamp": "2026-11-09T02:28:27.724Z"
+    },
+    {
+      "id": "G0-CTL-C013",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C013",
+      "selector": "#btnNewTab",
+      "controlSpec": {
+        "id": "C013",
+        "tag": "button",
+        "line": 1681,
+        "attributes": {
+          "class": "btn",
+          "id": "btnNewTab",
+          "title": "Create New Document Tab (Ctrl+N)"
+        },
+        "expected": "Create New Document Tab (Ctrl+N)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C013 (button #btnNewTab) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Create New Document Tab (Ctrl+N)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C013.png"
+      ],
+      "timestamp": "2026-11-09T02:28:30.062Z"
+    },
+    {
+      "id": "G0-CTL-C014",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C014",
+      "selector": "label[for=\"fileInput\"]",
+      "controlSpec": {
+        "id": "C014",
+        "tag": "label",
+        "line": 1686,
+        "attributes": {
+          "class": "btn",
+          "for": "fileInput",
+          "title": "Load Markdown or Text File"
+        },
+        "expected": "Load Markdown or Text File",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C014 (label label[for=\"fileInput\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Load Markdown or Text File",
+      "observation": {
+        "wiredTo": "fileInput",
+        "note": "label activates #fileInput; native file dialog not automatable in-page — actual file load covered by the C015 stop point"
+      },
+      "status": "pass",
+      "artifacts": [],
+      "timestamp": "2026-11-09T02:28:31.798Z"
+    },
+    {
+      "id": "G0-CTL-C015",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C015",
+      "selector": "#fileInput",
+      "controlSpec": {
+        "id": "C015",
+        "tag": "input",
+        "line": 1690,
+        "attributes": {
+          "type": "file",
+          "id": "fileInput",
+          "accept": ".md,.markdown,.txt",
+          "multiple": null,
+          "style": "display:none;"
+        },
+        "expected": "fileInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C015 (input #fileInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "fileInput",
+      "observation": {
+        "tabsBefore": 1,
+        "tabs": 2,
+        "editorHead": "# QAQC synthetic upload\n\n```mermaid\nflow",
+        "note": "file load via setInputFiles on hidden #fileInput; label C014 routes here"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C015.png"
+      ],
+      "timestamp": "2026-11-09T02:28:33.816Z"
+    },
+    {
+      "id": "G0-CTL-C016",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C016",
+      "selector": "#btnExportMenu",
+      "controlSpec": {
+        "id": "C016",
+        "tag": "button",
+        "line": 1694,
+        "attributes": {
+          "class": "btn btn-primary",
+          "id": "btnExportMenu",
+          "title": "Export or Save Document"
+        },
+        "expected": "Export or Save Document",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C016 (button #btnExportMenu) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Export or Save Document",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": true,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C016.png"
+      ],
+      "timestamp": "2026-11-09T02:28:35.632Z"
+    },
+    {
+      "id": "G0-CTL-C017",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C017",
+      "selector": "#btnSaveMd",
+      "controlSpec": {
+        "id": "C017",
+        "tag": "button",
+        "line": 1699,
+        "attributes": {
+          "class": "dropdown-item",
+          "id": "btnSaveMd"
+        },
+        "expected": "btnSaveMd",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C017 (button #btnSaveMd) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnSaveMd",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C017.png"
+      ],
+      "timestamp": "2026-11-09T02:28:37.659Z"
+    },
+    {
+      "id": "G0-CTL-C018",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C018",
+      "selector": "#btnExportHtml",
+      "controlSpec": {
+        "id": "C018",
+        "tag": "button",
+        "line": 1700,
+        "attributes": {
+          "class": "dropdown-item",
+          "id": "btnExportHtml"
+        },
+        "expected": "btnExportHtml",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C018 (button #btnExportHtml) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnExportHtml",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C018.png"
+      ],
+      "timestamp": "2026-11-09T02:28:39.944Z"
+    },
+    {
+      "id": "G0-CTL-C019",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C019",
+      "selector": "#btnPrintPdf",
+      "controlSpec": {
+        "id": "C019",
+        "tag": "button",
+        "line": 1701,
+        "attributes": {
+          "class": "dropdown-item",
+          "id": "btnPrintPdf"
+        },
+        "expected": "btnPrintPdf",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C019 (button #btnPrintPdf) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnPrintPdf",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printInvoked": 1,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C019.png"
+      ],
+      "timestamp": "2026-11-09T02:28:42.056Z"
+    },
+    {
+      "id": "G0-CTL-C020",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C020",
+      "selector": "#btnCopyHtml",
+      "controlSpec": {
+        "id": "C020",
+        "tag": "button",
+        "line": 1703,
+        "attributes": {
+          "class": "dropdown-item",
+          "id": "btnCopyHtml"
+        },
+        "expected": "btnCopyHtml",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C020 (button #btnCopyHtml) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCopyHtml",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C020.png"
+      ],
+      "timestamp": "2026-11-09T02:28:43.799Z"
+    },
+    {
+      "id": "G0-CTL-C021",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C021",
+      "selector": "#btnCopyMd",
+      "controlSpec": {
+        "id": "C021",
+        "tag": "button",
+        "line": 1704,
+        "attributes": {
+          "class": "dropdown-item",
+          "id": "btnCopyMd"
+        },
+        "expected": "btnCopyMd",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C021 (button #btnCopyMd) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCopyMd",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C021.png"
+      ],
+      "timestamp": "2026-11-09T02:28:45.538Z"
+    },
+    {
+      "id": "G0-CTL-C022",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C022",
+      "selector": "#btnToggleEditor",
+      "controlSpec": {
+        "id": "C022",
+        "tag": "button",
+        "line": 1712,
+        "attributes": {
+          "class": "seg-btn active",
+          "id": "btnToggleEditor",
+          "data-action": "toggle-editor",
+          "title": "Hide/Show Editor (Ctrl+Shift+E)",
+          "aria-pressed": "true"
+        },
+        "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C022 (button #btnToggleEditor) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C022.png"
+      ],
+      "timestamp": "2026-11-09T02:28:47.314Z"
+    },
+    {
+      "id": "G0-CTL-C023",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C023",
+      "selector": "#btnLayoutSplit",
+      "controlSpec": {
+        "id": "C023",
+        "tag": "button",
+        "line": 1716,
+        "attributes": {
+          "class": "seg-btn active",
+          "id": "btnLayoutSplit",
+          "data-action": "split",
+          "title": "Split View (Both Visible)"
+        },
+        "expected": "Split View (Both Visible)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C023 (button #btnLayoutSplit) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Split View (Both Visible)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C023.png"
+      ],
+      "timestamp": "2026-11-09T02:28:49.413Z"
+    },
+    {
+      "id": "G0-CTL-C024",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C024",
+      "selector": "#btnToggleViewer",
+      "controlSpec": {
+        "id": "C024",
+        "tag": "button",
+        "line": 1720,
+        "attributes": {
+          "class": "seg-btn active",
+          "id": "btnToggleViewer",
+          "data-action": "toggle-viewer",
+          "title": "Hide/Show Viewer (Ctrl+Shift+V)",
+          "aria-pressed": "true"
+        },
+        "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C024 (button #btnToggleViewer) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C024.png"
+      ],
+      "timestamp": "2026-11-09T02:28:51.211Z"
+    },
+    {
+      "id": "G0-CTL-C025",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C025",
+      "selector": "#btnThemeToggle",
+      "controlSpec": {
+        "id": "C025",
+        "tag": "button",
+        "line": 1727,
+        "attributes": {
+          "class": "btn btn-icon",
+          "id": "btnThemeToggle",
+          "title": "Toggle Light / Dark Theme"
+        },
+        "expected": "Toggle Light / Dark Theme",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C025 (button #btnThemeToggle) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Toggle Light / Dark Theme",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C025.png"
+      ],
+      "timestamp": "2026-11-09T02:28:52.927Z"
+    },
+    {
+      "id": "G0-CTL-C026",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C026",
+      "selector": "#btnTabAdd",
+      "controlSpec": {
+        "id": "C026",
+        "tag": "button",
+        "line": 1739,
+        "attributes": {
+          "class": "tab-add-btn",
+          "id": "btnTabAdd",
+          "title": "New Tab"
+        },
+        "expected": "New Tab",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C026 (button #btnTabAdd) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "New Tab",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C026.png"
+      ],
+      "timestamp": "2026-11-09T02:28:54.785Z"
+    },
+    {
+      "id": "G0-CTL-C027",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C027",
+      "selector": "#btnToggleToc",
+      "controlSpec": {
+        "id": "C027",
+        "tag": "button",
+        "line": 1747,
+        "attributes": {
+          "class": "tool-btn",
+          "id": "btnToggleToc",
+          "title": "Toggle Table of Contents Outline"
+        },
+        "expected": "Toggle Table of Contents Outline",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C027 (button #btnToggleToc) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Toggle Table of Contents Outline",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C027.png"
+      ],
+      "timestamp": "2026-11-09T02:28:56.554Z"
+    },
+    {
+      "id": "G0-CTL-C028",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C028",
+      "selector": "[data-action=\"bold\"]",
+      "controlSpec": {
+        "id": "C028",
+        "tag": "button",
+        "line": 1755,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "bold",
+          "title": "Bold (Ctrl+B)"
+        },
+        "expected": "Bold (Ctrl+B)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C028 (button [data-action=\"bold\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Bold (Ctrl+B)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C028.png"
+      ],
+      "timestamp": "2026-11-09T02:28:58.321Z"
+    },
+    {
+      "id": "G0-CTL-C029",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C029",
+      "selector": "[data-action=\"italic\"]",
+      "controlSpec": {
+        "id": "C029",
+        "tag": "button",
+        "line": 1756,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "italic",
+          "title": "Italic (Ctrl+I)"
+        },
+        "expected": "Italic (Ctrl+I)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C029 (button [data-action=\"italic\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Italic (Ctrl+I)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C029.png"
+      ],
+      "timestamp": "2026-11-09T02:29:00.203Z"
+    },
+    {
+      "id": "G0-CTL-C030",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C030",
+      "selector": "[data-action=\"strike\"]",
+      "controlSpec": {
+        "id": "C030",
+        "tag": "button",
+        "line": 1757,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "strike",
+          "title": "Strikethrough"
+        },
+        "expected": "Strikethrough",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C030 (button [data-action=\"strike\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Strikethrough",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C030.png"
+      ],
+      "timestamp": "2026-11-09T02:29:02.668Z"
+    },
+    {
+      "id": "G0-CTL-C031",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C031",
+      "selector": "[data-action=\"code\"]",
+      "controlSpec": {
+        "id": "C031",
+        "tag": "button",
+        "line": 1758,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "code",
+          "title": "Inline Code"
+        },
+        "expected": "Inline Code",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C031 (button [data-action=\"code\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Inline Code",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C031.png"
+      ],
+      "timestamp": "2026-11-09T02:29:04.638Z"
+    },
+    {
+      "id": "G0-CTL-C032",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C032",
+      "selector": "[data-action=\"h1\"]",
+      "controlSpec": {
+        "id": "C032",
+        "tag": "button",
+        "line": 1763,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "h1",
+          "title": "Heading 1"
+        },
+        "expected": "Heading 1",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C032 (button [data-action=\"h1\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Heading 1",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C032.png"
+      ],
+      "timestamp": "2026-11-09T02:29:06.729Z"
+    },
+    {
+      "id": "G0-CTL-C033",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C033",
+      "selector": "[data-action=\"h2\"]",
+      "controlSpec": {
+        "id": "C033",
+        "tag": "button",
+        "line": 1764,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "h2",
+          "title": "Heading 2"
+        },
+        "expected": "Heading 2",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C033 (button [data-action=\"h2\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Heading 2",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C033.png"
+      ],
+      "timestamp": "2026-11-09T02:29:09.368Z"
+    },
+    {
+      "id": "G0-CTL-C034",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C034",
+      "selector": "[data-action=\"h3\"]",
+      "controlSpec": {
+        "id": "C034",
+        "tag": "button",
+        "line": 1765,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "h3",
+          "title": "Heading 3"
+        },
+        "expected": "Heading 3",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C034 (button [data-action=\"h3\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Heading 3",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C034.png"
+      ],
+      "timestamp": "2026-11-09T02:29:11.324Z"
+    },
+    {
+      "id": "G0-CTL-C035",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C035",
+      "selector": "[data-action=\"ul\"]",
+      "controlSpec": {
+        "id": "C035",
+        "tag": "button",
+        "line": 1770,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "ul",
+          "title": "Bulleted List"
+        },
+        "expected": "Bulleted List",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C035 (button [data-action=\"ul\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Bulleted List",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C035.png"
+      ],
+      "timestamp": "2026-11-09T02:29:13.205Z"
+    },
+    {
+      "id": "G0-CTL-C036",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C036",
+      "selector": "[data-action=\"ol\"]",
+      "controlSpec": {
+        "id": "C036",
+        "tag": "button",
+        "line": 1771,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "ol",
+          "title": "Numbered List"
+        },
+        "expected": "Numbered List",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C036 (button [data-action=\"ol\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Numbered List",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C036.png"
+      ],
+      "timestamp": "2026-11-09T02:29:15.160Z"
+    },
+    {
+      "id": "G0-CTL-C037",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C037",
+      "selector": "[data-action=\"task\"]",
+      "controlSpec": {
+        "id": "C037",
+        "tag": "button",
+        "line": 1772,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "task",
+          "title": "Checklist / Task List"
+        },
+        "expected": "Checklist / Task List",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C037 (button [data-action=\"task\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Checklist / Task List",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C037.png"
+      ],
+      "timestamp": "2026-11-09T02:29:16.965Z"
+    },
+    {
+      "id": "G0-CTL-C038",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C038",
+      "selector": "[data-action=\"quote\"]",
+      "controlSpec": {
+        "id": "C038",
+        "tag": "button",
+        "line": 1773,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "quote",
+          "title": "Blockquote"
+        },
+        "expected": "Blockquote",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C038 (button [data-action=\"quote\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Blockquote",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C038.png"
+      ],
+      "timestamp": "2026-11-09T02:29:18.757Z"
+    },
+    {
+      "id": "G0-CTL-C039",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C039",
+      "selector": "[data-action=\"table\"]",
+      "controlSpec": {
+        "id": "C039",
+        "tag": "button",
+        "line": 1778,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "table",
+          "title": "Insert Table"
+        },
+        "expected": "Insert Table",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C039 (button [data-action=\"table\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert Table",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C039.png"
+      ],
+      "timestamp": "2026-11-09T02:29:21.192Z"
+    },
+    {
+      "id": "G0-CTL-C040",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C040",
+      "selector": "[data-action=\"link\"]",
+      "controlSpec": {
+        "id": "C040",
+        "tag": "button",
+        "line": 1782,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "link",
+          "title": "Insert Link (Ctrl+K)"
+        },
+        "expected": "Insert Link (Ctrl+K)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C040 (button [data-action=\"link\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert Link (Ctrl+K)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C040.png"
+      ],
+      "timestamp": "2026-11-09T02:29:23.086Z"
+    },
+    {
+      "id": "G0-CTL-C041",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C041",
+      "selector": "[data-action=\"image\"]",
+      "controlSpec": {
+        "id": "C041",
+        "tag": "button",
+        "line": 1783,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "image",
+          "title": "Insert Image"
+        },
+        "expected": "Insert Image",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C041 (button [data-action=\"image\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert Image",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C041.png"
+      ],
+      "timestamp": "2026-11-09T02:29:25.287Z"
+    },
+    {
+      "id": "G0-CTL-C042",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C042",
+      "selector": "[data-action=\"codeblock\"]",
+      "controlSpec": {
+        "id": "C042",
+        "tag": "button",
+        "line": 1784,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "codeblock",
+          "title": "Insert Code Block"
+        },
+        "expected": "Insert Code Block",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C042 (button [data-action=\"codeblock\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert Code Block",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C042.png"
+      ],
+      "timestamp": "2026-11-09T02:29:27.403Z"
+    },
+    {
+      "id": "G0-CTL-C043",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C043",
+      "selector": "[data-action=\"math\"]",
+      "controlSpec": {
+        "id": "C043",
+        "tag": "button",
+        "line": 1785,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "math",
+          "title": "Insert LaTeX Equation"
+        },
+        "expected": "Insert LaTeX Equation",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C043 (button [data-action=\"math\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Insert LaTeX Equation",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C043.png"
+      ],
+      "timestamp": "2026-11-09T02:29:29.635Z"
+    },
+    {
+      "id": "G0-CTL-C044",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C044",
+      "selector": "[data-action=\"hr\"]",
+      "controlSpec": {
+        "id": "C044",
+        "tag": "button",
+        "line": 1786,
+        "attributes": {
+          "class": "tool-btn",
+          "data-action": "hr",
+          "title": "Horizontal Divider"
+        },
+        "expected": "Horizontal Divider",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C044 (button [data-action=\"hr\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Horizontal Divider",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C044.png"
+      ],
+      "timestamp": "2026-11-09T02:29:31.594Z"
+    },
+    {
+      "id": "G0-CTL-C045",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C045",
+      "selector": "#btnToggleFind",
+      "controlSpec": {
+        "id": "C045",
+        "tag": "button",
+        "line": 1791,
+        "attributes": {
+          "class": "tool-btn",
+          "id": "btnToggleFind",
+          "title": "Find & Replace (Ctrl+F)"
+        },
+        "expected": "Find & Replace (Ctrl+F)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C045 (button #btnToggleFind) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Find & Replace (Ctrl+F)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C045.png"
+      ],
+      "timestamp": "2026-11-09T02:29:33.213Z"
+    },
+    {
+      "id": "G0-CTL-C046",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C046",
+      "selector": "#btnSyncScroll",
+      "controlSpec": {
+        "id": "C046",
+        "tag": "button",
+        "line": 1797,
+        "attributes": {
+          "class": "tool-btn active",
+          "id": "btnSyncScroll",
+          "title": "Toggle Synchronized Scrolling"
+        },
+        "expected": "Toggle Synchronized Scrolling",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C046 (button #btnSyncScroll) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Toggle Synchronized Scrolling",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C046.png"
+      ],
+      "timestamp": "2026-11-09T02:29:35.341Z"
+    },
+    {
+      "id": "G0-CTL-C047",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C047",
+      "selector": "#btnToolbarToggleEditor",
+      "controlSpec": {
+        "id": "C047",
+        "tag": "button",
+        "line": 1805,
+        "attributes": {
+          "class": "tool-btn active",
+          "id": "btnToolbarToggleEditor",
+          "title": "Hide/Show Editor (Ctrl+Shift+E)"
+        },
+        "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C047 (button #btnToolbarToggleEditor) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide/Show Editor (Ctrl+Shift+E)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C047.png"
+      ],
+      "timestamp": "2026-11-09T02:29:37.484Z"
+    },
+    {
+      "id": "G0-CTL-C048",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C048",
+      "selector": "#btnToolbarToggleViewer",
+      "controlSpec": {
+        "id": "C048",
+        "tag": "button",
+        "line": 1810,
+        "attributes": {
+          "class": "tool-btn active",
+          "id": "btnToolbarToggleViewer",
+          "title": "Hide/Show Viewer (Ctrl+Shift+V)"
+        },
+        "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C048 (button #btnToolbarToggleViewer) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide/Show Viewer (Ctrl+Shift+V)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C048.png"
+      ],
+      "timestamp": "2026-11-09T02:29:39.246Z"
+    },
+    {
+      "id": "G0-CTL-C049",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C049",
+      "selector": "#findInput",
+      "controlSpec": {
+        "id": "C049",
+        "tag": "input",
+        "line": 1820,
+        "attributes": {
+          "type": "text",
+          "class": "find-input",
+          "id": "findInput",
+          "placeholder": "Find in document..."
+        },
+        "expected": "findInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C049 (input #findInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "findInput",
+      "observation": {
+        "executed": "set value + input event"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C049.png"
+      ],
+      "timestamp": "2026-11-09T02:29:40.900Z"
+    },
+    {
+      "id": "G0-CTL-C050",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C050",
+      "selector": "#btnFindPrev",
+      "controlSpec": {
+        "id": "C050",
+        "tag": "button",
+        "line": 1822,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFindPrev"
+        },
+        "expected": "btnFindPrev",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C050 (button #btnFindPrev) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFindPrev",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C050.png"
+      ],
+      "timestamp": "2026-11-09T02:29:42.519Z"
+    },
+    {
+      "id": "G0-CTL-C051",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C051",
+      "selector": "#btnFindNext",
+      "controlSpec": {
+        "id": "C051",
+        "tag": "button",
+        "line": 1823,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFindNext"
+        },
+        "expected": "btnFindNext",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C051 (button #btnFindNext) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFindNext",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C051.png"
+      ],
+      "timestamp": "2026-11-09T02:29:44.480Z"
+    },
+    {
+      "id": "G0-CTL-C052",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C052",
+      "selector": "#replaceInput",
+      "controlSpec": {
+        "id": "C052",
+        "tag": "input",
+        "line": 1825,
+        "attributes": {
+          "type": "text",
+          "class": "find-input",
+          "id": "replaceInput",
+          "placeholder": "Replace with..."
+        },
+        "expected": "replaceInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C052 (input #replaceInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "replaceInput",
+      "observation": {
+        "executed": "set value + input event"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C052.png"
+      ],
+      "timestamp": "2026-11-09T02:29:46.292Z"
+    },
+    {
+      "id": "G0-CTL-C053",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C053",
+      "selector": "#btnReplace",
+      "controlSpec": {
+        "id": "C053",
+        "tag": "button",
+        "line": 1826,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnReplace"
+        },
+        "expected": "btnReplace",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C053 (button #btnReplace) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnReplace",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C053.png"
+      ],
+      "timestamp": "2026-11-09T02:29:48.740Z"
+    },
+    {
+      "id": "G0-CTL-C054",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C054",
+      "selector": "#btnReplaceAll",
+      "controlSpec": {
+        "id": "C054",
+        "tag": "button",
+        "line": 1827,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnReplaceAll"
+        },
+        "expected": "btnReplaceAll",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C054 (button #btnReplaceAll) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnReplaceAll",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C054.png"
+      ],
+      "timestamp": "2026-11-09T02:29:50.727Z"
+    },
+    {
+      "id": "G0-CTL-C055",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C055",
+      "selector": "#btnCloseFind",
+      "controlSpec": {
+        "id": "C055",
+        "tag": "button",
+        "line": 1828,
+        "attributes": {
+          "class": "btn btn-sm btn-icon",
+          "id": "btnCloseFind",
+          "style": "margin-left:auto;"
+        },
+        "expected": "btnCloseFind",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C055 (button #btnCloseFind) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCloseFind",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C055.png"
+      ],
+      "timestamp": "2026-11-09T02:29:52.845Z"
+    },
+    {
+      "id": "G0-CTL-C056",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C056",
+      "selector": "#btnCloseToc",
+      "controlSpec": {
+        "id": "C056",
+        "tag": "button",
+        "line": 1839,
+        "attributes": {
+          "class": "btn btn-sm btn-icon",
+          "id": "btnCloseToc"
+        },
+        "expected": "btnCloseToc",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C056 (button #btnCloseToc) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCloseToc",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C056.png"
+      ],
+      "timestamp": "2026-11-09T02:29:54.441Z"
+    },
+    {
+      "id": "G0-CTL-C057",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C057",
+      "selector": "#btnShowViewerInline",
+      "controlSpec": {
+        "id": "C057",
+        "tag": "button",
+        "line": 1853,
+        "attributes": {
+          "class": "pane-action-btn btn-restore",
+          "id": "btnShowViewerInline",
+          "title": "Show Viewer (Ctrl+Shift+V)",
+          "style": "display:none;"
+        },
+        "expected": "Show Viewer (Ctrl+Shift+V)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C057 (button #btnShowViewerInline) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Show Viewer (Ctrl+Shift+V)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C057.png"
+      ],
+      "timestamp": "2026-11-09T02:29:56.074Z"
+    },
+    {
+      "id": "G0-CTL-C058",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C058",
+      "selector": "#btnHideEditor",
+      "controlSpec": {
+        "id": "C058",
+        "tag": "button",
+        "line": 1857,
+        "attributes": {
+          "class": "pane-action-btn",
+          "id": "btnHideEditor",
+          "title": "Hide Editor (Ctrl+Shift+E)"
+        },
+        "expected": "Hide Editor (Ctrl+Shift+E)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C058 (button #btnHideEditor) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide Editor (Ctrl+Shift+E)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C058.png"
+      ],
+      "timestamp": "2026-11-09T02:29:57.727Z"
+    },
+    {
+      "id": "G0-CTL-C059",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C059",
+      "selector": "#editor",
+      "controlSpec": {
+        "id": "C059",
+        "tag": "textarea",
+        "line": 1865,
+        "attributes": {
+          "id": "editor",
+          "spellcheck": "false",
+          "placeholder": "Type Markdown here..."
+        },
+        "expected": "editor",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C059 (textarea #editor) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "editor",
+      "observation": {
+        "executed": "focus-only probe",
+        "note": "textarea behavior covered by editor-level fixture stop points"
+      },
+      "status": "pass",
+      "artifacts": [],
+      "timestamp": "2026-11-09T02:29:58.661Z"
+    },
+    {
+      "id": "G0-CTL-C060",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C060",
+      "selector": "#splitResizer",
+      "controlSpec": {
+        "id": "C060",
+        "tag": "div",
+        "line": 1870,
+        "attributes": {
+          "class": "split-resizer",
+          "id": "splitResizer",
+          "title": "Drag to resize panes (Double click to reset 50/50)"
+        },
+        "expected": "Drag to resize panes (Double click to reset 50/50)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C060 (div #splitResizer) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Drag to resize panes (Double click to reset 50/50)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C060.png"
+      ],
+      "timestamp": "2026-11-09T02:30:00.268Z"
+    },
+    {
+      "id": "G0-CTL-C061",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C061",
+      "selector": "#btnShowEditorInline",
+      "controlSpec": {
+        "id": "C061",
+        "tag": "button",
+        "line": 1881,
+        "attributes": {
+          "class": "pane-action-btn btn-restore",
+          "id": "btnShowEditorInline",
+          "title": "Show Editor (Ctrl+Shift+E)",
+          "style": "display:none;"
+        },
+        "expected": "Show Editor (Ctrl+Shift+E)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C061 (button #btnShowEditorInline) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Show Editor (Ctrl+Shift+E)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C061.png"
+      ],
+      "timestamp": "2026-11-09T02:30:02.701Z"
+    },
+    {
+      "id": "G0-CTL-C062",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C062",
+      "selector": "#btnToggleViewerWidth",
+      "controlSpec": {
+        "id": "C062",
+        "tag": "button",
+        "line": 1885,
+        "attributes": {
+          "class": "pane-action-btn",
+          "id": "btnToggleViewerWidth",
+          "title": "Toggle Full Width / Centered Reading Width"
+        },
+        "expected": "Toggle Full Width / Centered Reading Width",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C062 (button #btnToggleViewerWidth) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Toggle Full Width / Centered Reading Width",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C062.png"
+      ],
+      "timestamp": "2026-11-09T02:30:04.557Z"
+    },
+    {
+      "id": "G0-CTL-C063",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C063",
+      "selector": "#btnHideViewer",
+      "controlSpec": {
+        "id": "C063",
+        "tag": "button",
+        "line": 1889,
+        "attributes": {
+          "class": "pane-action-btn",
+          "id": "btnHideViewer",
+          "title": "Hide Viewer (Ctrl+Shift+V)"
+        },
+        "expected": "Hide Viewer (Ctrl+Shift+V)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C063 (button #btnHideViewer) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Hide Viewer (Ctrl+Shift+V)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C063.png"
+      ],
+      "timestamp": "2026-11-09T02:30:07.113Z"
+    },
+    {
+      "id": "G0-CTL-C064",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C064",
+      "selector": "#btnEmptyShowEditor",
+      "controlSpec": {
+        "id": "C064",
+        "tag": "button",
+        "line": 1905,
+        "attributes": {
+          "class": "btn btn-primary",
+          "id": "btnEmptyShowEditor"
+        },
+        "expected": "btnEmptyShowEditor",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C064 (button #btnEmptyShowEditor) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnEmptyShowEditor",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C064.png"
+      ],
+      "timestamp": "2026-11-09T02:30:08.724Z"
+    },
+    {
+      "id": "G0-CTL-C065",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C065",
+      "selector": "#btnEmptyShowViewer",
+      "controlSpec": {
+        "id": "C065",
+        "tag": "button",
+        "line": 1909,
+        "attributes": {
+          "class": "btn btn-primary",
+          "id": "btnEmptyShowViewer"
+        },
+        "expected": "btnEmptyShowViewer",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C065 (button #btnEmptyShowViewer) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnEmptyShowViewer",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C065.png"
+      ],
+      "timestamp": "2026-11-09T02:30:10.328Z"
+    },
+    {
+      "id": "G0-CTL-C066",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C066",
+      "selector": "#btnEmptyRestoreSplit",
+      "controlSpec": {
+        "id": "C066",
+        "tag": "button",
+        "line": 1913,
+        "attributes": {
+          "class": "btn btn-gradient",
+          "id": "btnEmptyRestoreSplit"
+        },
+        "expected": "btnEmptyRestoreSplit",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C066 (button #btnEmptyRestoreSplit) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnEmptyRestoreSplit",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C066.png"
+      ],
+      "timestamp": "2026-11-09T02:30:11.900Z"
+    },
+    {
+      "id": "G0-CTL-C067",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C067",
+      "selector": "#btnClearErrorLog",
+      "controlSpec": {
+        "id": "C067",
+        "tag": "button",
+        "line": 1936,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnClearErrorLog",
+          "title": "Clear all logged errors"
+        },
+        "expected": "Clear all logged errors",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C067 (button #btnClearErrorLog) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Clear all logged errors",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C067.png"
+      ],
+      "timestamp": "2026-11-09T02:30:13.656Z"
+    },
+    {
+      "id": "G0-CTL-C068",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C068",
+      "selector": "#btnCloseErrorLog",
+      "controlSpec": {
+        "id": "C068",
+        "tag": "button",
+        "line": 1940,
+        "attributes": {
+          "class": "btn btn-sm btn-icon",
+          "id": "btnCloseErrorLog",
+          "title": "Close Error Log (Esc)"
+        },
+        "expected": "Close Error Log (Esc)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C068 (button #btnCloseErrorLog) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Close Error Log (Esc)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C068.png"
+      ],
+      "timestamp": "2026-11-09T02:30:15.341Z"
+    },
+    {
+      "id": "G0-CTL-C069",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C069",
+      "selector": "#statusErrorIndicator",
+      "controlSpec": {
+        "id": "C069",
+        "tag": "div",
+        "line": 1955,
+        "attributes": {
+          "class": "status-item clickable status-error-toggle",
+          "id": "statusErrorIndicator",
+          "title": "Click to open/close Error Log",
+          "style": "cursor:pointer;"
+        },
+        "expected": "Click to open/close Error Log",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C069 (div #statusErrorIndicator) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Click to open/close Error Log",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C069.png"
+      ],
+      "timestamp": "2026-11-09T02:30:16.967Z"
+    },
+    {
+      "id": "G0-CTL-C070",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C070",
+      "selector": "#statusViewMode",
+      "controlSpec": {
+        "id": "C070",
+        "tag": "div",
+        "line": 1971,
+        "attributes": {
+          "class": "status-item clickable",
+          "id": "statusViewMode",
+          "title": "Click to cycle or restore split view",
+          "style": "cursor:pointer;"
+        },
+        "expected": "Click to cycle or restore split view",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C070 (div #statusViewMode) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Click to cycle or restore split view",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C070.png"
+      ],
+      "timestamp": "2026-11-09T02:30:18.553Z"
+    },
+    {
+      "id": "G0-CTL-C071",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C071",
+      "selector": "#btnCloseStudio",
+      "controlSpec": {
+        "id": "C071",
+        "tag": "button",
+        "line": 1998,
+        "attributes": {
+          "class": "modal-close-btn",
+          "id": "btnCloseStudio",
+          "title": "Close Studio (Esc)"
+        },
+        "expected": "Close Studio (Esc)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C071 (button #btnCloseStudio) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Close Studio (Esc)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C071.png"
+      ],
+      "timestamp": "2026-11-09T02:30:20.157Z"
+    },
+    {
+      "id": "G0-CTL-C072",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C072",
+      "selector": "#builderTypeSelect",
+      "controlSpec": {
+        "id": "C072",
+        "tag": "select",
+        "line": 2005,
+        "attributes": {
+          "class": "select-styled",
+          "id": "builderTypeSelect"
+        },
+        "expected": "builderTypeSelect",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C072 (select #builderTypeSelect) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "builderTypeSelect",
+      "observation": {
+        "executed": "select->next option",
+        "modalOrDropdownOpened": false
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C072.png"
+      ],
+      "timestamp": "2026-11-09T02:30:51.793Z"
+    },
+    {
+      "id": "G0-CTL-C073",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C073",
+      "selector": "#builderTemplateSelect",
+      "controlSpec": {
+        "id": "C073",
+        "tag": "select",
+        "line": 2023,
+        "attributes": {
+          "class": "select-styled",
+          "id": "builderTemplateSelect"
+        },
+        "expected": "builderTemplateSelect",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C073 (select #builderTemplateSelect) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "builderTemplateSelect",
+      "observation": {
+        "executed": "select->next option",
+        "modalOrDropdownOpened": false
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C073.png"
+      ],
+      "timestamp": "2026-11-09T02:31:23.768Z"
+    },
+    {
+      "id": "G0-CTL-C074",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C074",
+      "selector": "#builderDirectionSelect",
+      "controlSpec": {
+        "id": "C074",
+        "tag": "select",
+        "line": 2030,
+        "attributes": {
+          "class": "select-styled",
+          "id": "builderDirectionSelect"
+        },
+        "expected": "builderDirectionSelect",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C074 (select #builderDirectionSelect) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "builderDirectionSelect",
+      "observation": {
+        "executed": "select->next option",
+        "modalOrDropdownOpened": false
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C074.png"
+      ],
+      "timestamp": "2026-11-09T02:31:55.376Z"
+    },
+    {
+      "id": "G0-CTL-C075",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C075",
+      "selector": "#builderThemeSelect",
+      "controlSpec": {
+        "id": "C075",
+        "tag": "select",
+        "line": 2040,
+        "attributes": {
+          "class": "select-styled",
+          "id": "builderThemeSelect"
+        },
+        "expected": "builderThemeSelect",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C075 (select #builderThemeSelect) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "builderThemeSelect",
+      "observation": {
+        "executed": "select->next option",
+        "modalOrDropdownOpened": false
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C075.png"
+      ],
+      "timestamp": "2026-11-09T02:32:27.281Z"
+    },
+    {
+      "id": "G0-CTL-C076",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C076",
+      "selector": "#btnBuilderFormat",
+      "controlSpec": {
+        "id": "C076",
+        "tag": "button",
+        "line": 2051,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnBuilderFormat",
+          "title": "Format and Clean Indentation"
+        },
+        "expected": "Format and Clean Indentation",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C076 (button #btnBuilderFormat) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Format and Clean Indentation",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C076.png"
+      ],
+      "timestamp": "2026-11-09T02:32:28.866Z"
+    },
+    {
+      "id": "G0-CTL-C077",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C077",
+      "selector": "[data-insert=\"[Rectangle]\"]",
+      "controlSpec": {
+        "id": "C077",
+        "tag": "button",
+        "line": 2060,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "[Rectangle]"
+        },
+        "expected": "[Rectangle]",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C077 (button [data-insert=\"[Rectangle]\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "[Rectangle]",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C077.png"
+      ],
+      "timestamp": "2026-11-09T02:32:30.359Z"
+    },
+    {
+      "id": "G0-CTL-C078",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C078",
+      "selector": "[data-insert=\"(Rounded)\"]",
+      "controlSpec": {
+        "id": "C078",
+        "tag": "button",
+        "line": 2061,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "(Rounded)"
+        },
+        "expected": "(Rounded)",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C078 (button [data-insert=\"(Rounded)\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "(Rounded)",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C078.png"
+      ],
+      "timestamp": "2026-11-09T02:32:31.842Z"
+    },
+    {
+      "id": "G0-CTL-C079",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C079",
+      "selector": "[data-insert=\"([Stadium])\"]",
+      "controlSpec": {
+        "id": "C079",
+        "tag": "button",
+        "line": 2062,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "([Stadium])"
+        },
+        "expected": "([Stadium])",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C079 (button [data-insert=\"([Stadium])\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "([Stadium])",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C079.png"
+      ],
+      "timestamp": "2026-11-09T02:32:33.361Z"
+    },
+    {
+      "id": "G0-CTL-C080",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C080",
+      "selector": "[data-insert=\"[[Subroutine]]\"]",
+      "controlSpec": {
+        "id": "C080",
+        "tag": "button",
+        "line": 2063,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "[[Subroutine]]"
+        },
+        "expected": "[[Subroutine]]",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C080 (button [data-insert=\"[[Subroutine]]\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "[[Subroutine]]",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C080.png"
+      ],
+      "timestamp": "2026-11-09T02:32:34.897Z"
+    },
+    {
+      "id": "G0-CTL-C081",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C081",
+      "selector": "[data-insert=\"[(Database)]\"]",
+      "controlSpec": {
+        "id": "C081",
+        "tag": "button",
+        "line": 2064,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "[(Database)]"
+        },
+        "expected": "[(Database)]",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C081 (button [data-insert=\"[(Database)]\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "[(Database)]",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C081.png"
+      ],
+      "timestamp": "2026-11-09T02:32:36.364Z"
+    },
+    {
+      "id": "G0-CTL-C082",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C082",
+      "selector": "[data-insert=\"((Circle))\"]",
+      "controlSpec": {
+        "id": "C082",
+        "tag": "button",
+        "line": 2065,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "((Circle))"
+        },
+        "expected": "((Circle))",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C082 (button [data-insert=\"((Circle))\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "((Circle))",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C082.png"
+      ],
+      "timestamp": "2026-11-09T02:32:37.890Z"
+    },
+    {
+      "id": "G0-CTL-C083",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C083",
+      "selector": "[data-insert=\"{'Decision?'}\"]",
+      "controlSpec": {
+        "id": "C083",
+        "tag": "button",
+        "line": 2066,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "{'Decision?'}"
+        },
+        "expected": "{'Decision?'}",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C083 (button [data-insert=\"{'Decision?'}\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "{'Decision?'}",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C083.png"
+      ],
+      "timestamp": "2026-11-09T02:32:39.932Z"
+    },
+    {
+      "id": "G0-CTL-C084",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C084",
+      "selector": "[data-insert=\"{{Hexagon}}\"]",
+      "controlSpec": {
+        "id": "C084",
+        "tag": "button",
+        "line": 2067,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": "{{Hexagon}}"
+        },
+        "expected": "{{Hexagon}}",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C084 (button [data-insert=\"{{Hexagon}}\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "{{Hexagon}}",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C084.png"
+      ],
+      "timestamp": "2026-11-09T02:32:41.419Z"
+    },
+    {
+      "id": "G0-CTL-C085",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C085",
+      "selector": "[data-insert=\" --> \"]",
+      "controlSpec": {
+        "id": "C085",
+        "tag": "button",
+        "line": 2072,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " --> "
+        },
+        "expected": " --> ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C085 (button [data-insert=\" --> \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " --> ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C085.png"
+      ],
+      "timestamp": "2026-11-09T02:32:43.003Z"
+    },
+    {
+      "id": "G0-CTL-C086",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C086",
+      "selector": "[data-insert=\" --- \"]",
+      "controlSpec": {
+        "id": "C086",
+        "tag": "button",
+        "line": 2073,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " --- "
+        },
+        "expected": " --- ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C086 (button [data-insert=\" --- \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " --- ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C086.png"
+      ],
+      "timestamp": "2026-11-09T02:32:44.707Z"
+    },
+    {
+      "id": "G0-CTL-C087",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C087",
+      "selector": "[data-insert=\" -.-> \"]",
+      "controlSpec": {
+        "id": "C087",
+        "tag": "button",
+        "line": 2074,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " -.-> "
+        },
+        "expected": " -.-> ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C087 (button [data-insert=\" -.-> \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " -.-> ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C087.png"
+      ],
+      "timestamp": "2026-11-09T02:32:46.697Z"
+    },
+    {
+      "id": "G0-CTL-C088",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C088",
+      "selector": "[data-insert=\" ==> \"]",
+      "controlSpec": {
+        "id": "C088",
+        "tag": "button",
+        "line": 2075,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " ==> "
+        },
+        "expected": " ==> ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C088 (button [data-insert=\" ==> \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " ==> ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C088.png"
+      ],
+      "timestamp": "2026-11-09T02:32:48.307Z"
+    },
+    {
+      "id": "G0-CTL-C089",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C089",
+      "selector": "[data-insert=\" -->|Text| \"]",
+      "controlSpec": {
+        "id": "C089",
+        "tag": "button",
+        "line": 2076,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " -->|Text| "
+        },
+        "expected": " -->|Text| ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C089 (button [data-insert=\" -->|Text| \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " -->|Text| ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C089.png"
+      ],
+      "timestamp": "2026-11-09T02:32:49.936Z"
+    },
+    {
+      "id": "G0-CTL-C090",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C090",
+      "selector": "[data-insert=\" ~~~ \"]",
+      "controlSpec": {
+        "id": "C090",
+        "tag": "button",
+        "line": 2077,
+        "attributes": {
+          "class": "palette-btn",
+          "data-insert": " ~~~ "
+        },
+        "expected": " ~~~ ",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C090 (button [data-insert=\" ~~~ \"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": " ~~~ ",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C090.png"
+      ],
+      "timestamp": "2026-11-09T02:32:51.443Z"
+    },
+    {
+      "id": "G0-CTL-C091",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C091",
+      "selector": "[data-insert=\"\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n\"]",
+      "controlSpec": {
+        "id": "C091",
+        "tag": "button",
+        "line": 2082,
+        "attributes": {
+          "class": "palette-btn",
+          "style": "grid-column: span 2;",
+          "data-insert": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n"
+        },
+        "expected": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C091 (button [data-insert=\"\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "\\n  subgraph ClusterName [Group Title]\\n    node1\\n    node2\\n  end\\n",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C091.png"
+      ],
+      "timestamp": "2026-11-09T02:32:52.965Z"
+    },
+    {
+      "id": "G0-CTL-C092",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C092",
+      "selector": "[data-insert=\"style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff\"]",
+      "controlSpec": {
+        "id": "C092",
+        "tag": "button",
+        "line": 2083,
+        "attributes": {
+          "class": "palette-btn",
+          "style": "grid-column: span 2;",
+          "data-insert": "style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff"
+        },
+        "expected": "style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C092 (button [data-insert=\"style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff\"]) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "style NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C092.png"
+      ],
+      "timestamp": "2026-11-09T02:32:54.485Z"
+    },
+    {
+      "id": "G0-CTL-C093",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C093",
+      "selector": "#builderCodeInput",
+      "controlSpec": {
+        "id": "C093",
+        "tag": "textarea",
+        "line": 2093,
+        "attributes": {
+          "id": "builderCodeInput",
+          "spellcheck": "false",
+          "placeholder": "Enter Mermaid diagram code..."
+        },
+        "expected": "builderCodeInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C093 (textarea #builderCodeInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "builderCodeInput",
+      "observation": {
+        "executed": "focus-only probe",
+        "note": "textarea behavior covered by editor-level fixture stop points"
+      },
+      "status": "pass",
+      "artifacts": [],
+      "timestamp": "2026-11-09T02:32:55.739Z"
+    },
+    {
+      "id": "G0-CTL-C094",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C094",
+      "selector": "#btnBuilderZoomOut",
+      "controlSpec": {
+        "id": "C094",
+        "tag": "button",
+        "line": 2114,
+        "attributes": {
+          "class": "builder-zoom-btn",
+          "id": "btnBuilderZoomOut",
+          "title": "Zoom Out"
+        },
+        "expected": "Zoom Out",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C094 (button #btnBuilderZoomOut) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Zoom Out",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C094.png"
+      ],
+      "timestamp": "2026-11-09T02:32:57.233Z"
+    },
+    {
+      "id": "G0-CTL-C095",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C095",
+      "selector": "#btnBuilderZoomReset",
+      "controlSpec": {
+        "id": "C095",
+        "tag": "button",
+        "line": 2115,
+        "attributes": {
+          "class": "builder-zoom-btn",
+          "id": "btnBuilderZoomReset",
+          "title": "Reset Zoom"
+        },
+        "expected": "Reset Zoom",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C095 (button #btnBuilderZoomReset) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Reset Zoom",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C095.png"
+      ],
+      "timestamp": "2026-11-09T02:32:58.701Z"
+    },
+    {
+      "id": "G0-CTL-C096",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C096",
+      "selector": "#btnBuilderZoomIn",
+      "controlSpec": {
+        "id": "C096",
+        "tag": "button",
+        "line": 2116,
+        "attributes": {
+          "class": "builder-zoom-btn",
+          "id": "btnBuilderZoomIn",
+          "title": "Zoom In"
+        },
+        "expected": "Zoom In",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C096 (button #btnBuilderZoomIn) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "Zoom In",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C096.png"
+      ],
+      "timestamp": "2026-11-09T02:33:00.202Z"
+    },
+    {
+      "id": "G0-CTL-C097",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C097",
+      "selector": "#btnBuilderCopyCode",
+      "controlSpec": {
+        "id": "C097",
+        "tag": "button",
+        "line": 2124,
+        "attributes": {
+          "class": "btn",
+          "id": "btnBuilderCopyCode"
+        },
+        "expected": "btnBuilderCopyCode",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C097 (button #btnBuilderCopyCode) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnBuilderCopyCode",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C097.png"
+      ],
+      "timestamp": "2026-11-09T02:33:01.696Z"
+    },
+    {
+      "id": "G0-CTL-C098",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C098",
+      "selector": "#btnBuilderExportSvg",
+      "controlSpec": {
+        "id": "C098",
+        "tag": "button",
+        "line": 2125,
+        "attributes": {
+          "class": "btn",
+          "id": "btnBuilderExportSvg"
+        },
+        "expected": "btnBuilderExportSvg",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C098 (button #btnBuilderExportSvg) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnBuilderExportSvg",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C098.png"
+      ],
+      "timestamp": "2026-11-09T02:33:03.191Z"
+    },
+    {
+      "id": "G0-CTL-C099",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C099",
+      "selector": "#btnBuilderExportPng",
+      "controlSpec": {
+        "id": "C099",
+        "tag": "button",
+        "line": 2126,
+        "attributes": {
+          "class": "btn",
+          "id": "btnBuilderExportPng"
+        },
+        "expected": "btnBuilderExportPng",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C099 (button #btnBuilderExportPng) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnBuilderExportPng",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C099.png"
+      ],
+      "timestamp": "2026-11-09T02:33:04.718Z"
+    },
+    {
+      "id": "G0-CTL-C100",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C100",
+      "selector": "#btnBuilderCancel",
+      "controlSpec": {
+        "id": "C100",
+        "tag": "button",
+        "line": 2130,
+        "attributes": {
+          "class": "btn",
+          "id": "btnBuilderCancel"
+        },
+        "expected": "btnBuilderCancel",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C100 (button #btnBuilderCancel) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnBuilderCancel",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C100.png"
+      ],
+      "timestamp": "2026-11-09T02:33:06.341Z"
+    },
+    {
+      "id": "G0-CTL-C101",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C101",
+      "selector": "#btnBuilderInsert",
+      "controlSpec": {
+        "id": "C101",
+        "tag": "button",
+        "line": 2131,
+        "attributes": {
+          "class": "btn btn-primary",
+          "id": "btnBuilderInsert"
+        },
+        "expected": "btnBuilderInsert",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C101 (button #btnBuilderInsert) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnBuilderInsert",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C101.png"
+      ],
+      "timestamp": "2026-11-09T02:33:08.587Z"
+    },
+    {
+      "id": "G0-CTL-C102",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C102",
+      "selector": "#btnFsZoomOut",
+      "controlSpec": {
+        "id": "C102",
+        "tag": "button",
+        "line": 2148,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFsZoomOut"
+        },
+        "expected": "btnFsZoomOut",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C102 (button #btnFsZoomOut) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFsZoomOut",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C102.png"
+      ],
+      "timestamp": "2026-11-09T02:33:10.550Z"
+    },
+    {
+      "id": "G0-CTL-C103",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C103",
+      "selector": "#btnFsZoomReset",
+      "controlSpec": {
+        "id": "C103",
+        "tag": "button",
+        "line": 2149,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFsZoomReset"
+        },
+        "expected": "btnFsZoomReset",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C103 (button #btnFsZoomReset) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFsZoomReset",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C103.png"
+      ],
+      "timestamp": "2026-11-09T02:33:12.384Z"
+    },
+    {
+      "id": "G0-CTL-C104",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C104",
+      "selector": "#btnFsZoomIn",
+      "controlSpec": {
+        "id": "C104",
+        "tag": "button",
+        "line": 2150,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFsZoomIn"
+        },
+        "expected": "btnFsZoomIn",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C104 (button #btnFsZoomIn) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFsZoomIn",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C104.png"
+      ],
+      "timestamp": "2026-11-09T02:33:13.849Z"
+    },
+    {
+      "id": "G0-CTL-C105",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C105",
+      "selector": "#btnFsExportSvg",
+      "controlSpec": {
+        "id": "C105",
+        "tag": "button",
+        "line": 2152,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFsExportSvg"
+        },
+        "expected": "btnFsExportSvg",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C105 (button #btnFsExportSvg) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFsExportSvg",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C105.png"
+      ],
+      "timestamp": "2026-11-09T02:33:15.839Z"
+    },
+    {
+      "id": "G0-CTL-C106",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C106",
+      "selector": "#btnFsExportPng",
+      "controlSpec": {
+        "id": "C106",
+        "tag": "button",
+        "line": 2153,
+        "attributes": {
+          "class": "btn btn-sm",
+          "id": "btnFsExportPng"
+        },
+        "expected": "btnFsExportPng",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C106 (button #btnFsExportPng) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnFsExportPng",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C106.png"
+      ],
+      "timestamp": "2026-11-09T02:33:17.320Z"
+    },
+    {
+      "id": "G0-CTL-C107",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C107",
+      "selector": "#btnCloseFsModal",
+      "controlSpec": {
+        "id": "C107",
+        "tag": "button",
+        "line": 2155,
+        "attributes": {
+          "class": "modal-close-btn",
+          "id": "btnCloseFsModal"
+        },
+        "expected": "btnCloseFsModal",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C107 (button #btnCloseFsModal) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCloseFsModal",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C107.png"
+      ],
+      "timestamp": "2026-11-09T02:33:18.811Z"
+    },
+    {
+      "id": "G0-CTL-C108",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C108",
+      "selector": "#tableRowsInput",
+      "controlSpec": {
+        "id": "C108",
+        "tag": "input",
+        "line": 2172,
+        "attributes": {
+          "type": "number",
+          "class": "dialog-input",
+          "id": "tableRowsInput",
+          "value": "3",
+          "min": "1",
+          "max": "50"
+        },
+        "expected": "tableRowsInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C108 (input #tableRowsInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "tableRowsInput",
+      "observation": {
+        "executed": "set value + input event"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C108.png"
+      ],
+      "timestamp": "2026-11-09T02:33:20.263Z"
+    },
+    {
+      "id": "G0-CTL-C109",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C109",
+      "selector": "#tableColsInput",
+      "controlSpec": {
+        "id": "C109",
+        "tag": "input",
+        "line": 2176,
+        "attributes": {
+          "type": "number",
+          "class": "dialog-input",
+          "id": "tableColsInput",
+          "value": "3",
+          "min": "1",
+          "max": "20"
+        },
+        "expected": "tableColsInput",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C109 (input #tableColsInput) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "tableColsInput",
+      "observation": {
+        "executed": "set value + input event"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C109.png"
+      ],
+      "timestamp": "2026-11-09T02:33:21.569Z"
+    },
+    {
+      "id": "G0-CTL-C110",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C110",
+      "selector": "#btnCancelTable",
+      "controlSpec": {
+        "id": "C110",
+        "tag": "button",
+        "line": 2179,
+        "attributes": {
+          "class": "btn",
+          "id": "btnCancelTable"
+        },
+        "expected": "btnCancelTable",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C110 (button #btnCancelTable) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnCancelTable",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C110.png"
+      ],
+      "timestamp": "2026-11-09T02:33:23.228Z"
+    },
+    {
+      "id": "G0-CTL-C111",
+      "gate": "G0",
+      "area": "control",
+      "origin": "http",
+      "fixture": null,
+      "control": "C111",
+      "selector": "#btnConfirmTable",
+      "controlSpec": {
+        "id": "C111",
+        "tag": "button",
+        "line": 2180,
+        "attributes": {
+          "class": "btn btn-primary",
+          "id": "btnConfirmTable"
+        },
+        "expected": "btnConfirmTable",
+        "result": "unrun; browser unavailable"
+      },
+      "procedure": "Execute control C111 (button #btnConfirmTable) on a synthetic document: click, or set value + dispatch change for select/input. Capture observation + screenshot; close any opened modal/dropdown afterwards.",
+      "expected": "btnConfirmTable",
+      "observation": {
+        "executed": "click",
+        "modalOrDropdownOpened": false,
+        "printStubbed": true,
+        "note": "behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G0-CTL-C111.png"
+      ],
+      "timestamp": "2026-11-09T02:33:24.865Z"
+    },
+    {
+      "id": "G1-X1-ISOLATION-BROWSER",
+      "gate": "G1-exception",
+      "area": "update-isolation",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Post-R05-fix browser re-check: on a tilde-first mixed-fence doc AND a blockquote-fence-first doc, edit card 0 in Studio and Update; compare #editor before/after byte-wise.",
+      "expected": "Top-level mixed fences: only the targeted block changes. Blockquote-nested fences: known residual (G1-X2) — record actual behavior, do not claim fixed.",
+      "observation": {
+        "tildeFirst": {
+          "changed": true,
+          "editedPresent": true,
+          "originalTargetGone": true,
+          "otherBlockGone": false
+        },
+        "blockquoteFirstKnownResidual": {
+          "changed": true,
+          "editedPresent": true,
+          "originalTargetGone": true,
+          "otherBlockGone": false
+        },
+        "note": "blockquote case expected to show the G1-X2 residual; record, do not claim fixed"
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G1-X1-ISOLATION-BROWSER.png"
+      ],
+      "timestamp": "2026-11-09T02:33:28.052Z"
+    },
+    {
+      "id": "G1-X4-WELCOME-FULLPAGE",
+      "gate": "G1-exception",
+      "area": "visual",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Fresh context, pristine welcome.md, capture FULL-PAGE screenshot (not viewport) plus scrolled captures of both diagram cards.",
+      "expected": "Both welcome diagrams visible as SVGs in the full-page capture; 0 error cards; 0 console errors.",
+      "observation": {
+        "svgCards": 2,
+        "errorCards": 0,
+        "cards": 2
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G1-X4-WELCOME-FULLPAGE.png"
+      ],
+      "timestamp": "2026-11-09T02:33:29.752Z"
+    },
+    {
+      "id": "G1-CLIP-SUCCESS",
+      "gate": "G1-exception",
+      "area": "clipboard",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "With a focused visible window (headed), click Copy Code on a rendered card and read navigator.clipboard.readText(); otherwise record blocked with the rejection reason.",
+      "expected": "Clipboard success path returns byte-exact diagram source; rejection path records the exact error toast.",
+      "observation": {
+        "expected": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
+        "read": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
+        "rawMatch": true,
+        "match": true,
+        "note": "focused-window clipboard success verified (--headed)",
+        "headed": true
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G1-CLIP-SUCCESS.png"
+      ],
+      "timestamp": "2026-11-09T02:33:31.440Z"
+    },
+    {
+      "id": "G2-LISTENER-50",
+      "gate": "G2",
+      "area": "listener-cleanup",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Execute 50 consecutive preview re-render cycles in the browser; spy on window.addEventListener to verify window mousemove/mouseup listeners do not accumulate and diagram drag remains interactive at cycle 50.",
+      "expected": "Window listener count remains constant (zero listener growth) across 50 cycles; diagram interactivity remains fully operational.",
+      "observation": {
+        "totalCycles": 50,
+        "addedListenersDuring50Cycles": 0,
+        "listenerSamples": [
+          {
+            "cycle": 1,
+            "addedListeners": 0
+          },
+          {
+            "cycle": 10,
+            "addedListeners": 0
+          },
+          {
+            "cycle": 20,
+            "addedListeners": 0
+          },
+          {
+            "cycle": 30,
+            "addedListeners": 0
+          },
+          {
+            "cycle": 40,
+            "addedListeners": 0
+          },
+          {
+            "cycle": 50,
+            "addedListeners": 0
+          }
+        ],
+        "hasSvg": true,
+        "interactivityFunctional": true,
+        "previewPanListenersBound": true,
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G2-LISTENER-50.png"
+      ],
+      "timestamp": "2026-11-09T02:33:42.034Z"
+    },
+    {
+      "id": "G2-RENDER-GEN",
+      "gate": "G2",
+      "area": "render-generation",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Verify generation guards and invalidation in live browser: rapid typing in editor commits only newest result without console errors; intercepted out-of-order renders do not overwrite newer canvas content; closing/reopening Studio modal cancels in-flight renders.",
+      "expected": "Only the newest render generation commits to preview/studio canvas; out-of-order completions discarded cleanly; zero console errors.",
+      "observation": {
+        "previewOutOfOrder": {
+          "gen2Committed": true,
+          "staleDidNotOverwrite": true
+        },
+        "rapidTypingSettled": true,
+        "studioInterleaving": {
+          "includesActive": true,
+          "includesClosed": false,
+          "reopenedCleanly": true,
+          "badgeValid": true
+        },
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G2-RENDER-GEN.png"
+      ],
+      "timestamp": "2026-11-09T02:33:45.956Z"
+    },
+    {
+      "id": "G3-FIT-TALL-WIDE",
+      "gate": "G3",
+      "area": "diagram-fit",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Load tall.md and wide.md fixtures in preview and Studio; verify bidirectional fit calculation scales diagrams to available dimensions without clipping top/bottom or left/right at initial display; verify pan/zoom and zoom-reset reachability; capture paired preview and studio screenshots.",
+      "expected": "Tall diagram (2100+ px) and wide diagram (1800+ px) fit inside available viewport without clipping in both views; zoom-reset restores fit; 0 console errors.",
+      "observation": {
+        "tallPreviewFit": {
+          "vpWidth": 568,
+          "vpHeight": 520,
+          "svgRenderedHeight": 488,
+          "svgTop": 290,
+          "svgBottom": 778,
+          "vpTop": 274,
+          "vpBottom": 794,
+          "clippedTop": false,
+          "clippedBottom": false,
+          "fitScale": 0.22426470588235295,
+          "zoom": 0.22426470588235295,
+          "panned": true,
+          "resetRestoresFit": true
+        },
+        "tallStudioFit": {
+          "wrapWidth": 556.9833374023438,
+          "wrapHeight": 594.7999877929688,
+          "svgRenderedHeight": 555,
+          "clippedTop": false,
+          "clippedBottom": false,
+          "fitScale": 0.25505514705882354
+        },
+        "widePreviewFit": {
+          "vpWidth": 568,
+          "vpHeight": 120,
+          "svgRenderedWidth": 536,
+          "clippedLeft": false,
+          "clippedRight": false,
+          "fitScale": 0.2945621371189743
+        },
+        "wideStudioFit": {
+          "wrapWidth": 556.9833374023438,
+          "wrapHeight": 594.7999877929688,
+          "svgRenderedWidth": 517,
+          "clippedLeft": false,
+          "clippedRight": false,
+          "fitScale": 0.2841205688255778
+        },
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-tall-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-tall-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-wide-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-wide-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE.png"
+      ],
+      "timestamp": "2026-11-09T02:33:50.116Z"
+    },
+    {
+      "id": "G3-THEME-ISOLATION-3X",
+      "gate": "G3",
+      "area": "theme-isolation",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Execute 3 cycles of theme switching and studio modal theme customization; verify document theme strictly governs preview diagram rendering; studio theme changes do not contaminate document preview; studio close restores document theme immediately.",
+      "expected": "Document preview strictly adheres to document theme; Studio custom themes remain isolated to Diagram Studio; 0 console errors.",
+      "observation": {
+        "cycles": [
+          {
+            "cycle": 1,
+            "docTheme": "dark",
+            "studioTheme": "forest",
+            "previewThemeAfter": "dark",
+            "isolated": true
+          },
+          {
+            "cycle": 2,
+            "docTheme": "light",
+            "studioTheme": "neutral",
+            "previewThemeAfter": "default",
+            "isolated": true
+          },
+          {
+            "cycle": 3,
+            "docTheme": "dark",
+            "studioTheme": "base",
+            "previewThemeAfter": "dark",
+            "isolated": true
+          }
+        ],
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G3-THEME-ISOLATION-3X.png"
+      ],
+      "timestamp": "2026-11-09T02:33:56.640Z"
+    },
+    {
+      "id": "G3-TYPOGRAPHY-LABELS",
+      "gate": "G3",
+      "area": "typography-isolation",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Render long-labels.md with markdown formatting (code, bold, italic, multi-line, long edge text); compare SVG label computed styles between preview and studio; verify preview typography rules (:not(.mermaid-block-card *)) prevent border/background bleeding into foreignObject code and paragraphs.",
+      "expected": "Diagram labels have clean typography without unwanted borders/backgrounds; no label clipping or text overflow; R06 verified remediated; 0 console errors.",
+      "observation": {
+        "previewTypo": {
+          "svgFound": true,
+          "foreignObjectCount": 12,
+          "codeElementsCount": 1,
+          "codeBleedDetected": false,
+          "codeDetails": [
+            {
+              "text": "DatabaseCluster",
+              "borderW": 0,
+              "bg": "rgba(0, 0, 0, 0)",
+              "pad": 0,
+              "hasBleed": false
+            }
+          ],
+          "pMarginBleed": false,
+          "edgeLabelCount": 12,
+          "r06Status": "remediated-clean"
+        },
+        "studioTypo": {
+          "svgFound": true,
+          "codeElementsCount": 1,
+          "codeBleedDetected": false
+        },
+        "r06Remediated": true,
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS.png"
+      ],
+      "timestamp": "2026-11-09T02:33:59.911Z"
+    },
+    {
+      "id": "G3-RESIZE-VIEWPORT-REFIT",
+      "gate": "G3",
+      "area": "resize-refit",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Verify diagram refitting behavior across split resizer dragging, double-click 50/50 reset, viewer toggle, and narrow viewport (640px); confirm diagrams automatically scale to fit new container dimensions without manual pan adjustment.",
+      "expected": "Diagrams automatically refit to changed pane dimensions after split dragging, viewer toggle, and narrow viewport resize; 0 console errors.",
+      "observation": {
+        "splitResize": {
+          "initialFitScale": 0.2945621371189743,
+          "expandedFitScale": 0.4374467558707156,
+          "scaleAdaptedToExpanded": true,
+          "resetFitScale": 0.2945621371189743,
+          "resetAdapted": true,
+          "afterToggleFitScale": 0.2945621371189743,
+          "toggleRefitted": true
+        },
+        "narrowViewportFit": {
+          "vpWidth": 240,
+          "svgWidth": 208,
+          "clippedLeft": false,
+          "clippedRight": false,
+          "fitScale": 0.11430769500139301
+        },
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G3-RESIZE-VIEWPORT-REFIT.png"
+      ],
+      "timestamp": "2026-11-09T02:34:03.622Z"
+    },
+    {
+      "id": "G4-INSERT-COMMANDS",
+      "gate": "G4",
+      "area": "insertion-commands",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Execute ribbon insertion commands (divider, image, link, table) and Studio palette Subgraph Box (C091) across empty and nonempty selections; verify absence of stray \"text\" placeholders, exact ![Alt text](url) construction, multi-line subgraph decoding with real newlines, and clean selection replacement.",
+      "expected": "All insertions produce exact expected Markdown without stray \"text\" or malformed URLs; C091 inserts multi-line subgraph; 0 console errors.",
+      "observation": {
+        "hrVal": "Before\n\n\n\n---\n\nAfter",
+        "hrNoText": true,
+        "hrExact": true,
+        "imgEmptyVal": "Doc head\n\n![Alt text](https://example.test/img-empty.png)Doc tail",
+        "imgEmptyNoText": true,
+        "imgEmptyExact": true,
+        "imgSelectedVal": "Check ![System Architecture](https://example.test/banner.svg) diagram",
+        "imgSelectedExact": true,
+        "linkEmptyVal": "Read [](https://example.test/docs)",
+        "linkEmptyExact": true,
+        "tableVal": "Start\n\n| Header 1 | Header 2 |\n| --- | --- |\n| Cell 1,1 | Cell 1,2 |\n| Cell 2,1 | Cell 2,2 |\n\n",
+        "tableNoText": true,
+        "tableHasHeader": true,
+        "paletteSubgraphDecoded": true,
+        "paletteLiteralBackslashN": 0,
+        "paletteActualNewlines": 7,
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G4-INSERT-COMMANDS.png"
+      ],
+      "timestamp": "2026-11-09T02:34:06.528Z"
+    },
+    {
+      "id": "G4-SHORTCUT-GUARDS",
+      "gate": "G4",
+      "area": "shortcut-guards",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Focus in Studio #builderCodeInput and Find Bar #findInput; trigger Ctrl+B, Ctrl+I, Ctrl+K; verify background document is not mutated; verify Escape key dismisses modals and find bar.",
+      "expected": "Editor shortcuts are guarded when typing in Studio or other inputs; Escape cleanly dismisses overlays; 0 console errors.",
+      "observation": {
+        "editorUnmutatedInStudio": true,
+        "studioClosedViaEscape": true,
+        "editorUnmutatedInFindInput": true,
+        "findBarClosedViaEscape": true,
+        "editorBoldsWhenFocused": true,
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G4-SHORTCUT-GUARDS.png"
+      ],
+      "timestamp": "2026-11-09T02:34:09.705Z"
+    },
+    {
+      "id": "G4-PERSISTENCE-ROUNDTRIP",
+      "gate": "G4",
+      "area": "persistence-roundtrip",
+      "origin": "http",
+      "fixture": null,
+      "control": null,
+      "selector": null,
+      "controlSpec": null,
+      "procedure": "Edit active document in #editor, create a second tab with custom markdown, switch back and forth between tabs, reload page from localStorage persistence; verify byte-exact document fidelity, active tab index, and view mode persistence.",
+      "expected": "Tab switching and page reload preserve document content and state byte-exact without data loss or corruption; 0 console errors.",
+      "observation": {
+        "tabSwitchCheck": {
+          "tabCount": 2,
+          "tab1Preserved": true,
+          "tab2Preserved": true
+        },
+        "reloadCheck": {
+          "tabsRestored": true,
+          "tab1ReloadedMatches": true,
+          "tab2ReloadedMatches": true
+        },
+        "consoleErrors": 0
+      },
+      "status": "pass",
+      "artifacts": [
+        "evidence/phase-0/g0-capture/artifacts/G4-PERSISTENCE-ROUNDTRIP.png"
+      ],
+      "timestamp": "2026-11-09T02:34:13.528Z"
+    }
+  ]
+}

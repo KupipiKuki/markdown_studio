@@ -128,6 +128,21 @@ function buildStopPoints() {
     procedure: 'Verify diagram refitting behavior across split resizer dragging, double-click 50/50 reset, viewer toggle, and narrow viewport (640px); confirm diagrams automatically scale to fit new container dimensions without manual pan adjustment.',
     expected: 'Diagrams automatically refit to changed pane dimensions after split dragging, viewer toggle, and narrow viewport resize; 0 console errors.'
   });
+  sps.push({
+    id: 'G4-INSERT-COMMANDS', gate: 'G4', area: 'insertion-commands', origin: 'http',
+    procedure: 'Execute ribbon insertion commands (divider, image, link, table) and Studio palette Subgraph Box (C091) across empty and nonempty selections; verify absence of stray "text" placeholders, exact ![Alt text](url) construction, multi-line subgraph decoding with real newlines, and clean selection replacement.',
+    expected: 'All insertions produce exact expected Markdown without stray "text" or malformed URLs; C091 inserts multi-line subgraph; 0 console errors.'
+  });
+  sps.push({
+    id: 'G4-SHORTCUT-GUARDS', gate: 'G4', area: 'shortcut-guards', origin: 'http',
+    procedure: 'Focus in Studio #builderCodeInput and Find Bar #findInput; trigger Ctrl+B, Ctrl+I, Ctrl+K; verify background document is not mutated; verify Escape key dismisses modals and find bar.',
+    expected: 'Editor shortcuts are guarded when typing in Studio or other inputs; Escape cleanly dismisses overlays; 0 console errors.'
+  });
+  sps.push({
+    id: 'G4-PERSISTENCE-ROUNDTRIP', gate: 'G4', area: 'persistence-roundtrip', origin: 'http',
+    procedure: 'Edit active document in #editor, create a second tab with custom markdown, switch back and forth between tabs, reload page from localStorage persistence; verify byte-exact document fidelity, active tab index, and view mode persistence.',
+    expected: 'Tab switching and page reload preserve document content and state byte-exact without data loss or corruption; 0 console errors.'
+  });
   return sps;
 }
 
@@ -1146,6 +1161,268 @@ async function runBrowser() {
         };
         if (!ok) console.log('G3-RESIZE-VIEWPORT-REFIT failure details:', JSON.stringify(obs, null, 2));
         if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      } else if (rec.area === 'insertion-commands') {
+        await page.route('https://example.test/**', route => route.fulfill({
+          status: 200,
+          contentType: 'image/svg+xml',
+          body: '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"></svg>'
+        }));
+        await settle(page);
+        const res = await page.evaluate(async () => {
+          const results = {};
+          const editor = document.getElementById('editor');
+
+          // 1. Divider with empty selection
+          editor.value = 'Before\n\nAfter';
+          editor.selectionStart = editor.selectionEnd = 8;
+          document.querySelector('.format-toolbar [data-action="hr"]').click();
+          results.hrVal = editor.value;
+          results.hrNoText = !editor.value.includes('text');
+          results.hrExact = editor.value === 'Before\n\n\n\n---\n\nAfter';
+
+          // 2. Image with empty selection
+          window.prompt = () => 'https://example.test/img-empty.png';
+          editor.value = 'Doc head\n\nDoc tail';
+          editor.selectionStart = editor.selectionEnd = 10;
+          document.querySelector('.format-toolbar [data-action="image"]').click();
+          results.imgEmptyVal = editor.value;
+          results.imgEmptyNoText = !editor.value.includes('texthttps://');
+          results.imgEmptyExact = editor.value.includes('![Alt text](https://example.test/img-empty.png)');
+
+          // 3. Image with nonempty selection
+          window.prompt = () => 'https://example.test/banner.svg';
+          editor.value = 'Check System Architecture diagram';
+          editor.selectionStart = 6;
+          editor.selectionEnd = 25; // 'System Architecture'
+          document.querySelector('.format-toolbar [data-action="image"]').click();
+          results.imgSelectedVal = editor.value;
+          results.imgSelectedExact = editor.value === 'Check ![System Architecture](https://example.test/banner.svg) diagram';
+
+          // 4. Link with empty selection
+          window.prompt = () => 'https://example.test/docs';
+          editor.value = 'Read ';
+          editor.selectionStart = editor.selectionEnd = 5;
+          document.querySelector('.format-toolbar [data-action="link"]').click();
+          results.linkEmptyVal = editor.value;
+          results.linkEmptyExact = editor.value === 'Read [](https://example.test/docs)';
+
+          // 5. Table insertion
+          editor.value = 'Start\n';
+          editor.selectionStart = editor.selectionEnd = 6;
+          document.querySelector('.format-toolbar [data-action="table"]').click();
+          await new Promise(r => setTimeout(r, 100));
+          document.getElementById('tableRowsInput').value = '2';
+          document.getElementById('tableColsInput').value = '2';
+          document.getElementById('btnConfirmTable').click();
+          await new Promise(r => setTimeout(r, 100));
+          results.tableVal = editor.value;
+          results.tableNoText = !editor.value.includes('text');
+          results.tableHasHeader = editor.value.includes('| Header 1 | Header 2 |');
+
+          // 6. Studio Palette Subgraph Box (C091)
+          document.getElementById('btnOpenStudio').click();
+          await new Promise(r => setTimeout(r, 400));
+          const builderCodeInput = document.getElementById('builderCodeInput');
+          builderCodeInput.value = 'flowchart TD\n  StartNode --> EndNode\n';
+          builderCodeInput.selectionStart = builderCodeInput.selectionEnd = builderCodeInput.value.length;
+
+          // Find Subgraph palette button
+          const paletteButtons = Array.from(document.querySelectorAll('#builderSidebar .palette-btn'));
+          const subgraphBtn = paletteButtons.find(b => (b.dataset.insert || '').includes('subgraph'));
+          if (subgraphBtn) subgraphBtn.click();
+          await new Promise(r => setTimeout(r, 400));
+
+          const studioVal = builderCodeInput.value;
+          const literalBackslashN = (studioVal.match(/\\n/g) || []).length;
+          const actualNewlines = (studioVal.match(/\n/g) || []).length;
+
+          results.paletteSubgraphDecoded = literalBackslashN === 0 && actualNewlines >= 5;
+          results.paletteLiteralBackslashN = literalBackslashN;
+          results.paletteActualNewlines = actualNewlines;
+
+          document.getElementById('btnBuilderCancel').click();
+          await new Promise(r => setTimeout(r, 300));
+
+          return results;
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = res.hrExact &&
+                   res.imgEmptyExact &&
+                   res.imgSelectedExact &&
+                   res.linkEmptyExact &&
+                   res.tableNoText &&
+                   res.tableHasHeader &&
+                   res.paletteSubgraphDecoded &&
+                   errs.length === 0;
+
+        if (!ok) console.log('G4-INSERT-COMMANDS failure details:', JSON.stringify(res, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...res, consoleErrors: errs.length })) break;
+      } else if (rec.area === 'shortcut-guards') {
+        await settle(page);
+        const res = await page.evaluate(async () => {
+          const results = {};
+          const editor = document.getElementById('editor');
+          editor.value = 'Pristine base document text.';
+          editor.selectionStart = 9;
+          editor.selectionEnd = 13; // 'base'
+
+          // 1. Studio modal shortcut guard
+          document.getElementById('btnOpenStudio').click();
+          await new Promise(r => setTimeout(r, 400));
+
+          const builderCodeInput = document.getElementById('builderCodeInput');
+          builderCodeInput.focus();
+
+          // Dispatch Ctrl+B while in Studio
+          const evtB = new KeyboardEvent('keydown', { key: 'b', code: 'KeyB', ctrlKey: true, bubbles: true });
+          document.dispatchEvent(evtB);
+          await new Promise(r => setTimeout(r, 100));
+
+          // Dispatch Ctrl+I while in Studio
+          const evtI = new KeyboardEvent('keydown', { key: 'i', code: 'KeyI', ctrlKey: true, bubbles: true });
+          document.dispatchEvent(evtI);
+          await new Promise(r => setTimeout(r, 100));
+
+          // Dispatch Ctrl+K while in Studio
+          const evtK = new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', ctrlKey: true, bubbles: true });
+          document.dispatchEvent(evtK);
+          await new Promise(r => setTimeout(r, 100));
+
+          results.editorUnmutatedInStudio = (editor.value === 'Pristine base document text.');
+
+          // Dispatch Escape to dismiss Studio
+          const escStudio = new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true });
+          document.dispatchEvent(escStudio);
+          await new Promise(r => setTimeout(r, 300));
+
+          const studioModal = document.getElementById('studioModal');
+          results.studioClosedViaEscape = !studioModal.classList.contains('open');
+
+          // 2. Find Bar shortcut guard
+          const btnFind = document.getElementById('btnToggleFind');
+          if (btnFind) btnFind.click();
+          await new Promise(r => setTimeout(r, 200));
+
+          const findInput = document.getElementById('findInput');
+          if (findInput) findInput.focus();
+
+          // Dispatch Ctrl+B while in Find input
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', code: 'KeyB', ctrlKey: true, bubbles: true }));
+          await new Promise(r => setTimeout(r, 100));
+
+          results.editorUnmutatedInFindInput = (editor.value === 'Pristine base document text.');
+
+          // Dispatch Escape to dismiss Find Bar
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }));
+          await new Promise(r => setTimeout(r, 200));
+
+          const findBar = document.getElementById('findReplaceBar');
+          results.findBarClosedViaEscape = !findBar.classList.contains('show');
+
+          // 3. Focused in editor: Ctrl+B works as intended
+          editor.focus();
+          editor.selectionStart = 9;
+          editor.selectionEnd = 13; // 'base'
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', code: 'KeyB', ctrlKey: true, bubbles: true }));
+          await new Promise(r => setTimeout(r, 100));
+
+          results.editorBoldsWhenFocused = (editor.value === 'Pristine **base** document text.');
+
+          return results;
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = res.editorUnmutatedInStudio &&
+                   res.studioClosedViaEscape &&
+                   res.editorUnmutatedInFindInput &&
+                   res.findBarClosedViaEscape &&
+                   res.editorBoldsWhenFocused &&
+                   errs.length === 0;
+
+        if (!ok) console.log('G4-SHORTCUT-GUARDS failure details:', JSON.stringify(res, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', { ...res, consoleErrors: errs.length })) break;
+      } else if (rec.area === 'persistence-roundtrip') {
+        await settle(page);
+        const tab1Content = '# Primary Document\n\n```mermaid\nflowchart LR\n  A1 --> B1\n```\n';
+        const tab2Content = '# Secondary Document\n\n```mermaid\nflowchart TD\n  S1 --> S2\n```\n';
+
+        await page.evaluate((doc1) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc1;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, tab1Content);
+        await settle(page);
+
+        // Add second tab
+        await page.evaluate((doc2) => {
+          document.getElementById('btnTabAdd').click();
+          const editor = document.getElementById('editor');
+          editor.value = doc2;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, tab2Content);
+        await settle(page);
+
+        const tabSwitchCheck = await page.evaluate(({ expectedDoc1, expectedDoc2 }) => {
+          const tabs = Array.from(document.querySelectorAll('#tabbar .tab'));
+          if (tabs.length < 2) return { ok: false, reason: 'Tab count < 2' };
+
+          // Switch back to tab 1
+          tabs[0].click();
+          const editor = document.getElementById('editor');
+          const readDoc1 = editor.value;
+
+          // Switch back to tab 2
+          tabs[1].click();
+          const readDoc2 = editor.value;
+
+          return {
+            tabCount: tabs.length,
+            tab1Preserved: readDoc1 === expectedDoc1,
+            tab2Preserved: readDoc2 === expectedDoc2
+          };
+        }, { expectedDoc1: tab1Content, expectedDoc2: tab2Content });
+
+        // Reload page to test localStorage round-trip
+        await page.reload({ waitUntil: 'load' });
+        await page.waitForSelector('#editor', { timeout: 10000 });
+        await settle(page);
+
+        const reloadCheck = await page.evaluate(({ expectedDoc1, expectedDoc2 }) => {
+          const tabs = Array.from(document.querySelectorAll('#tabbar .tab'));
+          const editor = document.getElementById('editor');
+          if (tabs.length >= 2) {
+            tabs[0].click();
+            const tab1Reloaded = editor.value;
+            tabs[1].click();
+            const tab2Reloaded = editor.value;
+            return {
+              tabsRestored: tabs.length >= 2,
+              tab1ReloadedMatches: tab1Reloaded === expectedDoc1,
+              tab2ReloadedMatches: tab2Reloaded === expectedDoc2
+            };
+          }
+          return { tabsRestored: false };
+        }, { expectedDoc1: tab1Content, expectedDoc2: tab2Content });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = tabSwitchCheck.tab1Preserved &&
+                   tabSwitchCheck.tab2Preserved &&
+                   reloadCheck.tabsRestored &&
+                   reloadCheck.tab1ReloadedMatches &&
+                   reloadCheck.tab2ReloadedMatches &&
+                   errs.length === 0;
+
+        const obs = {
+          tabSwitchCheck,
+          reloadCheck,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G4-PERSISTENCE-ROUNDTRIP failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
       }
     } catch (e) {
       console.error('Stop point blocked reason:', rec.id, e);
@@ -1177,7 +1454,7 @@ function envRecord() {
     if (FILTER) records = records.filter(r => r.id.includes(FILTER) || r.gate === FILTER);
     const m = writeManifest(records, envRecord());
     console.log(`dry-run: ${m.totals.stopPoints} stop points emitted to ${path.relative(root, OUT)}/manifest.json + stop-points.md`);
-    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}, G3: ${sps.filter(s => s.gate === 'G3').length}`);
+    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}, G3: ${sps.filter(s => s.gate === 'G3').length}, G4: ${sps.filter(s => s.gate === 'G4').length}`);
     return;
   }
   const records = await runBrowser();
