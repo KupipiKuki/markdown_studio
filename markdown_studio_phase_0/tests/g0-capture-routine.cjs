@@ -108,6 +108,26 @@ function buildStopPoints() {
     procedure: 'Verify generation guards and invalidation in live browser: rapid typing in editor commits only newest result without console errors; intercepted out-of-order renders do not overwrite newer canvas content; closing/reopening Studio modal cancels in-flight renders.',
     expected: 'Only the newest render generation commits to preview/studio canvas; out-of-order completions discarded cleanly; zero console errors.',
   });
+  sps.push({
+    id: 'G3-FIT-TALL-WIDE', gate: 'G3', area: 'diagram-fit', origin: 'http',
+    procedure: 'Load tall.md and wide.md fixtures in preview and Studio; verify bidirectional fit calculation scales diagrams to available dimensions without clipping top/bottom or left/right at initial display; verify pan/zoom and zoom-reset reachability; capture paired preview and studio screenshots.',
+    expected: 'Tall diagram (2100+ px) and wide diagram (1800+ px) fit inside available viewport without clipping in both views; zoom-reset restores fit; 0 console errors.'
+  });
+  sps.push({
+    id: 'G3-THEME-ISOLATION-3X', gate: 'G3', area: 'theme-isolation', origin: 'http',
+    procedure: 'Execute 3 cycles of theme switching and studio modal theme customization; verify document theme strictly governs preview diagram rendering; studio theme changes do not contaminate document preview; studio close restores document theme immediately.',
+    expected: 'Document preview strictly adheres to document theme; Studio custom themes remain isolated to Diagram Studio; 0 console errors.'
+  });
+  sps.push({
+    id: 'G3-TYPOGRAPHY-LABELS', gate: 'G3', area: 'typography-isolation', origin: 'http',
+    procedure: 'Render long-labels.md with markdown formatting (code, bold, italic, multi-line, long edge text); compare SVG label computed styles between preview and studio; verify preview typography rules (:not(.mermaid-block-card *)) prevent border/background bleeding into foreignObject code and paragraphs.',
+    expected: 'Diagram labels have clean typography without unwanted borders/backgrounds; no label clipping or text overflow; R06 verified remediated; 0 console errors.'
+  });
+  sps.push({
+    id: 'G3-RESIZE-VIEWPORT-REFIT', gate: 'G3', area: 'resize-refit', origin: 'http',
+    procedure: 'Verify diagram refitting behavior across split resizer dragging, double-click 50/50 reset, viewer toggle, and narrow viewport (640px); confirm diagrams automatically scale to fit new container dimensions without manual pan adjustment.',
+    expected: 'Diagrams automatically refit to changed pane dimensions after split dragging, viewer toggle, and narrow viewport resize; 0 console errors.'
+  });
   return sps;
 }
 
@@ -597,8 +617,538 @@ async function runBrowser() {
                    errs.length === 0;
         if (!ok) console.log('G2-RENDER-GEN failure details:', JSON.stringify(res, null, 2), 'consoleErrors:', errs);
         if (await finish(rec, ok ? 'pass' : 'fail', { ...res, consoleErrors: errs.length })) break;
+      } else if (rec.area === 'diagram-fit') {
+        await settle(page);
+        const tallPath = path.join(root, 'evidence/phase-0/fixtures/tall.md');
+        const widePath = path.join(root, 'evidence/phase-0/fixtures/wide.md');
+        const tallDoc = fs.readFileSync(tallPath, 'utf8');
+        const wideDoc = fs.readFileSync(widePath, 'utf8');
+
+        // Step 1: Tall Fixture Preview & Studio Fit
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, tallDoc);
+        await new Promise(r => setTimeout(r, 450));
+
+        const tallPreviewFit = await page.evaluate(() => {
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const vp = card ? card.querySelector('.mermaid-viewport') : null;
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!vp || !svg) return null;
+          const vpRect = vp.getBoundingClientRect();
+          const svgRect = svg.getBoundingClientRect();
+          const fitScale = parseFloat(vp.dataset.fitScale || 1);
+          const zoom = parseFloat(vp.dataset.zoom || 1);
+
+          // Test pan drag reachability
+          let panned = false;
+          const down = new MouseEvent('mousedown', { clientX: 200, clientY: 200, bubbles: true });
+          vp.dispatchEvent(down);
+          const move = new MouseEvent('mousemove', { clientX: 200, clientY: 280, bubbles: true });
+          window.dispatchEvent(move);
+          const up = new MouseEvent('mouseup', { clientX: 200, clientY: 280, bubbles: true });
+          window.dispatchEvent(up);
+          panned = parseFloat(vp.dataset.panY || 0) > 0;
+
+          // Test zoom-reset returns to fit
+          const resetBtn = card.querySelector('[data-action="zoom-reset"]');
+          if (resetBtn) resetBtn.click();
+          const resetZoom = parseFloat(vp.dataset.zoom || 1);
+          const resetPanY = parseFloat(vp.dataset.panY || 0);
+
+          return {
+            vpWidth: vpRect.width,
+            vpHeight: vpRect.height,
+            svgRenderedHeight: svgRect.height,
+            svgTop: svgRect.top,
+            svgBottom: svgRect.bottom,
+            vpTop: vpRect.top,
+            vpBottom: vpRect.bottom,
+            clippedTop: svgRect.top < vpRect.top - 2,
+            clippedBottom: svgRect.bottom > vpRect.bottom + 2,
+            fitScale,
+            zoom,
+            panned,
+            resetRestoresFit: Math.abs(resetZoom - fitScale) < 0.02 && resetPanY === 0
+          };
+        });
+
+        const tallPrevShot = `${art(rec.id + '-tall-preview')}.png`;
+        await page.screenshot({ path: tallPrevShot, fullPage: true });
+        rec.artifacts.push(relPosix(tallPrevShot));
+
+        // Open studio with tall diagram
+        await page.evaluate(() => {
+          const editBtn = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn) editBtn.click();
+        });
+        await new Promise(r => setTimeout(r, 450));
+
+        const tallStudioFit = await page.evaluate(() => {
+          const wrap = document.getElementById('builderPreviewWrap');
+          const canvas = document.getElementById('builderDiagramCanvas');
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!wrap || !svg) return null;
+          const wRect = wrap.getBoundingClientRect();
+          const sRect = svg.getBoundingClientRect();
+          const fitScale = parseFloat(wrap.dataset.fitScale || 1);
+          return {
+            wrapWidth: wRect.width,
+            wrapHeight: wRect.height,
+            svgRenderedHeight: sRect.height,
+            clippedTop: sRect.top < wRect.top - 2,
+            clippedBottom: sRect.bottom > wRect.bottom + 2,
+            fitScale
+          };
+        });
+
+        const tallStudioShot = `${art(rec.id + '-tall-studio')}.png`;
+        await page.screenshot({ path: tallStudioShot, fullPage: true });
+        rec.artifacts.push(relPosix(tallStudioShot));
+
+        await page.evaluate(() => {
+          const cancelBtn = document.getElementById('btnBuilderCancel');
+          if (cancelBtn) cancelBtn.click();
+        });
+        await new Promise(r => setTimeout(r, 300));
+
+        // Step 2: Wide Fixture Preview & Studio Fit
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, wideDoc);
+        await new Promise(r => setTimeout(r, 450));
+
+        const widePreviewFit = await page.evaluate(() => {
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const vp = card ? card.querySelector('.mermaid-viewport') : null;
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!vp || !svg) return null;
+          const vpRect = vp.getBoundingClientRect();
+          const svgRect = svg.getBoundingClientRect();
+          const fitScale = parseFloat(vp.dataset.fitScale || 1);
+          return {
+            vpWidth: vpRect.width,
+            vpHeight: vpRect.height,
+            svgRenderedWidth: svgRect.width,
+            clippedLeft: svgRect.left < vpRect.left - 2,
+            clippedRight: svgRect.right > vpRect.right + 2,
+            fitScale
+          };
+        });
+
+        const widePrevShot = `${art(rec.id + '-wide-preview')}.png`;
+        await page.screenshot({ path: widePrevShot, fullPage: true });
+        rec.artifacts.push(relPosix(widePrevShot));
+
+        // Open studio with wide diagram
+        await page.evaluate(() => {
+          const editBtn = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn) editBtn.click();
+        });
+        await new Promise(r => setTimeout(r, 450));
+
+        const wideStudioFit = await page.evaluate(() => {
+          const wrap = document.getElementById('builderPreviewWrap');
+          const canvas = document.getElementById('builderDiagramCanvas');
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!wrap || !svg) return null;
+          const wRect = wrap.getBoundingClientRect();
+          const sRect = svg.getBoundingClientRect();
+          const fitScale = parseFloat(wrap.dataset.fitScale || 1);
+          return {
+            wrapWidth: wRect.width,
+            wrapHeight: wRect.height,
+            svgRenderedWidth: sRect.width,
+            clippedLeft: sRect.left < wRect.left - 2,
+            clippedRight: sRect.right > wRect.right + 2,
+            fitScale
+          };
+        });
+
+        const wideStudioShot = `${art(rec.id + '-wide-studio')}.png`;
+        await page.screenshot({ path: wideStudioShot, fullPage: true });
+        rec.artifacts.push(relPosix(wideStudioShot));
+
+        await page.evaluate(() => {
+          const cancelBtn = document.getElementById('btnBuilderCancel');
+          if (cancelBtn) cancelBtn.click();
+        });
+        await new Promise(r => setTimeout(r, 300));
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = tallPreviewFit && !tallPreviewFit.clippedTop && !tallPreviewFit.clippedBottom &&
+                   tallStudioFit && !tallStudioFit.clippedTop && !tallStudioFit.clippedBottom &&
+                   widePreviewFit && !widePreviewFit.clippedLeft && !widePreviewFit.clippedRight &&
+                   wideStudioFit && !wideStudioFit.clippedLeft && !wideStudioFit.clippedRight &&
+                   tallPreviewFit.panned && tallPreviewFit.resetRestoresFit &&
+                   errs.length === 0;
+
+        const obs = {
+          tallPreviewFit,
+          tallStudioFit,
+          widePreviewFit,
+          wideStudioFit,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G3-FIT-TALL-WIDE failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      } else if (rec.area === 'theme-isolation') {
+        await settle(page);
+        const themeCycles = await page.evaluate(async () => {
+          const results = [];
+          const editor = document.getElementById('editor');
+
+          const getDocTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
+          const setDocTheme = (t) => {
+            document.documentElement.setAttribute('data-theme', t);
+            if (typeof initMermaid === 'function') initMermaid();
+          };
+
+          // Cycle 1: Dark document theme, Studio 'forest' theme
+          setDocTheme('dark');
+          editor.value = '# Dark Document\n\n```mermaid\nflowchart TD\n  DarkA --> DarkB\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 400));
+
+          const editBtn1 = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn1) editBtn1.click();
+          await new Promise(r => setTimeout(r, 300));
+
+          const themeSelect = document.getElementById('builderThemeSelect');
+          if (themeSelect) {
+            themeSelect.value = 'forest';
+            themeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          await new Promise(r => setTimeout(r, 400));
+
+          const studioTheme1 = themeSelect ? themeSelect.value : null;
+
+          const cancelBtn1 = document.getElementById('btnBuilderCancel');
+          if (cancelBtn1) cancelBtn1.click();
+          await new Promise(r => setTimeout(r, 300));
+
+          editor.value = '# Dark Document Re-render\n\n```mermaid\nflowchart TD\n  DarkA --> DarkB2\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 400));
+
+          const previewThemeAfter1 = (typeof mermaid !== 'undefined' && mermaid.mermaidAPI && mermaid.mermaidAPI.getConfig)
+            ? mermaid.mermaidAPI.getConfig().theme
+            : (getDocTheme() === 'dark' ? 'dark' : 'default');
+          results.push({
+            cycle: 1,
+            docTheme: 'dark',
+            studioTheme: studioTheme1,
+            previewThemeAfter: previewThemeAfter1,
+            isolated: previewThemeAfter1 === 'dark'
+          });
+
+          // Cycle 2: Light document theme, Studio 'neutral' theme
+          setDocTheme('light');
+          editor.value = '# Light Document\n\n```mermaid\nflowchart TD\n  LightA --> LightB\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 400));
+
+          const editBtn2 = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn2) editBtn2.click();
+          await new Promise(r => setTimeout(r, 300));
+
+          if (themeSelect) {
+            themeSelect.value = 'neutral';
+            themeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          await new Promise(r => setTimeout(r, 400));
+
+          const studioTheme2 = themeSelect ? themeSelect.value : null;
+
+          const cancelBtn2 = document.getElementById('btnBuilderCancel');
+          if (cancelBtn2) cancelBtn2.click();
+          await new Promise(r => setTimeout(r, 300));
+
+          editor.value = '# Light Document Re-render\n\n```mermaid\nflowchart TD\n  LightA --> LightB2\n```\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 400));
+
+          const previewThemeAfter2 = (typeof mermaid !== 'undefined' && mermaid.mermaidAPI && mermaid.mermaidAPI.getConfig)
+            ? mermaid.mermaidAPI.getConfig().theme
+            : (getDocTheme() === 'dark' ? 'dark' : 'default');
+          results.push({
+            cycle: 2,
+            docTheme: 'light',
+            studioTheme: studioTheme2,
+            previewThemeAfter: previewThemeAfter2,
+            isolated: previewThemeAfter2 === 'default'
+          });
+
+          // Cycle 3: Insert diagram with studio 'base' theme
+          setDocTheme('dark');
+          editor.value = '# Insert Flow\n\n';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+          await new Promise(r => setTimeout(r, 300));
+
+          document.getElementById('btnOpenStudio').click();
+          await new Promise(r => setTimeout(r, 300));
+
+          if (themeSelect) {
+            themeSelect.value = 'base';
+            themeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          await new Promise(r => setTimeout(r, 400));
+
+          const insertBtn = document.getElementById('btnBuilderInsert');
+          if (insertBtn) insertBtn.click();
+          await new Promise(r => setTimeout(r, 400));
+
+          const previewThemeAfter3 = (typeof mermaid !== 'undefined' && mermaid.mermaidAPI && mermaid.mermaidAPI.getConfig)
+            ? mermaid.mermaidAPI.getConfig().theme
+            : (getDocTheme() === 'dark' ? 'dark' : 'default');
+          results.push({
+            cycle: 3,
+            docTheme: 'dark',
+            studioTheme: 'base',
+            previewThemeAfter: previewThemeAfter3,
+            isolated: previewThemeAfter3 === 'dark'
+          });
+
+          setDocTheme('light');
+          return results;
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = themeCycles.length === 3 && themeCycles.every(c => c.isolated) && errs.length === 0;
+        if (!ok) console.log('G3-THEME-ISOLATION-3X failure details:', JSON.stringify(themeCycles, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', { cycles: themeCycles, consoleErrors: errs.length })) break;
+      } else if (rec.area === 'typography-isolation') {
+        await settle(page);
+        const labelsPath = path.join(root, 'evidence/phase-0/fixtures/long-labels.md');
+        const labelsDoc = fs.readFileSync(labelsPath, 'utf8');
+
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, labelsDoc);
+        await page.waitForTimeout(500);
+        await settle(page);
+
+        const previewTypo = await page.evaluate(() => {
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!svg) return null;
+
+          const foreignObjects = Array.from(svg.querySelectorAll('foreignObject'));
+          const codeElements = Array.from(svg.querySelectorAll('foreignObject code'));
+          const pElements = Array.from(svg.querySelectorAll('foreignObject p'));
+
+          let codeBleedDetected = false;
+          let codeDetails = [];
+          for (const codeEl of codeElements) {
+            const cs = window.getComputedStyle(codeEl);
+            const borderW = parseFloat(cs.borderTopWidth || '0');
+            const bg = cs.backgroundColor;
+            const pad = parseFloat(cs.paddingTop || '0');
+            const hasBleed = borderW > 0 || (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') || pad > 0;
+            if (hasBleed) codeBleedDetected = true;
+            codeDetails.push({ text: codeEl.textContent, borderW, bg, pad, hasBleed });
+          }
+
+          let pMarginBleed = false;
+          for (const pEl of pElements) {
+            const cs = window.getComputedStyle(pEl);
+            const mt = parseFloat(cs.marginTop || '0');
+            const mb = parseFloat(cs.marginBottom || '0');
+            if (mt > 0 || mb > 0) pMarginBleed = true;
+          }
+
+          const edgeLabels = Array.from(svg.querySelectorAll('.edgeLabel'));
+
+          return {
+            svgFound: true,
+            foreignObjectCount: foreignObjects.length,
+            codeElementsCount: codeElements.length,
+            codeBleedDetected,
+            codeDetails,
+            pMarginBleed,
+            edgeLabelCount: edgeLabels.length,
+            r06Status: codeBleedDetected || pMarginBleed ? 'confirmed-reproduced' : 'remediated-clean'
+          };
+        });
+
+        const previewShot = `${art(rec.id + '-preview')}.png`;
+        await page.screenshot({ path: previewShot, fullPage: true });
+        rec.artifacts.push(relPosix(previewShot));
+
+        // Open studio
+        await page.evaluate(() => {
+          const editBtn = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+          if (editBtn) editBtn.click();
+        });
+        await page.waitForFunction(() => {
+          const canvas = document.getElementById('builderDiagramCanvas');
+          return canvas && (canvas.querySelector('svg') || canvas.querySelector('.mermaid-error-card'));
+        }, { timeout: 15000 }).catch(() => {});
+        await page.waitForTimeout(400);
+
+        const studioTypo = await page.evaluate(() => {
+          const canvas = document.getElementById('builderDiagramCanvas');
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!svg) return null;
+
+          const codeElements = Array.from(svg.querySelectorAll('foreignObject code'));
+          let codeBleedDetected = false;
+          for (const codeEl of codeElements) {
+            const cs = window.getComputedStyle(codeEl);
+            const borderW = parseFloat(cs.borderTopWidth || '0');
+            const bg = cs.backgroundColor;
+            const pad = parseFloat(cs.paddingTop || '0');
+            if (borderW > 0 || (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') || pad > 0) {
+              codeBleedDetected = true;
+            }
+          }
+          return {
+            svgFound: true,
+            codeElementsCount: codeElements.length,
+            codeBleedDetected
+          };
+        });
+
+        const studioShot = `${art(rec.id + '-studio')}.png`;
+        await page.screenshot({ path: studioShot, fullPage: true });
+        rec.artifacts.push(relPosix(studioShot));
+
+        await page.evaluate(() => {
+          const cancelBtn = document.getElementById('btnBuilderCancel');
+          if (cancelBtn) cancelBtn.click();
+        });
+        await new Promise(r => setTimeout(r, 300));
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = previewTypo && !previewTypo.codeBleedDetected && !previewTypo.pMarginBleed &&
+                   studioTypo && !studioTypo.codeBleedDetected &&
+                   errs.length === 0;
+
+        const obs = {
+          previewTypo,
+          studioTypo,
+          r06Remediated: ok,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G3-TYPOGRAPHY-LABELS failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      } else if (rec.area === 'resize-refit') {
+        await settle(page);
+        const widePath = path.join(root, 'evidence/phase-0/fixtures/wide.md');
+        const wideDoc = fs.readFileSync(widePath, 'utf8');
+
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, wideDoc);
+        await new Promise(r => setTimeout(r, 450));
+
+        const res = await page.evaluate(async () => {
+          const results = {};
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const vp = card ? card.querySelector('.mermaid-viewport') : null;
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const resizer = document.getElementById('splitResizer');
+          const workspace = document.getElementById('workspace');
+
+          const initialFitScale = parseFloat(vp.dataset.fitScale || 1);
+          results.initialFitScale = initialFitScale;
+
+          // Drag resizer to 30% (giving viewer 70% width)
+          const rect = workspace.getBoundingClientRect();
+          const down = new MouseEvent('mousedown', { clientX: rect.left + rect.width * 0.5, clientY: 200, bubbles: true });
+          resizer.dispatchEvent(down);
+          const move = new MouseEvent('mousemove', { clientX: rect.left + rect.width * 0.3, clientY: 200, bubbles: true });
+          window.dispatchEvent(move);
+          const up = new MouseEvent('mouseup', { clientX: rect.left + rect.width * 0.3, clientY: 200, bubbles: true });
+          window.dispatchEvent(up);
+          await new Promise(r => setTimeout(r, 200));
+
+          const expandedFitScale = parseFloat(vp.dataset.fitScale || 1);
+          results.expandedFitScale = expandedFitScale;
+          results.scaleAdaptedToExpanded = expandedFitScale > initialFitScale;
+
+          // Reset to 50/50 via dblclick
+          const dbl = new MouseEvent('dblclick', { bubbles: true });
+          resizer.dispatchEvent(dbl);
+          await new Promise(r => setTimeout(r, 200));
+
+          const resetFitScale = parseFloat(vp.dataset.fitScale || 1);
+          results.resetFitScale = resetFitScale;
+          results.resetAdapted = Math.abs(resetFitScale - initialFitScale) < 0.02;
+
+          // Toggle viewer hide then show
+          const btnToggleViewer = document.getElementById('btnToggleViewer');
+          if (btnToggleViewer) {
+            btnToggleViewer.click();
+            await new Promise(r => setTimeout(r, 150));
+            btnToggleViewer.click();
+            await new Promise(r => setTimeout(r, 200));
+          }
+
+          const afterToggleFitScale = parseFloat(vp.dataset.fitScale || 1);
+          results.afterToggleFitScale = afterToggleFitScale;
+          results.toggleRefitted = Math.abs(afterToggleFitScale - initialFitScale) < 0.02;
+
+          return results;
+        });
+
+        // Test narrow viewport (640x720)
+        await page.setViewportSize({ width: 640, height: 720 });
+        await new Promise(r => setTimeout(r, 250));
+
+        const narrowFit = await page.evaluate(() => {
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const vp = card ? card.querySelector('.mermaid-viewport') : null;
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          const svg = canvas ? canvas.querySelector('svg') : null;
+          if (!vp || !svg) return null;
+          const vpRect = vp.getBoundingClientRect();
+          const svgRect = svg.getBoundingClientRect();
+          const fitScale = parseFloat(vp.dataset.fitScale || 1);
+          return {
+            vpWidth: vpRect.width,
+            svgWidth: svgRect.width,
+            clippedLeft: svgRect.left < vpRect.left - 2,
+            clippedRight: svgRect.right > vpRect.right + 2,
+            fitScale
+          };
+        });
+
+        await page.setViewportSize({ width: 1280, height: 800 });
+        await new Promise(r => setTimeout(r, 200));
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = res.scaleAdaptedToExpanded &&
+                   res.resetAdapted &&
+                   res.toggleRefitted &&
+                   narrowFit && !narrowFit.clippedLeft && !narrowFit.clippedRight &&
+                   errs.length === 0;
+
+        const obs = {
+          splitResize: res,
+          narrowViewportFit: narrowFit,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G3-RESIZE-VIEWPORT-REFIT failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
       }
     } catch (e) {
+      console.error('Stop point blocked reason:', rec.id, e);
       const stop = await finish(rec, 'blocked', { reason: String(e && e.message || e) });
       if (stop) { await browser.close(); server.close(); writeManifest(records, envRecord()); process.exit(1); }
     } finally {
@@ -627,7 +1177,7 @@ function envRecord() {
     if (FILTER) records = records.filter(r => r.id.includes(FILTER) || r.gate === FILTER);
     const m = writeManifest(records, envRecord());
     console.log(`dry-run: ${m.totals.stopPoints} stop points emitted to ${path.relative(root, OUT)}/manifest.json + stop-points.md`);
-    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}`);
+    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}, G3: ${sps.filter(s => s.gate === 'G3').length}`);
     return;
   }
   const records = await runBrowser();

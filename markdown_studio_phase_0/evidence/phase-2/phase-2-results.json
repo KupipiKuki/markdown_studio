@@ -1,7 +1,7 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-08T00:04:32.871Z",
+  "timestamp": "2026-11-09T00:43:58.842Z",
   "testsPassed": 3,
   "testsFailed": 0,
   "findingsResolved": [
@@ -9,8 +9,8 @@
     "R09",
     "R15"
   ],
-  "candidateSha256": "1f10e11242f7d42e2acec50ec8616fddd67e24d1c5e36620b380d91c4e00864c",
-  "candidateSha256Raw": "259624290666177c9ac460d181921471a35e488446876c76fed4aad7e05a989d",
+  "candidateSha256": "66eb9ae30049f4ce4ca7f4262981d348faf2a3bab30fe36a90c12b5e8ba7d7ab",
+  "candidateSha256Raw": "47075740b67969cf1e434737109b1d77c033b50bc09336600a8cdb4b59f629fb",
   "lineEndings": "CRLF-on-disk",
   "results": [
     {
@@ -20,7 +20,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-08T00:04:32.768Z",
+      "timestamp": "2026-11-09T00:43:58.741Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
@@ -39,7 +39,7 @@
       ],
       "gate": "G2",
       "name": "Render Generation Guard & Out-of-Order Invalidation",
-      "timestamp": "2026-11-08T00:04:32.868Z",
+      "timestamp": "2026-11-09T00:43:58.839Z",
       "procedure": "Start overlapping renders with controllable deferred promises; resolve out-of-order; assert canvas retains newest result only, no stale commits across tab switches or modal closes.",
       "observation": {
         "outOfOrderHandled": true,
@@ -58,7 +58,7 @@
       ],
       "gate": "G2",
       "name": "Preview Interactivity Setup Listener Cleanup & Retention",
-      "timestamp": "2026-11-08T00:04:32.871Z",
+      "timestamp": "2026-11-09T00:43:58.842Z",
       "procedure": "Execute setupPreviewDiagramInteractivity across 50 simulated render cycles; verify constant window listener count (zero growth), zero detached card retention, intact interactivity after 50 cycles, and full teardown on cleanup.",
       "observation": {
         "cyclesTested": 50,

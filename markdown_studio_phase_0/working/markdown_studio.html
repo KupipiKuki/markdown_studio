@@ -798,13 +798,13 @@
     justify-content: center;
   }
 
-  /* Preview Typography Styling */
-  .preview-content h1,
-  .preview-content h2,
-  .preview-content h3,
-  .preview-content h4,
-  .preview-content h5,
-  .preview-content h6 {
+  /* Preview Typography Styling (R06 Scoped - Isolated from Mermaid SVGs) */
+  .preview-content h1:not(.mermaid-block-card *),
+  .preview-content h2:not(.mermaid-block-card *),
+  .preview-content h3:not(.mermaid-block-card *),
+  .preview-content h4:not(.mermaid-block-card *),
+  .preview-content h5:not(.mermaid-block-card *),
+  .preview-content h6:not(.mermaid-block-card *) {
     color: var(--text-primary);
     font-weight: 700;
     margin-top: 1.5em;
@@ -812,20 +812,20 @@
     line-height: 1.25;
     letter-spacing: -0.3px;
   }
-  .preview-content h1 { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
-  .preview-content h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.25em; }
-  .preview-content h3 { font-size: 1.25em; }
-  .preview-content h4 { font-size: 1.05em; }
-  .preview-content p { margin: 0.9em 0; }
-  .preview-content a { color: var(--accent); text-decoration: none; font-weight: 500; }
-  .preview-content a:hover { text-decoration: underline; }
-  .preview-content hr {
+  .preview-content h1:not(.mermaid-block-card *) { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+  .preview-content h2:not(.mermaid-block-card *) { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.25em; }
+  .preview-content h3:not(.mermaid-block-card *) { font-size: 1.25em; }
+  .preview-content h4:not(.mermaid-block-card *) { font-size: 1.05em; }
+  .preview-content p:not(.mermaid-block-card *) { margin: 0.9em 0; }
+  .preview-content a:not(.mermaid-block-card *) { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .preview-content a:not(.mermaid-block-card *):hover { text-decoration: underline; }
+  .preview-content hr:not(.mermaid-block-card *) {
     border: none;
     height: 1px;
     background: var(--border-strong);
     margin: 2em 0;
   }
-  .preview-content blockquote {
+  .preview-content blockquote:not(.mermaid-block-card *) {
     border-left: 4px solid var(--accent);
     margin: 1.2em 0;
     padding: 8px 16px;
@@ -833,40 +833,41 @@
     background: var(--bg-surface);
     border-radius: 0 6px 6px 0;
   }
-  .preview-content ul, .preview-content ol {
+  .preview-content ul:not(.mermaid-block-card *), .preview-content ol:not(.mermaid-block-card *) {
     padding-left: 24px;
     margin: 0.8em 0;
   }
-  .preview-content li { margin: 0.3em 0; }
-  .preview-content li input[type="checkbox"] {
+  .preview-content li:not(.mermaid-block-card *) { margin: 0.3em 0; }
+  .preview-content li:not(.mermaid-block-card *) input[type="checkbox"] {
     margin-right: 6px;
     accent-color: var(--accent);
   }
-  .preview-content img {
+  .preview-content img:not(.mermaid-block-card *) {
     max-width: 100%;
     border-radius: 8px;
     box-shadow: var(--shadow-md);
   }
-  .preview-content table {
+  .preview-content table:not(.mermaid-block-card *) {
     border-collapse: collapse;
     width: 100%;
     margin: 1.5em 0;
     overflow-x: auto;
     display: block;
   }
-  .preview-content th, .preview-content td {
+  .preview-content table:not(.mermaid-block-card *) th,
+  .preview-content table:not(.mermaid-block-card *) td {
     border: 1px solid var(--border);
     padding: 8px 14px;
     text-align: left;
   }
-  .preview-content th {
+  .preview-content table:not(.mermaid-block-card *) th {
     background: var(--bg-surface);
     font-weight: 600;
   }
-  .preview-content tr:nth-child(even) td {
+  .preview-content table:not(.mermaid-block-card *) tr:nth-child(even) td {
     background: var(--bg-surface);
   }
-  .preview-content code {
+  .preview-content code:not(.mermaid-block-card *) {
     font-family: var(--font-mono);
     font-size: 0.88em;
     padding: 2px 6px;
@@ -875,7 +876,7 @@
     color: var(--accent);
     border: 1px solid var(--border);
   }
-  .preview-content pre {
+  .preview-content pre:not(.mermaid-block-card *) {
     background: var(--bg-panel);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -885,12 +886,40 @@
     font-size: 13px;
     box-shadow: var(--shadow-sm);
   }
-  .preview-content pre code {
+  .preview-content pre:not(.mermaid-block-card *) code {
     background: none;
     border: none;
     padding: 0;
     color: inherit;
     font-size: 1em;
+  }
+
+  /* Mermaid Canvas SVG Typography & ForeignObject Resets (R06 Remediation) */
+  .mermaid-canvas foreignObject,
+  #builderDiagramCanvas foreignObject {
+    line-height: normal;
+  }
+  .mermaid-canvas foreignObject *,
+  #builderDiagramCanvas foreignObject * {
+    box-sizing: border-box;
+  }
+  .mermaid-canvas foreignObject p,
+  #builderDiagramCanvas foreignObject p,
+  .mermaid-canvas foreignObject div,
+  #builderDiagramCanvas foreignObject div,
+  .mermaid-canvas foreignObject span,
+  #builderDiagramCanvas foreignObject span {
+    margin: 0;
+    padding: 0;
+  }
+  .mermaid-canvas foreignObject code,
+  #builderDiagramCanvas foreignObject code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
   }
 
   /* ==========================================================================
@@ -982,13 +1011,12 @@
     display: inline-block;
     transform-origin: center center;
     transition: transform 0.05s ease-out;
-    max-width: 100%;
+    max-width: none;
   }
   .mermaid-canvas svg {
     display: block;
     margin: 0 auto;
-    height: auto;
-    max-width: 100%;
+    overflow: visible;
   }
 
   /* Mermaid Error Card */
@@ -1441,12 +1469,15 @@
     cursor: grabbing;
   }
   #builderDiagramCanvas {
+    display: inline-block;
     transform-origin: center center;
     transition: transform 0.05s ease-out;
+    max-width: none;
   }
   #builderDiagramCanvas svg {
-    max-width: 100%;
-    height: auto;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
   }
 
   .validation-status-badge {
@@ -2617,6 +2648,11 @@
   async function renderAllPreviewDiagrams() {
     if (typeof mermaid === 'undefined') return;
 
+    // R08 Remediation: Enforce document theme initialization before rendering preview diagrams
+    if (typeof initMermaid === 'function') {
+      initMermaid(typeof getMermaidTheme === 'function' ? getMermaidTheme() : undefined);
+    }
+
     const currentGen = (typeof previewRenderGeneration !== 'undefined'
       ? ++previewRenderGeneration
       : (renderAllPreviewDiagrams.generation = (renderAllPreviewDiagrams.generation || 0) + 1));
@@ -2683,11 +2719,19 @@
 
         canvas.innerHTML = svg;
 
-        // Ensure rendered SVG has proper scalable attributes
+        // R07 Remediation: Establish intrinsic diagram dimensions on rendered SVG
         const svgEl = canvas.querySelector('svg');
         if (svgEl) {
-          svgEl.style.maxWidth = '100%';
-          svgEl.style.height = 'auto';
+          const dims = typeof getSvgIntrinsicDimensions === 'function'
+            ? getSvgIntrinsicDimensions(svgEl)
+            : { width: 100, height: 100 };
+          svgEl.style.width = dims.width + 'px';
+          svgEl.style.height = dims.height + 'px';
+          svgEl.style.maxWidth = 'none';
+          if (svgEl.dataset) {
+            svgEl.dataset.intrinsicWidth = dims.width;
+            svgEl.dataset.intrinsicHeight = dims.height;
+          }
         }
       } catch (err) {
         cleanStrayMermaidElements(uniqueId);
@@ -2721,8 +2765,48 @@
   }
 
   // --------------------------------------------------------------------------
-  // Diagram Viewport Pan & Zoom Interactivity (Shared Pan Handlers & Lifecycle Cleanup)
+  // Diagram Viewport Pan & Zoom Interactivity (Sizing, Fitting & Lifecycle Cleanup)
   // --------------------------------------------------------------------------
+  function getSvgIntrinsicDimensions(svgEl) {
+    if (!svgEl) return { width: 100, height: 100 };
+    const vbStr = typeof svgEl.getAttribute === 'function' ? (svgEl.getAttribute('viewBox') || '') : '';
+    const vb = vbStr.trim().split(/[\s,]+/).map(parseFloat);
+    let w = vb.length === 4 && vb[2] > 0 ? vb[2] : 0;
+    let h = vb.length === 4 && vb[3] > 0 ? vb[3] : 0;
+    if (!w && typeof svgEl.getAttribute === 'function') {
+      const attrW = parseFloat(svgEl.getAttribute('width'));
+      if (attrW > 0) w = attrW;
+    }
+    if (!h && typeof svgEl.getAttribute === 'function') {
+      const attrH = parseFloat(svgEl.getAttribute('height'));
+      if (attrH > 0) h = attrH;
+    }
+    if ((!w || !h) && typeof svgEl.getBBox === 'function') {
+      try {
+        const bbox = svgEl.getBBox();
+        if (bbox && bbox.width > 0) w = bbox.width;
+        if (bbox && bbox.height > 0) h = bbox.height;
+      } catch (e) {}
+    }
+    if ((!w || !h) && typeof svgEl.getBoundingClientRect === 'function') {
+      const rect = svgEl.getBoundingClientRect();
+      if (rect && rect.width > 0) w = rect.width;
+      if (rect && rect.height > 0) h = rect.height;
+    }
+    return { width: w || 100, height: h || 100 };
+  }
+
+  function computeDiagramFitScale(svgWidth, svgHeight, availWidth, availHeight) {
+    const sw = Math.max(svgWidth || 100, 1);
+    const sh = Math.max(svgHeight || 100, 1);
+    const aw = Math.max(availWidth || 100, 20);
+    const ah = Math.max(availHeight || 100, 20);
+    const scaleX = aw / sw;
+    const scaleY = ah / sh;
+    const fitScale = Math.min(scaleX, scaleY, 1.0);
+    return { scaleX, scaleY, fitScale };
+  }
+
   let activePreviewPan = null;
 
   function cleanupPreviewDiagramInteractivity() {
@@ -2767,16 +2851,41 @@
       const canvas = card.querySelector('.mermaid-canvas');
       if (!viewport || !canvas) return;
 
-      let panX = parseFloat(viewport.dataset.panX || 0);
-      let panY = parseFloat(viewport.dataset.panY || 0);
-      let zoom = parseFloat(viewport.dataset.zoom || 1);
+      const svgEl = canvas.querySelector('svg');
+      const svgW = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicWidth)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).width : 100);
+      const svgH = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicHeight)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).height : 100);
 
-      function updateTransform() {
+      const availW = Math.max((viewport.clientWidth || 560) - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+
+      const { fitScale } = typeof computeDiagramFitScale === 'function'
+        ? computeDiagramFitScale(svgW, svgH, availW, availH)
+        : { fitScale: 1.0 };
+      if (viewport.dataset) viewport.dataset.fitScale = fitScale;
+
+      const hasManualInteraction = viewport.dataset && viewport.dataset.manuallyAdjusted === 'true';
+      let panX = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panX || 0) : 0;
+      let panY = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panY || 0) : 0;
+      let zoom = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.zoom || fitScale) : fitScale;
+
+      const minZoom = Math.min(0.05, fitScale * 0.5);
+      const maxZoom = 5.0;
+
+      function updateTransform(immediate = false) {
+        if (immediate) canvas.style.transition = 'none';
         canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
-        viewport.dataset.panX = panX;
-        viewport.dataset.panY = panY;
-        viewport.dataset.zoom = zoom;
+        if (immediate && typeof requestAnimationFrame === 'function') {
+          requestAnimationFrame(() => { canvas.style.transition = 'transform 0.05s ease-out'; });
+        }
+        if (viewport.dataset) {
+          viewport.dataset.panX = panX;
+          viewport.dataset.panY = panY;
+          viewport.dataset.zoom = zoom;
+        }
       }
+
+      updateTransform(true);
 
       // Mouse Drag to Pan — delegates to shared window listeners without per-card listener accumulation
       viewport.onmousedown = (e) => {
@@ -2792,6 +2901,7 @@
           startX,
           startY,
           onMove(clientX, clientY) {
+            viewport.dataset.manuallyAdjusted = 'true';
             panX = clientX - startX;
             panY = clientY - startY;
             updateTransform();
@@ -2808,8 +2918,9 @@
       // Mouse Wheel to Zoom
       viewport.onwheel = (e) => {
         if (e.preventDefault) e.preventDefault();
+        viewport.dataset.manuallyAdjusted = 'true';
         const factor = e.deltaY < 0 ? 1.15 : 0.87;
-        const newZoom = Math.min(Math.max(zoom * factor, 0.3), 5.0);
+        const newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
         zoom = newZoom;
         updateTransform();
       };
@@ -2823,15 +2934,24 @@
         const rawCode = getCardMermaidCode(card);
 
         if (action === 'zoom-in') {
-          zoom = Math.min(zoom * 1.25, 5.0);
+          viewport.dataset.manuallyAdjusted = 'true';
+          zoom = Math.min(zoom * 1.25, maxZoom);
           updateTransform();
         } else if (action === 'zoom-out') {
-          zoom = Math.max(zoom * 0.8, 0.3);
+          viewport.dataset.manuallyAdjusted = 'true';
+          zoom = Math.max(zoom * 0.8, minZoom);
           updateTransform();
         } else if (action === 'zoom-reset') {
-          zoom = 1;
-          panX = 0;
-          panY = 0;
+          viewport.dataset.manuallyAdjusted = 'false';
+          if (Math.abs(zoom - fitScale) > 0.01 || panX !== 0 || panY !== 0) {
+            zoom = fitScale;
+            panX = 0;
+            panY = 0;
+          } else {
+            zoom = 1;
+            panX = 0;
+            panY = 0;
+          }
           updateTransform();
         } else if (action === 'fullscreen') {
           openFullscreenDiagram(canvas.innerHTML);
@@ -2863,6 +2983,51 @@
     }
     setupPreviewDiagramInteractivity.activePan = null;
   };
+
+  function refitAllDiagrams() {
+    const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
+    cards.forEach(card => {
+      const viewport = card.querySelector('.mermaid-viewport');
+      const canvas = card.querySelector('.mermaid-canvas');
+      const svgEl = canvas ? canvas.querySelector('svg') : null;
+      if (!viewport || !canvas || !svgEl) return;
+      if (viewport.dataset.manuallyAdjusted === 'true') return;
+
+      const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+      const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+
+      const availW = Math.max(viewport.clientWidth - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+
+      const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+      viewport.dataset.fitScale = fitScale;
+      viewport.dataset.zoom = fitScale;
+      viewport.dataset.panX = 0;
+      viewport.dataset.panY = 0;
+      canvas.style.transition = 'none';
+      canvas.style.transform = `translate(0px, 0px) scale(${fitScale})`;
+      requestAnimationFrame(() => { canvas.style.transition = 'transform 0.05s ease-out'; });
+    });
+
+    if (typeof studioModal !== 'undefined' && studioModal && studioModal.classList.contains('open')) {
+      const svgEl = typeof builderCanvas !== 'undefined' && builderCanvas ? builderCanvas.querySelector('svg') : null;
+      if (svgEl && typeof builderWrap !== 'undefined' && builderWrap && builderWrap.dataset.manuallyAdjusted !== 'true') {
+        const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+        const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+        const availW = Math.max(builderWrap.clientWidth - 40, 40);
+        const availH = Math.max(builderWrap.clientHeight - 40, 40);
+        const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+        builderWrap.dataset.fitScale = fitScale;
+        builderZoom = fitScale;
+        builderPanX = 0;
+        builderPanY = 0;
+        if (typeof updateBuilderTransform === 'function') {
+          updateBuilderTransform(true);
+        }
+      }
+    }
+  }
 
   // --------------------------------------------------------------------------
   // Diagram Export Helpers (SVG & High-Res PNG)
@@ -3565,6 +3730,10 @@
     if (persist) {
       persistViewState();
     }
+
+    if (viewerVisible && typeof refitAllDiagrams === 'function') {
+      requestAnimationFrame(refitAllDiagrams);
+    }
   }
 
   function toggleEditor() {
@@ -3591,6 +3760,7 @@
       paneEditor.style.flex = '0 0 50%';
       showToast('Reset view to 50/50 split');
       persistViewState();
+      if (typeof refitAllDiagrams === 'function') refitAllDiagrams();
       return;
     }
     setPaneVisibility({
@@ -3599,6 +3769,9 @@
       toast: 'Split View enabled (Editor + Viewer)',
       focusEditor: true
     });
+    if (typeof refitAllDiagrams === 'function') {
+      requestAnimationFrame(refitAllDiagrams);
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -3633,6 +3806,7 @@
       resizer.classList.remove('dragging');
       document.body.style.cursor = '';
       persistViewState();
+      if (typeof refitAllDiagrams === 'function') refitAllDiagrams();
     }
   });
 
@@ -3642,6 +3816,15 @@
     paneEditor.style.flex = '0 0 50%';
     showToast('Reset view to 50/50 split');
     persistViewState();
+    if (typeof refitAllDiagrams === 'function') refitAllDiagrams();
+  });
+
+  let resizeRefitTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeRefitTimer);
+    resizeRefitTimer = setTimeout(() => {
+      if (typeof refitAllDiagrams === 'function') refitAllDiagrams();
+    }, 80);
   });
 
   // Header controls
@@ -3884,6 +4067,12 @@
     activeEditingDiagramIndex = diagramIndex;
     studioModal.classList.add('open');
 
+    // Default builderThemeSelect to document theme if not previously customized by user
+    if (builderThemeSelect && !builderThemeSelect.dataset.userChosen) {
+      const docTheme = getMermaidTheme();
+      builderThemeSelect.value = docTheme === 'dark' ? 'dark' : 'default';
+    }
+
     // Populate templates dropdown for current type
     populateTemplateDropdown();
 
@@ -3894,10 +4083,11 @@
       loadSelectedTemplate();
     }
 
+    builderWrap.dataset.manuallyAdjusted = 'false';
     builderZoom = 1;
     builderPanX = 0;
     builderPanY = 0;
-    updateBuilderTransform();
+    updateBuilderTransform(true);
     renderBuilderDiagram();
   }
 
@@ -3906,6 +4096,8 @@
     activeEditingDiagramIndex = null;
     if (typeof studioRenderGeneration !== 'undefined') ++studioRenderGeneration;
     if (renderBuilderDiagram.generation) ++renderBuilderDiagram.generation;
+    // R08 Remediation: Restore document Mermaid theme immediately upon closing Diagram Studio
+    initMermaid(getMermaidTheme());
   }
 
   function detectDiagramType(code) {
@@ -3965,6 +4157,7 @@
   });
 
   builderThemeSelect.addEventListener('change', () => {
+    builderThemeSelect.dataset.userChosen = 'true';
     renderBuilderDiagram();
   });
 
@@ -4044,6 +4237,39 @@
       builderCanvas.innerHTML = svg;
       builderValidationBadge.className = 'validation-status-badge valid';
       builderValidationBadge.innerHTML = '<span>✓ Diagram Valid</span>';
+
+      const svgEl = builderCanvas && typeof builderCanvas.querySelector === 'function' ? builderCanvas.querySelector('svg') : null;
+      if (svgEl) {
+        const dims = typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl) : { width: 100, height: 100 };
+        svgEl.style.width = dims.width + 'px';
+        svgEl.style.height = dims.height + 'px';
+        svgEl.style.maxWidth = 'none';
+        if (svgEl.dataset) {
+          svgEl.dataset.intrinsicWidth = dims.width;
+          svgEl.dataset.intrinsicHeight = dims.height;
+        }
+
+        const wrapW = typeof builderWrap !== 'undefined' && builderWrap && builderWrap.clientWidth ? builderWrap.clientWidth : 600;
+        const wrapH = typeof builderWrap !== 'undefined' && builderWrap && builderWrap.clientHeight ? builderWrap.clientHeight : 500;
+        const availW = Math.max(wrapW - 40, 40);
+        const availH = Math.max(wrapH - 40, 40);
+        const { fitScale } = typeof computeDiagramFitScale === 'function'
+          ? computeDiagramFitScale(dims.width, dims.height, availW, availH)
+          : { fitScale: 1.0 };
+        if (typeof builderWrap !== 'undefined' && builderWrap && builderWrap.dataset) {
+          builderWrap.dataset.fitScale = fitScale;
+        }
+
+        const isAdjusted = typeof builderWrap !== 'undefined' && builderWrap && builderWrap.dataset && builderWrap.dataset.manuallyAdjusted === 'true';
+        if (!isAdjusted) {
+          builderZoom = fitScale;
+          builderPanX = 0;
+          builderPanY = 0;
+          if (typeof updateBuilderTransform === 'function') {
+            updateBuilderTransform(true);
+          }
+        }
+      }
     } catch (err) {
       cleanStrayMermaidElements(uniqueId);
       const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
@@ -4067,8 +4293,12 @@
   }
 
   // Builder Pan & Zoom Handlers
-  function updateBuilderTransform() {
+  function updateBuilderTransform(immediate = false) {
+    if (immediate) builderCanvas.style.transition = 'none';
     builderCanvas.style.transform = `translate(${builderPanX}px, ${builderPanY}px) scale(${builderZoom})`;
+    if (immediate) {
+      requestAnimationFrame(() => { builderCanvas.style.transition = 'transform 0.05s ease-out'; });
+    }
     document.getElementById('btnBuilderZoomReset').textContent = `${Math.round(builderZoom * 100)}%`;
   }
 
@@ -4082,6 +4312,7 @@
 
   window.addEventListener('mousemove', (e) => {
     if (!isBuilderDragging) return;
+    builderWrap.dataset.manuallyAdjusted = 'true';
     builderPanX = e.clientX - builderStartX;
     builderPanY = e.clientY - builderStartY;
     updateBuilderTransform();
@@ -4096,23 +4327,38 @@
 
   builderWrap.addEventListener('wheel', (e) => {
     e.preventDefault();
+    builderWrap.dataset.manuallyAdjusted = 'true';
+    const fitScale = parseFloat(builderWrap.dataset.fitScale || 1);
+    const minZoom = Math.min(0.05, fitScale * 0.5);
     const factor = e.deltaY < 0 ? 1.15 : 0.87;
-    builderZoom = Math.min(Math.max(builderZoom * factor, 0.3), 5.0);
+    builderZoom = Math.min(Math.max(builderZoom * factor, minZoom), 5.0);
     updateBuilderTransform();
   });
 
   document.getElementById('btnBuilderZoomIn').onclick = () => {
+    builderWrap.dataset.manuallyAdjusted = 'true';
     builderZoom = Math.min(builderZoom * 1.25, 5.0);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomOut').onclick = () => {
-    builderZoom = Math.max(builderZoom * 0.8, 0.3);
+    builderWrap.dataset.manuallyAdjusted = 'true';
+    const fitScale = parseFloat(builderWrap.dataset.fitScale || 1);
+    const minZoom = Math.min(0.05, fitScale * 0.5);
+    builderZoom = Math.max(builderZoom * 0.8, minZoom);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomReset').onclick = () => {
-    builderZoom = 1;
-    builderPanX = 0;
-    builderPanY = 0;
+    builderWrap.dataset.manuallyAdjusted = 'false';
+    const fitScale = parseFloat(builderWrap.dataset.fitScale || 1);
+    if (Math.abs(builderZoom - fitScale) > 0.01 || builderPanX !== 0 || builderPanY !== 0) {
+      builderZoom = fitScale;
+      builderPanX = 0;
+      builderPanY = 0;
+    } else {
+      builderZoom = 1.0;
+      builderPanX = 0;
+      builderPanY = 0;
+    }
     updateBuilderTransform();
   };
 

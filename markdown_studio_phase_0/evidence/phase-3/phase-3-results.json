@@ -1,0 +1,73 @@
+{
+  "suite": "Phase 3 Verification (Gate G3)",
+  "timestamp": "2026-11-09T00:43:58.951Z",
+  "candidateSha256": "47075740b67969cf1e434737109b1d77c033b50bc09336600a8cdb4b59f629fb",
+  "candidateSha256Lf": "66eb9ae30049f4ce4ca7f4262981d348faf2a3bab30fe36a90c12b5e8ba7d7ab",
+  "results": [
+    {
+      "id": "P3-01",
+      "issues": [
+        "R08"
+      ],
+      "gate": "G3",
+      "name": "Theme Isolation & Document Policy",
+      "timestamp": "2026-11-09T00:43:58.948Z",
+      "procedure": "Verify that Studio theme selection does not leak into document preview diagrams, and preview render and studio close restore document theme.",
+      "observation": {
+        "lightTheme": "default",
+        "darkTheme": "dark",
+        "studioTheme": "forest",
+        "previewReinitEnforced": true,
+        "closeStudioReinitEnforced": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P3-02",
+      "issues": [
+        "R07"
+      ],
+      "gate": "G3",
+      "name": "Bidirectional Fit Computation",
+      "timestamp": "2026-11-09T00:43:58.950Z",
+      "procedure": "Verify that diagram fit scale uses the minimum of both dimensions, fitting tall and wide fixtures without clipping while capping compact diagrams at 1.0.",
+      "observation": {
+        "tallFixture": {
+          "svgW": 89.8,
+          "svgH": 2176,
+          "fitScale": 0.22426470588235295,
+          "renderedH": 488
+        },
+        "wideFixture": {
+          "svgW": 1800,
+          "svgH": 49,
+          "fitScale": 0.29333333333333333,
+          "renderedW": 528
+        },
+        "compactFixture": {
+          "svgW": 240,
+          "svgH": 180,
+          "fitScale": 1
+        },
+        "minZoomFloorRemoved": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P3-03",
+      "issues": [
+        "R06"
+      ],
+      "gate": "G3",
+      "name": "Markdown Typography Scoping & Isolation",
+      "timestamp": "2026-11-09T00:43:58.950Z",
+      "procedure": "Verify that .preview-content typography selectors do not bleed into Mermaid foreignObject elements and explicit resets are in place.",
+      "observation": {
+        "unscopedSelectorsEliminated": true,
+        "mermaidCardExclusionPresent": true,
+        "foreignObjectResetsPresent": true
+      },
+      "status": "pass"
+    }
+  ]
+}
