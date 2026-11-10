@@ -1,6 +1,6 @@
 # G0/G1-exception capture stop points
 
-Candidate: `96d14ee79e42d9a5473d1baf8f99a05e529155968b14c6cdda938269c5eaecd1`  Generated: 2026-11-09T02:34:13.945Z
+Candidate: `b834d55f8e9e6b2d1ab9c32025607667c1ff5981a320666e7eceb886460d299f`  Generated: 2026-11-10T01:36:11.013Z
 
 | Stop point | Gate | Area | Origin | Status | Artifacts |
 | --- | --- | --- | --- | --- | --- |
@@ -155,3 +155,7 @@ Candidate: `96d14ee79e42d9a5473d1baf8f99a05e529155968b14c6cdda938269c5eaecd1`  G
 | G4-INSERT-COMMANDS | G4 | insertion-commands | http | pass | evidence/phase-0/g0-capture/artifacts/G4-INSERT-COMMANDS.png |
 | G4-SHORTCUT-GUARDS | G4 | shortcut-guards | http | pass | evidence/phase-0/g0-capture/artifacts/G4-SHORTCUT-GUARDS.png |
 | G4-PERSISTENCE-ROUNDTRIP | G4 | persistence-roundtrip | http | pass | evidence/phase-0/g0-capture/artifacts/G4-PERSISTENCE-ROUNDTRIP.png |
+| G5-EXPORT-STANDALONE | G5 | export-determinism | http | pass | evidence/phase-0/g0-capture/artifacts/G5-EXPORT-STANDALONE.png |
+| G5-EXPORT-DIAGRAM-FILES | G5 | diagram-export | http | pass | evidence/phase-0/g0-capture/artifacts/G5-EXPORT-DIAGRAM-FILES.png |
+| G5-EXPORT-PNG-FAILURE | G5 | export-failure-handling | http | pass | evidence/phase-0/g0-capture/artifacts/G5-EXPORT-PNG-FAILURE.png |
+| G5-PRINT-PDF-TALL | G5 | print-layout | http | pass | evidence/phase-0/g0-capture/artifacts/G5-PRINT-PDF-TALL.png |

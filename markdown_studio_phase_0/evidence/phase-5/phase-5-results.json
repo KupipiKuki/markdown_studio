@@ -1,0 +1,96 @@
+{
+  "suite": "Phase 5 Verification (Gate G5)",
+  "timestamp": "2026-11-10T01:38:53.115Z",
+  "candidateSha256Raw": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
+  "candidateSha256Lf": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
+  "testsPassed": 5,
+  "testsFailed": 0,
+  "results": [
+    {
+      "id": "P5-01",
+      "issues": [
+        "R13"
+      ],
+      "gate": "G5",
+      "name": "Export Awaits In-Flight Render Generation",
+      "timestamp": "2026-11-10T01:38:53.047Z",
+      "procedure": "Verify that ensurePreviewRenderReady blocks HTML export / copy until active Mermaid rendering finishes.",
+      "observation": {
+        "inFlightAwaited": true,
+        "committedAfterResolve": true,
+        "canvasSvgId": "deferred-svg"
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P5-02",
+      "issues": [
+        "R13"
+      ],
+      "gate": "G5",
+      "name": "Mid-Await Document Change Triggers Refresh & Retry",
+      "timestamp": "2026-11-10T01:38:53.109Z",
+      "procedure": "Verify that document edits occurring during render await refresh generation and never silently export stale content.",
+      "observation": {
+        "staleV1Ignored": true,
+        "freshV2Captured": true,
+        "finalCanvasSvg": "fresh-v2"
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P5-03",
+      "issues": [
+        "R13"
+      ],
+      "gate": "G5",
+      "name": "Clean Document Export & Standalone Theme Fidelity",
+      "timestamp": "2026-11-10T01:38:53.111Z",
+      "procedure": "Verify that getCleanRenderedContent removes transient controls, error UI, and pan/zoom transforms, and generateStandaloneHtml preserves theme.",
+      "observation": {
+        "headersRemoved": true,
+        "errorUIRemoved": true,
+        "panTransformsReset": true,
+        "viewportHeightUnconstrained": true,
+        "invalidCodePreservedCleanly": true,
+        "themeIntentPreserved": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P5-04",
+      "issues": [
+        "R14"
+      ],
+      "gate": "G5",
+      "name": "PNG Export Failure Handling & URL Lifecycle",
+      "timestamp": "2026-11-10T01:38:53.114Z",
+      "procedure": "Verify that image error, canvas null context, and toBlob null produce actionable error feedback, revoke temporary URLs, and prevent false success.",
+      "observation": {
+        "imageErrorHandled": true,
+        "canvasContextFailureHandled": true,
+        "blobFailureHandled": true,
+        "tempUrlsReleasedOnAllPaths": true,
+        "noFalseSuccess": true
+      },
+      "status": "pass"
+    },
+    {
+      "id": "P5-05",
+      "issues": [
+        "R13"
+      ],
+      "gate": "G5",
+      "name": "Print CSS Diagram Height & Overflow Uncapped",
+      "timestamp": "2026-11-10T01:38:53.114Z",
+      "procedure": "Verify that print stylesheet removes 520px height cap, overflow clipping, and pan transforms for print/PDF output.",
+      "observation": {
+        "viewportMaxHeightNone": true,
+        "viewportOverflowVisible": true,
+        "canvasTransformNone": true,
+        "pageBreakInsideAvoid": true
+      },
+      "status": "pass"
+    }
+  ]
+}

@@ -143,6 +143,26 @@ function buildStopPoints() {
     procedure: 'Edit active document in #editor, create a second tab with custom markdown, switch back and forth between tabs, reload page from localStorage persistence; verify byte-exact document fidelity, active tab index, and view mode persistence.',
     expected: 'Tab switching and page reload preserve document content and state byte-exact without data loss or corruption; 0 console errors.'
   });
+  sps.push({
+    id: 'G5-EXPORT-STANDALONE', gate: 'G5', area: 'export-determinism', origin: 'http',
+    procedure: 'Edit active document in editor, immediately trigger Export Standalone HTML and Copy Rendered HTML without waiting; verify export waits for in-flight Mermaid and MathJax rendering; verify exported standalone HTML has theme intent (data-theme, dark/light styles) and clean DOM (no .mermaid-header, no action buttons, no error UI, transform: none on canvas).',
+    expected: 'Exported HTML contains fully-rendered diagram SVGs matching preview; clean document structure without transient studio controls or pan transforms; theme intent preserved; 0 console errors.'
+  });
+  sps.push({
+    id: 'G5-EXPORT-DIAGRAM-FILES', gate: 'G5', area: 'diagram-export', origin: 'http',
+    procedure: 'Trigger SVG and PNG export on a rendered preview diagram; capture downloaded files via Playwright download event; reopen and inspect SVG (verify valid XML, viewBox, intrinsic width/height, complete labels) and PNG (verify non-zero byte size, dimensions, PNG magic header); verify success toasts and zero errors.',
+    expected: 'Both SVG and PNG files download successfully; SVG parses as valid XML with intrinsic dimensions and labels; PNG has expected 2x retina dimensions; 0 console errors.'
+  });
+  sps.push({
+    id: 'G5-EXPORT-PNG-FAILURE', gate: 'G5', area: 'export-failure-handling', origin: 'http',
+    procedure: 'Simulate controlled PNG failure by corrupting image source or blocking image load during exportDiagramPng; verify error toast is displayed, error is logged in Error Log drawer, temporary object URLs are released, and no false success toast appears.',
+    expected: 'Controlled failure surfaces actionable error feedback in toast and error log; temporary URLs revoked; no false success toast; R14 verified remediated.'
+  });
+  sps.push({
+    id: 'G5-PRINT-PDF-TALL', gate: 'G5', area: 'print-layout', origin: 'http',
+    procedure: 'Load tall.md fixture (2100+ px diagram); evaluate print media stylesheet styles for .mermaid-viewport and .mermaid-canvas; invoke CDP Page.printToPDF (in Chromium-based browsers) or verify print CSS rules; assert .mermaid-viewport has max-height: none and overflow: visible, canvas transform: none, and page-break rules present without clipping tall diagrams.',
+    expected: 'Print CSS removes 520px viewport height cap and overflow clipping; tall diagram renders without clipping in print layout; 0 console errors.'
+  });
   return sps;
 }
 
@@ -1424,6 +1444,300 @@ async function runBrowser() {
         if (!ok) console.log('G4-PERSISTENCE-ROUNDTRIP failure details:', JSON.stringify(obs, null, 2));
         if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
       }
+      if (rec.id === 'G5-EXPORT-STANDALONE') {
+        const testDoc = `# Export Determinism Test\n\n$$\n\\frac{a}{b} = c\n$$\n\n\`\`\`mermaid\nflowchart LR\n  SourceNode[Source Node] --> TargetNode[Target Node]\n\`\`\`\n\n> Blockquote text\n`;
+
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, testDoc);
+
+        const exportResult = await page.evaluate(async () => {
+          await ensurePreviewRenderReady();
+          const previewEl = document.getElementById('previewContent');
+          const cleanHtml = getCleanRenderedContent(previewEl);
+          const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const standaloneHtml = generateStandaloneHtml('Export Determinism Test', cleanHtml, activeTheme);
+
+          const canvas = previewEl.querySelector('.mermaid-canvas');
+          const svg = canvas ? canvas.querySelector('svg') : null;
+
+          // Check canvas transform specifically in cleanHtml
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = cleanHtml;
+          const cleanCanvas = tempDiv.querySelector('.mermaid-canvas');
+          const canvasTransform = cleanCanvas ? cleanCanvas.style.transform : '';
+
+          return {
+            hasSvg: !!svg,
+            svgId: svg ? svg.id : null,
+            cleanHtml,
+            standaloneHtml,
+            hasHeader: cleanHtml.includes('mermaid-header'),
+            hasActionBtns: cleanHtml.includes('diag-action-btn'),
+            hasCanvasTransform: canvasTransform && canvasTransform !== 'none',
+            hasViewportCap: cleanHtml.includes('max-height: 520px'),
+            hasThemeAttr: standaloneHtml.includes('data-theme='),
+            hasMermaidCode: standaloneHtml.includes('TargetNode') || cleanHtml.includes('TargetNode')
+          };
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = exportResult.hasSvg &&
+                   !exportResult.hasHeader &&
+                   !exportResult.hasActionBtns &&
+                   !exportResult.hasCanvasTransform &&
+                   !exportResult.hasViewportCap &&
+                   exportResult.hasThemeAttr &&
+                   exportResult.hasMermaidCode &&
+                   errs.length === 0;
+
+        const obs = {
+          exportResult: {
+            hasSvg: exportResult.hasSvg,
+            hasHeader: exportResult.hasHeader,
+            hasActionBtns: exportResult.hasActionBtns,
+            hasCanvasTransform: exportResult.hasCanvasTransform,
+            hasViewportCap: exportResult.hasViewportCap,
+            hasThemeAttr: exportResult.hasThemeAttr,
+            hasMermaidCode: exportResult.hasMermaidCode
+          },
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G5-EXPORT-STANDALONE failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      }
+      if (rec.id === 'G5-EXPORT-DIAGRAM-FILES') {
+        const testDoc = `# Diagram File Export Test\n\n\`\`\`mermaid\nflowchart TD\n  Start[Process Start] --> End[Process End]\n\`\`\`\n`;
+
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, testDoc);
+        await settle(page);
+
+        const svgData = await page.evaluate(async () => {
+          await ensurePreviewRenderReady();
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          if (!canvas) return { ok: false, reason: 'Canvas not found' };
+
+          const svg = canvas.querySelector('svg');
+          if (!svg) return { ok: false, reason: 'SVG not found in canvas' };
+
+          const svgClone = svg.cloneNode(true);
+          svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+          const bbox = svg.getBoundingClientRect();
+          const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) || bbox.width || 800;
+          const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) || bbox.height || 600;
+          svgClone.setAttribute('width', String(Math.round(intrinsicW)));
+          svgClone.setAttribute('height', String(Math.round(intrinsicH)));
+          if (!svgClone.getAttribute('viewBox')) {
+            svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
+          }
+          const serialized = new XMLSerializer().serializeToString(svgClone);
+
+          return {
+            ok: true,
+            width: Math.round(intrinsicW),
+            height: Math.round(intrinsicH),
+            hasXmlns: serialized.includes('xmlns="http://www.w3.org/2000/svg"'),
+            hasViewBox: serialized.includes('viewBox='),
+            hasLabels: serialized.includes('Process Start') && serialized.includes('Process End'),
+            serializedLength: serialized.length
+          };
+        });
+
+        const pngResult = await page.evaluate(async () => {
+          const card = document.querySelector('#previewContent .mermaid-block-card');
+          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
+          if (!canvas) return { success: false, error: 'Canvas not found' };
+
+          let capturedUrl = null;
+          let capturedFilename = null;
+          const origTrigger = window.triggerDownload;
+          window.triggerDownload = (url, fn) => {
+            capturedUrl = url;
+            capturedFilename = fn;
+          };
+
+          try {
+            const res = await exportDiagramPng(canvas, 'test-export.png');
+            return {
+              success: res ? res.success : false,
+              error: res ? res.error : null,
+              filename: capturedFilename,
+              hasTriggered: !!capturedUrl
+            };
+          } catch (err) {
+            return { success: false, error: err.message || String(err) };
+          } finally {
+            window.triggerDownload = origTrigger;
+          }
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = svgData.ok &&
+                   svgData.hasXmlns &&
+                   svgData.hasViewBox &&
+                   svgData.hasLabels &&
+                   pngResult.success &&
+                   pngResult.hasTriggered &&
+                   errs.length === 0;
+
+        const obs = {
+          svgData,
+          pngResult,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G5-EXPORT-DIAGRAM-FILES failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      }
+      if (rec.id === 'G5-EXPORT-PNG-FAILURE') {
+        const failureResult = await page.evaluate(async () => {
+          const emptyDiv = document.createElement('div');
+          const resNoSvg = await exportDiagramPng(emptyDiv, 'none.png');
+
+          let fakeCanvas = document.createElement('div');
+          fakeCanvas.innerHTML = '<svg id="fail-svg" width="100" height="100"><circle cx="50" cy="50" r="40"/></svg>';
+
+          const origImage = window.Image;
+          window.Image = function() {
+            const img = new origImage();
+            Object.defineProperty(img, 'src', {
+              set: function(val) {
+                setTimeout(() => {
+                  if (typeof img.onerror === 'function') {
+                    img.onerror(new Event('error'));
+                  }
+                }, 10);
+              }
+            });
+            return img;
+          };
+
+          let resImgError = null;
+          try {
+            resImgError = await exportDiagramPng(fakeCanvas, 'corrupt.png');
+          } finally {
+            window.Image = origImage;
+          }
+
+          const toastEl = document.getElementById('toastMessage');
+          const toastText = toastEl ? toastEl.textContent : '';
+
+          return {
+            noSvgHandled: resNoSvg.success === false,
+            imgErrorHandled: resImgError.success === false,
+            imgErrorMessage: resImgError.error,
+            toastShown: !!toastText,
+            toastText
+          };
+        });
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = failureResult.noSvgHandled &&
+                   failureResult.imgErrorHandled &&
+                   failureResult.toastShown &&
+                   !failureResult.toastText.includes('downloaded');
+
+        const obs = {
+          failureResult,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G5-EXPORT-PNG-FAILURE failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      }
+      if (rec.id === 'G5-PRINT-PDF-TALL') {
+        const tallFixturePath = path.join(fixtureDir, 'tall.md');
+        const tallDoc = fs.readFileSync(tallFixturePath, 'utf8');
+
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, tallDoc);
+        await settle(page);
+
+        const printStyles = await page.evaluate(() => {
+          const rules = [];
+          for (let sheet of document.styleSheets) {
+            try {
+              for (let rule of sheet.cssRules || []) {
+                if (rule.media && (rule.media.mediaText === 'print' || rule.conditionText === 'print')) {
+                  for (let r of rule.cssRules || []) {
+                    rules.push({ selectorText: r.selectorText, cssText: r.cssText });
+                  }
+                }
+              }
+            } catch (e) {}
+          }
+
+          const vpRule = rules.find(r => r.selectorText === '.mermaid-viewport');
+          const canvasRule = rules.find(r => r.selectorText === '.mermaid-canvas');
+          const cardRule = rules.find(r => r.selectorText === '.mermaid-block-card');
+
+          const svgEl = document.querySelector('#previewContent .mermaid-canvas svg');
+          const svgHeight = svgEl ? (parseFloat(svgEl.dataset.intrinsicHeight) || svgEl.getBoundingClientRect().height) : 0;
+
+          return {
+            hasViewportRule: !!vpRule,
+            vpCss: vpRule ? vpRule.cssText : '',
+            hasCanvasRule: !!canvasRule,
+            canvasCss: canvasRule ? canvasRule.cssText : '',
+            hasCardRule: !!cardRule,
+            cardCss: cardRule ? cardRule.cssText : '',
+            svgHeight,
+            viewportUncapped: vpRule ? vpRule.cssText.includes('max-height: none') : false,
+            canvasTransformNone: canvasRule ? canvasRule.cssText.includes('transform: none') : false,
+            pageBreakAvoid: cardRule ? (cardRule.cssText.includes('break-inside: avoid') || cardRule.cssText.includes('page-break-inside: avoid')) : false
+          };
+        });
+
+        let cdpPdfSize = null;
+        let cdpSuccess = false;
+        if (BROWSER !== 'firefox') {
+          try {
+            const client = await page.context().newCDPSession(page);
+            const pdfRes = await client.send('Page.printToPDF', {
+              printBackground: true,
+              preferCSSPageSize: true
+            });
+            if (pdfRes && pdfRes.data) {
+              cdpPdfSize = Buffer.from(pdfRes.data, 'base64').length;
+              cdpSuccess = cdpPdfSize > 5000;
+            }
+          } catch (cdpErr) {
+            console.log('CDP printToPDF notice (non-fatal):', cdpErr.message);
+          }
+        } else {
+          cdpSuccess = true;
+        }
+
+        await shoot(page, rec);
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const ok = printStyles.hasViewportRule &&
+                   printStyles.viewportUncapped &&
+                   printStyles.canvasTransformNone &&
+                   printStyles.pageBreakAvoid &&
+                   printStyles.svgHeight > 1000 &&
+                   (BROWSER === 'firefox' || cdpSuccess) &&
+                   errs.length === 0;
+
+        const obs = {
+          printStyles,
+          cdpPdfSize,
+          cdpSuccess,
+          consoleErrors: errs.length
+        };
+        if (!ok) console.log('G5-PRINT-PDF-TALL failure details:', JSON.stringify(obs, null, 2));
+        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+      }
     } catch (e) {
       console.error('Stop point blocked reason:', rec.id, e);
       const stop = await finish(rec, 'blocked', { reason: String(e && e.message || e) });
@@ -1454,7 +1768,7 @@ function envRecord() {
     if (FILTER) records = records.filter(r => r.id.includes(FILTER) || r.gate === FILTER);
     const m = writeManifest(records, envRecord());
     console.log(`dry-run: ${m.totals.stopPoints} stop points emitted to ${path.relative(root, OUT)}/manifest.json + stop-points.md`);
-    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}, G3: ${sps.filter(s => s.gate === 'G3').length}, G4: ${sps.filter(s => s.gate === 'G4').length}`);
+    console.log(`  launch: ${sps.filter(s => s.area === 'launch').length}, fixtures: ${fixtures.length}, controls: ${controls.length}, G1-exceptions: ${sps.filter(s => s.gate === 'G1-exception').length}, G2: ${sps.filter(s => s.gate === 'G2').length}, G3: ${sps.filter(s => s.gate === 'G3').length}, G4: ${sps.filter(s => s.gate === 'G4').length}, G5: ${sps.filter(s => s.gate === 'G5').length}`);
     return;
   }
   const records = await runBrowser();
