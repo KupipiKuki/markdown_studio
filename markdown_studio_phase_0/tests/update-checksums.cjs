@@ -55,6 +55,7 @@ function getFileHash(rel) {
         maxBuffer: 20 * 1024 * 1024,
         stdio: ['pipe', 'pipe', 'ignore']
       });
+      return crypto.createHash('sha256').update(buf).digest('hex');
     } catch (e) {
       buf = fs.readFileSync(full);
     }
@@ -65,7 +66,7 @@ function getFileHash(rel) {
   if (binaryExts.has(ext)) {
     return crypto.createHash('sha256').update(buf).digest('hex');
   }
-  // All text files (including working/markdown_studio.html and reports) are LF-normalized
+  // All active text files (including working/markdown_studio.html and reports) are LF-normalized
   return crypto.createHash('sha256').update(buf.toString('utf8').replace(/\r\n/g, '\n')).digest('hex');
 }
 

@@ -1,6 +1,6 @@
 # G0/G1-exception capture stop points
 
-Candidate: `b834d55f8e9e6b2d1ab9c32025607667c1ff5981a320666e7eceb886460d299f`  Generated: 2026-11-10T01:36:11.013Z
+Candidate: `36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583`  Generated: 2026-11-11T10:14:24.473Z
 
 | Stop point | Gate | Area | Origin | Status | Artifacts |
 | --- | --- | --- | --- | --- | --- |

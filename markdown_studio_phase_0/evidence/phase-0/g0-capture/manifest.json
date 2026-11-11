@@ -1,9 +1,9 @@
 {
   "routine": "tests/g0-capture-routine.cjs",
-  "candidateSha256": "b834d55f8e9e6b2d1ab9c32025607667c1ff5981a320666e7eceb886460d299f",
-  "candidateSha256LfNormalized": "4b4bd07c303b20c91d23f3ced983d2e1e1b0141569b5576ae62d79113155f27b",
+  "candidateSha256": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
+  "candidateSha256LfNormalized": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
   "candidateNote": "candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.",
-  "generatedAt": "2026-11-10T01:36:11.013Z",
+  "generatedAt": "2026-11-11T10:14:24.473Z",
   "environment": {
     "platform": "win32",
     "arch": "x64",
@@ -50,7 +50,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-FILE.png"
       ],
-      "timestamp": "2026-11-10T01:29:03.806Z"
+      "timestamp": "2026-11-11T10:07:26.600Z"
     },
     {
       "id": "G0-LAUNCH-HTTP",
@@ -78,7 +78,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-LAUNCH-HTTP.png"
       ],
-      "timestamp": "2026-11-10T01:29:05.725Z"
+      "timestamp": "2026-11-11T10:07:28.536Z"
     },
     {
       "id": "G0-FIX-invalid",
@@ -101,7 +101,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-invalid-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:07.681Z"
+      "timestamp": "2026-11-11T10:07:30.247Z"
     },
     {
       "id": "G0-FIX-labels",
@@ -124,7 +124,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-labels-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:09.486Z"
+      "timestamp": "2026-11-11T10:07:32.338Z"
     },
     {
       "id": "G0-FIX-long-labels",
@@ -147,7 +147,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-long-labels-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:11.264Z"
+      "timestamp": "2026-11-11T10:07:34.526Z"
     },
     {
       "id": "G0-FIX-mixed-fences",
@@ -170,7 +170,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-fences-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:12.930Z"
+      "timestamp": "2026-11-11T10:07:36.227Z"
     },
     {
       "id": "G0-FIX-mixed",
@@ -193,7 +193,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-mixed-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:14.533Z"
+      "timestamp": "2026-11-11T10:07:37.817Z"
     },
     {
       "id": "G0-FIX-multi",
@@ -216,7 +216,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-multi-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:16.153Z"
+      "timestamp": "2026-11-11T10:07:39.449Z"
     },
     {
       "id": "G0-FIX-nested",
@@ -239,7 +239,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-nested-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:17.694Z"
+      "timestamp": "2026-11-11T10:07:41.025Z"
     },
     {
       "id": "G0-FIX-outer-fence",
@@ -262,7 +262,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-outer-fence-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:19.033Z"
+      "timestamp": "2026-11-11T10:07:42.450Z"
     },
     {
       "id": "G0-FIX-tall",
@@ -285,7 +285,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-tall-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:21.683Z"
+      "timestamp": "2026-11-11T10:07:45.225Z"
     },
     {
       "id": "G0-FIX-template-architecture-default",
@@ -308,7 +308,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-architecture-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:23.471Z"
+      "timestamp": "2026-11-11T10:07:46.835Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-default",
@@ -331,7 +331,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:25.088Z"
+      "timestamp": "2026-11-11T10:07:48.508Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-pattern",
@@ -354,7 +354,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-classDiagram-pattern-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:26.706Z"
+      "timestamp": "2026-11-11T10:07:50.124Z"
     },
     {
       "id": "G0-FIX-template-erDiagram-default",
@@ -377,7 +377,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-erDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:28.338Z"
+      "timestamp": "2026-11-11T10:07:51.726Z"
     },
     {
       "id": "G0-FIX-template-flowchart-decision",
@@ -400,7 +400,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-decision-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:30.307Z"
+      "timestamp": "2026-11-11T10:07:53.316Z"
     },
     {
       "id": "G0-FIX-template-flowchart-default",
@@ -423,7 +423,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:32.186Z"
+      "timestamp": "2026-11-11T10:07:55.092Z"
     },
     {
       "id": "G0-FIX-template-flowchart-microservices",
@@ -446,7 +446,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-flowchart-microservices-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:33.974Z"
+      "timestamp": "2026-11-11T10:07:57.272Z"
     },
     {
       "id": "G0-FIX-template-gantt-default",
@@ -469,7 +469,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gantt-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:35.789Z"
+      "timestamp": "2026-11-11T10:07:59.308Z"
     },
     {
       "id": "G0-FIX-template-gitGraph-default",
@@ -492,7 +492,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-gitGraph-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:37.500Z"
+      "timestamp": "2026-11-11T10:08:00.930Z"
     },
     {
       "id": "G0-FIX-template-journey-default",
@@ -515,7 +515,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-journey-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:40.046Z"
+      "timestamp": "2026-11-11T10:08:03.680Z"
     },
     {
       "id": "G0-FIX-template-mindmap-default",
@@ -538,7 +538,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-mindmap-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:41.769Z"
+      "timestamp": "2026-11-11T10:08:05.584Z"
     },
     {
       "id": "G0-FIX-template-pie-default",
@@ -561,7 +561,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-pie-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:43.390Z"
+      "timestamp": "2026-11-11T10:08:07.655Z"
     },
     {
       "id": "G0-FIX-template-sequence-default",
@@ -584,7 +584,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:45.005Z"
+      "timestamp": "2026-11-11T10:08:09.379Z"
     },
     {
       "id": "G0-FIX-template-sequence-payment",
@@ -607,7 +607,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-sequence-payment-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:46.630Z"
+      "timestamp": "2026-11-11T10:08:11.065Z"
     },
     {
       "id": "G0-FIX-template-stateDiagram-default",
@@ -630,7 +630,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-stateDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:48.477Z"
+      "timestamp": "2026-11-11T10:08:12.705Z"
     },
     {
       "id": "G0-FIX-template-timeline-default",
@@ -653,7 +653,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-template-timeline-default-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:50.540Z"
+      "timestamp": "2026-11-11T10:08:14.376Z"
     },
     {
       "id": "G0-FIX-wide",
@@ -676,7 +676,7 @@
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide.png",
         "evidence/phase-0/g0-capture/artifacts/G0-FIX-wide-counts.json"
       ],
-      "timestamp": "2026-11-10T01:29:52.858Z"
+      "timestamp": "2026-11-11T10:08:16.176Z"
     },
     {
       "id": "G0-CTL-C001",
@@ -710,7 +710,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C001.png"
       ],
-      "timestamp": "2026-11-10T01:29:54.747Z"
+      "timestamp": "2026-11-11T10:08:17.907Z"
     },
     {
       "id": "G0-CTL-C002",
@@ -744,7 +744,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C002.png"
       ],
-      "timestamp": "2026-11-10T01:29:56.459Z"
+      "timestamp": "2026-11-11T10:08:19.556Z"
     },
     {
       "id": "G0-CTL-C003",
@@ -777,7 +777,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C003.png"
       ],
-      "timestamp": "2026-11-10T01:29:58.617Z"
+      "timestamp": "2026-11-11T10:08:22.203Z"
     },
     {
       "id": "G0-CTL-C004",
@@ -810,7 +810,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C004.png"
       ],
-      "timestamp": "2026-11-10T01:30:00.401Z"
+      "timestamp": "2026-11-11T10:08:24.004Z"
     },
     {
       "id": "G0-CTL-C005",
@@ -843,7 +843,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C005.png"
       ],
-      "timestamp": "2026-11-10T01:30:02.561Z"
+      "timestamp": "2026-11-11T10:08:25.700Z"
     },
     {
       "id": "G0-CTL-C006",
@@ -876,7 +876,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C006.png"
       ],
-      "timestamp": "2026-11-10T01:30:04.255Z"
+      "timestamp": "2026-11-11T10:08:27.424Z"
     },
     {
       "id": "G0-CTL-C007",
@@ -909,7 +909,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C007.png"
       ],
-      "timestamp": "2026-11-10T01:30:05.947Z"
+      "timestamp": "2026-11-11T10:08:29.106Z"
     },
     {
       "id": "G0-CTL-C008",
@@ -942,7 +942,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C008.png"
       ],
-      "timestamp": "2026-11-10T01:30:07.781Z"
+      "timestamp": "2026-11-11T10:08:30.888Z"
     },
     {
       "id": "G0-CTL-C009",
@@ -975,7 +975,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C009.png"
       ],
-      "timestamp": "2026-11-10T01:30:09.482Z"
+      "timestamp": "2026-11-11T10:08:32.595Z"
     },
     {
       "id": "G0-CTL-C010",
@@ -1008,7 +1008,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C010.png"
       ],
-      "timestamp": "2026-11-10T01:30:11.159Z"
+      "timestamp": "2026-11-11T10:08:34.276Z"
     },
     {
       "id": "G0-CTL-C011",
@@ -1041,7 +1041,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C011.png"
       ],
-      "timestamp": "2026-11-10T01:30:12.873Z"
+      "timestamp": "2026-11-11T10:08:36.088Z"
     },
     {
       "id": "G0-CTL-C012",
@@ -1074,7 +1074,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C012.png"
       ],
-      "timestamp": "2026-11-10T01:30:14.526Z"
+      "timestamp": "2026-11-11T10:08:37.808Z"
     },
     {
       "id": "G0-CTL-C013",
@@ -1108,7 +1108,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C013.png"
       ],
-      "timestamp": "2026-11-10T01:30:17.002Z"
+      "timestamp": "2026-11-11T10:08:40.348Z"
     },
     {
       "id": "G0-CTL-C014",
@@ -1138,7 +1138,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-10T01:30:17.968Z"
+      "timestamp": "2026-11-11T10:08:41.338Z"
     },
     {
       "id": "G0-CTL-C015",
@@ -1174,7 +1174,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C015.png"
       ],
-      "timestamp": "2026-11-10T01:30:19.864Z"
+      "timestamp": "2026-11-11T10:08:43.156Z"
     },
     {
       "id": "G0-CTL-C016",
@@ -1208,7 +1208,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C016.png"
       ],
-      "timestamp": "2026-11-10T01:30:21.630Z"
+      "timestamp": "2026-11-11T10:08:44.783Z"
     },
     {
       "id": "G0-CTL-C017",
@@ -1241,7 +1241,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C017.png"
       ],
-      "timestamp": "2026-11-10T01:30:23.536Z"
+      "timestamp": "2026-11-11T10:08:46.438Z"
     },
     {
       "id": "G0-CTL-C018",
@@ -1274,7 +1274,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C018.png"
       ],
-      "timestamp": "2026-11-10T01:30:25.230Z"
+      "timestamp": "2026-11-11T10:08:48.074Z"
     },
     {
       "id": "G0-CTL-C019",
@@ -1308,7 +1308,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C019.png"
       ],
-      "timestamp": "2026-11-10T01:30:26.889Z"
+      "timestamp": "2026-11-11T10:08:49.779Z"
     },
     {
       "id": "G0-CTL-C020",
@@ -1341,7 +1341,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C020.png"
       ],
-      "timestamp": "2026-11-10T01:30:28.571Z"
+      "timestamp": "2026-11-11T10:08:51.458Z"
     },
     {
       "id": "G0-CTL-C021",
@@ -1374,7 +1374,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C021.png"
       ],
-      "timestamp": "2026-11-10T01:30:30.181Z"
+      "timestamp": "2026-11-11T10:08:53.240Z"
     },
     {
       "id": "G0-CTL-C022",
@@ -1410,7 +1410,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C022.png"
       ],
-      "timestamp": "2026-11-10T01:30:31.798Z"
+      "timestamp": "2026-11-11T10:08:54.865Z"
     },
     {
       "id": "G0-CTL-C023",
@@ -1445,7 +1445,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C023.png"
       ],
-      "timestamp": "2026-11-10T01:30:34.340Z"
+      "timestamp": "2026-11-11T10:08:57.059Z"
     },
     {
       "id": "G0-CTL-C024",
@@ -1481,7 +1481,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C024.png"
       ],
-      "timestamp": "2026-11-10T01:30:35.930Z"
+      "timestamp": "2026-11-11T10:08:58.680Z"
     },
     {
       "id": "G0-CTL-C025",
@@ -1515,7 +1515,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C025.png"
       ],
-      "timestamp": "2026-11-10T01:30:37.563Z"
+      "timestamp": "2026-11-11T10:09:00.299Z"
     },
     {
       "id": "G0-CTL-C026",
@@ -1549,7 +1549,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C026.png"
       ],
-      "timestamp": "2026-11-10T01:30:39.168Z"
+      "timestamp": "2026-11-11T10:09:01.984Z"
     },
     {
       "id": "G0-CTL-C027",
@@ -1583,7 +1583,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C027.png"
       ],
-      "timestamp": "2026-11-10T01:30:40.798Z"
+      "timestamp": "2026-11-11T10:09:03.635Z"
     },
     {
       "id": "G0-CTL-C028",
@@ -1617,7 +1617,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C028.png"
       ],
-      "timestamp": "2026-11-10T01:30:42.658Z"
+      "timestamp": "2026-11-11T10:09:05.280Z"
     },
     {
       "id": "G0-CTL-C029",
@@ -1651,7 +1651,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C029.png"
       ],
-      "timestamp": "2026-11-10T01:30:44.651Z"
+      "timestamp": "2026-11-11T10:09:07.123Z"
     },
     {
       "id": "G0-CTL-C030",
@@ -1685,7 +1685,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C030.png"
       ],
-      "timestamp": "2026-11-10T01:30:46.654Z"
+      "timestamp": "2026-11-11T10:09:08.772Z"
     },
     {
       "id": "G0-CTL-C031",
@@ -1719,7 +1719,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C031.png"
       ],
-      "timestamp": "2026-11-10T01:30:48.430Z"
+      "timestamp": "2026-11-11T10:09:10.452Z"
     },
     {
       "id": "G0-CTL-C032",
@@ -1753,7 +1753,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C032.png"
       ],
-      "timestamp": "2026-11-10T01:30:50.410Z"
+      "timestamp": "2026-11-11T10:09:12.164Z"
     },
     {
       "id": "G0-CTL-C033",
@@ -1787,7 +1787,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C033.png"
       ],
-      "timestamp": "2026-11-10T01:30:54.111Z"
+      "timestamp": "2026-11-11T10:09:14.742Z"
     },
     {
       "id": "G0-CTL-C034",
@@ -1821,7 +1821,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C034.png"
       ],
-      "timestamp": "2026-11-10T01:30:55.951Z"
+      "timestamp": "2026-11-11T10:09:16.362Z"
     },
     {
       "id": "G0-CTL-C035",
@@ -1855,7 +1855,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C035.png"
       ],
-      "timestamp": "2026-11-10T01:30:57.835Z"
+      "timestamp": "2026-11-11T10:09:18.004Z"
     },
     {
       "id": "G0-CTL-C036",
@@ -1889,7 +1889,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C036.png"
       ],
-      "timestamp": "2026-11-10T01:30:59.552Z"
+      "timestamp": "2026-11-11T10:09:19.634Z"
     },
     {
       "id": "G0-CTL-C037",
@@ -1923,7 +1923,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C037.png"
       ],
-      "timestamp": "2026-11-10T01:31:01.229Z"
+      "timestamp": "2026-11-11T10:09:21.306Z"
     },
     {
       "id": "G0-CTL-C038",
@@ -1957,7 +1957,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C038.png"
       ],
-      "timestamp": "2026-11-10T01:31:02.905Z"
+      "timestamp": "2026-11-11T10:09:22.992Z"
     },
     {
       "id": "G0-CTL-C039",
@@ -1991,7 +1991,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C039.png"
       ],
-      "timestamp": "2026-11-10T01:31:04.645Z"
+      "timestamp": "2026-11-11T10:09:24.723Z"
     },
     {
       "id": "G0-CTL-C040",
@@ -2025,7 +2025,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C040.png"
       ],
-      "timestamp": "2026-11-10T01:31:06.416Z"
+      "timestamp": "2026-11-11T10:09:26.435Z"
     },
     {
       "id": "G0-CTL-C041",
@@ -2059,7 +2059,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C041.png"
       ],
-      "timestamp": "2026-11-10T01:31:08.138Z"
+      "timestamp": "2026-11-11T10:09:28.149Z"
     },
     {
       "id": "G0-CTL-C042",
@@ -2093,7 +2093,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C042.png"
       ],
-      "timestamp": "2026-11-10T01:31:09.820Z"
+      "timestamp": "2026-11-11T10:09:29.813Z"
     },
     {
       "id": "G0-CTL-C043",
@@ -2127,7 +2127,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C043.png"
       ],
-      "timestamp": "2026-11-10T01:31:12.422Z"
+      "timestamp": "2026-11-11T10:09:32.439Z"
     },
     {
       "id": "G0-CTL-C044",
@@ -2161,7 +2161,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C044.png"
       ],
-      "timestamp": "2026-11-10T01:31:14.103Z"
+      "timestamp": "2026-11-11T10:09:34.066Z"
     },
     {
       "id": "G0-CTL-C045",
@@ -2195,7 +2195,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C045.png"
       ],
-      "timestamp": "2026-11-10T01:31:15.820Z"
+      "timestamp": "2026-11-11T10:09:35.689Z"
     },
     {
       "id": "G0-CTL-C046",
@@ -2229,7 +2229,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C046.png"
       ],
-      "timestamp": "2026-11-10T01:31:17.789Z"
+      "timestamp": "2026-11-11T10:09:37.357Z"
     },
     {
       "id": "G0-CTL-C047",
@@ -2263,7 +2263,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C047.png"
       ],
-      "timestamp": "2026-11-10T01:31:19.546Z"
+      "timestamp": "2026-11-11T10:09:39.013Z"
     },
     {
       "id": "G0-CTL-C048",
@@ -2297,7 +2297,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C048.png"
       ],
-      "timestamp": "2026-11-10T01:31:21.457Z"
+      "timestamp": "2026-11-11T10:09:40.640Z"
     },
     {
       "id": "G0-CTL-C049",
@@ -2329,7 +2329,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C049.png"
       ],
-      "timestamp": "2026-11-10T01:31:23.127Z"
+      "timestamp": "2026-11-11T10:09:42.094Z"
     },
     {
       "id": "G0-CTL-C050",
@@ -2362,7 +2362,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C050.png"
       ],
-      "timestamp": "2026-11-10T01:31:24.830Z"
+      "timestamp": "2026-11-11T10:09:43.797Z"
     },
     {
       "id": "G0-CTL-C051",
@@ -2395,7 +2395,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C051.png"
       ],
-      "timestamp": "2026-11-10T01:31:26.533Z"
+      "timestamp": "2026-11-11T10:09:45.445Z"
     },
     {
       "id": "G0-CTL-C052",
@@ -2427,7 +2427,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C052.png"
       ],
-      "timestamp": "2026-11-10T01:31:28.057Z"
+      "timestamp": "2026-11-11T10:09:46.873Z"
     },
     {
       "id": "G0-CTL-C053",
@@ -2460,7 +2460,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C053.png"
       ],
-      "timestamp": "2026-11-10T01:31:30.853Z"
+      "timestamp": "2026-11-11T10:09:49.334Z"
     },
     {
       "id": "G0-CTL-C054",
@@ -2493,7 +2493,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C054.png"
       ],
-      "timestamp": "2026-11-10T01:31:32.543Z"
+      "timestamp": "2026-11-11T10:09:50.936Z"
     },
     {
       "id": "G0-CTL-C055",
@@ -2527,7 +2527,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C055.png"
       ],
-      "timestamp": "2026-11-10T01:31:34.269Z"
+      "timestamp": "2026-11-11T10:09:52.594Z"
     },
     {
       "id": "G0-CTL-C056",
@@ -2560,7 +2560,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C056.png"
       ],
-      "timestamp": "2026-11-10T01:31:35.993Z"
+      "timestamp": "2026-11-11T10:09:54.251Z"
     },
     {
       "id": "G0-CTL-C057",
@@ -2595,7 +2595,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C057.png"
       ],
-      "timestamp": "2026-11-10T01:31:37.776Z"
+      "timestamp": "2026-11-11T10:09:55.862Z"
     },
     {
       "id": "G0-CTL-C058",
@@ -2629,7 +2629,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C058.png"
       ],
-      "timestamp": "2026-11-10T01:31:39.475Z"
+      "timestamp": "2026-11-11T10:09:57.495Z"
     },
     {
       "id": "G0-CTL-C059",
@@ -2659,7 +2659,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-10T01:31:40.658Z"
+      "timestamp": "2026-11-11T10:09:58.500Z"
     },
     {
       "id": "G0-CTL-C060",
@@ -2693,7 +2693,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C060.png"
       ],
-      "timestamp": "2026-11-10T01:31:42.397Z"
+      "timestamp": "2026-11-11T10:10:00.185Z"
     },
     {
       "id": "G0-CTL-C061",
@@ -2728,7 +2728,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C061.png"
       ],
-      "timestamp": "2026-11-10T01:31:44.128Z"
+      "timestamp": "2026-11-11T10:10:01.795Z"
     },
     {
       "id": "G0-CTL-C062",
@@ -2762,7 +2762,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C062.png"
       ],
-      "timestamp": "2026-11-10T01:31:45.871Z"
+      "timestamp": "2026-11-11T10:10:03.437Z"
     },
     {
       "id": "G0-CTL-C063",
@@ -2796,7 +2796,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C063.png"
       ],
-      "timestamp": "2026-11-10T01:31:48.421Z"
+      "timestamp": "2026-11-11T10:10:05.863Z"
     },
     {
       "id": "G0-CTL-C064",
@@ -2829,7 +2829,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C064.png"
       ],
-      "timestamp": "2026-11-10T01:31:50.158Z"
+      "timestamp": "2026-11-11T10:10:07.489Z"
     },
     {
       "id": "G0-CTL-C065",
@@ -2862,7 +2862,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C065.png"
       ],
-      "timestamp": "2026-11-10T01:31:52.053Z"
+      "timestamp": "2026-11-11T10:10:09.127Z"
     },
     {
       "id": "G0-CTL-C066",
@@ -2895,7 +2895,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C066.png"
       ],
-      "timestamp": "2026-11-10T01:31:54.015Z"
+      "timestamp": "2026-11-11T10:10:10.774Z"
     },
     {
       "id": "G0-CTL-C067",
@@ -2929,7 +2929,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C067.png"
       ],
-      "timestamp": "2026-11-10T01:31:55.756Z"
+      "timestamp": "2026-11-11T10:10:12.382Z"
     },
     {
       "id": "G0-CTL-C068",
@@ -2963,7 +2963,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C068.png"
       ],
-      "timestamp": "2026-11-10T01:31:57.476Z"
+      "timestamp": "2026-11-11T10:10:14.070Z"
     },
     {
       "id": "G0-CTL-C069",
@@ -2998,7 +2998,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C069.png"
       ],
-      "timestamp": "2026-11-10T01:31:59.236Z"
+      "timestamp": "2026-11-11T10:10:15.726Z"
     },
     {
       "id": "G0-CTL-C070",
@@ -3033,7 +3033,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C070.png"
       ],
-      "timestamp": "2026-11-10T01:32:00.991Z"
+      "timestamp": "2026-11-11T10:10:17.353Z"
     },
     {
       "id": "G0-CTL-C071",
@@ -3067,7 +3067,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C071.png"
       ],
-      "timestamp": "2026-11-10T01:32:02.714Z"
+      "timestamp": "2026-11-11T10:10:19.048Z"
     },
     {
       "id": "G0-CTL-C072",
@@ -3098,7 +3098,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C072.png"
       ],
-      "timestamp": "2026-11-10T01:32:34.580Z"
+      "timestamp": "2026-11-11T10:10:50.708Z"
     },
     {
       "id": "G0-CTL-C073",
@@ -3129,7 +3129,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C073.png"
       ],
-      "timestamp": "2026-11-10T01:33:06.838Z"
+      "timestamp": "2026-11-11T10:11:22.974Z"
     },
     {
       "id": "G0-CTL-C074",
@@ -3160,7 +3160,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C074.png"
       ],
-      "timestamp": "2026-11-10T01:33:38.641Z"
+      "timestamp": "2026-11-11T10:11:54.652Z"
     },
     {
       "id": "G0-CTL-C075",
@@ -3191,7 +3191,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C075.png"
       ],
-      "timestamp": "2026-11-10T01:34:10.270Z"
+      "timestamp": "2026-11-11T10:12:26.344Z"
     },
     {
       "id": "G0-CTL-C076",
@@ -3225,7 +3225,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C076.png"
       ],
-      "timestamp": "2026-11-10T01:34:11.911Z"
+      "timestamp": "2026-11-11T10:12:28.238Z"
     },
     {
       "id": "G0-CTL-C077",
@@ -3258,7 +3258,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C077.png"
       ],
-      "timestamp": "2026-11-10T01:34:13.476Z"
+      "timestamp": "2026-11-11T10:12:29.844Z"
     },
     {
       "id": "G0-CTL-C078",
@@ -3291,7 +3291,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C078.png"
       ],
-      "timestamp": "2026-11-10T01:34:15.050Z"
+      "timestamp": "2026-11-11T10:12:31.450Z"
     },
     {
       "id": "G0-CTL-C079",
@@ -3324,7 +3324,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C079.png"
       ],
-      "timestamp": "2026-11-10T01:34:16.676Z"
+      "timestamp": "2026-11-11T10:12:33.102Z"
     },
     {
       "id": "G0-CTL-C080",
@@ -3357,7 +3357,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C080.png"
       ],
-      "timestamp": "2026-11-10T01:34:18.268Z"
+      "timestamp": "2026-11-11T10:12:34.788Z"
     },
     {
       "id": "G0-CTL-C081",
@@ -3390,7 +3390,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C081.png"
       ],
-      "timestamp": "2026-11-10T01:34:19.864Z"
+      "timestamp": "2026-11-11T10:12:36.639Z"
     },
     {
       "id": "G0-CTL-C082",
@@ -3423,7 +3423,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C082.png"
       ],
-      "timestamp": "2026-11-10T01:34:21.686Z"
+      "timestamp": "2026-11-11T10:12:38.261Z"
     },
     {
       "id": "G0-CTL-C083",
@@ -3456,7 +3456,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C083.png"
       ],
-      "timestamp": "2026-11-10T01:34:24.057Z"
+      "timestamp": "2026-11-11T10:12:40.639Z"
     },
     {
       "id": "G0-CTL-C084",
@@ -3489,7 +3489,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C084.png"
       ],
-      "timestamp": "2026-11-10T01:34:25.644Z"
+      "timestamp": "2026-11-11T10:12:42.277Z"
     },
     {
       "id": "G0-CTL-C085",
@@ -3522,7 +3522,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C085.png"
       ],
-      "timestamp": "2026-11-10T01:34:27.267Z"
+      "timestamp": "2026-11-11T10:12:43.935Z"
     },
     {
       "id": "G0-CTL-C086",
@@ -3555,7 +3555,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C086.png"
       ],
-      "timestamp": "2026-11-10T01:34:28.859Z"
+      "timestamp": "2026-11-11T10:12:45.582Z"
     },
     {
       "id": "G0-CTL-C087",
@@ -3588,7 +3588,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C087.png"
       ],
-      "timestamp": "2026-11-10T01:34:30.426Z"
+      "timestamp": "2026-11-11T10:12:47.203Z"
     },
     {
       "id": "G0-CTL-C088",
@@ -3621,7 +3621,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C088.png"
       ],
-      "timestamp": "2026-11-10T01:34:31.993Z"
+      "timestamp": "2026-11-11T10:12:48.818Z"
     },
     {
       "id": "G0-CTL-C089",
@@ -3654,7 +3654,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C089.png"
       ],
-      "timestamp": "2026-11-10T01:34:33.610Z"
+      "timestamp": "2026-11-11T10:12:50.502Z"
     },
     {
       "id": "G0-CTL-C090",
@@ -3687,7 +3687,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C090.png"
       ],
-      "timestamp": "2026-11-10T01:34:35.187Z"
+      "timestamp": "2026-11-11T10:12:52.126Z"
     },
     {
       "id": "G0-CTL-C091",
@@ -3721,7 +3721,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C091.png"
       ],
-      "timestamp": "2026-11-10T01:34:36.772Z"
+      "timestamp": "2026-11-11T10:12:53.760Z"
     },
     {
       "id": "G0-CTL-C092",
@@ -3755,7 +3755,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C092.png"
       ],
-      "timestamp": "2026-11-10T01:34:38.850Z"
+      "timestamp": "2026-11-11T10:12:55.413Z"
     },
     {
       "id": "G0-CTL-C093",
@@ -3785,7 +3785,7 @@
       },
       "status": "pass",
       "artifacts": [],
-      "timestamp": "2026-11-10T01:34:40.619Z"
+      "timestamp": "2026-11-11T10:12:57.854Z"
     },
     {
       "id": "G0-CTL-C094",
@@ -3819,7 +3819,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C094.png"
       ],
-      "timestamp": "2026-11-10T01:34:42.178Z"
+      "timestamp": "2026-11-11T10:12:59.912Z"
     },
     {
       "id": "G0-CTL-C095",
@@ -3853,7 +3853,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C095.png"
       ],
-      "timestamp": "2026-11-10T01:34:43.967Z"
+      "timestamp": "2026-11-11T10:13:01.552Z"
     },
     {
       "id": "G0-CTL-C096",
@@ -3887,7 +3887,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C096.png"
       ],
-      "timestamp": "2026-11-10T01:34:45.812Z"
+      "timestamp": "2026-11-11T10:13:03.189Z"
     },
     {
       "id": "G0-CTL-C097",
@@ -3920,7 +3920,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C097.png"
       ],
-      "timestamp": "2026-11-10T01:34:47.568Z"
+      "timestamp": "2026-11-11T10:13:04.850Z"
     },
     {
       "id": "G0-CTL-C098",
@@ -3953,7 +3953,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C098.png"
       ],
-      "timestamp": "2026-11-10T01:34:49.259Z"
+      "timestamp": "2026-11-11T10:13:06.491Z"
     },
     {
       "id": "G0-CTL-C099",
@@ -3986,7 +3986,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C099.png"
       ],
-      "timestamp": "2026-11-10T01:34:51.639Z"
+      "timestamp": "2026-11-11T10:13:08.140Z"
     },
     {
       "id": "G0-CTL-C100",
@@ -4019,7 +4019,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C100.png"
       ],
-      "timestamp": "2026-11-10T01:34:53.658Z"
+      "timestamp": "2026-11-11T10:13:09.801Z"
     },
     {
       "id": "G0-CTL-C101",
@@ -4052,7 +4052,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C101.png"
       ],
-      "timestamp": "2026-11-10T01:34:55.744Z"
+      "timestamp": "2026-11-11T10:13:11.479Z"
     },
     {
       "id": "G0-CTL-C102",
@@ -4085,7 +4085,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C102.png"
       ],
-      "timestamp": "2026-11-10T01:34:57.647Z"
+      "timestamp": "2026-11-11T10:13:13.141Z"
     },
     {
       "id": "G0-CTL-C103",
@@ -4118,7 +4118,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C103.png"
       ],
-      "timestamp": "2026-11-10T01:35:00.176Z"
+      "timestamp": "2026-11-11T10:13:15.695Z"
     },
     {
       "id": "G0-CTL-C104",
@@ -4151,7 +4151,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C104.png"
       ],
-      "timestamp": "2026-11-10T01:35:01.759Z"
+      "timestamp": "2026-11-11T10:13:17.305Z"
     },
     {
       "id": "G0-CTL-C105",
@@ -4184,7 +4184,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C105.png"
       ],
-      "timestamp": "2026-11-10T01:35:03.339Z"
+      "timestamp": "2026-11-11T10:13:18.974Z"
     },
     {
       "id": "G0-CTL-C106",
@@ -4217,7 +4217,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C106.png"
       ],
-      "timestamp": "2026-11-10T01:35:05.039Z"
+      "timestamp": "2026-11-11T10:13:20.621Z"
     },
     {
       "id": "G0-CTL-C107",
@@ -4250,7 +4250,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C107.png"
       ],
-      "timestamp": "2026-11-10T01:35:06.666Z"
+      "timestamp": "2026-11-11T10:13:22.230Z"
     },
     {
       "id": "G0-CTL-C108",
@@ -4284,7 +4284,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C108.png"
       ],
-      "timestamp": "2026-11-10T01:35:08.076Z"
+      "timestamp": "2026-11-11T10:13:23.648Z"
     },
     {
       "id": "G0-CTL-C109",
@@ -4318,7 +4318,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C109.png"
       ],
-      "timestamp": "2026-11-10T01:35:09.552Z"
+      "timestamp": "2026-11-11T10:13:25.115Z"
     },
     {
       "id": "G0-CTL-C110",
@@ -4351,7 +4351,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C110.png"
       ],
-      "timestamp": "2026-11-10T01:35:11.274Z"
+      "timestamp": "2026-11-11T10:13:26.761Z"
     },
     {
       "id": "G0-CTL-C111",
@@ -4384,7 +4384,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G0-CTL-C111.png"
       ],
-      "timestamp": "2026-11-10T01:35:12.886Z"
+      "timestamp": "2026-11-11T10:13:28.387Z"
     },
     {
       "id": "G1-X1-ISOLATION-BROWSER",
@@ -4416,7 +4416,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G1-X1-ISOLATION-BROWSER.png"
       ],
-      "timestamp": "2026-11-10T01:35:16.207Z"
+      "timestamp": "2026-11-11T10:13:31.720Z"
     },
     {
       "id": "G1-X4-WELCOME-FULLPAGE",
@@ -4438,7 +4438,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G1-X4-WELCOME-FULLPAGE.png"
       ],
-      "timestamp": "2026-11-10T01:35:18.942Z"
+      "timestamp": "2026-11-11T10:13:34.342Z"
     },
     {
       "id": "G1-CLIP-SUCCESS",
@@ -4463,7 +4463,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G1-CLIP-SUCCESS.png"
       ],
-      "timestamp": "2026-11-10T01:35:20.993Z"
+      "timestamp": "2026-11-11T10:13:36.157Z"
     },
     {
       "id": "G2-LISTENER-50",
@@ -4514,7 +4514,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G2-LISTENER-50.png"
       ],
-      "timestamp": "2026-11-10T01:35:32.049Z"
+      "timestamp": "2026-11-11T10:13:46.815Z"
     },
     {
       "id": "G2-RENDER-GEN",
@@ -4545,7 +4545,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G2-RENDER-GEN.png"
       ],
-      "timestamp": "2026-11-10T01:35:36.249Z"
+      "timestamp": "2026-11-11T10:13:50.832Z"
     },
     {
       "id": "G3-FIT-TALL-WIDE",
@@ -4608,7 +4608,7 @@
         "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE-wide-studio.png",
         "evidence/phase-0/g0-capture/artifacts/G3-FIT-TALL-WIDE.png"
       ],
-      "timestamp": "2026-11-10T01:35:40.459Z"
+      "timestamp": "2026-11-11T10:13:55.089Z"
     },
     {
       "id": "G3-THEME-ISOLATION-3X",
@@ -4651,7 +4651,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G3-THEME-ISOLATION-3X.png"
       ],
-      "timestamp": "2026-11-10T01:35:47.065Z"
+      "timestamp": "2026-11-11T10:14:01.666Z"
     },
     {
       "id": "G3-TYPOGRAPHY-LABELS",
@@ -4697,7 +4697,7 @@
         "evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS-studio.png",
         "evidence/phase-0/g0-capture/artifacts/G3-TYPOGRAPHY-LABELS.png"
       ],
-      "timestamp": "2026-11-10T01:35:50.460Z"
+      "timestamp": "2026-11-11T10:14:05.036Z"
     },
     {
       "id": "G3-RESIZE-VIEWPORT-REFIT",
@@ -4733,7 +4733,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G3-RESIZE-VIEWPORT-REFIT.png"
       ],
-      "timestamp": "2026-11-10T01:35:54.002Z"
+      "timestamp": "2026-11-11T10:14:08.359Z"
     },
     {
       "id": "G4-INSERT-COMMANDS",
@@ -4769,7 +4769,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G4-INSERT-COMMANDS.png"
       ],
-      "timestamp": "2026-11-10T01:35:56.901Z"
+      "timestamp": "2026-11-11T10:14:11.245Z"
     },
     {
       "id": "G4-SHORTCUT-GUARDS",
@@ -4794,7 +4794,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G4-SHORTCUT-GUARDS.png"
       ],
-      "timestamp": "2026-11-10T01:36:00.138Z"
+      "timestamp": "2026-11-11T10:14:14.389Z"
     },
     {
       "id": "G4-PERSISTENCE-ROUNDTRIP",
@@ -4824,7 +4824,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G4-PERSISTENCE-ROUNDTRIP.png"
       ],
-      "timestamp": "2026-11-10T01:36:04.526Z"
+      "timestamp": "2026-11-11T10:14:18.437Z"
     },
     {
       "id": "G5-EXPORT-STANDALONE",
@@ -4853,7 +4853,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G5-EXPORT-STANDALONE.png"
       ],
-      "timestamp": "2026-11-10T01:36:05.581Z"
+      "timestamp": "2026-11-11T10:14:19.480Z"
     },
     {
       "id": "G5-EXPORT-DIAGRAM-FILES",
@@ -4887,7 +4887,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G5-EXPORT-DIAGRAM-FILES.png"
       ],
-      "timestamp": "2026-11-10T01:36:07.279Z"
+      "timestamp": "2026-11-11T10:14:21.081Z"
     },
     {
       "id": "G5-EXPORT-PNG-FAILURE",
@@ -4914,7 +4914,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G5-EXPORT-PNG-FAILURE.png"
       ],
-      "timestamp": "2026-11-10T01:36:08.624Z"
+      "timestamp": "2026-11-11T10:14:22.222Z"
     },
     {
       "id": "G5-PRINT-PDF-TALL",
@@ -4948,7 +4948,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/G5-PRINT-PDF-TALL.png"
       ],
-      "timestamp": "2026-11-10T01:36:10.390Z"
+      "timestamp": "2026-11-11T10:14:23.902Z"
     }
   ]
 }
