@@ -1,6 +1,6 @@
 {
   "suite": "Phase 5 Verification (Gate G5)",
-  "timestamp": "2026-11-11T10:19:44.185Z",
+  "timestamp": "2026-11-12T00:08:45.144Z",
   "candidateSha256Raw": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
   "candidateSha256Lf": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
   "testsPassed": 5,
@@ -13,7 +13,7 @@
       ],
       "gate": "G5",
       "name": "Export Awaits In-Flight Render Generation",
-      "timestamp": "2026-11-11T10:19:44.115Z",
+      "timestamp": "2026-11-12T00:08:45.078Z",
       "procedure": "Verify that ensurePreviewRenderReady blocks HTML export / copy until active Mermaid rendering finishes.",
       "observation": {
         "inFlightAwaited": true,
@@ -29,7 +29,7 @@
       ],
       "gate": "G5",
       "name": "Mid-Await Document Change Triggers Refresh & Retry",
-      "timestamp": "2026-11-11T10:19:44.180Z",
+      "timestamp": "2026-11-12T00:08:45.139Z",
       "procedure": "Verify that document edits occurring during render await refresh generation and never silently export stale content.",
       "observation": {
         "staleV1Ignored": true,
@@ -45,7 +45,7 @@
       ],
       "gate": "G5",
       "name": "Clean Document Export & Standalone Theme Fidelity",
-      "timestamp": "2026-11-11T10:19:44.182Z",
+      "timestamp": "2026-11-12T00:08:45.140Z",
       "procedure": "Verify that getCleanRenderedContent removes transient controls, error UI, and pan/zoom transforms, and generateStandaloneHtml preserves theme.",
       "observation": {
         "headersRemoved": true,
@@ -64,7 +64,7 @@
       ],
       "gate": "G5",
       "name": "PNG Export Failure Handling & URL Lifecycle",
-      "timestamp": "2026-11-11T10:19:44.184Z",
+      "timestamp": "2026-11-12T00:08:45.143Z",
       "procedure": "Verify that image error, canvas null context, and toBlob null produce actionable error feedback, revoke temporary URLs, and prevent false success.",
       "observation": {
         "imageErrorHandled": true,
@@ -82,7 +82,7 @@
       ],
       "gate": "G5",
       "name": "Print CSS Diagram Height & Overflow Uncapped",
-      "timestamp": "2026-11-11T10:19:44.184Z",
+      "timestamp": "2026-11-12T00:08:45.143Z",
       "procedure": "Verify that print stylesheet removes 520px height cap, overflow clipping, and pan transforms for print/PDF output.",
       "observation": {
         "viewportMaxHeightNone": true,

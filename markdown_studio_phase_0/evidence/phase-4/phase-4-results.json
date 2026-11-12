@@ -1,8 +1,8 @@
 {
   "suite": "Phase 4 Verification (Gate G4)",
-  "timestamp": "2026-11-09T02:34:45.216Z",
-  "candidateSha256Raw": "96d14ee79e42d9a5473d1baf8f99a05e529155968b14c6cdda938269c5eaecd1",
-  "candidateSha256Lf": "9ca1ebd65601b75ab5ab7903167903f1642c705c754cc8fa38d0c7be328c4201",
+  "timestamp": "2026-11-12T00:08:44.967Z",
+  "candidateSha256Raw": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
+  "candidateSha256Lf": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
   "testsPassed": 6,
   "testsFailed": 0,
   "results": [
@@ -13,7 +13,7 @@
       ],
       "gate": "G4",
       "name": "wrapSelection & Snippet Insertion on Empty Selection",
-      "timestamp": "2026-11-09T02:34:45.211Z",
+      "timestamp": "2026-11-12T00:08:44.962Z",
       "procedure": "Verify empty-selection wrapSelection and insertSnippet for divider, code, math, link, and table without stray placeholder \"text\".",
       "observation": {
         "dividerNoText": true,
@@ -31,7 +31,7 @@
       ],
       "gate": "G4",
       "name": "Image Markdown Destination Generation",
-      "timestamp": "2026-11-09T02:34:45.213Z",
+      "timestamp": "2026-11-12T00:08:44.964Z",
       "procedure": "Verify that image generation produces exact ![Alt text](url) without fallback \"text\" concatenated into destination URL.",
       "observation": {
         "emptySelectionResult": "![Alt text](https://example.test/image.png)",
@@ -47,7 +47,7 @@
       ],
       "gate": "G4",
       "name": "Nonempty Selection Formatting Wrapping",
-      "timestamp": "2026-11-09T02:34:45.214Z",
+      "timestamp": "2026-11-12T00:08:44.964Z",
       "procedure": "Verify that wrapSelection correctly wraps selected text with markers and maintains active selection range.",
       "observation": {
         "finalText": "The *quick* **brown** `fox` jumps",
@@ -62,7 +62,7 @@
       ],
       "gate": "G4",
       "name": "Studio Palette data-insert Escape Decoding",
-      "timestamp": "2026-11-09T02:34:45.214Z",
+      "timestamp": "2026-11-12T00:08:44.965Z",
       "procedure": "Verify that clicking Subgraph Box (C091) decodes \\n escapes into real newline characters in builder code input.",
       "observation": {
         "insertedSnippet": "\n  subgraph ClusterName [Group Title]\n    node1\n    node2\n  end\n",
@@ -79,7 +79,7 @@
       ],
       "gate": "G4",
       "name": "Snippet Insertion Replaces Selection Without Placeholder",
-      "timestamp": "2026-11-09T02:34:45.215Z",
+      "timestamp": "2026-11-12T00:08:44.966Z",
       "procedure": "Verify that insertSnippet replaces active selection cleanly with snippet content preserving surrounding text.",
       "observation": {
         "blockReplaced": true,
@@ -94,7 +94,7 @@
       ],
       "gate": "G4",
       "name": "Editor Shortcut Guard in Studio & Inputs",
-      "timestamp": "2026-11-09T02:34:45.215Z",
+      "timestamp": "2026-11-12T00:08:44.966Z",
       "procedure": "Verify that Ctrl+B, Ctrl+I, Ctrl+K do not mutate document while focused in Studio or other inputs, and Escape dismisses overlays.",
       "observation": {
         "studioProtected": true,

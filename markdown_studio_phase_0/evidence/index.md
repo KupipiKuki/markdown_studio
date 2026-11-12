@@ -41,3 +41,29 @@
 - `../reports/qaqc_verification_F1-F8.md`: QAQC re-verification of the F1–F9 remediation (all findings verified remediated at `00e2208`).
 - `../reports/qaqc_d001_verification.md`: QAQC verification of D001 remediation and publish claims @ `0c5f543`.
 - `checksums.sha256`: regenerated 2026-11-04 over the full phase-0 package including phase-1 results and audit reports.
+
+## Phase 2
+- `phase-2/phase-2-results.json`: Gate G2 records (P2-01 parser-consistent replacement, P2-02 generation guard, P2-03 listener lifecycle), candidate-stamped; re-run 2026-11-12 on the frozen final candidate `9bb0fcd9…` (3/3).
+- `phase-2/fixtures/`: synthetic inputs used by the Phase 2 suite.
+
+## Phase 3
+- `phase-3/phase-3-results.json`: Gate G3 records (P3-01 theme isolation, P3-02 fit computation, P3-03 typography/foreignObject isolation); re-run 2026-11-12 on `9bb0fcd9…` (3/3).
+
+## Phase 4
+- `phase-4/phase-4-results.json`: Gate G4 records (P4-01..P4-06: insertion commands, image URL, escape decoding, shortcut guards); re-run 2026-11-12 on `9bb0fcd9…` (6/6).
+
+## Phase 5
+- `phase-5/phase-5-results.json`: Gate G5 records (P5-01..P5-05: render-ready export, mid-await refresh, clean export, PNG failure handling, print CSS); re-run 2026-11-12 on `9bb0fcd9…` (5/5).
+
+## G0 capture matrix (all phases' browser stop points)
+- `phase-0/g0-capture/manifest.json` and `stop-points.md`: stop-point definitions (155 stop points across G0–G5).
+- `phase-0/g0-capture/runs/`: 31 run-stamped manifests. Final frozen-candidate runs 2026-11-11 (candidate LF `9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519`, headed, origins file:// + http://, win32 x64, Node v24.20.0): `manifest-chromium-both-2026-11-11T03-35-41-030Z.json` (155/155), `manifest-edge-both-2026-11-11T03-44-48-566Z.json` (155/155), `manifest-chrome-both-2026-11-11T09-47-51-379Z.json` (155/155), `manifest-firefox-both-2026-11-11T10-14-24-473Z.json` (155/155). Total 620/620, 0 fail, 0 blocked, 0 unrun. Earlier runs (including the superseded `4b4bd07c…` G5 sweep, QAQC P5-0) are retained as run-stamped history.
+- `phase-0/g0-capture/artifacts/`, `console-log.json`: screenshots and console capture from the capture runs.
+
+## Phase 6 — final deliverables (2026-11-12)
+- `../final/markdown_studio.html`: frozen final candidate, SHA-256 `9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519` (LF), 5,424 lines — byte-identical to `../working/markdown_studio.html` (LF).
+- `../reports/markdown_studio.patch`: unified patch `a/baseline/markdown_studio.original.html` → `b/final/markdown_studio.html`, SHA-256 `0d5f41f185f3be42b1e65dd53eed1c657fadea1978503f0b57259be4698554c4`, 46 hunks, +1,385/−277. Validated: `patch -p1` on the pristine baseline blob reconstructs `final/markdown_studio.html` byte-for-byte (`cmp` clean, hash `9bb0fcd9…`).
+- `../reports/code_diff_report.md`: final diff report — statistics, per-change R/D table, dependency statement, patch-application proof.
+- `../reports/remediation_audit.md`: final audit — executive result, phase log (all gates passed), R01–R15 + D001 dispositions, coverage counts, limitations/deferrals, rollback, links.
+- `checksums.sha256`: regenerated 2026-11-12 over the full package including `final/` and the Phase 6 reports (see file for count and hashes).
+- Final regression: `phase-0/test-results.json` and `phase-1..5/phase-*-results.json` re-run 2026-11-12 on candidate `9bb0fcd9…` (B00 + B01–B12 observations; P1 7/7, P2 3/3, P3 3/3, P4 6/6, P5 5/5).
