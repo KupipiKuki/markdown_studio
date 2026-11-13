@@ -27,7 +27,7 @@ const allFiles = Array.from(new Set([...tracked, ...untracked]))
   })
   .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 
-const binaryExts = new Set(['.png', '.jpeg', '.jpg', '.ico', '.bundle', '.gz', '.zip']);
+const binaryExts = new Set(['.png', '.jpeg', '.jpg', '.ico', '.bundle', '.gz', '.zip', '.pdf']);
 let modifiedFiles = new Set();
 try {
   const unstaged = execSync('git diff --name-only', { cwd: root, encoding: 'utf8' });

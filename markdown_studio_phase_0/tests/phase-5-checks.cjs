@@ -250,12 +250,41 @@ try {
   assert.strictEqual(readyDone, true, 'ensurePreviewRenderReady must resolve once V2 finishes');
   assert.strictEqual(canvasEl.innerHTML, '<svg id="fresh-v2">V2</svg>', 'Canvas must contain fresh V2, not stale V1');
 
+  // Finding A6-01 regression: test retry exhaustion path
+  // Simulate continuous document edits occurring on each render completion, exhausting maxRetries (10)
+  let editCount = 0;
+  let loggedErrors = [];
+  p5Ctx.logError = (msg) => loggedErrors.push(msg);
+  let lastToast = '';
+  p5Ctx.showToast = (msg) => { lastToast = msg; };
+
+  p5Ctx.mermaid = {
+    parse: async () => {},
+    render: async () => {
+      editCount++;
+      activeDoc.content = `\`\`\`mermaid\nflowchart TD\n  Edit${editCount}\n\`\`\``;
+      cardEl.dataset.mermaidCode = encodeURIComponent(`flowchart TD\n  Edit${editCount}`);
+      return { svg: `<svg id="edit-${editCount}">Edit${editCount}</svg>` };
+    }
+  };
+
+  // Trigger updatePreview to initiate debounced rendering
+  p5Ctx.updatePreview();
+
+  const exhaustionResult = await p5Ctx.ensurePreviewRenderReady();
+  assert.strictEqual(exhaustionResult, false, 'ensurePreviewRenderReady must return false when retries are exhausted');
+  assert.strictEqual(lastToast, 'Document rendering is still in progress. Please wait and retry.', 'Must surface clear retry toast');
+  assert.strictEqual(loggedErrors.length > 0, true, 'Must log error on retry exhaustion');
+
   record('P5-02', ['R13'], 'Mid-Await Document Change Triggers Refresh & Retry',
-    'Verify that document edits occurring during render await refresh generation and never silently export stale content.',
+    'Verify that document edits occurring during render await refresh generation and never silently export stale content, and retry exhaustion cleanly aborts with retry feedback.',
     {
       staleV1Ignored: true,
       freshV2Captured: true,
-      finalCanvasSvg: 'fresh-v2'
+      finalCanvasSvg: 'fresh-v2',
+      retryExhaustionHandled: true,
+      retryFeedbackSurfaced: true,
+      exportAbortedOnExhaustion: true
     }
   );
   console.log('✓ P5-02: Mid-Await Document Change Triggers Refresh & Retry passed.');

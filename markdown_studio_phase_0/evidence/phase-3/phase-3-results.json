@@ -1,8 +1,8 @@
 {
   "suite": "Phase 3 Verification (Gate G3)",
-  "timestamp": "2026-11-12T00:08:44.868Z",
-  "candidateSha256": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
-  "candidateSha256Lf": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
+  "timestamp": "2026-11-13T00:11:29.674Z",
+  "candidateSha256": "1adc882b0665f4428218bbacf789df677f80490c2bd7f209b979250c4c76c8b7",
+  "candidateSha256Lf": "563955c89c51e9362181733536258fb629340dd9db0368dec8dd63ea204d42b0",
   "results": [
     {
       "id": "P3-01",
@@ -11,7 +11,7 @@
       ],
       "gate": "G3",
       "name": "Theme Isolation & Document Policy",
-      "timestamp": "2026-11-12T00:08:44.867Z",
+      "timestamp": "2026-11-13T00:11:29.673Z",
       "procedure": "Verify that Studio theme selection does not leak into document preview diagrams, and preview render and studio close restore document theme.",
       "observation": {
         "lightTheme": "default",
@@ -29,7 +29,7 @@
       ],
       "gate": "G3",
       "name": "Bidirectional Fit Computation",
-      "timestamp": "2026-11-12T00:08:44.868Z",
+      "timestamp": "2026-11-13T00:11:29.674Z",
       "procedure": "Verify that diagram fit scale uses the minimum of both dimensions, fitting tall and wide fixtures without clipping while capping compact diagrams at 1.0.",
       "observation": {
         "tallFixture": {
@@ -60,7 +60,7 @@
       ],
       "gate": "G3",
       "name": "Markdown Typography Scoping & Isolation",
-      "timestamp": "2026-11-12T00:08:44.868Z",
+      "timestamp": "2026-11-13T00:11:29.674Z",
       "procedure": "Verify that .preview-content typography selectors do not bleed into Mermaid foreignObject elements and explicit resets are in place.",
       "observation": {
         "unscopedSelectorsEliminated": true,

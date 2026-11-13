@@ -1,12 +1,14 @@
 {
   "name": "markdown_studio_phase_0",
   "version": "1.0.0",
-  "description": "Start with [the checkpoint report](reports/phase_0_baseline_report.md). G0 is blocked pending browser evidence. Application source is unchanged.",
+  "description": "Markdown Studio Phase 6 remediation and final handoff package: frozen candidate, verified patch, test suites, and 4-browser evidence matrix.",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "node tests/baseline-checks.cjs && node tests/phase-1-checks.cjs && node tests/phase-2-checks.cjs && node tests/phase-3-checks.cjs && node tests/phase-4-checks.cjs && node tests/phase-5-checks.cjs"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

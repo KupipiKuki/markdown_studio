@@ -1,7 +1,7 @@
 {
   "gate": "G1",
   "status": "pass",
-  "timestamp": "2026-11-12T00:08:44.602Z",
+  "timestamp": "2026-11-13T00:11:29.430Z",
   "testsPassed": 7,
   "testsFailed": 0,
   "findingsResolved": [
@@ -22,13 +22,13 @@
       ],
       "gate": "G1",
       "name": "Inline Scripts Syntax Check",
-      "timestamp": "2026-11-12T00:08:44.556Z",
+      "timestamp": "2026-11-13T00:11:29.387Z",
       "procedure": "Compile all inline scripts in working/markdown_studio.html with vm.Script.",
       "observation": {
         "syntaxValid": true,
         "scriptTagsChecked": 6,
-        "candidateSha256": "9bb0fcd959af032f762474826d86ca7e237616e5ab29014036ee24323e563519",
-        "candidateSha256Raw": "36cddddcc5e832fb0609e2c36e68c728e5325a6c0902c2928f6cd9d275e3c583",
+        "candidateSha256": "563955c89c51e9362181733536258fb629340dd9db0368dec8dd63ea204d42b0",
+        "candidateSha256Raw": "1adc882b0665f4428218bbacf789df677f80490c2bd7f209b979250c4c76c8b7",
         "lineEndings": "CRLF-on-disk"
       },
       "status": "pass"
@@ -41,7 +41,7 @@
       ],
       "gate": "G1",
       "name": "Source Preservation and Theme Refresh",
-      "timestamp": "2026-11-12T00:08:44.558Z",
+      "timestamp": "2026-11-13T00:11:29.390Z",
       "procedure": "Execute renderAllPreviewDiagrams across 3 consecutive cycles on a multi-card DOM contract.",
       "observation": {
         "initialParseCalls": 2,
@@ -59,7 +59,7 @@
       ],
       "gate": "G1",
       "name": "Action Button Exact Source Matching",
-      "timestamp": "2026-11-12T00:08:44.559Z",
+      "timestamp": "2026-11-13T00:11:29.390Z",
       "procedure": "Trigger Copy and Edit actions on multi-diagram cards through delegated handlers.",
       "observation": {
         "card0Copied": true,
@@ -76,7 +76,7 @@
       ],
       "gate": "G1",
       "name": "Fix in Studio Error Button Binding",
-      "timestamp": "2026-11-12T00:08:44.559Z",
+      "timestamp": "2026-11-13T00:11:29.390Z",
       "procedure": "Render invalid diagram, verify generated button class and trigger delegated click.",
       "observation": {
         "errorCardGenerated": true,
@@ -93,7 +93,7 @@
       ],
       "gate": "G1",
       "name": "Error Log Scoped Delegation and Actions",
-      "timestamp": "2026-11-12T00:08:44.586Z",
+      "timestamp": "2026-11-13T00:11:29.413Z",
       "procedure": "Render error logs, verify absence of inline handlers, trigger delegated Copy and Dismiss.",
       "observation": {
         "noInlineHandlers": true,
@@ -107,7 +107,7 @@
       "issues": [],
       "gate": "G1",
       "name": "Clipboard Error Feedback",
-      "timestamp": "2026-11-12T00:08:44.600Z",
+      "timestamp": "2026-11-13T00:11:29.428Z",
       "procedure": "Invoke copyToClipboard with rejecting writeText promise.",
       "observation": {
         "errorHandled": true,
@@ -122,7 +122,7 @@
       ],
       "gate": "G1",
       "name": "Cross-Diagram Update Isolation Across Mixed Fences",
-      "timestamp": "2026-11-12T00:08:44.602Z",
+      "timestamp": "2026-11-13T00:11:29.430Z",
       "procedure": "Update diagrams in mixed tilde/backtick fence document via btnBuilderInsert; verify exact isolation.",
       "observation": {
         "tildeDiagramUpdatedIsolated": true,

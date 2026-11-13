@@ -4955,7 +4955,7 @@
     const maxRetries = 10;
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       const activeTab = typeof getActiveTab === 'function' ? getActiveTab() : null;
-      if (!activeTab) return;
+      if (!activeTab) return false;
       const tabId = activeTab.id;
       const contentBefore = activeTab.content;
 
@@ -4980,16 +4980,27 @@
 
       // Check whether document content changed or tab switched during the await
       const currentTab = typeof getActiveTab === 'function' ? getActiveTab() : null;
-      if (!currentTab) return;
+      if (!currentTab) return false;
       if (currentTab.id !== tabId || currentTab.content !== contentBefore || renderDebounceTimer !== null) {
+        // If we reached the retry limit without settling, abort with actionable feedback
+        if (attempt === maxRetries - 1) {
+          if (typeof showToast === 'function') {
+            showToast('Document rendering is still in progress. Please wait and retry.');
+          }
+          if (typeof logError === 'function') {
+            logError('Export aborted: document rendering did not settle within retry limit.');
+          }
+          return false;
+        }
         // Content changed mid-await; re-trigger preview update and retry
         if (typeof updatePreview === 'function') {
           updatePreview();
         }
         continue;
       }
-      break;
+      return true;
     }
+    return false;
   }
 
   function getCleanRenderedContent(previewEl) {
@@ -5177,7 +5188,8 @@ ${cleanContent}
 
   // Export as standalone HTML
   document.getElementById('btnExportHtml').addEventListener('click', async () => {
-    await ensurePreviewRenderReady();
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
     const t = getActiveTab();
     if (!t) return;
     const previewEl = document.getElementById('previewContent');
@@ -5195,13 +5207,15 @@ ${cleanContent}
 
   // Export as PDF / Print
   document.getElementById('btnPrintPdf').addEventListener('click', async () => {
-    await ensurePreviewRenderReady();
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
     window.print();
   });
 
   // Copy Rendered HTML
   document.getElementById('btnCopyHtml').addEventListener('click', async () => {
-    await ensurePreviewRenderReady();
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
     const previewEl = document.getElementById('previewContent');
     const cleanHtml = getCleanRenderedContent(previewEl);
     copyToClipboard(cleanHtml, 'Rendered HTML copied to clipboard!');

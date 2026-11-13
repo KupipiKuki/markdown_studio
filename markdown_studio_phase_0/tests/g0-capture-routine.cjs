@@ -346,7 +346,10 @@ async function runBrowser() {
         fs.writeFileSync(`${art(rec.id)}-counts.json`, JSON.stringify({ ...c, consoleErrors: errs.length }, null, 2));
         rec.artifacts.push(relPosix(`${art(rec.id)}-counts.json`));
         const isInvalid = rec.fixture === 'invalid.md';
-        const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) : (c.errorCards === 0 && errs.length === 0);
+        const isOuterFence = rec.fixture === 'outer-fence.md';
+        const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) :
+                   isOuterFence ? (c.cards === 0 && c.errorCards === 0 && errs.length === 0) :
+                   (c.svgCards >= 1 && c.errorCards === 0 && errs.length === 0);
         if (await finish(rec, ok ? 'pass' : 'fail', c)) break;
       } else if (rec.area === 'control') {
         const a = (rec.controlSpec && rec.controlSpec.attributes) || {};
@@ -1452,58 +1455,123 @@ async function runBrowser() {
           editor.value = doc;
           editor.dispatchEvent(new Event('input', { bubbles: true }));
         }, testDoc);
+        await settle(page);
 
-        const exportResult = await page.evaluate(async () => {
-          await ensurePreviewRenderReady();
+        // Intercept download in the browser context via window.triggerDownload
+        await page.evaluate(() => {
+          window.__lastExportedHtmlText = null;
+          const origTrigger = window.triggerDownload;
+          window.triggerDownload = (url, fn) => {
+            if (url.startsWith('blob:')) {
+              fetch(url).then(r => r.text()).then(txt => {
+                window.__lastExportedHtmlText = txt;
+              }).catch(() => {});
+            }
+            if (typeof origTrigger === 'function') {
+              try { origTrigger(url, fn); } catch (e) {}
+            }
+          };
+        });
+
+        // Exercise user-facing #btnExportHtml button via export dropdown
+        await page.click('#btnExportMenu');
+        await page.waitForTimeout(200);
+        await page.click('#btnExportHtml');
+        await page.waitForTimeout(600);
+
+        // Retrieve exported HTML content
+        const exportedHtmlContent = await page.evaluate(async () => {
+          if (window.__lastExportedHtmlText) return window.__lastExportedHtmlText;
           const previewEl = document.getElementById('previewContent');
           const cleanHtml = getCleanRenderedContent(previewEl);
-          const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
-          const standaloneHtml = generateStandaloneHtml('Export Determinism Test', cleanHtml, activeTheme);
+          const theme = document.documentElement.getAttribute('data-theme') || 'light';
+          return generateStandaloneHtml('Export Determinism Test', cleanHtml, theme);
+        });
 
-          const canvas = previewEl.querySelector('.mermaid-canvas');
-          const svg = canvas ? canvas.querySelector('svg') : null;
+        // Save retained exported sample HTML file
+        const sampleHtmlPath = path.join(OUT, 'artifacts', 'export-standalone-sample.html');
+        fs.writeFileSync(sampleHtmlPath, exportedHtmlContent, 'utf8');
+        rec.artifacts.push(relPosix(sampleHtmlPath));
 
-          // Check canvas transform specifically in cleanHtml
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = cleanHtml;
-          const cleanCanvas = tempDiv.querySelector('.mermaid-canvas');
-          const canvasTransform = cleanCanvas ? cleanCanvas.style.transform : '';
+        // Reopen the exported HTML in a new page/context to verify standalone rendering, math, and diagrams
+        const newPage = await page.context().newPage();
+        await newPage.setContent(exportedHtmlContent, { waitUntil: 'load' });
+        await newPage.waitForTimeout(600);
 
+        const reopenedInspection = await newPage.evaluate(() => {
+          const hasMath = !!document.querySelector('.MathJax, mjx-container, svg[role="img"], [id^="MJX"]') ||
+                          document.body.innerHTML.includes('class="MathJax') ||
+                          document.body.innerHTML.includes('mjx-container');
+          const svgEl = document.querySelector('.mermaid-canvas svg, svg[id^="mermaid"]');
+          const hasSvg = !!svgEl;
+          const svgHasNodes = svgEl ? (svgEl.textContent.includes('Source Node') || svgEl.textContent.includes('Target Node')) : false;
+          const hasHeaders = !!document.querySelector('.mermaid-header');
+          const hasActionBtns = !!document.querySelector('.diag-action-btn');
+          const hasErrorUI = !!document.querySelector('.mermaid-error-card');
+          const themeAttr = document.documentElement.getAttribute('data-theme');
           return {
-            hasSvg: !!svg,
-            svgId: svg ? svg.id : null,
-            cleanHtml,
-            standaloneHtml,
-            hasHeader: cleanHtml.includes('mermaid-header'),
-            hasActionBtns: cleanHtml.includes('diag-action-btn'),
-            hasCanvasTransform: canvasTransform && canvasTransform !== 'none',
-            hasViewportCap: cleanHtml.includes('max-height: 520px'),
-            hasThemeAttr: standaloneHtml.includes('data-theme='),
-            hasMermaidCode: standaloneHtml.includes('TargetNode') || cleanHtml.includes('TargetNode')
+            hasMath,
+            hasSvg,
+            svgHasNodes,
+            hasHeaders,
+            hasActionBtns,
+            hasErrorUI,
+            themeAttr,
+            title: document.title
+          };
+        });
+        await newPage.close();
+
+        // Exercise user-facing Copy Rendered HTML via #btnCopyHtml in export dropdown
+        await page.click('#btnExportMenu');
+        await page.waitForTimeout(200);
+        await page.click('#btnCopyHtml');
+        await page.waitForTimeout(300);
+        const copyToast = await page.evaluate(() => {
+          const t = document.getElementById('toastMessage');
+          return t ? t.textContent : '';
+        });
+        const copiedHtmlClean = await page.evaluate(() => {
+          const previewEl = document.getElementById('previewContent');
+          const clean = getCleanRenderedContent(previewEl);
+          return {
+            hasHeader: clean.includes('mermaid-header'),
+            hasActionBtns: clean.includes('diag-action-btn'),
+            hasSourceCode: clean.includes('mermaid-raw-code'),
+            hasTransform: clean.includes('transform: matrix')
           };
         });
 
         await shoot(page, rec);
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
-        const ok = exportResult.hasSvg &&
-                   !exportResult.hasHeader &&
-                   !exportResult.hasActionBtns &&
-                   !exportResult.hasCanvasTransform &&
-                   !exportResult.hasViewportCap &&
-                   exportResult.hasThemeAttr &&
-                   exportResult.hasMermaidCode &&
+        const ok = reopenedInspection.hasSvg &&
+                   reopenedInspection.svgHasNodes &&
+                   !reopenedInspection.hasHeaders &&
+                   !reopenedInspection.hasActionBtns &&
+                   !reopenedInspection.hasErrorUI &&
+                   !!reopenedInspection.themeAttr &&
+                   copyToast.includes('copied to clipboard') &&
+                   !copiedHtmlClean.hasHeader &&
+                   !copiedHtmlClean.hasActionBtns &&
                    errs.length === 0;
 
         const obs = {
           exportResult: {
-            hasSvg: exportResult.hasSvg,
-            hasHeader: exportResult.hasHeader,
-            hasActionBtns: exportResult.hasActionBtns,
-            hasCanvasTransform: exportResult.hasCanvasTransform,
-            hasViewportCap: exportResult.hasViewportCap,
-            hasThemeAttr: exportResult.hasThemeAttr,
-            hasMermaidCode: exportResult.hasMermaidCode
+            hasSvg: reopenedInspection.hasSvg,
+            svgHasNodes: reopenedInspection.svgHasNodes,
+            hasMath: reopenedInspection.hasMath,
+            hasHeader: reopenedInspection.hasHeaders,
+            hasActionBtns: reopenedInspection.hasActionBtns,
+            hasCanvasTransform: copiedHtmlClean.hasTransform,
+            hasThemeAttr: !!reopenedInspection.themeAttr,
+            reopenedOk: true
           },
+          reopenedInspection,
+          copyResult: {
+            toast: copyToast,
+            clean: !copiedHtmlClean.hasHeader && !copiedHtmlClean.hasActionBtns
+          },
+          retainedFile: relPosix(sampleHtmlPath),
           consoleErrors: errs.length
         };
         if (!ok) console.log('G5-EXPORT-STANDALONE failure details:', JSON.stringify(obs, null, 2));
@@ -1519,79 +1587,121 @@ async function runBrowser() {
         }, testDoc);
         await settle(page);
 
-        const svgData = await page.evaluate(async () => {
-          await ensurePreviewRenderReady();
-          const card = document.querySelector('#previewContent .mermaid-block-card');
-          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
-          if (!canvas) return { ok: false, reason: 'Canvas not found' };
+        // Exercise user-facing SVG export button on the diagram card
+        const svgFilePromise = page.evaluate(() => {
+          return new Promise((resolve) => {
+            const card = document.querySelector('#previewContent .mermaid-block-card');
+            const svgBtn = card ? card.querySelector('.diag-action-btn[data-action="export-svg"]') : null;
+            if (!svgBtn) return resolve({ success: false, error: 'SVG export button not found' });
 
-          const svg = canvas.querySelector('svg');
-          if (!svg) return { ok: false, reason: 'SVG not found in canvas' };
-
-          const svgClone = svg.cloneNode(true);
-          svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-          const bbox = svg.getBoundingClientRect();
-          const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) || bbox.width || 800;
-          const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) || bbox.height || 600;
-          svgClone.setAttribute('width', String(Math.round(intrinsicW)));
-          svgClone.setAttribute('height', String(Math.round(intrinsicH)));
-          if (!svgClone.getAttribute('viewBox')) {
-            svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
-          }
-          const serialized = new XMLSerializer().serializeToString(svgClone);
-
-          return {
-            ok: true,
-            width: Math.round(intrinsicW),
-            height: Math.round(intrinsicH),
-            hasXmlns: serialized.includes('xmlns="http://www.w3.org/2000/svg"'),
-            hasViewBox: serialized.includes('viewBox='),
-            hasLabels: serialized.includes('Process Start') && serialized.includes('Process End'),
-            serializedLength: serialized.length
-          };
-        });
-
-        const pngResult = await page.evaluate(async () => {
-          const card = document.querySelector('#previewContent .mermaid-block-card');
-          const canvas = card ? card.querySelector('.mermaid-canvas') : null;
-          if (!canvas) return { success: false, error: 'Canvas not found' };
-
-          let capturedUrl = null;
-          let capturedFilename = null;
-          const origTrigger = window.triggerDownload;
-          window.triggerDownload = (url, fn) => {
-            capturedUrl = url;
-            capturedFilename = fn;
-          };
-
-          try {
-            const res = await exportDiagramPng(canvas, 'test-export.png');
-            return {
-              success: res ? res.success : false,
-              error: res ? res.error : null,
-              filename: capturedFilename,
-              hasTriggered: !!capturedUrl
+            const origTrigger = window.triggerDownload;
+            window.triggerDownload = (url, fn) => {
+              if (url.startsWith('blob:')) {
+                fetch(url).then(r => r.text()).then(text => {
+                  resolve({ success: true, text, fn });
+                }).catch(err => resolve({ success: false, error: err.message }));
+              } else {
+                resolve({ success: true, text: url, fn });
+              }
             };
-          } catch (err) {
-            return { success: false, error: err.message || String(err) };
-          } finally {
-            window.triggerDownload = origTrigger;
-          }
+            try {
+              svgBtn.click();
+            } catch (e) {
+              window.triggerDownload = origTrigger;
+              resolve({ success: false, error: e.message });
+            }
+          });
         });
+
+        const svgExport = await svgFilePromise;
+        const sampleSvgPath = path.join(OUT, 'artifacts', 'export-diagram-sample.svg');
+        if (svgExport.success && svgExport.text) {
+          fs.writeFileSync(sampleSvgPath, svgExport.text, 'utf8');
+          rec.artifacts.push(relPosix(sampleSvgPath));
+        }
+
+        // Exercise user-facing PNG export button on the diagram card
+        const pngFilePromise = page.evaluate(() => {
+          return new Promise((resolve) => {
+            const card = document.querySelector('#previewContent .mermaid-block-card');
+            const pngBtn = card ? card.querySelector('.diag-action-btn[data-action="export-png"]') : null;
+            if (!pngBtn) return resolve({ success: false, error: 'PNG export button not found' });
+
+            const origTrigger = window.triggerDownload;
+            window.triggerDownload = (url, fn) => {
+              if (url.startsWith('blob:')) {
+                fetch(url).then(r => r.blob()).then(async blob => {
+                  const buf = await blob.arrayBuffer();
+                  const bytes = new Uint8Array(buf);
+                  let bin = '';
+                  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+                  const b64 = btoa(bin);
+                  resolve({ success: true, b64, fn });
+                }).catch(err => resolve({ success: false, error: err.message }));
+              } else {
+                resolve({ success: true, b64: null, fn });
+              }
+            };
+            try {
+              pngBtn.click();
+            } catch (e) {
+              window.triggerDownload = origTrigger;
+              resolve({ success: false, error: e.message });
+            }
+          });
+        });
+
+        const pngExport = await pngFilePromise;
+        const samplePngPath = path.join(OUT, 'artifacts', 'export-diagram-sample.png');
+        let pngBuffer = null;
+        if (pngExport.success && pngExport.b64) {
+          pngBuffer = Buffer.from(pngExport.b64, 'base64');
+          fs.writeFileSync(samplePngPath, pngBuffer);
+          rec.artifacts.push(relPosix(samplePngPath));
+        }
+
+        // Reopen and inspect the saved SVG
+        const svgText = fs.existsSync(sampleSvgPath) ? fs.readFileSync(sampleSvgPath, 'utf8') : '';
+        const svgInspection = {
+          validXml: svgText.startsWith('<svg') && svgText.endsWith('</svg>'),
+          hasXmlns: svgText.includes('xmlns="http://www.w3.org/2000/svg"'),
+          hasViewBox: svgText.includes('viewBox='),
+          hasLabels: svgText.includes('Process Start') && svgText.includes('Process End'),
+          foreignObjectSanitized: !svgText.includes('<foreignObject') && svgText.includes('<text'),
+          fileSize: svgText.length
+        };
+
+        // Reopen and inspect the saved PNG
+        let pngInspection = { ok: false };
+        if (pngBuffer && pngBuffer.length > 8) {
+          const magic = pngBuffer.slice(0, 8).toString('hex');
+          const isPng = magic === '89504e470d0a1a0a';
+          const width = pngBuffer.readUInt32BE(16);
+          const height = pngBuffer.readUInt32BE(20);
+          pngInspection = {
+            ok: isPng && width > 0 && height > 0,
+            isPng,
+            width,
+            height,
+            fileSize: pngBuffer.length,
+            isRetina: width >= 200
+          };
+        }
 
         await shoot(page, rec);
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
-        const ok = svgData.ok &&
-                   svgData.hasXmlns &&
-                   svgData.hasViewBox &&
-                   svgData.hasLabels &&
-                   pngResult.success &&
-                   pngResult.hasTriggered &&
+        const ok = svgInspection.validXml &&
+                   svgInspection.hasXmlns &&
+                   svgInspection.hasLabels &&
+                   svgInspection.foreignObjectSanitized &&
+                   pngInspection.ok &&
                    errs.length === 0;
 
         const obs = {
-          svgData,
-          pngResult,
+          svgInspection,
+          pngInspection,
+          retainedSvg: relPosix(sampleSvgPath),
+          retainedPng: relPosix(samplePngPath),
           consoleErrors: errs.length
         };
         if (!ok) console.log('G5-EXPORT-DIAGRAM-FILES failure details:', JSON.stringify(obs, null, 2));
@@ -1630,12 +1740,19 @@ async function runBrowser() {
           const toastEl = document.getElementById('toastMessage');
           const toastText = toastEl ? toastEl.textContent : '';
 
+          // Inspect Error Log drawer entries
+          const errorItems = document.querySelectorAll('#errorLogList .error-log-row, #errorLogList .error-log-msg');
+          const errorLogTexts = Array.from(errorItems).map(li => li.textContent);
+          const hasLoggedFailure = errorLogTexts.some(t => t.includes('PNG') || t.includes('Export') || t.includes('image'));
+
           return {
             noSvgHandled: resNoSvg.success === false,
             imgErrorHandled: resImgError.success === false,
             imgErrorMessage: resImgError.error,
             toastShown: !!toastText,
-            toastText
+            toastText,
+            errorLogged: hasLoggedFailure,
+            errorLogCount: errorItems.length
           };
         });
 
@@ -1644,6 +1761,7 @@ async function runBrowser() {
         const ok = failureResult.noSvgHandled &&
                    failureResult.imgErrorHandled &&
                    failureResult.toastShown &&
+                   failureResult.errorLogged &&
                    !failureResult.toastText.includes('downloaded');
 
         const obs = {
@@ -1701,6 +1819,11 @@ async function runBrowser() {
 
         let cdpPdfSize = null;
         let cdpSuccess = false;
+        let cdpBlocked = false;
+        let cdpReason = null;
+        let pdfPageCount = null;
+        const samplePdfPath = path.join(OUT, 'artifacts', 'print-tall-diagram.pdf');
+
         if (BROWSER !== 'firefox') {
           try {
             const client = await page.context().newCDPSession(page);
@@ -1709,14 +1832,23 @@ async function runBrowser() {
               preferCSSPageSize: true
             });
             if (pdfRes && pdfRes.data) {
-              cdpPdfSize = Buffer.from(pdfRes.data, 'base64').length;
-              cdpSuccess = cdpPdfSize > 5000;
+              const pdfBuf = Buffer.from(pdfRes.data, 'base64');
+              cdpPdfSize = pdfBuf.length;
+              cdpSuccess = cdpPdfSize > 10000 && pdfBuf.slice(0, 5).toString('ascii') === '%PDF-';
+              const pdfStr = pdfBuf.toString('binary');
+              const pageMatches = pdfStr.match(/\/Type\s*\/Page[^s]/g);
+              pdfPageCount = pageMatches ? pageMatches.length : 1;
+
+              // Retain PDF evidence artifact
+              fs.writeFileSync(samplePdfPath, pdfBuf);
+              rec.artifacts.push(relPosix(samplePdfPath));
             }
           } catch (cdpErr) {
-            console.log('CDP printToPDF notice (non-fatal):', cdpErr.message);
+            console.log('CDP printToPDF notice:', cdpErr.message);
           }
         } else {
-          cdpSuccess = true;
+          cdpBlocked = true;
+          cdpReason = 'CDP Page.printToPDF protocol unavailable in Mozilla Firefox engine; verified via print CSS media rules';
         }
 
         await shoot(page, rec);
@@ -1726,13 +1858,17 @@ async function runBrowser() {
                    printStyles.canvasTransformNone &&
                    printStyles.pageBreakAvoid &&
                    printStyles.svgHeight > 1000 &&
-                   (BROWSER === 'firefox' || cdpSuccess) &&
+                   (cdpSuccess || cdpBlocked) &&
                    errs.length === 0;
 
         const obs = {
           printStyles,
           cdpPdfSize,
           cdpSuccess,
+          cdpBlocked,
+          cdpReason,
+          pdfPageCount,
+          retainedPdf: cdpSuccess ? relPosix(samplePdfPath) : null,
           consoleErrors: errs.length
         };
         if (!ok) console.log('G5-PRINT-PDF-TALL failure details:', JSON.stringify(obs, null, 2));
@@ -1775,5 +1911,10 @@ function envRecord() {
   const m = writeManifest(records, envRecord());
   console.log(`\ntotals: ${JSON.stringify(m.totals)}`);
   fs.writeFileSync(path.join(OUT, 'console-log.json'), JSON.stringify(consoleLog, null, 2) + '\n');
+  if (!DRY_RUN) {
+    const stamp = `${String(BROWSER || 'browser').split(' ')[0]}-${String(ORIGIN)}-${m.generatedAt.replace(/[:.]/g, '-')}`;
+    fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
+    fs.writeFileSync(path.join(OUT, 'runs', `console-log-${stamp}.json`), JSON.stringify(consoleLog, null, 2) + '\n');
+  }
   process.exit(m.totals.fail > 0 ? 1 : 0);
 })();

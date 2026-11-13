@@ -659,7 +659,8 @@
 +      const svgEl = canvas.querySelector('svg');
 +      const svgW = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicWidth)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).width : 100);
 +      const svgH = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicHeight)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).height : 100);
-+
+ 
+-      function updateTransform() {
 +      const availW = Math.max((viewport.clientWidth || 560) - 32, 40);
 +      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
 +      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
@@ -673,8 +674,7 @@
 +      let panX = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panX || 0) : 0;
 +      let panY = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panY || 0) : 0;
 +      let zoom = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.zoom || fitScale) : fitScale;
- 
--      function updateTransform() {
++
 +      const minZoom = Math.min(0.05, fitScale * 0.5);
 +      const maxZoom = 5.0;
 +
@@ -706,23 +706,9 @@
 -        startX = e.clientX - panX;
 -        startY = e.clientY - panY;
 -        e.preventDefault();
--      };
--
--      window.addEventListener('mousemove', (e) => {
--        if (!isDragging) return;
--        panX = e.clientX - startX;
--        panY = e.clientY - startY;
--        updateTransform();
--      });
 +        const startX = e.clientX - panX;
 +        const startY = e.clientY - panY;
- 
--      window.addEventListener('mouseup', () => {
--        if (isDragging) {
--          isDragging = false;
--          viewport.classList.remove('grabbing');
--        }
--      });
++
 +        setupPreviewDiagramInteractivity.activePan = {
 +          card,
 +          viewport,
@@ -742,8 +728,22 @@
 +          }
 +        };
 +        if (e.preventDefault) e.preventDefault();
-+      };
+       };
  
+-      window.addEventListener('mousemove', (e) => {
+-        if (!isDragging) return;
+-        panX = e.clientX - startX;
+-        panY = e.clientY - startY;
+-        updateTransform();
+-      });
+-
+-      window.addEventListener('mouseup', () => {
+-        if (isDragging) {
+-          isDragging = false;
+-          viewport.classList.remove('grabbing');
+-        }
+-      });
+-
        // Mouse Wheel to Zoom
        viewport.onwheel = (e) => {
 -        e.preventDefault();
@@ -825,9 +825,9 @@
 +          openStudioWithCode(rawCode, index);
 +        }
 +      };
-+    });
-+  }
-+
+     });
+   }
+ 
 +  setupPreviewDiagramInteractivity.cleanup = function() {
 +    if (typeof window !== 'undefined' && window.__previewPanListenersBound) {
 +      if (window.removeEventListener) {
@@ -867,7 +867,7 @@
 +      canvas.style.transition = 'none';
 +      canvas.style.transform = `translate(0px, 0px) scale(${fitScale})`;
 +      requestAnimationFrame(() => { canvas.style.transition = 'transform 0.05s ease-out'; });
-     });
++    });
 +
 +    if (typeof studioModal !== 'undefined' && studioModal && studioModal.classList.contains('open')) {
 +      const svgEl = typeof builderCanvas !== 'undefined' && builderCanvas ? builderCanvas.querySelector('svg') : null;
@@ -886,8 +886,8 @@
 +        }
 +      }
 +    }
-   }
- 
++  }
++
    // --------------------------------------------------------------------------
    // Diagram Export Helpers (SVG & High-Res PNG)
    // --------------------------------------------------------------------------
@@ -1814,7 +1814,7 @@
          showToast(`Inserted ${type} template`);
        }
      });
-@@ -4092,34 +4948,243 @@
+@@ -4092,34 +4948,255 @@
      showToast(`Saved ${filename}`);
    });
  
@@ -1830,7 +1830,7 @@
 +    const maxRetries = 10;
 +    for (let attempt = 0; attempt < maxRetries; attempt++) {
 +      const activeTab = typeof getActiveTab === 'function' ? getActiveTab() : null;
-+      if (!activeTab) return;
++      if (!activeTab) return false;
 +      const tabId = activeTab.id;
 +      const contentBefore = activeTab.content;
 +
@@ -1840,9 +1840,7 @@
 +        renderDebounceTimer = null;
 +        renderAllPreviewDiagrams();
 +      }
- 
--    const fullHtml = `<!DOCTYPE html>
--<html lang="en">
++
 +      // Await MathJax typeset
 +      const mathPromise = (typeof currentMathJaxPromise !== 'undefined' && currentMathJaxPromise);
 +      if (mathPromise) {
@@ -1854,19 +1852,32 @@
 +      if (renderPromise) {
 +        try { await renderPromise; } catch (e) {}
 +      }
-+
+ 
+-    const fullHtml = `<!DOCTYPE html>
+-<html lang="en">
 +      // Check whether document content changed or tab switched during the await
 +      const currentTab = typeof getActiveTab === 'function' ? getActiveTab() : null;
-+      if (!currentTab) return;
++      if (!currentTab) return false;
 +      if (currentTab.id !== tabId || currentTab.content !== contentBefore || renderDebounceTimer !== null) {
++        // If we reached the retry limit without settling, abort with actionable feedback
++        if (attempt === maxRetries - 1) {
++          if (typeof showToast === 'function') {
++            showToast('Document rendering is still in progress. Please wait and retry.');
++          }
++          if (typeof logError === 'function') {
++            logError('Export aborted: document rendering did not settle within retry limit.');
++          }
++          return false;
++        }
 +        // Content changed mid-await; re-trigger preview update and retry
 +        if (typeof updatePreview === 'function') {
 +          updatePreview();
 +        }
 +        continue;
 +      }
-+      break;
++      return true;
 +    }
++    return false;
 +  }
 +
 +  function getCleanRenderedContent(previewEl) {
@@ -2066,7 +2077,8 @@
 +
 +  // Export as standalone HTML
 +  document.getElementById('btnExportHtml').addEventListener('click', async () => {
-+    await ensurePreviewRenderReady();
++    const ready = await ensurePreviewRenderReady();
++    if (!ready) return;
 +    const t = getActiveTab();
 +    if (!t) return;
 +    const previewEl = document.getElementById('previewContent');
@@ -2077,13 +2089,14 @@
  
      const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
      const url = URL.createObjectURL(blob);
-@@ -4129,21 +5194,24 @@
+@@ -4129,21 +5206,26 @@ ${previewContent}
    });
  
    // Export as PDF / Print
 -  document.getElementById('btnPrintPdf').addEventListener('click', () => {
 +  document.getElementById('btnPrintPdf').addEventListener('click', async () => {
-+    await ensurePreviewRenderReady();
++    const ready = await ensurePreviewRenderReady();
++    if (!ready) return;
      window.print();
    });
  
@@ -2092,7 +2105,8 @@
 -    const html = document.getElementById('previewContent').innerHTML;
 -    navigator.clipboard.writeText(html).then(() => showToast('Rendered HTML copied to clipboard!'));
 +  document.getElementById('btnCopyHtml').addEventListener('click', async () => {
-+    await ensurePreviewRenderReady();
++    const ready = await ensurePreviewRenderReady();
++    if (!ready) return;
 +    const previewEl = document.getElementById('previewContent');
 +    const cleanHtml = getCleanRenderedContent(previewEl);
 +    copyToClipboard(cleanHtml, 'Rendered HTML copied to clipboard!');
@@ -2107,7 +2121,7 @@
    });
  
    // File Loader (Open files)
-@@ -4220,6 +5288,31 @@
+@@ -4220,6 +5302,31 @@ ${previewContent}
    document.addEventListener('keydown', (e) => {
      const ctrl = e.ctrlKey || e.metaKey;
  
@@ -2139,7 +2153,7 @@
      if (ctrl && e.shiftKey && e.key.toLowerCase() === 'e' || (e.altKey && e.key.toLowerCase() === 'e')) {
        e.preventDefault();
        toggleEditor();
-@@ -4247,12 +5340,6 @@
+@@ -4247,12 +5354,6 @@ ${previewContent}
      } else if (ctrl && e.key.toLowerCase() === 'n') {
        e.preventDefault();
        addTab();
@@ -2152,7 +2166,7 @@
      }
    });
  
-@@ -4308,6 +5395,27 @@
+@@ -4308,6 +5409,27 @@ ${previewContent}
    const statusErrorInd = document.getElementById('statusErrorIndicator');
    if (statusErrorInd) statusErrorInd.onclick = () => toggleErrorLog();
  

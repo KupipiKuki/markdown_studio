@@ -21,7 +21,7 @@
         "inlineSyntax": "valid",
         "templatesExtracted": 16
       },
-      "timestamp": "2026-11-12T00:08:44.468Z"
+      "timestamp": "2026-11-13T00:11:29.306Z"
     },
     {
       "id": "B10",
@@ -30,7 +30,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.473Z",
+      "timestamp": "2026-11-13T00:11:29.308Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Execute actual wrapSelection with empty selection and divider snippet.",
       "observation": {
@@ -46,7 +46,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.474Z",
+      "timestamp": "2026-11-13T00:11:29.308Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Execute actual image case with synthetic URL and empty selection.",
       "observation": {
@@ -62,7 +62,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.474Z",
+      "timestamp": "2026-11-13T00:11:29.308Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Read Subgraph Box attribute as literal HTML attribute text.",
       "observation": {
@@ -79,7 +79,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.481Z",
+      "timestamp": "2026-11-13T00:11:29.315Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Parse mixed-fences fixture with baseline Marked 12.0.2; compare actual replacement regex.",
       "observation": {
@@ -99,7 +99,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.482Z",
+      "timestamp": "2026-11-13T00:11:29.316Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Run actual preview render twice on a DOM contract that removes child source on innerHTML replacement.",
       "observation": {
@@ -117,7 +117,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.482Z",
+      "timestamp": "2026-11-13T00:11:29.316Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Call actual interactivity setup twice for one card; count registered window handlers.",
       "observation": {
@@ -138,7 +138,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.482Z",
+      "timestamp": "2026-11-13T00:11:29.316Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Compare generated Fix in Studio class with actual action-binding selector.",
       "observation": {
@@ -156,7 +156,7 @@
       ],
       "gate": "G0",
       "method": "Node extracted-function or parser reproduction; no browser",
-      "timestamp": "2026-11-12T00:08:44.484Z",
+      "timestamp": "2026-11-13T00:11:29.317Z",
       "expected": "Baseline defect is observable; no remediation expected in Phase 0",
       "procedure": "Invoke actual inline handler names in global scope after evaluating error functions within application closure.",
       "observation": {
