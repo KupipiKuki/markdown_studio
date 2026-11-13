@@ -1,7 +1,7 @@
 {
   "gate": "G2",
   "status": "pass",
-  "timestamp": "2026-11-13T00:11:29.613Z",
+  "timestamp": "2026-11-13T01:57:43.927Z",
   "testsPassed": 3,
   "testsFailed": 0,
   "findingsResolved": [
@@ -9,9 +9,9 @@
     "R09",
     "R15"
   ],
-  "candidateSha256": "563955c89c51e9362181733536258fb629340dd9db0368dec8dd63ea204d42b0",
-  "candidateSha256Raw": "1adc882b0665f4428218bbacf789df677f80490c2bd7f209b979250c4c76c8b7",
-  "lineEndings": "CRLF-on-disk",
+  "candidateSha256": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
+  "candidateSha256Raw": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
+  "lineEndings": "LF",
   "results": [
     {
       "id": "P2-01",
@@ -20,7 +20,7 @@
       ],
       "gate": "G2",
       "name": "Parser-Consistent Source Replacement",
-      "timestamp": "2026-11-13T00:11:29.512Z",
+      "timestamp": "2026-11-13T01:57:43.836Z",
       "procedure": "Edit each card index across blockquote-nested, info-variant, 4-backtick outer, indented, and tilde/backtick fences; assert byte-exact update isolation.",
       "observation": {
         "blockquoteNestedPreserved": true,
@@ -39,7 +39,7 @@
       ],
       "gate": "G2",
       "name": "Render Generation Guard & Out-of-Order Invalidation",
-      "timestamp": "2026-11-13T00:11:29.611Z",
+      "timestamp": "2026-11-13T01:57:43.923Z",
       "procedure": "Start overlapping renders with controllable deferred promises; resolve out-of-order; assert canvas retains newest result only, no stale commits across tab switches or modal closes.",
       "observation": {
         "outOfOrderHandled": true,
@@ -58,7 +58,7 @@
       ],
       "gate": "G2",
       "name": "Preview Interactivity Setup Listener Cleanup & Retention",
-      "timestamp": "2026-11-13T00:11:29.613Z",
+      "timestamp": "2026-11-13T01:57:43.926Z",
       "procedure": "Execute setupPreviewDiagramInteractivity across 50 simulated render cycles; verify constant window listener count (zero growth), zero detached card retention, intact interactivity after 50 cycles, and full teardown on cleanup.",
       "observation": {
         "cyclesTested": 50,

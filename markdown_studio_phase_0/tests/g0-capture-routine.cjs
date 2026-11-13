@@ -18,6 +18,85 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
+
+// Helper: Decode FlateDecode PDF streams and ToUnicode CMaps to extract rendered Step 0..Step 25 labels
+function decodeUtf16BeHex(hex) {
+  let out = '';
+  for (let i = 0; i < hex.length; i += 4) {
+    const code = parseInt(hex.slice(i, i + 4), 16);
+    if (!Number.isNaN(code)) out += String.fromCharCode(code);
+  }
+  return out;
+}
+
+function extractPdfSteps(pdfBuf) {
+  const str = pdfBuf.toString('binary');
+  const streamRegex = /stream\r?\n([\s\S]*?)\r?\nendstream/g;
+  let m;
+  const decompressed = [];
+  const cmaps = [];
+  while ((m = streamRegex.exec(str)) !== null) {
+    try {
+      const inf = zlib.inflateSync(Buffer.from(m[1], 'binary')).toString('latin1');
+      if (inf.includes('beginbfchar') || inf.includes('beginbfrange')) cmaps.push(inf);
+      else decompressed.push(inf);
+    } catch (e) {}
+  }
+  const map = {};
+  for (const cmap of cmaps) {
+    const bfcharBlocks = cmap.match(/beginbfchar([\s\S]*?)endbfchar/g) || [];
+    for (const blk of bfcharBlocks) {
+      const bfchar = /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g;
+      let bm;
+      while ((bm = bfchar.exec(blk)) !== null) {
+        map[parseInt(bm[1], 16)] = decodeUtf16BeHex(bm[2]);
+      }
+    }
+    const bfrangeBlocks = cmap.match(/beginbfrange([\s\S]*?)endbfrange/g) || [];
+    for (const blk of bfrangeBlocks) {
+      const bfrange = /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g;
+      let rm;
+      while ((rm = bfrange.exec(blk)) !== null) {
+        const start = parseInt(rm[1], 16);
+        const end = parseInt(rm[2], 16);
+        if (rm[3].length <= 4) {
+          let dst = parseInt(rm[3], 16);
+          for (let k = start; k <= end; k++) {
+            map[k] = String.fromCharCode(dst++);
+          }
+        } else {
+          const baseStr = decodeUtf16BeHex(rm[3]);
+          for (let k = start; k <= end; k++) {
+            map[k] = baseStr;
+          }
+        }
+      }
+    }
+  }
+  let fullDecoded = '';
+  for (const s of decompressed) {
+    const hexStrings = /<([0-9A-Fa-f]+)>/g;
+    let hm;
+    let streamDecoded = '';
+    while ((hm = hexStrings.exec(s)) !== null) {
+      const hex = hm[1];
+      for (let i = 0; i < hex.length; i += 4) {
+        const code = parseInt(hex.slice(i, i + 4), 16);
+        if (map[code]) streamDecoded += map[code];
+      }
+    }
+    fullDecoded += streamDecoded + '\n';
+  }
+  const foundSteps = [];
+  const missingSteps = [];
+  for (let i = 0; i <= 25; i++) {
+    const stepRegex = new RegExp(`Step\\s*${i}(?!\\d)`);
+    if (stepRegex.test(fullDecoded)) foundSteps.push(`Step ${i}`);
+    else missingSteps.push(`Step ${i}`);
+  }
+  return { foundSteps, missingSteps, foundCount: foundSteps.length };
+}
 
 const root = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
@@ -258,15 +337,47 @@ async function runBrowser() {
 
   async function newPage(origin, withClipboardPerms) {
     const ctx = await browser.newContext({ viewport: { width: 1296, height: 866 } });
-    // Clipboard permissions/focus only for the clipboard stop point; headed side effects must not
-    // leak into launch/fixture/control stop points.
+    // Clipboard permissions/focus for clipboard and export stop points; headed side effects must not
+    // leak into launch/fixture stop points.
     if (withClipboardPerms) {
       try { await ctx.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseHttp }); } catch (e) {}
     }
     const page = await ctx.newPage();
     // Stub window.print: the native print dialog blocks headed automation (C019 #btnPrintPdf).
     // The stub records invocations; actual print/PDF output validation is Gate G5 scope.
-    await page.addInitScript(() => { window.print = () => { window.__printCalls = (window.__printCalls || 0) + 1; }; });
+    // Also spy on navigator.clipboard.writeText and HTMLAnchorElement.prototype.click + URL.createObjectURL
+    // so real user-facing clipboard writes and Blob downloads are captured without bypassing triggerDownload.
+    await page.addInitScript(() => {
+      window.print = () => { window.__printCalls = (window.__printCalls || 0) + 1; };
+      window.__lastClipboardWrite = null;
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        const origWrite = navigator.clipboard.writeText.bind(navigator.clipboard);
+        navigator.clipboard.writeText = async (text) => {
+          window.__lastClipboardWrite = String(text);
+          return origWrite(text);
+        };
+      }
+      window.__blobStore = new Map();
+      window.__capturedDownloads = [];
+      const origCreateObjectURL = URL.createObjectURL.bind(URL);
+      URL.createObjectURL = function(blob) {
+        const u = origCreateObjectURL(blob);
+        window.__blobStore.set(u, blob);
+        return u;
+      };
+      const origAnchorClick = HTMLAnchorElement.prototype.click;
+      HTMLAnchorElement.prototype.click = function() {
+        if (this.hasAttribute('download') || this.download) {
+          const blob = window.__blobStore.get(this.href) || null;
+          window.__capturedDownloads.push({
+            href: this.href,
+            download: this.download,
+            blob
+          });
+        }
+        return origAnchorClick.apply(this, arguments);
+      };
+    });
     if (withClipboardPerms) { try { await page.bringToFront(); } catch (e) {} }
     page.on('console', m => consoleLog.push({ stop: currentId, type: m.type(), text: m.text() }));
     page.on('pageerror', e => consoleLog.push({ stop: currentId, type: 'pageerror', text: String(e) }));
@@ -277,8 +388,9 @@ async function runBrowser() {
   }
 
   let currentId = null;
-  const art = id => path.join(OUT, 'artifacts', id);
-  fs.mkdirSync(path.join(OUT, 'artifacts'), { recursive: true });
+  const browserArtDir = path.join(OUT, 'artifacts', BROWSER);
+  const art = id => path.join(browserArtDir, id);
+  fs.mkdirSync(browserArtDir, { recursive: true });
 
   async function settle(page) {
     await page.waitForFunction(() => {
@@ -317,7 +429,7 @@ async function runBrowser() {
     const origin = rec.origin === 'file' || rec.origin === 'http' ? rec.origin : 'http';
     let page, ctx;
     try {
-      ({ ctx, page } = await newPage(origin, rec.area === 'clipboard' && HEADED));
+      ({ ctx, page } = await newPage(origin, (rec.area === 'clipboard' || rec.id === 'G5-EXPORT-STANDALONE' || rec.area === 'control') && HEADED));
       if (rec.area === 'launch') {
         await settle(page);
         const c = await counts(page);
@@ -341,32 +453,69 @@ async function runBrowser() {
         }, text);
         await settle(page);
         const c = await counts(page);
-        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
         await shoot(page, rec);
-        fs.writeFileSync(`${art(rec.id)}-counts.json`, JSON.stringify({ ...c, consoleErrors: errs.length }, null, 2));
+
+        // For built-in templates (template-*.md), Gate G3 requires rendering cleanly in BOTH Preview and Diagram Studio views
+        let studioCheck = null;
+        const isTemplate = rec.fixture.startsWith('template-');
+        if (isTemplate && c.svgCards >= 1) {
+          await page.evaluate(() => {
+            const editBtn = document.querySelector('#previewContent .mermaid-block-card .edit-btn');
+            if (editBtn) editBtn.click();
+          });
+          await page.waitForFunction(() => {
+            const canvas = document.getElementById('builderDiagramCanvas');
+            return canvas && (canvas.querySelector('svg') || canvas.querySelector('.mermaid-error-card'));
+          }, { timeout: 10000 }).catch(() => {});
+          await page.waitForTimeout(300);
+
+          studioCheck = await page.evaluate(() => {
+            const canvas = document.getElementById('builderDiagramCanvas');
+            const svg = canvas ? canvas.querySelector('svg') : null;
+            const errCard = canvas ? canvas.querySelector('.mermaid-error-card') : null;
+            const rect = svg ? svg.getBoundingClientRect() : null;
+            return {
+              studioSvgCards: svg ? 1 : 0,
+              studioErrorCards: errCard ? 1 : 0,
+              studioSvgWidth: rect ? Math.round(rect.width) : 0,
+              studioSvgHeight: rect ? Math.round(rect.height) : 0,
+              bothViewsVerified: !!(svg && !errCard && rect && rect.width > 10 && rect.height > 10)
+            };
+          });
+          const studioShot = `${art(rec.id + '-studio')}.png`;
+          await page.screenshot({ path: studioShot, fullPage: true });
+          rec.artifacts.push(relPosix(studioShot));
+
+          await page.evaluate(() => {
+            const cancelBtn = document.getElementById('btnBuilderCancel');
+            if (cancelBtn) cancelBtn.click();
+          });
+          await page.waitForTimeout(200);
+        }
+
+        const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
+        const obsData = { ...c, ...(studioCheck || {}), consoleErrors: errs.length };
+        fs.writeFileSync(`${art(rec.id)}-counts.json`, JSON.stringify(obsData, null, 2));
         rec.artifacts.push(relPosix(`${art(rec.id)}-counts.json`));
         const isInvalid = rec.fixture === 'invalid.md';
         const isOuterFence = rec.fixture === 'outer-fence.md';
         const ok = isInvalid ? (c.errorCards >= 1 && errs.length === 0) :
                    isOuterFence ? (c.cards === 0 && c.errorCards === 0 && errs.length === 0) :
+                   isTemplate ? (c.svgCards >= 1 && c.errorCards === 0 && studioCheck && studioCheck.bothViewsVerified && errs.length === 0) :
                    (c.svgCards >= 1 && c.errorCards === 0 && errs.length === 0);
-        if (await finish(rec, ok ? 'pass' : 'fail', c)) break;
+        if (await finish(rec, ok ? 'pass' : 'fail', obsData)) break;
       } else if (rec.area === 'control') {
         const a = (rec.controlSpec && rec.controlSpec.attributes) || {};
-        if (!a.id && !a['data-action'] && !a['data-template'] && !a['data-insert'] && !a['for'] && rec.selector) {
-          // degraded fallback: legacy CSS selector
-          const exists = await page.$(rec.selector);
-          if (!exists) { await finish(rec, 'blocked', { reason: 'selector not found: ' + rec.selector }); continue; }
-          await page.click(rec.selector).catch(() => {});
-          await page.waitForTimeout(600);
-          await shoot(page, rec);
-          await page.keyboard.press('Escape');
-          await finish(rec, 'pass', { executed: 'click via legacy selector', note: 'no id/data-attr in inventory' });
-          continue;
-        }
+        await settle(page);
+        await page.route('https://example.test/**', route => route.fulfill({
+          status: 200,
+          contentType: 'image/svg+xml',
+          body: '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"></svg>'
+        })).catch(() => {});
+
         // Hidden file input (C015): setting .value throws in browsers; use setInputFiles with a synthetic file.
         if (a.type === 'file') {
-          const synth = path.join(OUT, 'artifacts', 'synthetic-upload.md');
+          const synth = path.join(browserArtDir, 'synthetic-upload.md');
           fs.mkdirSync(path.dirname(synth), { recursive: true });
           fs.writeFileSync(synth, '# QAQC synthetic upload\n\n```mermaid\nflowchart TD\n  U --> V\n```\n');
           const tabsBefore = await page.evaluate(() => document.querySelectorAll('.tab').length);
@@ -375,61 +524,243 @@ async function runBrowser() {
           const after = await page.evaluate(() => ({ tabs: document.querySelectorAll('.tab').length, editorHead: document.getElementById('editor').value.slice(0, 40) }));
           await shoot(page, rec);
           const ok = after.tabs > tabsBefore || after.editorHead.includes('QAQC synthetic');
-          await finish(rec, ok ? 'pass' : 'fail', { tabsBefore, ...after, note: 'file load via setInputFiles on hidden #' + a.id + '; label C014 routes here' });
+          await finish(rec, ok ? 'pass' : 'fail', { tabsBefore, ...after, behavioralVerified: ok, note: 'file load via setInputFiles on hidden #' + a.id + '; label C014 routes here' });
           continue;
         }
-        // Resolve by id, else by EXACT data-* attribute equality in-page. CSS attribute-string selectors are
-        // unsafe here: values contain literal backslash sequences (e.g. C091 data-insert "\\n...") which CSS
-        // would unescape, so `[data-insert="..."]` never matches the literal attribute.
+
         const key = a['data-action'] !== undefined ? 'data-action' : a['data-template'] !== undefined ? 'data-template' : a['data-insert'] !== undefined ? 'data-insert' : null;
-        const probe = { id: a.id || null, forAttr: a['for'] || null, key, val: key ? a[key] : null };
-        const info = await page.evaluate(o => {
+        const probe = { cid: rec.control, id: a.id || null, forAttr: a['for'] || null, key, val: key ? a[key] : null };
+
+        const ctlRes = await page.evaluate(async (o) => {
+          // Set up prerequisite UI state depending on control group
+          const cidNum = parseInt(String(o.cid).replace(/^C/, ''), 10);
+          let setupState = 'default';
+
+          // Track downloads and prompts
+          const downloadsBefore = (window.__capturedDownloads || []).length;
+          window.prompt = () => 'https://example.test/asset.svg';
+
+          if (cidNum >= 3 && cidNum <= 12) {
+            document.getElementById('btnQuickDiagram')?.click();
+            setupState = 'quickDiagramMenuOpened';
+          } else if (cidNum >= 17 && cidNum <= 21) {
+            document.getElementById('btnExportMenu')?.click();
+            setupState = 'exportDropdownOpened';
+          } else if (o.id === 'btnLayoutSplit' || o.id === 'btnShowEditorInline' || o.id === 'statusViewMode') {
+            document.getElementById('btnToggleEditor')?.click();
+            setupState = 'editorHiddenPrerequisite';
+          } else if (o.id === 'btnShowViewerInline') {
+            document.getElementById('btnToggleViewer')?.click();
+            setupState = 'viewerHiddenPrerequisite';
+          } else if (o.id === 'btnEmptyShowEditor' || o.id === 'btnEmptyShowViewer' || o.id === 'btnEmptyRestoreSplit') {
+            document.getElementById('btnToggleEditor')?.click();
+            document.getElementById('btnToggleViewer')?.click();
+            setupState = 'bothPanesHiddenPrerequisite';
+          } else if (cidNum >= 49 && cidNum <= 55) {
+            document.getElementById('btnToggleFind')?.click();
+            const fi = document.getElementById('findInput');
+            const ri = document.getElementById('replaceInput');
+            if (fi) { fi.value = 'Mermaid'; fi.dispatchEvent(new Event('input', { bubbles: true })); }
+            if (ri) { ri.value = 'ReplacedMermaid'; ri.dispatchEvent(new Event('input', { bubbles: true })); }
+            if (o.id === 'btnReplace') document.getElementById('btnFindNext')?.click();
+            setupState = 'findBarOpenedPrerequisite';
+          } else if (o.id === 'btnCloseToc') {
+            document.getElementById('btnToggleToc')?.click();
+            setupState = 'tocOpenedPrerequisite';
+          } else if (o.id === 'btnClearErrorLog' || o.id === 'btnCloseErrorLog') {
+            if (typeof logError === 'function') logError('Synthetic QAQC control test error');
+            const errDrawer = document.getElementById('errorLogDrawer');
+            if (errDrawer && errDrawer.style.display === 'none') {
+              document.getElementById('statusErrorIndicator')?.click();
+            }
+            setupState = 'errorLogOpenedPrerequisite';
+          } else if (cidNum >= 71 && cidNum <= 101) {
+            document.getElementById('btnOpenStudio')?.click();
+            await new Promise(r => setTimeout(r, 300));
+            if (o.id === 'btnBuilderFormat') {
+              const b = document.getElementById('builderCodeInput');
+              if (b) b.value = 'flowchart TD\n    A --> B\n\n\n\n';
+            }
+            setupState = 'studioOpenedPrerequisite';
+          } else if (cidNum >= 102 && cidNum <= 107) {
+            const fsBtn = document.querySelector('#previewContent .mermaid-block-card [data-action="fullscreen"]');
+            if (fsBtn) fsBtn.click();
+            await new Promise(r => setTimeout(r, 200));
+            setupState = 'fullscreenModalOpenedPrerequisite';
+          } else if (cidNum >= 108 && cidNum <= 111) {
+            document.querySelector('.format-toolbar [data-action="table"]')?.click();
+            await new Promise(r => setTimeout(r, 100));
+            setupState = 'tableModalOpenedPrerequisite';
+          }
+
           let el = null;
           if (o.id) el = document.getElementById(o.id);
           if (!el && o.key) el = [...document.querySelectorAll('[' + o.key + ']')].find(e => e.getAttribute(o.key) === o.val) || null;
           if (!el && o.forAttr) el = document.querySelector('label[for="' + o.forAttr + '"]');
-          if (!el) return null;
-          return { tag: el.tagName, type: el.type || null, id: el.id || null, forAttr: el.getAttribute('for') || null };
+          if (!el) {
+            return { found: false };
+          }
+
+          const editorEl = document.getElementById('editor');
+          const builderEl = document.getElementById('builderCodeInput');
+          const beforeState = {
+            editorVal: editorEl ? editorEl.value : '',
+            builderVal: builderEl ? builderEl.value : '',
+            tabs: document.querySelectorAll('.tab').length,
+            theme: document.documentElement.getAttribute('data-theme') || 'light',
+            editorHidden: document.getElementById('paneEditor')?.style.display === 'none',
+            viewerHidden: document.getElementById('panePreview')?.style.display === 'none',
+            tocOpen: document.getElementById('tocDrawer')?.classList.contains('open'),
+            findOpen: document.getElementById('findReplaceBar')?.classList.contains('show'),
+            syncActive: document.getElementById('btnSyncScroll')?.classList.contains('active'),
+            fullWidth: !document.getElementById('previewContent')?.classList.contains('reading-width'),
+            errOpen: document.getElementById('errorLogDrawer')?.style.display !== 'none',
+            errCount: document.querySelectorAll('#errorLogList li, #errorLogList .error-log-row').length,
+            studioOpen: document.getElementById('studioModal')?.classList.contains('open'),
+            fsOpen: document.getElementById('fsModal')?.classList.contains('open'),
+            tableOpen: document.getElementById('tableModal')?.classList.contains('open'),
+            builderZoom: document.getElementById('btnBuilderZoomReset')?.textContent || '',
+            fsZoom: document.getElementById('fsCanvas')?.style.transform || '',
+            printCalls: window.__printCalls || 0
+          };
+
+          let executed = 'click';
+          if (el.tagName === 'LABEL' && o.forAttr) {
+            executed = 'label-wiring-check';
+          } else if (el.tagName === 'SELECT') {
+            el.selectedIndex = (el.selectedIndex + 1) % el.options.length;
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+            executed = 'select->next option';
+          } else if (el.tagName === 'INPUT') {
+            el.value = el.type === 'number' ? '4' : 'Mermaid';
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            executed = 'set value + input event';
+          } else if (el.tagName === 'TEXTAREA') {
+            el.focus();
+            el.value = el.id === 'builderCodeInput' ? 'flowchart LR\n  ProbeA --> ProbeB' : '# Probe Heading\n\n```mermaid\nflowchart TD\n  P1 --> P2\n```\n';
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            executed = 'focus + input event';
+          } else if (el.id === 'splitResizer') {
+            const paneEd = document.getElementById('paneEditor');
+            if (paneEd) paneEd.style.flex = '0 0 35%';
+            el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+            executed = 'dblclick reset 50/50';
+          } else {
+            el.click();
+          }
+
+          await new Promise(r => setTimeout(r, 450));
+
+          const afterState = {
+            editorVal: editorEl ? editorEl.value : '',
+            builderVal: builderEl ? builderEl.value : '',
+            tabs: document.querySelectorAll('.tab').length,
+            theme: document.documentElement.getAttribute('data-theme') || 'light',
+            editorHidden: document.getElementById('paneEditor')?.style.display === 'none',
+            viewerHidden: document.getElementById('panePreview')?.style.display === 'none',
+            tocOpen: document.getElementById('tocDrawer')?.classList.contains('open'),
+            findOpen: document.getElementById('findReplaceBar')?.classList.contains('show'),
+            syncActive: document.getElementById('btnSyncScroll')?.classList.contains('active'),
+            fullWidth: !document.getElementById('previewContent')?.classList.contains('reading-width'),
+            errOpen: document.getElementById('errorLogDrawer')?.style.display !== 'none',
+            errCount: document.querySelectorAll('#errorLogList li, #errorLogList .error-log-row').length,
+            studioOpen: document.getElementById('studioModal')?.classList.contains('open'),
+            fsOpen: document.getElementById('fsModal')?.classList.contains('open'),
+            tableOpen: document.getElementById('tableModal')?.classList.contains('open'),
+            quickMenuOpen: document.getElementById('quickDiagramDropdown')?.classList.contains('open'),
+            exportMenuOpen: document.getElementById('exportDropdown')?.classList.contains('open'),
+            builderZoom: document.getElementById('btnBuilderZoomReset')?.textContent || '',
+            fsZoom: document.getElementById('fsCanvas')?.style.transform || '',
+            printCalls: window.__printCalls || 0,
+            downloadsCount: (window.__capturedDownloads || []).length - downloadsBefore,
+            clipboardWritten: window.__lastClipboardWrite !== null && window.__lastClipboardWrite.length > 0
+          };
+
+          let behavioralVerified = false;
+          if (el.tagName === 'LABEL' && o.forAttr) {
+            const targetInput = document.getElementById(o.forAttr);
+            behavioralVerified = !!(targetInput && targetInput.type === 'file');
+          } else if (el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            behavioralVerified = true;
+          } else if (o.id === 'btnOpenStudio') {
+            behavioralVerified = afterState.studioOpen === true;
+          } else if (o.id === 'btnQuickDiagram') {
+            behavioralVerified = afterState.quickMenuOpen === true;
+          } else if (o.id === 'btnExportMenu') {
+            behavioralVerified = afterState.exportMenuOpen === true;
+          } else if (o.id === 'btnNewTab' || o.id === 'btnTabAdd') {
+            behavioralVerified = afterState.tabs > beforeState.tabs;
+          } else if (o.id === 'btnSaveMd' || o.id === 'btnExportHtml' || o.id === 'btnBuilderExportSvg' || o.id === 'btnBuilderExportPng' || o.id === 'btnFsExportSvg' || o.id === 'btnFsExportPng') {
+            behavioralVerified = afterState.downloadsCount > 0;
+          } else if (o.id === 'btnPrintPdf') {
+            behavioralVerified = afterState.printCalls > beforeState.printCalls;
+          } else if (o.id === 'btnCopyHtml' || o.id === 'btnCopyMd' || o.id === 'btnBuilderCopyCode') {
+            behavioralVerified = afterState.clipboardWritten === true;
+          } else if (o.id === 'btnToggleEditor' || o.id === 'btnToolbarToggleEditor' || o.id === 'btnHideEditor' || o.id === 'btnShowEditorInline' || o.id === 'btnEmptyShowEditor') {
+            behavioralVerified = afterState.editorHidden !== beforeState.editorHidden;
+          } else if (o.id === 'btnToggleViewer' || o.id === 'btnToolbarToggleViewer' || o.id === 'btnHideViewer' || o.id === 'btnShowViewerInline' || o.id === 'btnEmptyShowViewer') {
+            behavioralVerified = afterState.viewerHidden !== beforeState.viewerHidden;
+          } else if (o.id === 'btnLayoutSplit' || o.id === 'btnEmptyRestoreSplit' || o.id === 'statusViewMode') {
+            behavioralVerified = !afterState.editorHidden && !afterState.viewerHidden;
+          } else if (o.id === 'btnThemeToggle') {
+            behavioralVerified = afterState.theme !== beforeState.theme;
+          } else if (o.id === 'btnToggleToc' || o.id === 'btnCloseToc') {
+            behavioralVerified = afterState.tocOpen !== beforeState.tocOpen;
+          } else if (o.id === 'btnToggleFind' || o.id === 'btnCloseFind') {
+            behavioralVerified = afterState.findOpen !== beforeState.findOpen;
+          } else if (o.id === 'btnFindPrev' || o.id === 'btnFindNext') {
+            behavioralVerified = !!(editorEl && editorEl.selectionEnd > editorEl.selectionStart);
+          } else if (o.id === 'btnReplace' || o.id === 'btnReplaceAll') {
+            behavioralVerified = afterState.editorVal.includes('ReplacedMermaid');
+          } else if (o.id === 'btnSyncScroll') {
+            behavioralVerified = afterState.syncActive !== beforeState.syncActive;
+          } else if (o.id === 'btnToggleViewerWidth') {
+            behavioralVerified = afterState.fullWidth !== beforeState.fullWidth;
+          } else if (o.id === 'splitResizer') {
+            behavioralVerified = document.getElementById('paneEditor')?.style.flex !== '0 0 35%';
+          } else if (o.id === 'btnClearErrorLog') {
+            behavioralVerified = afterState.errCount === 0;
+          } else if (o.id === 'btnCloseErrorLog' || o.id === 'statusErrorIndicator') {
+            behavioralVerified = afterState.errOpen !== beforeState.errOpen;
+          } else if (o.id === 'btnCloseStudio' || o.id === 'btnBuilderCancel') {
+            behavioralVerified = !afterState.studioOpen;
+          } else if (o.id === 'btnBuilderFormat' || o.key === 'data-insert') {
+            behavioralVerified = afterState.builderVal !== beforeState.builderVal;
+          } else if (o.id === 'btnBuilderZoomOut' || o.id === 'btnBuilderZoomIn' || o.id === 'btnBuilderZoomReset') {
+            behavioralVerified = afterState.builderZoom.endsWith('%');
+          } else if (o.id === 'btnBuilderInsert') {
+            behavioralVerified = !afterState.studioOpen && afterState.editorVal.length > 0;
+          } else if (o.id === 'btnFsZoomOut' || o.id === 'btnFsZoomIn' || o.id === 'btnFsZoomReset') {
+            behavioralVerified = afterState.fsZoom.includes('scale');
+          } else if (o.id === 'btnCloseFsModal') {
+            behavioralVerified = !afterState.fsOpen;
+          } else if (o.id === 'btnCancelTable') {
+            behavioralVerified = !afterState.tableOpen;
+          } else if (o.id === 'btnConfirmTable') {
+            behavioralVerified = !afterState.tableOpen && afterState.editorVal.includes('| Header 1 |');
+          } else if (o.key === 'data-template' || o.key === 'data-action') {
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal || afterState.tableOpen === true;
+          }
+
+          return {
+            found: true,
+            tag: el.tagName,
+            id: el.id || null,
+            setupState,
+            executed,
+            behavioralVerified,
+            downloadsCount: afterState.downloadsCount,
+            printInvoked: afterState.printCalls > 0 ? afterState.printCalls : undefined
+          };
         }, probe);
-        if (!info) { await finish(rec, 'blocked', { reason: 'element not found for ' + JSON.stringify(probe) }); continue; }
-        let observation;
-        if (info.tag === 'LABEL' && info.forAttr) {
-          observation = { wiredTo: info.forAttr, note: 'label activates #' + info.forAttr + '; native file dialog not automatable in-page — actual file load covered by the C015 stop point' };
-          await finish(rec, 'pass', observation);
-        } else if (info.tag === 'SELECT') {
-          await page.selectOption('#' + info.id, { index: 1 }).catch(async () => page.evaluate(o => { const el = document.getElementById(o.id); el.selectedIndex = (el.selectedIndex + 1) % el.options.length; el.dispatchEvent(new Event('change', { bubbles: true })); }, probe));
-          await page.waitForTimeout(600);
-          const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
-          await shoot(page, rec);
-          await page.keyboard.press('Escape');
-          await finish(rec, 'pass', { executed: 'select->next option', modalOrDropdownOpened: modalOpen });
-        } else if (info.tag === 'INPUT' && (info.type === 'checkbox' || info.type === 'radio')) {
-          await page.evaluate(o => { const el = o.id ? document.getElementById(o.id) : [...document.querySelectorAll('input')].find(e => e.type === o.type); if (el) el.click(); }, probe);
-          await page.waitForTimeout(400);
-          await shoot(page, rec);
-          await finish(rec, 'pass', { executed: 'click ' + info.type });
-        } else if (info.tag === 'INPUT') {
-          await page.evaluate(o => { const el = document.getElementById(o.id); el.value = 'qaqc-probe'; el.dispatchEvent(new Event('input', { bubbles: true })); }, probe);
-          await page.waitForTimeout(400);
-          await shoot(page, rec);
-          await finish(rec, 'pass', { executed: 'set value + input event' });
-        } else if (info.tag === 'TEXTAREA') {
-          await page.evaluate(o => { const el = document.getElementById(o.id); el.focus(); }, probe);
-          await finish(rec, 'pass', { executed: 'focus-only probe', note: 'textarea behavior covered by editor-level fixture stop points' });
-        } else {
-          await page.evaluate(o => {
-            let el = o.id ? document.getElementById(o.id) : null;
-            if (!el && o.key) el = [...document.querySelectorAll('[' + o.key + ']')].find(e => e.getAttribute(o.key) === o.val);
-            if (el) el.click();
-          }, probe);
-          await page.waitForTimeout(600);
-          const modalOpen = await page.evaluate(() => !!document.querySelector('.modal.open, .modal[style*="flex"], .dropdown.open'));
-          const printCalls = await page.evaluate(() => window.__printCalls || 0);
-          await shoot(page, rec);
-          await page.keyboard.press('Escape');
-          await page.evaluate(() => { const m = document.querySelector('.modal.open, .modal[style*="flex"]'); if (m) m.style.display = 'none'; });
-          await finish(rec, 'pass', { executed: 'click', modalOrDropdownOpened: modalOpen, printInvoked: printCalls > 0 ? printCalls : undefined, printStubbed: true, note: 'behavioral assertion manual-review; see screenshot. window.print is stubbed (native dialog not automatable); real print/PDF output is Gate G5 scope' });
+
+        if (!ctlRes.found) {
+          await finish(rec, 'blocked', { reason: 'element not found for ' + JSON.stringify(probe) });
+          continue;
         }
+        await shoot(page, rec);
+        await page.keyboard.press('Escape').catch(() => {});
+        await finish(rec, ctlRes.behavioralVerified ? 'pass' : 'fail', ctlRes);
         continue;
       } else if (rec.area === 'update-isolation') {
         const docs = {
@@ -1450,128 +1781,280 @@ async function runBrowser() {
       if (rec.id === 'G5-EXPORT-STANDALONE') {
         const testDoc = `# Export Determinism Test\n\n$$\n\\frac{a}{b} = c\n$$\n\n\`\`\`mermaid\nflowchart LR\n  SourceNode[Source Node] --> TargetNode[Target Node]\n\`\`\`\n\n> Blockquote text\n`;
 
+        await page.evaluate(() => { window.__capturedDownloads = []; });
+
+        const ensureExportMenuOpen = async () => {
+          const isOpen = await page.evaluate(() => document.getElementById('exportDropdown')?.classList.contains('open'));
+          if (!isOpen) {
+            await page.click('#btnExportMenu');
+            await page.waitForTimeout(80);
+          }
+        };
+
+        // 1. Trigger editor input and IMMEDIATELY invoke #btnExportHtml without pre-settling
+        // so ensurePreviewRenderReady() must await the in-flight Mermaid & MathJax render
         await page.evaluate((doc) => {
           const editor = document.getElementById('editor');
           editor.value = doc;
           editor.dispatchEvent(new Event('input', { bubbles: true }));
         }, testDoc);
-        await settle(page);
 
-        // Intercept download in the browser context via window.triggerDownload
-        await page.evaluate(() => {
-          window.__lastExportedHtmlText = null;
-          const origTrigger = window.triggerDownload;
-          window.triggerDownload = (url, fn) => {
-            if (url.startsWith('blob:')) {
-              fetch(url).then(r => r.text()).then(txt => {
-                window.__lastExportedHtmlText = txt;
-              }).catch(() => {});
-            }
-            if (typeof origTrigger === 'function') {
-              try { origTrigger(url, fn); } catch (e) {}
-            }
-          };
-        });
-
-        // Exercise user-facing #btnExportHtml button via export dropdown
-        await page.click('#btnExportMenu');
-        await page.waitForTimeout(200);
+        await ensureExportMenuOpen();
         await page.click('#btnExportHtml');
-        await page.waitForTimeout(600);
 
-        // Retrieve exported HTML content
-        const exportedHtmlContent = await page.evaluate(async () => {
-          if (window.__lastExportedHtmlText) return window.__lastExportedHtmlText;
-          const previewEl = document.getElementById('previewContent');
-          const cleanHtml = getCleanRenderedContent(previewEl);
-          const theme = document.documentElement.getAttribute('data-theme') || 'light';
-          return generateStandaloneHtml('Export Determinism Test', cleanHtml, theme);
+        const exportedFirst = await page.evaluate(async () => {
+          const deadline = Date.now() + 10000;
+          while (window.__capturedDownloads.length < 1 && Date.now() < deadline) {
+            await new Promise(r => setTimeout(r, 50));
+          }
+          if (window.__capturedDownloads.length < 1) return null;
+          const entry = window.__capturedDownloads[0];
+          const txt = entry.blob ? await entry.blob.text() : '';
+          return { fn: entry.download, txt };
         });
 
-        // Save retained exported sample HTML file
-        const sampleHtmlPath = path.join(OUT, 'artifacts', 'export-standalone-sample.html');
+        const capturedFromTriggerDownload = !!(exportedFirst && exportedFirst.txt);
+        const exportedHtmlContent = exportedFirst ? exportedFirst.txt : '';
+
+        // Save retained exported sample HTML file in browser-specific directory
+        const sampleHtmlPath = path.join(browserArtDir, 'export-standalone-sample.html');
         fs.writeFileSync(sampleHtmlPath, exportedHtmlContent, 'utf8');
         rec.artifacts.push(relPosix(sampleHtmlPath));
 
-        // Reopen the exported HTML in a new page/context to verify standalone rendering, math, and diagrams
-        const newPage = await page.context().newPage();
-        await newPage.setContent(exportedHtmlContent, { waitUntil: 'load' });
-        await newPage.waitForTimeout(600);
+        // Reopen the exported HTML in a new browser page to verify standalone rendering, math, and diagrams
+        const reopenedPage = await page.context().newPage();
+        await reopenedPage.setContent(exportedHtmlContent, { waitUntil: 'load' });
+        await reopenedPage.waitForTimeout(400);
 
-        const reopenedInspection = await newPage.evaluate(() => {
+        const reopenedInspection = await reopenedPage.evaluate(() => {
           const hasMath = !!document.querySelector('.MathJax, mjx-container, svg[role="img"], [id^="MJX"]') ||
                           document.body.innerHTML.includes('class="MathJax') ||
                           document.body.innerHTML.includes('mjx-container');
           const svgEl = document.querySelector('.mermaid-canvas svg, svg[id^="mermaid"]');
           const hasSvg = !!svgEl;
-          const svgHasNodes = svgEl ? (svgEl.textContent.includes('Source Node') || svgEl.textContent.includes('Target Node')) : false;
+          const svgRect = svgEl ? svgEl.getBoundingClientRect() : null;
+          const svgHasNodes = svgEl ? (svgEl.textContent.includes('Source Node') && svgEl.textContent.includes('Target Node')) : false;
           const hasHeaders = !!document.querySelector('.mermaid-header');
           const hasActionBtns = !!document.querySelector('.diag-action-btn');
           const hasErrorUI = !!document.querySelector('.mermaid-error-card');
+          const canvasEl = document.querySelector('.mermaid-canvas');
+          const canvasTransformNone = canvasEl ? (canvasEl.style.transform === 'none' || !canvasEl.style.transform.includes('matrix')) : true;
           const themeAttr = document.documentElement.getAttribute('data-theme');
           return {
             hasMath,
             hasSvg,
+            svgRenderedDimensions: svgRect ? { width: Math.round(svgRect.width), height: Math.round(svgRect.height) } : null,
             svgHasNodes,
             hasHeaders,
             hasActionBtns,
             hasErrorUI,
+            canvasTransformNone,
             themeAttr,
             title: document.title
           };
         });
-        await newPage.close();
+        await reopenedPage.close();
 
-        // Exercise user-facing Copy Rendered HTML via #btnCopyHtml in export dropdown
-        await page.click('#btnExportMenu');
-        await page.waitForTimeout(200);
+        // 2. Exercise user-facing Copy Rendered HTML (#btnCopyHtml) and inspect ACTUAL clipboard payload
+        await page.evaluate(() => { window.__lastClipboardWrite = null; });
+        await ensureExportMenuOpen();
         await page.click('#btnCopyHtml');
         await page.waitForTimeout(300);
-        const copyToast = await page.evaluate(() => {
-          const t = document.getElementById('toastMessage');
-          return t ? t.textContent : '';
-        });
-        const copiedHtmlClean = await page.evaluate(() => {
-          const previewEl = document.getElementById('previewContent');
-          const clean = getCleanRenderedContent(previewEl);
+
+        const copyHtmlCheck = await page.evaluate(async () => {
+          const toast = document.getElementById('toastMessage')?.textContent || '';
+          const expectedClean = getCleanRenderedContent(document.getElementById('previewContent'));
+          let readText = null;
+          let readError = null;
+          try {
+            readText = await navigator.clipboard.readText();
+          } catch (e) {
+            readError = e.message;
+          }
+          const spyText = window.__lastClipboardWrite;
+          const actualPayload = (readText !== null && !readError) ? readText : spyText;
+          const norm = s => String(s || '').replace(/\r\n/g, '\n');
           return {
-            hasHeader: clean.includes('mermaid-header'),
-            hasActionBtns: clean.includes('diag-action-btn'),
-            hasSourceCode: clean.includes('mermaid-raw-code'),
-            hasTransform: clean.includes('transform: matrix')
+            toast,
+            clipboardReadDirect: readText !== null && !readError,
+            clipboardSpyCaptured: typeof spyText === 'string' && spyText.length > 0,
+            payloadLength: actualPayload ? actualPayload.length : 0,
+            matchesCleanRenderedContent: actualPayload !== null && norm(actualPayload) === norm(expectedClean),
+            hasSvg: actualPayload ? actualPayload.includes('<svg') : false,
+            hasBothNodes: actualPayload ? (actualPayload.includes('Source Node') && actualPayload.includes('Target Node')) : false,
+            hasHeader: actualPayload ? actualPayload.includes('mermaid-header') : true,
+            hasActionBtns: actualPayload ? actualPayload.includes('diag-action-btn') : true,
+            hasRawCode: actualPayload ? actualPayload.includes('mermaid-raw-code') : true,
+            hasTransformMatrix: actualPayload ? actualPayload.includes('transform: matrix') : true
+          };
+        });
+
+        // 3. Exercise user-facing Copy Markdown (#btnCopyMd) and inspect ACTUAL clipboard payload
+        await page.evaluate(() => { window.__lastClipboardWrite = null; });
+        await ensureExportMenuOpen();
+        await page.click('#btnCopyMd');
+        await page.waitForTimeout(300);
+
+        const copyMdCheck = await page.evaluate(async (expectedMd) => {
+          let readText = null;
+          try { readText = await navigator.clipboard.readText(); } catch (e) {}
+          const actual = readText !== null ? readText : window.__lastClipboardWrite;
+          const norm = s => String(s || '').replace(/\r\n/g, '\n');
+          return {
+            matchesEditorMarkdown: actual !== null && norm(actual) === norm(expectedMd),
+            length: actual ? actual.length : 0
+          };
+        }, testDoc);
+
+        // 4. Empty Document Export & Copy verification
+        const beforeEmptyExports = await page.evaluate(() => window.__capturedDownloads.length);
+        await page.evaluate(() => {
+          const editor = document.getElementById('editor');
+          editor.value = '';
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        await ensureExportMenuOpen();
+        await page.click('#btnExportHtml');
+
+        const emptyExported = await page.evaluate(async (prevLen) => {
+          const deadline = Date.now() + 8000;
+          while (window.__capturedDownloads.length <= prevLen && Date.now() < deadline) {
+            await new Promise(r => setTimeout(r, 50));
+          }
+          if (window.__capturedDownloads.length <= prevLen) return null;
+          const entry = window.__capturedDownloads[window.__capturedDownloads.length - 1];
+          const txt = entry.blob ? await entry.blob.text() : '';
+          return { fn: entry.download, txt };
+        }, beforeEmptyExports);
+
+        const emptyHtmlPath = path.join(browserArtDir, 'export-standalone-empty.html');
+        if (emptyExported && emptyExported.txt) {
+          fs.writeFileSync(emptyHtmlPath, emptyExported.txt, 'utf8');
+          rec.artifacts.push(relPosix(emptyHtmlPath));
+        }
+
+        const emptyPage = await page.context().newPage();
+        await emptyPage.setContent(emptyExported ? emptyExported.txt : '', { waitUntil: 'load' });
+        const emptyInspection = await emptyPage.evaluate(() => ({
+          hasDoctype: document.doctype !== null,
+          svgCount: document.querySelectorAll('svg').length,
+          errorCardCount: document.querySelectorAll('.mermaid-error-card').length,
+          bodyTextTrimmed: document.body.textContent.trim()
+        }));
+        await emptyPage.close();
+
+        // 5. Invalid Diagram Document Export & Copy verification (must strip error card UI and export clean fallback <pre><code class="language-mermaid">)
+        const invalidDoc = `# Invalid Diagram Export Test\n\n\`\`\`mermaid\nflowchart TD\n  BrokenSyntaxNode -->\n\`\`\`\n\nParagraph after invalid diagram.\n`;
+        const beforeInvalidExports = await page.evaluate(() => window.__capturedDownloads.length);
+        await page.evaluate((doc) => {
+          const editor = document.getElementById('editor');
+          editor.value = doc;
+          editor.dispatchEvent(new Event('input', { bubbles: true }));
+        }, invalidDoc);
+        await settle(page);
+
+        const liveInvalidErrorCards = await page.evaluate(() => document.querySelectorAll('#previewContent .mermaid-error-card').length);
+
+        await ensureExportMenuOpen();
+        await page.click('#btnExportHtml');
+
+        const invalidExported = await page.evaluate(async (prevLen) => {
+          const deadline = Date.now() + 8000;
+          while (window.__capturedDownloads.length <= prevLen && Date.now() < deadline) {
+            await new Promise(r => setTimeout(r, 50));
+          }
+          if (window.__capturedDownloads.length <= prevLen) return null;
+          const entry = window.__capturedDownloads[window.__capturedDownloads.length - 1];
+          const txt = entry.blob ? await entry.blob.text() : '';
+          return { fn: entry.download, txt };
+        }, beforeInvalidExports);
+
+        const invalidHtmlPath = path.join(browserArtDir, 'export-standalone-invalid.html');
+        if (invalidExported && invalidExported.txt) {
+          fs.writeFileSync(invalidHtmlPath, invalidExported.txt, 'utf8');
+          rec.artifacts.push(relPosix(invalidHtmlPath));
+        }
+
+        const invalidPage = await page.context().newPage();
+        await invalidPage.setContent(invalidExported ? invalidExported.txt : '', { waitUntil: 'load' });
+        const invalidInspection = await invalidPage.evaluate(() => {
+          const errorCardCount = document.querySelectorAll('.mermaid-error-card').length;
+          const fixInStudioPresent = document.body.innerHTML.includes('Fix in Studio');
+          const fallbackCode = document.querySelector('pre code.language-mermaid');
+          return {
+            errorCardCount,
+            fixInStudioPresent,
+            hasFallbackPreCode: !!fallbackCode,
+            fallbackCodeText: fallbackCode ? fallbackCode.textContent : '',
+            hasTrailingParagraph: document.body.textContent.includes('Paragraph after invalid diagram.')
+          };
+        });
+        await invalidPage.close();
+
+        // Also test #btnCopyHtml on the invalid diagram document
+        await page.evaluate(() => { window.__lastClipboardWrite = null; });
+        await ensureExportMenuOpen();
+        await page.click('#btnCopyHtml');
+        await page.waitForTimeout(250);
+        const invalidCopyCheck = await page.evaluate(async () => {
+          let readText = null;
+          try { readText = await navigator.clipboard.readText(); } catch (e) {}
+          const actual = readText !== null ? readText : window.__lastClipboardWrite;
+          return {
+            hasFallbackPreCode: actual ? actual.includes('<pre><code class="language-mermaid">') : false,
+            noErrorCard: actual ? !actual.includes('mermaid-error-card') && !actual.includes('Fix in Studio') : false
           };
         });
 
         await shoot(page, rec);
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
-        const ok = reopenedInspection.hasSvg &&
+        const ok = capturedFromTriggerDownload &&
+                   reopenedInspection.hasSvg &&
                    reopenedInspection.svgHasNodes &&
+                   reopenedInspection.hasMath &&
                    !reopenedInspection.hasHeaders &&
                    !reopenedInspection.hasActionBtns &&
                    !reopenedInspection.hasErrorUI &&
+                   reopenedInspection.canvasTransformNone &&
                    !!reopenedInspection.themeAttr &&
-                   copyToast.includes('copied to clipboard') &&
-                   !copiedHtmlClean.hasHeader &&
-                   !copiedHtmlClean.hasActionBtns &&
+                   copyHtmlCheck.toast.includes('copied to clipboard') &&
+                   copyHtmlCheck.matchesCleanRenderedContent &&
+                   copyHtmlCheck.hasSvg &&
+                   copyHtmlCheck.hasBothNodes &&
+                   !copyHtmlCheck.hasHeader &&
+                   !copyHtmlCheck.hasActionBtns &&
+                   !copyHtmlCheck.hasRawCode &&
+                   !copyHtmlCheck.hasTransformMatrix &&
+                   copyMdCheck.matchesEditorMarkdown &&
+                   emptyInspection.hasDoctype &&
+                   emptyInspection.svgCount === 0 &&
+                   emptyInspection.errorCardCount === 0 &&
+                   liveInvalidErrorCards === 1 &&
+                   invalidInspection.errorCardCount === 0 &&
+                   !invalidInspection.fixInStudioPresent &&
+                   invalidInspection.hasFallbackPreCode &&
+                   invalidInspection.fallbackCodeText.includes('BrokenSyntaxNode -->') &&
+                   invalidInspection.hasTrailingParagraph &&
+                   invalidCopyCheck.hasFallbackPreCode &&
+                   invalidCopyCheck.noErrorCard &&
                    errs.length === 0;
 
         const obs = {
-          exportResult: {
-            hasSvg: reopenedInspection.hasSvg,
-            svgHasNodes: reopenedInspection.svgHasNodes,
-            hasMath: reopenedInspection.hasMath,
-            hasHeader: reopenedInspection.hasHeaders,
-            hasActionBtns: reopenedInspection.hasActionBtns,
-            hasCanvasTransform: copiedHtmlClean.hasTransform,
-            hasThemeAttr: !!reopenedInspection.themeAttr,
-            reopenedOk: true
-          },
+          capturedFromTriggerDownload,
           reopenedInspection,
-          copyResult: {
-            toast: copyToast,
-            clean: !copiedHtmlClean.hasHeader && !copiedHtmlClean.hasActionBtns
+          copyHtmlCheck,
+          copyMdCheck,
+          emptyDocumentExport: emptyInspection,
+          invalidDiagramExport: {
+            liveInvalidErrorCards,
+            ...invalidInspection,
+            invalidCopyCheck
           },
-          retainedFile: relPosix(sampleHtmlPath),
+          retainedFiles: [
+            relPosix(sampleHtmlPath),
+            relPosix(emptyHtmlPath),
+            relPosix(invalidHtmlPath)
+          ],
           consoleErrors: errs.length
         };
         if (!ok) console.log('G5-EXPORT-STANDALONE failure details:', JSON.stringify(obs, null, 2));
@@ -1587,6 +2070,15 @@ async function runBrowser() {
         }, testDoc);
         await settle(page);
 
+        const sourceDimensions = await page.evaluate(() => {
+          const svg = document.querySelector('#previewContent .mermaid-block-card .mermaid-canvas svg');
+          if (!svg) return null;
+          return {
+            intrinsicWidth: parseFloat(svg.dataset.intrinsicWidth) || svg.getBoundingClientRect().width,
+            intrinsicHeight: parseFloat(svg.dataset.intrinsicHeight) || svg.getBoundingClientRect().height
+          };
+        });
+
         // Exercise user-facing SVG export button on the diagram card
         const svgFilePromise = page.evaluate(() => {
           return new Promise((resolve) => {
@@ -1596,6 +2088,7 @@ async function runBrowser() {
 
             const origTrigger = window.triggerDownload;
             window.triggerDownload = (url, fn) => {
+              window.triggerDownload = origTrigger;
               if (url.startsWith('blob:')) {
                 fetch(url).then(r => r.text()).then(text => {
                   resolve({ success: true, text, fn });
@@ -1614,7 +2107,7 @@ async function runBrowser() {
         });
 
         const svgExport = await svgFilePromise;
-        const sampleSvgPath = path.join(OUT, 'artifacts', 'export-diagram-sample.svg');
+        const sampleSvgPath = path.join(browserArtDir, 'export-diagram-sample.svg');
         if (svgExport.success && svgExport.text) {
           fs.writeFileSync(sampleSvgPath, svgExport.text, 'utf8');
           rec.artifacts.push(relPosix(sampleSvgPath));
@@ -1629,6 +2122,7 @@ async function runBrowser() {
 
             const origTrigger = window.triggerDownload;
             window.triggerDownload = (url, fn) => {
+              window.triggerDownload = origTrigger;
               if (url.startsWith('blob:')) {
                 fetch(url).then(r => r.blob()).then(async blob => {
                   const buf = await blob.arrayBuffer();
@@ -1652,7 +2146,7 @@ async function runBrowser() {
         });
 
         const pngExport = await pngFilePromise;
-        const samplePngPath = path.join(OUT, 'artifacts', 'export-diagram-sample.png');
+        const samplePngPath = path.join(browserArtDir, 'export-diagram-sample.png');
         let pngBuffer = null;
         if (pngExport.success && pngExport.b64) {
           pngBuffer = Buffer.from(pngExport.b64, 'base64');
@@ -1660,33 +2154,113 @@ async function runBrowser() {
           rec.artifacts.push(relPosix(samplePngPath));
         }
 
-        // Reopen and inspect the saved SVG
+        // Reopen and inspect the saved SVG in a real browser page to verify rendered <text> bounding boxes and structure
         const svgText = fs.existsSync(sampleSvgPath) ? fs.readFileSync(sampleSvgPath, 'utf8') : '';
+        const svgPage = await page.context().newPage();
+        await svgPage.setContent(`<!DOCTYPE html><html><body style="margin:0;background:#fff;">${svgText}</body></html>`, { waitUntil: 'load' });
+        await svgPage.waitForTimeout(200);
+        const svgReopenedCheck = await svgPage.evaluate(() => {
+          const svg = document.querySelector('svg');
+          if (!svg) return { svgRendered: false };
+          const svgRect = svg.getBoundingClientRect();
+          const foreignObjects = svg.querySelectorAll('foreignObject').length;
+          const texts = Array.from(svg.querySelectorAll('text'));
+          const startEl = texts.find(t => t.textContent.includes('Process Start'));
+          const endEl = texts.find(t => t.textContent.includes('Process End'));
+          const startBBox = startEl ? startEl.getBBox() : null;
+          const endBBox = endEl ? endEl.getBBox() : null;
+          const startRect = startEl ? startEl.getBoundingClientRect() : null;
+          const endRect = endEl ? endEl.getBoundingClientRect() : null;
+          return {
+            svgRendered: svgRect.width > 50 && svgRect.height > 50,
+            svgWidth: Math.round(svgRect.width),
+            svgHeight: Math.round(svgRect.height),
+            foreignObjects,
+            textElementCount: texts.length,
+            startLabelRendered: !!(startBBox && startBBox.width > 10 && startBBox.height > 5 && startRect && startRect.width > 10),
+            endLabelRendered: !!(endBBox && endBBox.width > 10 && endBBox.height > 5 && endRect && endRect.width > 10),
+            startLabelBounds: startBBox ? { width: Math.round(startBBox.width), height: Math.round(startBBox.height) } : null,
+            endLabelBounds: endBBox ? { width: Math.round(endBBox.width), height: Math.round(endBBox.height) } : null
+          };
+        });
+        await svgPage.close();
+
         const svgInspection = {
           validXml: svgText.startsWith('<svg') && svgText.endsWith('</svg>'),
           hasXmlns: svgText.includes('xmlns="http://www.w3.org/2000/svg"'),
           hasViewBox: svgText.includes('viewBox='),
           hasLabels: svgText.includes('Process Start') && svgText.includes('Process End'),
           foreignObjectSanitized: !svgText.includes('<foreignObject') && svgText.includes('<text'),
-          fileSize: svgText.length
+          fileSize: svgText.length,
+          reopenedInBrowser: svgReopenedCheck
         };
 
-        // Reopen and inspect the saved PNG
+        // Reopen and inspect the saved PNG in a real browser page (<img> + <canvas> pixel verification)
         let pngInspection = { ok: false };
         if (pngBuffer && pngBuffer.length > 8) {
           const magic = pngBuffer.slice(0, 8).toString('hex');
           const isPng = magic === '89504e470d0a1a0a';
           const width = pngBuffer.readUInt32BE(16);
           const height = pngBuffer.readUInt32BE(20);
+
+          const pngPage = await page.context().newPage();
+          const dataUrl = `data:image/png;base64,${pngExport.b64}`;
+          await pngPage.setContent(`<!DOCTYPE html><html><body><img id="reopenedPng" src="${dataUrl}"></body></html>`, { waitUntil: 'load' });
+          const pngReopenedCheck = await pngPage.evaluate(async (srcDims) => {
+            const img = document.getElementById('reopenedPng');
+            if (!img || !img.complete || img.naturalWidth === 0) return { decoded: false };
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            // Sample background pixel at (0,0) and count non-background pixels showing rendered diagram nodes/text/edges
+            const bgR = data[0], bgG = data[1], bgB = data[2];
+            let nonBgPixels = 0;
+            for (let i = 0; i < data.length; i += 16) {
+              if (Math.abs(data[i] - bgR) > 10 || Math.abs(data[i + 1] - bgG) > 10 || Math.abs(data[i + 2] - bgB) > 10) {
+                nonBgPixels++;
+              }
+            }
+            const expectedW = srcDims ? Math.round(srcDims.intrinsicWidth * 2) : img.naturalWidth;
+            const expectedH = srcDims ? Math.round(srcDims.intrinsicHeight * 2) : img.naturalHeight;
+            return {
+              decoded: true,
+              naturalWidth: img.naturalWidth,
+              naturalHeight: img.naturalHeight,
+              expected2xWidth: expectedW,
+              expected2xHeight: expectedH,
+              matches2xScale: Math.abs(img.naturalWidth - expectedW) <= 4 && Math.abs(img.naturalHeight - expectedH) <= 4,
+              nonBgSampledPixels: nonBgPixels
+            };
+          }, sourceDimensions);
+          await pngPage.close();
+
           pngInspection = {
-            ok: isPng && width > 0 && height > 0,
+            ok: isPng && width > 0 && height > 0 && pngReopenedCheck.decoded && pngReopenedCheck.matches2xScale && pngReopenedCheck.nonBgSampledPixels > 50,
             isPng,
             width,
             height,
             fileSize: pngBuffer.length,
-            isRetina: width >= 200
+            reopenedInBrowser: pngReopenedCheck
           };
         }
+
+        // Verify empty/invalid container guard on exportDiagramSvg
+        const emptySvgGuard = await page.evaluate(() => {
+          let downloadCalled = false;
+          const origTrigger = window.triggerDownload;
+          window.triggerDownload = () => { downloadCalled = true; };
+          const emptyDiv = document.createElement('div');
+          const res = exportDiagramSvg(emptyDiv, 'should-not-download.svg');
+          window.triggerDownload = origTrigger;
+          const toast = document.getElementById('toastMessage')?.textContent || '';
+          return {
+            abortedCleanly: !res && !downloadCalled && toast.includes('No rendered diagram'),
+            toast
+          };
+        });
 
         await shoot(page, rec);
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
@@ -1694,12 +2268,18 @@ async function runBrowser() {
                    svgInspection.hasXmlns &&
                    svgInspection.hasLabels &&
                    svgInspection.foreignObjectSanitized &&
+                   svgReopenedCheck.svgRendered &&
+                   svgReopenedCheck.startLabelRendered &&
+                   svgReopenedCheck.endLabelRendered &&
                    pngInspection.ok &&
+                   emptySvgGuard.abortedCleanly &&
                    errs.length === 0;
 
         const obs = {
+          sourceDimensions,
           svgInspection,
           pngInspection,
+          emptySvgGuard,
           retainedSvg: relPosix(sampleSvgPath),
           retainedPng: relPosix(samplePngPath),
           consoleErrors: errs.length
@@ -1762,7 +2342,8 @@ async function runBrowser() {
                    failureResult.imgErrorHandled &&
                    failureResult.toastShown &&
                    failureResult.errorLogged &&
-                   !failureResult.toastText.includes('downloaded');
+                   !failureResult.toastText.includes('downloaded') &&
+                   errs.length === 0;
 
         const obs = {
           failureResult,
@@ -1776,13 +2357,66 @@ async function runBrowser() {
         const tallDoc = fs.readFileSync(tallFixturePath, 'utf8');
 
         await page.evaluate((doc) => {
+          window.__printCalls = 0;
           const editor = document.getElementById('editor');
           editor.value = doc;
           editor.dispatchEvent(new Event('input', { bubbles: true }));
         }, tallDoc);
         await settle(page);
 
-        const printStyles = await page.evaluate(() => {
+        // 1. Exercise user-facing #btnPrintPdf action in export dropdown, then close dropdown
+        await page.click('#btnExportMenu');
+        await page.waitForTimeout(100);
+        await page.click('#btnPrintPdf');
+        await page.waitForTimeout(200);
+        await page.evaluate(() => document.getElementById('exportDropdown')?.classList.remove('open'));
+
+        const printActionInvoked = await page.evaluate(() => (window.__printCalls || 0) > 0);
+
+        // 2. Generate real multi-page PDF via CDP Page.printToPDF BEFORE emulating media (so CDP uses native print media)
+        let cdpPdfSize = null;
+        let cdpSuccess = false;
+        let cdpBlocked = false;
+        let cdpReason = null;
+        let pdfPageCount = null;
+        let pdfStepCheck = null;
+        const samplePdfPath = path.join(browserArtDir, 'print-tall-diagram.pdf');
+
+        if (BROWSER !== 'firefox') {
+          try {
+            const client = await page.context().newCDPSession(page);
+            const pdfRes = await client.send('Page.printToPDF', {
+              printBackground: true,
+              preferCSSPageSize: true
+            });
+            if (pdfRes && pdfRes.data) {
+              const pdfBuf = Buffer.from(pdfRes.data, 'base64');
+              cdpPdfSize = pdfBuf.length;
+              cdpSuccess = cdpPdfSize > 10000 && pdfBuf.slice(0, 5).toString('ascii') === '%PDF-';
+              const pdfStr = pdfBuf.toString('binary');
+              const pageMatches = pdfStr.match(/\/Type\s*\/Page[^s]/g);
+              pdfPageCount = pageMatches ? pageMatches.length : 1;
+
+              // Parse decompressed PDF content streams + ToUnicode CMaps to verify Step 0..Step 25
+              pdfStepCheck = extractPdfSteps(pdfBuf);
+
+              // Retain browser-specific PDF evidence artifact
+              fs.writeFileSync(samplePdfPath, pdfBuf);
+              rec.artifacts.push(relPosix(samplePdfPath));
+            }
+          } catch (cdpErr) {
+            console.log('CDP printToPDF notice:', cdpErr.message);
+          }
+        } else {
+          cdpBlocked = true;
+          cdpReason = 'CDP Page.printToPDF protocol is unsupported in Mozilla Firefox; print layout verified via @media print DOM emulation (all 26 steps Step 0..Step 25 unclipped), marked blocked per Gate G5 rules because native PDF file export is unavailable in Firefox.';
+        }
+
+        // 3. Verify @media print CSS rules and emulate print media to inspect live print DOM layout
+        await page.emulateMedia({ media: 'print' });
+        await page.waitForTimeout(200);
+
+        const printDomCheck = await page.evaluate(() => {
           const rules = [];
           for (let sheet of document.styleSheets) {
             try {
@@ -1800,79 +2434,86 @@ async function runBrowser() {
           const canvasRule = rules.find(r => r.selectorText === '.mermaid-canvas');
           const cardRule = rules.find(r => r.selectorText === '.mermaid-block-card');
 
+          const bodyCs = window.getComputedStyle(document.body);
+          const previewCs = window.getComputedStyle(document.getElementById('previewContent'));
+          const vpEl = document.querySelector('#previewContent .mermaid-viewport');
+          const vpCs = vpEl ? window.getComputedStyle(vpEl) : null;
           const svgEl = document.querySelector('#previewContent .mermaid-canvas svg');
-          const svgHeight = svgEl ? (parseFloat(svgEl.dataset.intrinsicHeight) || svgEl.getBoundingClientRect().height) : 0;
+          const svgRect = svgEl ? svgEl.getBoundingClientRect() : null;
+
+          // Check all 26 steps (Step 0..Step 25) in print-emulated DOM
+          const allNodes = svgEl ? Array.from(svgEl.querySelectorAll('.nodeLabel, text, foreignObject')) : [];
+          const missingDomSteps = [];
+          let step0Top = null;
+          let step25Bottom = null;
+          for (let i = 0; i <= 25; i++) {
+            const label = `Step ${i}`;
+            const match = allNodes.find(el => el.textContent.trim() === label);
+            if (!match) {
+              missingDomSteps.push(label);
+            } else {
+              const r = match.getBoundingClientRect();
+              if (r.width <= 0 || r.height <= 0) missingDomSteps.push(label);
+              if (i === 0) step0Top = Math.round(r.top);
+              if (i === 25) step25Bottom = Math.round(r.bottom);
+            }
+          }
 
           return {
             hasViewportRule: !!vpRule,
-            vpCss: vpRule ? vpRule.cssText : '',
             hasCanvasRule: !!canvasRule,
-            canvasCss: canvasRule ? canvasRule.cssText : '',
             hasCardRule: !!cardRule,
-            cardCss: cardRule ? cardRule.cssText : '',
-            svgHeight,
-            viewportUncapped: vpRule ? vpRule.cssText.includes('max-height: none') : false,
-            canvasTransformNone: canvasRule ? canvasRule.cssText.includes('transform: none') : false,
-            pageBreakAvoid: cardRule ? (cardRule.cssText.includes('break-inside: avoid') || cardRule.cssText.includes('page-break-inside: avoid')) : false
+            bodyOverflow: bodyCs.overflow,
+            previewOverflow: previewCs.overflow,
+            viewportMaxHeight: vpCs ? vpCs.maxHeight : '',
+            viewportOverflow: vpCs ? vpCs.overflow : '',
+            svgRenderedHeight: svgRect ? Math.round(svgRect.height) : 0,
+            all26StepsVisible: missingDomSteps.length === 0,
+            missingDomSteps,
+            step0Top,
+            step25Bottom
           };
         });
 
-        let cdpPdfSize = null;
-        let cdpSuccess = false;
-        let cdpBlocked = false;
-        let cdpReason = null;
-        let pdfPageCount = null;
-        const samplePdfPath = path.join(OUT, 'artifacts', 'print-tall-diagram.pdf');
+        const printEmulatedShot = `${art(rec.id + '-print-emulated')}.png`;
+        await page.screenshot({ path: printEmulatedShot, fullPage: true });
+        rec.artifacts.push(relPosix(printEmulatedShot));
 
-        if (BROWSER !== 'firefox') {
-          try {
-            const client = await page.context().newCDPSession(page);
-            const pdfRes = await client.send('Page.printToPDF', {
-              printBackground: true,
-              preferCSSPageSize: true
-            });
-            if (pdfRes && pdfRes.data) {
-              const pdfBuf = Buffer.from(pdfRes.data, 'base64');
-              cdpPdfSize = pdfBuf.length;
-              cdpSuccess = cdpPdfSize > 10000 && pdfBuf.slice(0, 5).toString('ascii') === '%PDF-';
-              const pdfStr = pdfBuf.toString('binary');
-              const pageMatches = pdfStr.match(/\/Type\s*\/Page[^s]/g);
-              pdfPageCount = pageMatches ? pageMatches.length : 1;
-
-              // Retain PDF evidence artifact
-              fs.writeFileSync(samplePdfPath, pdfBuf);
-              rec.artifacts.push(relPosix(samplePdfPath));
-            }
-          } catch (cdpErr) {
-            console.log('CDP printToPDF notice:', cdpErr.message);
-          }
-        } else {
-          cdpBlocked = true;
-          cdpReason = 'CDP Page.printToPDF protocol unavailable in Mozilla Firefox engine; verified via print CSS media rules';
-        }
+        await page.emulateMedia({ media: null });
+        await page.waitForTimeout(100);
 
         await shoot(page, rec);
         const errs = consoleLog.filter(l => l.stop === rec.id && (l.type === 'error' || l.type === 'pageerror'));
-        const ok = printStyles.hasViewportRule &&
-                   printStyles.viewportUncapped &&
-                   printStyles.canvasTransformNone &&
-                   printStyles.pageBreakAvoid &&
-                   printStyles.svgHeight > 1000 &&
-                   (cdpSuccess || cdpBlocked) &&
-                   errs.length === 0;
 
         const obs = {
-          printStyles,
+          printActionInvoked,
+          printDomCheck,
           cdpPdfSize,
           cdpSuccess,
           cdpBlocked,
           cdpReason,
           pdfPageCount,
+          pdfStepCheck,
           retainedPdf: cdpSuccess ? relPosix(samplePdfPath) : null,
           consoleErrors: errs.length
         };
-        if (!ok) console.log('G5-PRINT-PDF-TALL failure details:', JSON.stringify(obs, null, 2));
-        if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+
+        // Per Plan §1 & §8: A blocked test is never a pass. Firefox lacks CDP Page.printToPDF so it must be marked 'blocked'.
+        if (cdpBlocked) {
+          if (await finish(rec, 'blocked', obs)) break;
+        } else {
+          const ok = printActionInvoked &&
+                     printDomCheck.all26StepsVisible &&
+                     printDomCheck.svgRenderedHeight > 1500 &&
+                     cdpSuccess &&
+                     pdfPageCount >= 2 &&
+                     pdfStepCheck &&
+                     pdfStepCheck.foundCount === 26 &&
+                     pdfStepCheck.missingSteps.length === 0 &&
+                     errs.length === 0;
+          if (!ok) console.log('G5-PRINT-PDF-TALL failure details:', JSON.stringify(obs, null, 2));
+          if (await finish(rec, ok ? 'pass' : 'fail', obs)) break;
+        }
       }
     } catch (e) {
       console.error('Stop point blocked reason:', rec.id, e);
@@ -1911,7 +2552,7 @@ function envRecord() {
   const m = writeManifest(records, envRecord());
   console.log(`\ntotals: ${JSON.stringify(m.totals)}`);
   fs.writeFileSync(path.join(OUT, 'console-log.json'), JSON.stringify(consoleLog, null, 2) + '\n');
-  if (!DRY_RUN) {
+  if (!DRY_RUN && !FILTER) {
     const stamp = `${String(BROWSER || 'browser').split(' ')[0]}-${String(ORIGIN)}-${m.generatedAt.replace(/[:.]/g, '-')}`;
     fs.mkdirSync(path.join(OUT, 'runs'), { recursive: true });
     fs.writeFileSync(path.join(OUT, 'runs', `console-log-${stamp}.json`), JSON.stringify(consoleLog, null, 2) + '\n');

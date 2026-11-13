@@ -206,21 +206,60 @@
    }
  
    .validation-status-badge {
-@@ -1631,8 +1668,35 @@
-     .workspace { overflow: visible !important; height: auto !important; }
-     .pane-preview { display: flex !important; width: 100% !important; overflow: visible !important; }
-     .preview-content { max-width: 100% !important; padding: 0 !important; }
+@@ -1624,15 +1661,70 @@
+ 
+   /* Print Stylesheet for PDF Export */
+   @media print {
+-    body { background: #fff !important; color: #000 !important; overflow: visible !important; }
++    html, body {
++      height: auto !important;
++      min-height: 0 !important;
++      max-height: none !important;
++      overflow: visible !important;
++      display: block !important;
++      background: #fff !important;
++      color: #000 !important;
++      margin: 0 !important;
++      padding: 0 !important;
++    }
+     .app-header, .tabbar-container, .format-toolbar, .find-replace-bar, .toc-drawer, .pane-editor, .split-resizer, .statusbar, .modal-overlay, .pane-header, .workspace-empty-state, .error-log-drawer {
+       display: none !important;
+     }
+-    .workspace { overflow: visible !important; height: auto !important; }
+-    .pane-preview { display: flex !important; width: 100% !important; overflow: visible !important; }
+-    .preview-content { max-width: 100% !important; padding: 0 !important; }
 -    .mermaid-header, .diag-action-btn { display: none !important; }
 -    .mermaid-block-card { border: none !important; box-shadow: none !important; }
++    .workspace, .pane-preview, .preview-content {
++      display: block !important;
++      height: auto !important;
++      min-height: 0 !important;
++      max-height: none !important;
++      width: 100% !important;
++      max-width: 100% !important;
++      overflow: visible !important;
++      flex: none !important;
++      background: transparent !important;
++      padding: 0 !important;
++      margin: 0 !important;
++    }
 +    .mermaid-header, .diag-action-btn, .mermaid-actions { display: none !important; }
 +    .mermaid-block-card {
++      display: block !important;
++      background: transparent !important;
 +      border: none !important;
 +      box-shadow: none !important;
++      overflow: visible !important;
++      break-inside: auto !important;
++      page-break-inside: auto !important;
++      margin: 0 !important;
++    }
++    .mermaid-error-card, pre, blockquote {
 +      break-inside: avoid !important;
 +      page-break-inside: avoid !important;
-+      margin: 1.5em 0 !important;
 +    }
 +    .mermaid-viewport {
++      min-height: 0 !important;
 +      max-height: none !important;
 +      height: auto !important;
 +      overflow: visible !important;
@@ -244,7 +283,7 @@
    }
  </style>
  </head>
-@@ -2336,9 +2400,13 @@
+@@ -2336,9 +2428,13 @@
    // Custom Marked Renderer
    const customRenderer = new marked.Renderer();
  
@@ -259,7 +298,7 @@
        const diagramIndex = renderedDiagramCounter++;
        const cleanCode = code.trim();
        return `
-@@ -2359,10 +2427,9 @@
+@@ -2359,10 +2455,9 @@
                <button class="diag-action-btn" data-action="export-png" title="Export as PNG">PNG</button>
              </div>
            </div>
@@ -272,7 +311,7 @@
            </div>
          </div>
        `;
-@@ -2390,11 +2457,14 @@
+@@ -2390,11 +2485,14 @@
      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
    }
  
@@ -291,7 +330,7 @@
      } catch (e) {}
    }
  
-@@ -2448,12 +2518,38 @@
+@@ -2448,12 +2546,38 @@
      drawer.style.display = shouldOpen ? 'flex' : 'none';
    }
  
@@ -332,7 +371,7 @@
    function renderErrorLogUI() {
      const indicator = document.getElementById('statusErrorIndicator');
      const indicatorText = document.getElementById('statusErrorText');
-@@ -2496,7 +2592,6 @@
+@@ -2496,7 +2620,6 @@
            const sourceClass = (item.source || '').toLowerCase();
            const countPill = item.count > 1 ? `<span style="background:var(--bg-panel); border:1px solid var(--border); border-radius:999px; padding:0 5px; font-size:10px; font-weight:700; margin-left:4px;">×${item.count}</span>` : '';
            const escapedSnippet = item.snippet ? escapeHtml(item.snippet.slice(0, 120)) + (item.snippet.length > 120 ? '...' : '') : '';
@@ -340,7 +379,7 @@
            return `
              <div class="error-log-row" data-id="${item.id}">
                <span class="error-log-time">${escapeHtml(item.time)}</span>
-@@ -2505,8 +2600,8 @@
+@@ -2505,8 +2628,8 @@
                  <span>${escapeHtml(item.message)}</span>${countPill}
                  ${escapedSnippet ? `<div style="opacity:0.75; font-size:10.5px; margin-top:2px; font-family:var(--font-mono);">${escapedSnippet}</div>` : ''}
                </div>
@@ -351,7 +390,7 @@
              </div>
            `;
          }).join('');
-@@ -2559,80 +2654,236 @@
+@@ -2559,80 +2682,236 @@
    // --------------------------------------------------------------------------
    let renderDebounceTimer = null;
  
@@ -647,7 +686,7 @@
      const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
  
      cards.forEach(card => {
-@@ -2640,147 +2891,419 @@
+@@ -2640,147 +2919,419 @@
        const canvas = card.querySelector('.mermaid-canvas');
        if (!viewport || !canvas) return;
  
@@ -659,8 +698,7 @@
 +      const svgEl = canvas.querySelector('svg');
 +      const svgW = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicWidth)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).width : 100);
 +      const svgH = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicHeight)) || (svgEl && typeof getSvgIntrinsicDimensions === 'function' ? getSvgIntrinsicDimensions(svgEl).height : 100);
- 
--      function updateTransform() {
++
 +      const availW = Math.max((viewport.clientWidth || 560) - 32, 40);
 +      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
 +      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
@@ -669,7 +707,8 @@
 +        ? computeDiagramFitScale(svgW, svgH, availW, availH)
 +        : { fitScale: 1.0 };
 +      if (viewport.dataset) viewport.dataset.fitScale = fitScale;
-+
+ 
+-      function updateTransform() {
 +      const hasManualInteraction = viewport.dataset && viewport.dataset.manuallyAdjusted === 'true';
 +      let panX = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panX || 0) : 0;
 +      let panY = hasManualInteraction && viewport.dataset ? parseFloat(viewport.dataset.panY || 0) : 0;
@@ -1166,7 +1205,7 @@
    }
  
    function triggerDownload(url, filename) {
-@@ -2792,6 +3315,13 @@
+@@ -2792,6 +3343,13 @@
      a.remove();
    }
  
@@ -1180,7 +1219,7 @@
    // --------------------------------------------------------------------------
    // Document Tabs Management
    // --------------------------------------------------------------------------
-@@ -2971,10 +3501,14 @@
+@@ -2971,10 +3529,14 @@
      const preview = document.getElementById('previewContent');
      if (!t) {
        preview.innerHTML = '';
@@ -1195,7 +1234,7 @@
  
      try {
        const { text, mathStore } = extractMath(t.content);
-@@ -2986,6 +3520,8 @@
+@@ -2986,6 +3548,8 @@
      } catch (err) {
        logError('Markdown', `Markdown parse error: ${err.message}`, t.content.slice(0, 150));
        preview.innerHTML = `<div style="color:var(--danger); padding:20px;">Markdown parse error: ${escapeHtml(err.message)}</div>`;
@@ -1204,7 +1243,7 @@
        return;
      }
  
-@@ -2999,13 +3535,19 @@
+@@ -2999,13 +3563,19 @@
      });
  
      // Typeset Math equations with MathJax
@@ -1227,7 +1266,7 @@
  
      // Update Table of Contents
      updateTableOfContents();
-@@ -3180,17 +3722,32 @@
+@@ -3180,17 +3750,32 @@
    });
  
    // --------------------------------------------------------------------------
@@ -1264,7 +1303,7 @@
      editorEl.focus();
      editorEl.dispatchEvent(new Event('input'));
    }
-@@ -3231,14 +3788,19 @@
+@@ -3231,14 +3816,19 @@
          case 'quote': prependLines('> '); break;
          case 'codeblock': wrapSelection('```javascript\n', '\n```'); break;
          case 'math': wrapSelection('$$\n', '\n$$'); break;
@@ -1286,7 +1325,7 @@
            break;
          case 'table':
            document.getElementById('tableModal').classList.add('open');
-@@ -3272,7 +3834,7 @@
+@@ -3272,7 +3862,7 @@
      }
      tableMd += '\n';
  
@@ -1295,7 +1334,7 @@
      document.getElementById('tableModal').classList.remove('open');
    };
  
-@@ -3420,6 +3982,10 @@
+@@ -3420,6 +4010,10 @@
      if (persist) {
        persistViewState();
      }
@@ -1306,7 +1345,7 @@
    }
  
    function toggleEditor() {
-@@ -3446,6 +4012,7 @@
+@@ -3446,6 +4040,7 @@
        paneEditor.style.flex = '0 0 50%';
        showToast('Reset view to 50/50 split');
        persistViewState();
@@ -1314,7 +1353,7 @@
        return;
      }
      setPaneVisibility({
-@@ -3454,6 +4021,9 @@
+@@ -3454,6 +4049,9 @@
        toast: 'Split View enabled (Editor + Viewer)',
        focusEditor: true
      });
@@ -1324,7 +1363,7 @@
    }
  
    // --------------------------------------------------------------------------
-@@ -3488,6 +4058,7 @@
+@@ -3488,6 +4086,7 @@
        resizer.classList.remove('dragging');
        document.body.style.cursor = '';
        persistViewState();
@@ -1332,7 +1371,7 @@
      }
    });
  
-@@ -3497,6 +4068,15 @@
+@@ -3497,6 +4096,15 @@
      paneEditor.style.flex = '0 0 50%';
      showToast('Reset view to 50/50 split');
      persistViewState();
@@ -1348,7 +1387,7 @@
    });
  
    // Header controls
-@@ -3734,9 +4314,17 @@
+@@ -3734,9 +4342,17 @@
    btnBuilderCancel.addEventListener('click', closeStudio);
  
    function openStudioWithCode(codeToEdit, diagramIndex) {
@@ -1366,7 +1405,7 @@
      // Populate templates dropdown for current type
      populateTemplateDropdown();
  
-@@ -3747,16 +4335,21 @@
+@@ -3747,16 +4363,21 @@
        loadSelectedTemplate();
      }
  
@@ -1389,7 +1428,7 @@
    }
  
    function detectDiagramType(code) {
-@@ -3816,6 +4409,7 @@
+@@ -3816,6 +4437,7 @@
    });
  
    builderThemeSelect.addEventListener('change', () => {
@@ -1397,7 +1436,7 @@
      renderBuilderDiagram();
    });
  
-@@ -3826,7 +4420,8 @@
+@@ -3826,7 +4448,8 @@
    // Builder Quick Palette Inserts
    document.querySelectorAll('#builderSidebar .palette-btn').forEach(btn => {
      btn.addEventListener('click', () => {
@@ -1407,7 +1446,7 @@
        const start = builderCodeInput.selectionStart;
        const end = builderCodeInput.selectionEnd;
        const val = builderCodeInput.value;
-@@ -3855,7 +4450,9 @@
+@@ -3855,7 +4478,9 @@
      showToast('Diagram code formatted.');
    });
  
@@ -1418,7 +1457,7 @@
    async function renderBuilderDiagram() {
      const code = builderCodeInput.value.trim();
      if (!code) {
-@@ -3863,22 +4460,76 @@
+@@ -3863,22 +4488,76 @@
        return;
      }
  
@@ -1497,7 +1536,7 @@
        const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
        builderValidationBadge.className = 'validation-status-badge invalid';
        builderValidationBadge.innerHTML = `<span>⚠️ Syntax Error</span>`;
-@@ -3890,13 +4541,17 @@
+@@ -3890,13 +4569,17 @@
          </div>
        `;
      } finally {
@@ -1517,7 +1556,7 @@
      document.getElementById('btnBuilderZoomReset').textContent = `${Math.round(builderZoom * 100)}%`;
    }
  
-@@ -3910,6 +4565,7 @@
+@@ -3910,6 +4593,7 @@
  
    window.addEventListener('mousemove', (e) => {
      if (!isBuilderDragging) return;
@@ -1525,7 +1564,7 @@
      builderPanX = e.clientX - builderStartX;
      builderPanY = e.clientY - builderStartY;
      updateBuilderTransform();
-@@ -3924,23 +4580,38 @@
+@@ -3924,23 +4608,38 @@
  
    builderWrap.addEventListener('wheel', (e) => {
      e.preventDefault();
@@ -1569,7 +1608,7 @@
      updateBuilderTransform();
    };
  
-@@ -3959,33 +4630,218 @@
+@@ -3959,33 +4658,218 @@
      exportDiagramPng(builderCanvas, 'mermaid-diagram.png');
    };
  
@@ -1805,7 +1844,7 @@
      }
  
      editorEl.dispatchEvent(new Event('input'));
-@@ -4002,7 +4858,7 @@
+@@ -4002,7 +4886,7 @@
        if (templates) {
          const firstKey = Object.keys(templates)[0];
          const code = templates[firstKey].code;
@@ -1814,7 +1853,7 @@
          showToast(`Inserted ${type} template`);
        }
      });
-@@ -4092,34 +4948,255 @@
+@@ -4092,34 +4976,255 @@
      showToast(`Saved ${filename}`);
    });
  
@@ -1840,7 +1879,9 @@
 +        renderDebounceTimer = null;
 +        renderAllPreviewDiagrams();
 +      }
-+
+ 
+-    const fullHtml = `<!DOCTYPE html>
+-<html lang="en">
 +      // Await MathJax typeset
 +      const mathPromise = (typeof currentMathJaxPromise !== 'undefined' && currentMathJaxPromise);
 +      if (mathPromise) {
@@ -1852,9 +1893,7 @@
 +      if (renderPromise) {
 +        try { await renderPromise; } catch (e) {}
 +      }
- 
--    const fullHtml = `<!DOCTYPE html>
--<html lang="en">
++
 +      // Check whether document content changed or tab switched during the await
 +      const currentTab = typeof getActiveTab === 'function' ? getActiveTab() : null;
 +      if (!currentTab) return false;
@@ -2089,7 +2128,7 @@
  
      const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
      const url = URL.createObjectURL(blob);
-@@ -4129,21 +5206,26 @@ ${previewContent}
+@@ -4129,21 +5234,26 @@ ${previewContent}
    });
  
    // Export as PDF / Print
@@ -2121,7 +2160,7 @@
    });
  
    // File Loader (Open files)
-@@ -4220,6 +5302,31 @@ ${previewContent}
+@@ -4220,6 +5330,31 @@ ${previewContent}
    document.addEventListener('keydown', (e) => {
      const ctrl = e.ctrlKey || e.metaKey;
  
@@ -2153,7 +2192,7 @@
      if (ctrl && e.shiftKey && e.key.toLowerCase() === 'e' || (e.altKey && e.key.toLowerCase() === 'e')) {
        e.preventDefault();
        toggleEditor();
-@@ -4247,12 +5354,6 @@ ${previewContent}
+@@ -4247,12 +5382,6 @@ ${previewContent}
      } else if (ctrl && e.key.toLowerCase() === 'n') {
        e.preventDefault();
        addTab();
@@ -2166,7 +2205,7 @@
      }
    });
  
-@@ -4308,6 +5409,27 @@ ${previewContent}
+@@ -4308,6 +5437,27 @@ ${previewContent}
    const statusErrorInd = document.getElementById('statusErrorIndicator');
    if (statusErrorInd) statusErrorInd.onclick = () => toggleErrorLog();
  

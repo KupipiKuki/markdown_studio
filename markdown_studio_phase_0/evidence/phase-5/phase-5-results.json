@@ -1,8 +1,8 @@
 {
   "suite": "Phase 5 Verification (Gate G5)",
-  "timestamp": "2026-11-13T00:11:29.915Z",
-  "candidateSha256Raw": "1adc882b0665f4428218bbacf789df677f80490c2bd7f209b979250c4c76c8b7",
-  "candidateSha256Lf": "563955c89c51e9362181733536258fb629340dd9db0368dec8dd63ea204d42b0",
+  "timestamp": "2026-11-13T01:57:44.242Z",
+  "candidateSha256Raw": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
+  "candidateSha256Lf": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "testsPassed": 5,
   "testsFailed": 0,
   "results": [
@@ -13,7 +13,7 @@
       ],
       "gate": "G5",
       "name": "Export Awaits In-Flight Render Generation",
-      "timestamp": "2026-11-13T00:11:29.847Z",
+      "timestamp": "2026-11-13T01:57:44.175Z",
       "procedure": "Verify that ensurePreviewRenderReady blocks HTML export / copy until active Mermaid rendering finishes.",
       "observation": {
         "inFlightAwaited": true,
@@ -29,7 +29,7 @@
       ],
       "gate": "G5",
       "name": "Mid-Await Document Change Triggers Refresh & Retry",
-      "timestamp": "2026-11-13T00:11:29.910Z",
+      "timestamp": "2026-11-13T01:57:44.236Z",
       "procedure": "Verify that document edits occurring during render await refresh generation and never silently export stale content, and retry exhaustion cleanly aborts with retry feedback.",
       "observation": {
         "staleV1Ignored": true,
@@ -48,7 +48,7 @@
       ],
       "gate": "G5",
       "name": "Clean Document Export & Standalone Theme Fidelity",
-      "timestamp": "2026-11-13T00:11:29.912Z",
+      "timestamp": "2026-11-13T01:57:44.238Z",
       "procedure": "Verify that getCleanRenderedContent removes transient controls, error UI, and pan/zoom transforms, and generateStandaloneHtml preserves theme.",
       "observation": {
         "headersRemoved": true,
@@ -67,7 +67,7 @@
       ],
       "gate": "G5",
       "name": "PNG Export Failure Handling & URL Lifecycle",
-      "timestamp": "2026-11-13T00:11:29.914Z",
+      "timestamp": "2026-11-13T01:57:44.241Z",
       "procedure": "Verify that image error, canvas null context, and toBlob null produce actionable error feedback, revoke temporary URLs, and prevent false success.",
       "observation": {
         "imageErrorHandled": true,
@@ -85,12 +85,14 @@
       ],
       "gate": "G5",
       "name": "Print CSS Diagram Height & Overflow Uncapped",
-      "timestamp": "2026-11-13T00:11:29.914Z",
-      "procedure": "Verify that print stylesheet removes 520px height cap, overflow clipping, and pan transforms for print/PDF output.",
+      "timestamp": "2026-11-13T01:57:44.241Z",
+      "procedure": "Verify that print stylesheet unlocks full layout hierarchy, removes 520px height cap, overflow clipping, and pan transforms for multi-page print/PDF output.",
       "observation": {
+        "layoutHierarchyUnlocked": true,
         "viewportMaxHeightNone": true,
         "viewportOverflowVisible": true,
         "canvasTransformNone": true,
+        "tallDiagramPaginationEnabled": true,
         "pageBreakInsideAvoid": true
       },
       "status": "pass"

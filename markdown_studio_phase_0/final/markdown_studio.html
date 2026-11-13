@@ -1661,22 +1661,50 @@
 
   /* Print Stylesheet for PDF Export */
   @media print {
-    body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+    html, body {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      display: block !important;
+      background: #fff !important;
+      color: #000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
     .app-header, .tabbar-container, .format-toolbar, .find-replace-bar, .toc-drawer, .pane-editor, .split-resizer, .statusbar, .modal-overlay, .pane-header, .workspace-empty-state, .error-log-drawer {
       display: none !important;
     }
-    .workspace { overflow: visible !important; height: auto !important; }
-    .pane-preview { display: flex !important; width: 100% !important; overflow: visible !important; }
-    .preview-content { max-width: 100% !important; padding: 0 !important; }
+    .workspace, .pane-preview, .preview-content {
+      display: block !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: visible !important;
+      flex: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
     .mermaid-header, .diag-action-btn, .mermaid-actions { display: none !important; }
     .mermaid-block-card {
+      display: block !important;
+      background: transparent !important;
       border: none !important;
       box-shadow: none !important;
+      overflow: visible !important;
+      break-inside: auto !important;
+      page-break-inside: auto !important;
+      margin: 0 !important;
+    }
+    .mermaid-error-card, pre, blockquote {
       break-inside: avoid !important;
       page-break-inside: avoid !important;
-      margin: 1.5em 0 !important;
     }
     .mermaid-viewport {
+      min-height: 0 !important;
       max-height: none !important;
       height: auto !important;
       overflow: visible !important;

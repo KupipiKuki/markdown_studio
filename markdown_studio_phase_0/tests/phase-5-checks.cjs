@@ -774,17 +774,25 @@ try {
   assert(printCss.includes('transform: none !important') || printCss.includes('transform:none !important'),
     'Print CSS must set transform: none on .mermaid-canvas to eliminate pan/zoom clipping');
 
-  // Check .mermaid-block-card page-break rules
+  // Check html, body, .workspace, .pane-preview, .preview-content unlocking in print CSS
+  assert(printCss.includes('html, body'), 'Print CSS must unlock html, body');
+  assert(printCss.includes('.workspace, .pane-preview, .preview-content'), 'Print CSS must unlock .workspace, .pane-preview, .preview-content');
+
+  // Check .mermaid-block-card page-break and overflow rules for multi-page tall diagrams
   assert(printCss.includes('.mermaid-block-card'), 'Print CSS must contain .mermaid-block-card rules');
+  assert(printCss.includes('break-inside: auto !important') && printCss.includes('page-break-inside: auto !important'),
+    'Print CSS must allow tall diagrams to paginate cleanly across pages with break-inside: auto');
   assert(printCss.includes('break-inside: avoid') || printCss.includes('page-break-inside: avoid'),
-    'Print CSS must prevent awkward diagram splits across pages with break-inside: avoid');
+    'Print CSS must prevent awkward splits on atomic blocks with break-inside: avoid');
 
   record('P5-05', ['R13'], 'Print CSS Diagram Height & Overflow Uncapped',
-    'Verify that print stylesheet removes 520px height cap, overflow clipping, and pan transforms for print/PDF output.',
+    'Verify that print stylesheet unlocks full layout hierarchy, removes 520px height cap, overflow clipping, and pan transforms for multi-page print/PDF output.',
     {
+      layoutHierarchyUnlocked: true,
       viewportMaxHeightNone: true,
       viewportOverflowVisible: true,
       canvasTransformNone: true,
+      tallDiagramPaginationEnabled: true,
       pageBreakInsideAvoid: true
     }
   );
