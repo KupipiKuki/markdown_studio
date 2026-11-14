@@ -2585,9 +2585,13 @@
   // Custom Marked Renderer
   const customRenderer = new marked.Renderer();
 
+  function isMermaidLanguage(lang) {
+    return typeof lang === 'string' && /^mermaid(?:\s.*)?$/.test(lang.trim());
+  }
+
   let renderedDiagramCounter = 0;
   customRenderer.code = function(code, language) {
-    if (language === 'mermaid') {
+    if (isMermaidLanguage(language)) {
       const diagramIndex = renderedDiagramCounter++;
       const cleanCode = code.trim();
       return `
@@ -2608,10 +2612,9 @@
               <button class="diag-action-btn" data-action="export-png" title="Export as PNG">PNG</button>
             </div>
           </div>
+          <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
           <div class="mermaid-viewport" data-zoom="1" data-pan-x="0" data-pan-y="0">
-            <div class="mermaid-canvas">
-              <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
-            </div>
+            <div class="mermaid-canvas"></div>
           </div>
         </div>
       `;
@@ -2696,10 +2699,36 @@
     drawer.style.display = shouldOpen ? 'flex' : 'none';
   }
 
-  window.copyErrorText = function(text) {
+  function copyToClipboard(text, successToast = 'Copied to clipboard!') {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => showToast('Error details copied to clipboard'));
+      navigator.clipboard.writeText(text)
+        .then(() => showToast(successToast))
+        .catch(err => {
+          showToast('Clipboard copy failed: ' + (err && err.message ? err.message : 'Permission denied'));
+        });
+    } else {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (success) {
+          showToast(successToast);
+        } else {
+          showToast('Clipboard copy unavailable in this environment');
+        }
+      } catch (e) {
+        showToast('Clipboard copy unavailable in this environment');
+      }
     }
+  }
+
+  window.copyErrorText = function(text) {
+    copyToClipboard(text, 'Error details copied to clipboard');
   };
 
   function renderErrorLogUI() {
@@ -2744,7 +2773,6 @@
           const sourceClass = (item.source || '').toLowerCase();
           const countPill = item.count > 1 ? `<span style="background:var(--bg-panel); border:1px solid var(--border); border-radius:999px; padding:0 5px; font-size:10px; font-weight:700; margin-left:4px;">×${item.count}</span>` : '';
           const escapedSnippet = item.snippet ? escapeHtml(item.snippet.slice(0, 120)) + (item.snippet.length > 120 ? '...' : '') : '';
-          const copyMsg = item.message.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
           return `
             <div class="error-log-row" data-id="${item.id}">
               <span class="error-log-time">${escapeHtml(item.time)}</span>
@@ -2753,8 +2781,8 @@
                 <span>${escapeHtml(item.message)}</span>${countPill}
                 ${escapedSnippet ? `<div style="opacity:0.75; font-size:10.5px; margin-top:2px; font-family:var(--font-mono);">${escapedSnippet}</div>` : ''}
               </div>
-              <button class="error-log-copy-btn" onclick="copyErrorText('${copyMsg}')" title="Copy Error Message">📋</button>
-              <button class="error-log-dismiss-btn" onclick="dismissError('${item.id}')" title="Dismiss">✕</button>
+              <button class="error-log-copy-btn" data-error-id="${item.id}" title="Copy Error Message">📋</button>
+              <button class="error-log-dismiss-btn" data-error-id="${item.id}" title="Dismiss">✕</button>
             </div>
           `;
         }).join('');
@@ -2807,6 +2835,22 @@
   // --------------------------------------------------------------------------
   let renderDebounceTimer = null;
 
+  function getCardMermaidCode(card) {
+    if (!card) return '';
+    if (card.dataset && card.dataset.mermaidCode) {
+      try {
+        return decodeURIComponent(card.dataset.mermaidCode).trim();
+      } catch (e) {
+        // Fallback to DOM element
+      }
+    }
+    const rawEl = card.querySelector('.mermaid-raw-code');
+    if (rawEl && rawEl.textContent) {
+      return rawEl.textContent.trim();
+    }
+    return '';
+  }
+
   async function renderAllPreviewDiagrams() {
     if (typeof mermaid === 'undefined') return;
     const theme = getMermaidTheme();
@@ -2814,10 +2858,8 @@
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
       const canvas = card.querySelector('.mermaid-canvas');
-      const rawCodeEl = card.querySelector('.mermaid-raw-code');
-      if (!canvas || !rawCodeEl) continue;
-
-      const code = rawCodeEl.textContent.trim();
+      const code = getCardMermaidCode(card);
+      if (!canvas || !code) continue;
       const uniqueId = 'mmd-' + uid();
       const cardIndex = card.dataset.diagramIndex ? parseInt(card.dataset.diagramIndex, 10) + 1 : 1;
 
@@ -2973,7 +3015,7 @@
         btn.onclick = (e) => {
           e.stopPropagation();
           const action = btn.dataset.action;
-          const rawCode = card.querySelector('.mermaid-raw-code') ? card.querySelector('.mermaid-raw-code').textContent.trim() : '';
+          const rawCode = getCardMermaidCode(card);
 
           if (action === 'zoom-in') {
             zoom = Math.min(zoom * 1.25, 5.0);
@@ -3000,6 +3042,14 @@
           }
         };
       });
+      card.onclick = (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest('[data-action="edit-diagram"]') : null;
+        if (!btn || (btn.classList && btn.classList.contains('diag-action-btn'))) return;
+        if (e.stopPropagation) e.stopPropagation();
+        const rawCode = getCardMermaidCode(card);
+        const index = parseInt(card.dataset.diagramIndex, 10);
+        openStudioWithCode(rawCode, Number.isNaN(index) ? 0 : index);
+      };
     });
   }
 
@@ -4542,29 +4592,210 @@
   };
 
   // Insert or Replace into active Markdown document
+  function getMermaidSpans(markdown) {
+    const spans = [];
+    const newline = markdown.includes('\r\n') ? '\r\n' : '\n';
+    const docLines = markdown.split(/\r?\n/);
+    const tokens = (typeof marked !== 'undefined' && marked.lexer)
+      ? marked.lexer(markdown.replace(/\r\n/g, '\n'))
+      : [];
+
+    function lineAtOffset(text, offset) {
+      let line = 0;
+      for (let i = 0; i < offset && i < text.length; i++) {
+        if (text[i] === '\n') line++;
+      }
+      return line;
+    }
+
+    function charOffsetOfLine(lines, lineIdx) {
+      let off = 0;
+      for (let l = 0; l < lineIdx && l < lines.length; l++) {
+        off += lines[l].length + newline.length;
+      }
+      return off;
+    }
+
+    function recordSpan(charStart, charEnd, startLine, endLine, rawSpan, code, lang) {
+      const firstLine = (docLines[startLine] || '').replace(/\r$/, '');
+      const bqMatch = firstLine.match(/^[ \t]*(?:>[ \t]?)+/);
+      const listMatch = !bqMatch ? firstLine.match(/^[ \t]*(?:[-*+]|\d+\.)[ \t]+/) : null;
+      const linePrefix = bqMatch ? bqMatch[0] : (listMatch ? listMatch[0] : '');
+      const rest = firstLine.slice(linePrefix.length);
+
+      const fenceMatch = rest.match(/^([ \t]{0,3})(([`~])\3{2,})([^\n]*)$/);
+      let indent = '';
+      let fence = '```';
+      let infoRaw = lang ? (lang.startsWith('mermaid') ? lang : 'mermaid') : 'mermaid';
+
+      if (fenceMatch) {
+        indent = fenceMatch[1];
+        fence = fenceMatch[2];
+        infoRaw = fenceMatch[4];
+      }
+
+      spans.push({
+        diagramIndex: spans.length,
+        start: charStart,
+        end: charEnd,
+        raw: rawSpan,
+        code,
+        lang,
+        fence,
+        indent,
+        linePrefix,
+        infoRaw,
+        endsWithNewline: rawSpan.endsWith('\n') || rawSpan.endsWith('\r\n')
+      });
+    }
+
+    function walkTopLevel(tokenList) {
+      let topOffset = 0;
+      const normalizedMarkdown = markdown.replace(/\r\n/g, '\n');
+      for (const token of tokenList) {
+        const startLine = lineAtOffset(normalizedMarkdown, topOffset);
+        const tokenLines = token.raw.split('\n');
+        const tokenLineCount = token.raw.endsWith('\n') ? tokenLines.length - 1 : tokenLines.length;
+        const endLine = startLine + tokenLineCount;
+
+        if (token.type === 'code' && isMermaidLanguage(token.lang)) {
+          const startChar = charOffsetOfLine(docLines, startLine);
+          const endChar = endLine < docLines.length ? charOffsetOfLine(docLines, endLine) : markdown.length;
+          const rawSpan = markdown.slice(startChar, endChar);
+          recordSpan(startChar, endChar, startLine, endLine, rawSpan, token.text, token.lang);
+        } else if (token.type === 'blockquote' && token.tokens) {
+          walkBlockquote(token, startLine);
+        } else if (token.type === 'list' && token.items) {
+          walkList(token, startLine);
+        }
+        topOffset += token.raw.length;
+      }
+    }
+
+    function walkBlockquote(bqToken, bqDocStartLine) {
+      let innerOffset = 0;
+      for (const inner of bqToken.tokens) {
+        const innerStartLine = lineAtOffset(bqToken.text, innerOffset);
+        const innerLines = inner.raw.split('\n');
+        const innerLineCount = inner.raw.endsWith('\n') ? innerLines.length - 1 : innerLines.length;
+        const docStartLine = bqDocStartLine + innerStartLine;
+        const docEndLine = docStartLine + innerLineCount;
+
+        if (inner.type === 'code' && isMermaidLanguage(inner.lang)) {
+          const startChar = charOffsetOfLine(docLines, docStartLine);
+          const endChar = docEndLine < docLines.length ? charOffsetOfLine(docLines, docEndLine) : markdown.length;
+
+          const rawSpan = markdown.slice(startChar, endChar);
+          recordSpan(startChar, endChar, docStartLine, docEndLine, rawSpan, inner.text, inner.lang);
+        } else if (inner.type === 'blockquote' && inner.tokens) {
+          walkBlockquote(inner, docStartLine);
+        } else if (inner.type === 'list' && inner.items) {
+          walkList(inner, docStartLine);
+        }
+        innerOffset += inner.raw.length;
+      }
+    }
+
+    function walkList(listToken, listDocStartLine) {
+      let itemLineIdx = listDocStartLine;
+      for (const item of listToken.items) {
+        const itemLines = item.raw.split('\n');
+        const itemLineCount = item.raw.endsWith('\n') ? itemLines.length - 1 : itemLines.length;
+        if (item.tokens) {
+          let innerOffset = 0;
+          for (const token of item.tokens) {
+            const innerStartLine = lineAtOffset(item.text, innerOffset);
+            const tokenLines = token.raw.split('\n');
+            const tokenLineCount = token.raw.endsWith('\n') ? tokenLines.length - 1 : tokenLines.length;
+            const startLine = itemLineIdx + innerStartLine;
+            const endLine = startLine + tokenLineCount;
+
+            if (token.type === 'code' && isMermaidLanguage(token.lang)) {
+              const startChar = charOffsetOfLine(docLines, startLine);
+              const endChar = endLine < docLines.length ? charOffsetOfLine(docLines, endLine) : markdown.length;
+              const rawSpan = markdown.slice(startChar, endChar);
+              recordSpan(startChar, endChar, startLine, endLine, rawSpan, token.text, token.lang);
+            } else if (token.type === 'blockquote' && token.tokens) {
+              walkBlockquote(token, startLine);
+            }
+            innerOffset += token.raw.length;
+          }
+        }
+        itemLineIdx += itemLineCount;
+      }
+    }
+
+    walkTopLevel(tokens);
+    return spans;
+  }
+
+  function replaceDiagramSource(markdown, targetIndex, newCode) {
+    const spans = getMermaidSpans(markdown);
+    const target = spans.find(s => s.diagramIndex === targetIndex);
+    const newline = markdown.includes('\r\n') ? '\r\n' : '\n';
+
+    if (!target) {
+      const fenced = `${newline}\`\`\`mermaid${newline}${newCode.trim()}${newline}\`\`\`${newline}`;
+      return markdown + fenced;
+    }
+
+    const cleanCode = newCode.trim();
+    const codeLines = cleanCode ? cleanCode.split(/\r?\n/) : [];
+    const prefix = target.linePrefix || '';
+    const indent = target.indent || '';
+    const fence = target.fence || '```';
+    const infoRaw = target.infoRaw !== undefined ? target.infoRaw : 'mermaid';
+
+    const isListPrefix = /^([ \t]*(?:[-*+]|\d+\.)[ \t]+)/.test(prefix);
+    const subsequentPrefix = isListPrefix ? ' '.repeat(prefix.length) : prefix;
+
+    const replacementLines = [];
+    replacementLines.push(`${prefix}${indent}${fence}${infoRaw}`);
+    for (const line of codeLines) {
+      replacementLines.push(`${subsequentPrefix}${line}`);
+    }
+    replacementLines.push(`${subsequentPrefix}${indent}${fence}`);
+    if (target.endsWithNewline) {
+      replacementLines.push('');
+    }
+
+    const replacementText = replacementLines.join(newline);
+    return markdown.slice(0, target.start) + replacementText + markdown.slice(target.end);
+  }
+
   btnBuilderInsert.onclick = () => {
     const code = builderCodeInput.value.trim();
     const fenced = `\n\`\`\`mermaid\n${code}\n\`\`\`\n`;
 
     if (activeEditingDiagramIndex !== null) {
-      // Replace existing diagram block by finding corresponding ```mermaid block
-      const fullText = editorEl.value;
-      const mermaidRegex = /```mermaid[\s\S]*?```/g;
-      let match;
-      let currentIndex = 0;
-      let replaced = false;
+      if (typeof marked !== 'undefined' && marked.lexer) {
+        editorEl.value = replaceDiagramSource(editorEl.value, activeEditingDiagramIndex, code);
+      } else {
+        // Fallback regex path for environments without marked
+        const fullText = editorEl.value;
+        const mermaidFenceRegex = /(?:^|\n)([ \t]{0,3})(([`~])\3{2,})[ \t]*mermaid\b[^\n]*\n([\s\S]*?)\n[ \t]*\2[~`]*[ \t]*(?=\n|$)/g;
+        let match;
+        let currentIndex = 0;
+        let replaced = false;
 
-      while ((match = mermaidRegex.exec(fullText)) !== null) {
-        if (currentIndex === activeEditingDiagramIndex) {
-          editorEl.value = fullText.substring(0, match.index) + `\`\`\`mermaid\n${code}\n\`\`\`` + fullText.substring(match.index + match[0].length);
-          replaced = true;
-          break;
+        while ((match = mermaidFenceRegex.exec(fullText)) !== null) {
+          if (currentIndex === activeEditingDiagramIndex) {
+            const leadingNewline = match[0].startsWith('\n');
+            const matchStart = leadingNewline ? match.index + 1 : match.index;
+            const matchEnd = match.index + match[0].length;
+            const indent = match[1] || '';
+            const fence = match[2];
+            const replacement = `${indent}${fence}mermaid\n${code}\n${indent}${fence}`;
+            editorEl.value = fullText.substring(0, matchStart) + replacement + fullText.substring(matchEnd);
+            replaced = true;
+            break;
+          }
+          currentIndex++;
         }
-        currentIndex++;
-      }
 
-      if (!replaced) {
-        wrapSelection(fenced, '');
+        if (!replaced) {
+          wrapSelection(fenced, '');
+        }
       }
     } else {
       wrapSelection(fenced, '');
@@ -5231,6 +5462,25 @@ ${previewContent}
       openFileNativeOrFallback();
     }
   });
+
+  const errorLogListEl = document.getElementById('errorLogList');
+  if (errorLogListEl) {
+    errorLogListEl.addEventListener('click', (e) => {
+      const target = e.target;
+      const copyBtn = target && target.closest ? target.closest('.error-log-copy-btn') : null;
+      if (copyBtn) {
+        const errorId = copyBtn.dataset.errorId;
+        const item = errorLogs.find(x => x.id === errorId);
+        if (item) copyToClipboard(item.message, 'Error details copied to clipboard');
+        return;
+      }
+      const dismissBtn = target && target.closest ? target.closest('.error-log-dismiss-btn') : null;
+      if (dismissBtn) {
+        const errorId = dismissBtn.dataset.errorId;
+        window.dismissError(errorId);
+      }
+    });
+  }
 
   checkPendingTransfers();
   updatePreview();
