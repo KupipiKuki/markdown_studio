@@ -45,7 +45,7 @@ In response to the Phase 6 Independent Audit (`reports/phase_6_independent_audit
    - *Remediation*:
      - Each browser now writes all screenshots, count files, and retained sample exports into its own browser-specific directory `evidence/phase-0/g0-capture/artifacts/<browser>/` (`chromium/`, `edge/`, `chrome/`, `firefox/`), so every file on disk matches its manifest byte size 100%.
      - All 16 built-in template fixtures (`G0-FIX-template-*`) are verified in both Preview (`svgCards: 1, errorCards: 0`) and Diagram Studio (`studioSvgCards: 1, studioErrorCards: 0, bothViewsVerified: true`), with paired screenshots (`<id>.png` and `<id>-studio.png`).
-     - All 111 controls (`G0-CTL-C001`..`C111`) set up prerequisite UI state and programmatically assert their post-condition (`behavioralVerified: true`), eliminating all `"manual-review"` deferrals.
+     - All 111 controls (`G0-CTL-C001`..`C111`) set up prerequisite UI state and programmatically assert concrete application post-conditions (`behavioralVerified: true`), eliminating all `"manual-review"` deferrals and unconditional event-dispatch passes. Specifically: `C014` (`label[for="fileInput"]`) triggers Playwright's `filechooser` event and loads a synthetic file; `C049` (`#findInput`) updates `#findMatchBadge` (`N matches`); `C052` (`#replaceInput`) drives `#btnReplace` to insert `ProbeReplaceTarget` into `#editor`; `C059` (`#editor`) updates `#previewContent` with rendered headings and Mermaid `<svg>`; `C072`–`C075` (`#builderTypeSelect`, `#builderTemplateSelect`, `#builderDirectionSelect`, `#builderThemeSelect`) update Studio template options/code, set `dataset.userChosen`, and re-render `#builderDiagramCanvas` `<svg>` markup; `C093` (`#builderCodeInput`) renders `ProbeA`/`ProbeB` in `#builderDiagramCanvas`; `C094`–`C096` (`#btnBuilderZoomOut`/`Reset`/`In`) and `C102`–`C104` (`#btnFsZoomOut`/`Reset`/`In`) assert directional percentage/scale/transform changes; and `C108`–`C109` (`#tableRowsInput`/`#tableColsInput`) drive `#btnConfirmTable` to insert 4-row/4-column Markdown tables.
 
 5. **A6-05 (Low) — Package Entry Points Updated (Verified Fixed)**:
    - `README.md` and `package.json` describe the Phase 6 remediation artifact, test runner scripts, and handoff deliverables.
@@ -61,24 +61,31 @@ The Phase 0 baseline is the original `index.html` @ commit `1042d77` (`11eaec36�
 - **Final**: `final/markdown_studio.html`, SHA-256 `d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e`, 5,467 lines, 203,302 bytes (LF). Byte-identical to `working/markdown_studio.html` (LF).
 - **Patch**: `reports/markdown_studio.patch`, SHA-256 `237b3edc9552f0dce296d9034f752e4060f57fa0a14630660b10ca5340893c8e`, 46 hunks, +1,431/−281 lines (2,236 lines, 91,068 bytes LF). Validated 2026-11-13: applying all 46 hunks to the pristine baseline reconstructs byte-identical `final/markdown_studio.html` (`d1b2f6f3…`).
 - **Environments tested**: Node v24.20.0, win32 x64; 4-browser headed matrix:
-  - Chromium `158.0.8127.18`: `manifest-chromium-both-2026-11-13T11-19-20-178Z.json` (`155 pass, 0 fail, 0 blocked`)
-  - Edge `157.0.4341.46`: `manifest-edge-both-2026-11-13T11-04-56-543Z.json` (`155 pass, 0 fail, 0 blocked`)
-  - Chrome `157.0.8103.78`: `manifest-chrome-both-2026-11-13T11-12-07-500Z.json` (`155 pass, 0 fail, 0 blocked`)
-  - Firefox `159.0`: `manifest-firefox-both-2026-11-13T10-57-55-984Z.json` (`154 pass, 0 fail, 1 blocked` — `G5-PRINT-PDF-TALL` blocked per CDP unavailability)
+  - Chromium `158.0.8127.18`: `manifest-chromium-both-2026-11-13T23-57-15-202Z.json` (`155 pass, 0 fail, 0 blocked`)
+  - Edge `157.0.4341.46`: `manifest-edge-both-2026-11-14T01-42-19-093Z.json` (`155 pass, 0 fail, 0 blocked`)
+  - Chrome `157.0.8103.78`: `manifest-chrome-both-2026-11-14T01-51-49-385Z.json` (`155 pass, 0 fail, 0 blocked`)
+  - Firefox `159.0`: `manifest-firefox-both-2026-11-14T02-01-14-172Z.json` (`154 pass, 0 fail, 1 blocked` — `G5-PRINT-PDF-TALL` blocked per CDP unavailability; deferral accepted per Plan §§3, 8–9)
 
 ## Gate results and browser/control coverage (final)
 
-| Gate | Mock suite (re-run 2026-11-13 on `d1b2f6f3…`) | Browser matrix (2026-11-13 on `d1b2f6f3…`) | Result |
+| Gate | Mock suite (re-run 2026-11-13 on `d1b2f6f3…`) | Browser matrix (2026-11-13/14 on `d1b2f6f3…`) | Result |
 | --- | --- | --- | --- |
 | G0 | B00 pass; B01, B03, B04, B05, B09, B10, B11, B12 reproduced | 155 stop points × 4 browsers; 111/111 controls `behavioralVerified: true` | **PASS** — 619 pass, 0 fail, 1 environment-blocked (Firefox CDP PDF), 0 unrun |
 | G1 | P1-01..P1-07: 7/7 | G1 stop points in matrix + Chromium battery | **PASS** |
 | G2 | P2-01..P2-03: 3/3 | G2-* stop points 4/4 browsers | **PASS** |
 | G3 | P3-01..P3-03: 3/3 | G3-* stop points + 16 templates in both views 4/4 browsers | **PASS** |
 | G4 | P4-01..P4-06: 6/6 | G4-* stop points 4/4 browsers | **PASS** |
-| G5 | P5-01..P5-05: 5/5 | G5-EXPORT-STANDALONE, G5-EXPORT-DIAGRAM-FILES, G5-EXPORT-PNG-FAILURE 4/4 pass; G5-PRINT-PDF-TALL 3/3 Chromium-family pass (3-page PDF, Steps 0–25) + 1 Firefox blocked (DOM print layout verified) | **PASS** |
-| G6 | baseline + P1–P5: 24/24 phase checks + B00 on `d1b2f6f3…`; patch byte-for-byte validation | matrix evidence attached to the same frozen hash (`d1b2f6f3…`); per-browser retained files inspected | **PASS** — Gate G6 closed |
+| G5 | P5-01..P5-05: 5/5 | G5-EXPORT-STANDALONE, G5-EXPORT-DIAGRAM-FILES, G5-EXPORT-PNG-FAILURE 4/4 pass; G5-PRINT-PDF-TALL 3/3 Chromium-family pass (3-page PDF, Steps 0–25) + 1 Firefox blocked (DOM print layout verified; paginated PDF deferral accepted) | **PASS (with accepted Firefox PDF deferral)** |
+| G6 | baseline + P1–P5: 24/24 phase checks + B00 on `d1b2f6f3…`; patch byte-for-byte validation | matrix evidence attached to the same frozen hash (`d1b2f6f3…`); per-browser retained files inspected | **PASS (with accepted Firefox PDF deferral)** — Gate G6 closed |
 
-Totals: **619/620 browser stop points passed, 1 environment-blocked (`G5-PRINT-PDF-TALL` in Firefox); 24/24 phase checks passed; 0 failed; 0 unrun** in the final matrix.
+Totals: **619/620 browser stop points passed, 1 environment-blocked (`G5-PRINT-PDF-TALL` in Firefox, deferral formally accepted); 24/24 phase checks passed; 0 failed; 0 unrun** in the final matrix.
+
+## Accepted Deferrals & Remaining Limitations (Plan §§3, 8–9)
+
+1. **Firefox Automated Paginated PDF Capture (`G5-PRINT-PDF-TALL`) — Formally Accepted Deferral**:
+   - **Blocker**: Playwright's Firefox automation protocol (`159.0`) does not implement `page.pdf()` or CDP `Page.printToPDF`, so automated PDF byte generation cannot execute in Firefox and the stop point remains recorded as `blocked` (never `pass`).
+   - **Mitigation & Coverage**: Firefox's `@media print` DOM layout on `tall.md` was verified directly under print media emulation (`all26StepsVisible: true`, `svgRenderedHeight: 2176`, `overflow: visible`, `break-inside: auto`, `max-height: none`). Full 3-page PDF pagination (`Step 0`–`Step 25` unclipped across 3 pages) was verified via stream/CMap extraction and visual raster inspection across all three primary Chromium-family browsers (Edge, Chrome, Chromium), which share identical `@media print` rules.
+   - **Impact & Acceptance**: Plan §3 designates Edge and Chrome on Windows as primary targets and Firefox as a secondary compatibility check. Because Firefox's print DOM layout is verified unclipped and primary browsers' paginated PDFs are visually verified, the residual risk is limited to Gecko-specific page-break pagination heuristics when printing multi-page diagrams. This environment-only automation deferral is formally accepted.
 
 ## Per-Browser Retained Sample Files & Artifacts
 
@@ -95,7 +102,7 @@ Stored under `evidence/phase-0/g0-capture/artifacts/<browser>/` for `chromium`, 
 - Final source: `final/markdown_studio.html` (`d1b2f6f3…`); active candidate `working/markdown_studio.html` (identical bytes, LF).
 - Unified patch: `reports/markdown_studio.patch` (`237b3edc…`).
 - Code diff report: `reports/code_diff_report.md`.
-- Independent audits: `reports/phase_6_independent_audit.md`, `reports/phase_6_independent_reaudit_03366ba.md`.
+- Independent audits: `reports/phase_6_independent_audit.md`, `reports/phase_6_independent_reaudit_03366ba.md`, `reports/phase_6_independent_reaudit_b2ff632.md`.
 - QA/QC re-audit verification: `reports/qaqc_phase6_reaudit_verification.md`.
 - Remediation audit: `reports/remediation_audit.md`.
 - Evidence index: `evidence/index.md`; checksums: `evidence/checksums.sha256`.

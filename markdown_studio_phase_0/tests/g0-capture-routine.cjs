@@ -528,6 +528,25 @@ async function runBrowser() {
           continue;
         }
 
+        // File-picker label (C014): click the label and verify the OS filechooser opens and loads into #fileInput.
+        if (rec.controlSpec && rec.controlSpec.tag === 'label' && a['for'] === 'fileInput') {
+          const synth = path.join(browserArtDir, 'synthetic-upload-label.md');
+          fs.mkdirSync(path.dirname(synth), { recursive: true });
+          fs.writeFileSync(synth, '# QAQC label upload\n\n```mermaid\nflowchart TD\n  L1 --> L2\n```\n');
+          const tabsBefore = await page.evaluate(() => document.querySelectorAll('.tab').length);
+          const [chooser] = await Promise.all([
+            page.waitForEvent('filechooser'),
+            page.click('label[for="fileInput"]')
+          ]);
+          await chooser.setFiles(synth);
+          await page.waitForTimeout(800);
+          const after = await page.evaluate(() => ({ tabs: document.querySelectorAll('.tab').length, editorHead: document.getElementById('editor').value.slice(0, 40) }));
+          await shoot(page, rec);
+          const ok = after.tabs > tabsBefore || after.editorHead.includes('QAQC label upload');
+          await finish(rec, ok ? 'pass' : 'fail', { tabsBefore, ...after, fileChooserTriggered: true, behavioralVerified: ok });
+          continue;
+        }
+
         const key = a['data-action'] !== undefined ? 'data-action' : a['data-template'] !== undefined ? 'data-template' : a['data-insert'] !== undefined ? 'data-insert' : null;
         const probe = { cid: rec.control, id: a.id || null, forAttr: a['for'] || null, key, val: key ? a[key] : null };
 
@@ -560,9 +579,9 @@ async function runBrowser() {
             document.getElementById('btnToggleFind')?.click();
             const fi = document.getElementById('findInput');
             const ri = document.getElementById('replaceInput');
-            if (fi) { fi.value = 'Mermaid'; fi.dispatchEvent(new Event('input', { bubbles: true })); }
-            if (ri) { ri.value = 'ReplacedMermaid'; ri.dispatchEvent(new Event('input', { bubbles: true })); }
-            if (o.id === 'btnReplace') document.getElementById('btnFindNext')?.click();
+            if (o.id !== 'findInput' && fi) { fi.value = 'Mermaid'; fi.dispatchEvent(new Event('input', { bubbles: true })); }
+            if (o.id !== 'replaceInput' && ri) { ri.value = 'ReplacedMermaid'; ri.dispatchEvent(new Event('input', { bubbles: true })); }
+            if (o.id === 'btnReplace' || o.id === 'replaceInput') document.getElementById('btnFindNext')?.click();
             setupState = 'findBarOpenedPrerequisite';
           } else if (o.id === 'btnCloseToc') {
             document.getElementById('btnToggleToc')?.click();
@@ -580,12 +599,19 @@ async function runBrowser() {
             if (o.id === 'btnBuilderFormat') {
               const b = document.getElementById('builderCodeInput');
               if (b) b.value = 'flowchart TD\n    A --> B\n\n\n\n';
+            } else if (o.id === 'btnBuilderZoomReset') {
+              document.getElementById('btnBuilderZoomIn')?.click();
+              await new Promise(r => setTimeout(r, 100));
             }
             setupState = 'studioOpenedPrerequisite';
           } else if (cidNum >= 102 && cidNum <= 107) {
             const fsBtn = document.querySelector('#previewContent .mermaid-block-card [data-action="fullscreen"]');
             if (fsBtn) fsBtn.click();
             await new Promise(r => setTimeout(r, 200));
+            if (o.id === 'btnFsZoomReset') {
+              document.getElementById('btnFsZoomIn')?.click();
+              await new Promise(r => setTimeout(r, 100));
+            }
             setupState = 'fullscreenModalOpenedPrerequisite';
           } else if (cidNum >= 108 && cidNum <= 111) {
             document.querySelector('.format-toolbar [data-action="table"]')?.click();
@@ -603,9 +629,16 @@ async function runBrowser() {
 
           const editorEl = document.getElementById('editor');
           const builderEl = document.getElementById('builderCodeInput');
+          const parseScale = (t) => {
+            const m = String(t || '').match(/scale\(([\d.]+)\)/);
+            return m ? parseFloat(m[1]) : 1;
+          };
           const beforeState = {
             editorVal: editorEl ? editorEl.value : '',
             builderVal: builderEl ? builderEl.value : '',
+            builderSvgHtml: document.getElementById('builderDiagramCanvas')?.innerHTML || '',
+            builderTemplateOpts: [...(document.getElementById('builderTemplateSelect')?.options || [])].map(x => x.value).join(','),
+            findCount: document.getElementById('findMatchBadge')?.textContent || '',
             tabs: document.querySelectorAll('.tab').length,
             theme: document.documentElement.getAttribute('data-theme') || 'light',
             editorHidden: document.getElementById('paneEditor')?.style.display === 'none',
@@ -620,7 +653,10 @@ async function runBrowser() {
             fsOpen: document.getElementById('fsModal')?.classList.contains('open'),
             tableOpen: document.getElementById('tableModal')?.classList.contains('open'),
             builderZoom: document.getElementById('btnBuilderZoomReset')?.textContent || '',
+            builderZoomPct: parseInt(document.getElementById('btnBuilderZoomReset')?.textContent || '0', 10),
+            builderCanvasTransform: document.getElementById('builderDiagramCanvas')?.style.transform || '',
             fsZoom: document.getElementById('fsCanvas')?.style.transform || '',
+            fsScale: parseScale(document.getElementById('fsCanvas')?.style.transform),
             printCalls: window.__printCalls || 0
           };
 
@@ -632,9 +668,21 @@ async function runBrowser() {
             el.dispatchEvent(new Event('change', { bubbles: true }));
             executed = 'select->next option';
           } else if (el.tagName === 'INPUT') {
-            el.value = el.type === 'number' ? '4' : 'Mermaid';
-            el.dispatchEvent(new Event('input', { bubbles: true }));
-            executed = 'set value + input event';
+            if (o.id === 'replaceInput') {
+              el.value = 'ProbeReplaceTarget';
+              el.dispatchEvent(new Event('input', { bubbles: true }));
+              document.getElementById('btnReplace')?.click();
+              executed = 'set replaceInput + verify replace action';
+            } else if (o.id === 'tableRowsInput' || o.id === 'tableColsInput') {
+              el.value = '4';
+              el.dispatchEvent(new Event('input', { bubbles: true }));
+              document.getElementById('btnConfirmTable')?.click();
+              executed = 'set ' + o.id + '=4 + confirm table';
+            } else {
+              el.value = el.type === 'number' ? '4' : 'Mermaid';
+              el.dispatchEvent(new Event('input', { bubbles: true }));
+              executed = 'set value + input event';
+            }
           } else if (el.tagName === 'TEXTAREA') {
             el.focus();
             el.value = el.id === 'builderCodeInput' ? 'flowchart LR\n  ProbeA --> ProbeB' : '# Probe Heading\n\n```mermaid\nflowchart TD\n  P1 --> P2\n```\n';
@@ -654,6 +702,14 @@ async function runBrowser() {
           const afterState = {
             editorVal: editorEl ? editorEl.value : '',
             builderVal: builderEl ? builderEl.value : '',
+            builderSvgHtml: document.getElementById('builderDiagramCanvas')?.innerHTML || '',
+            builderStageText: document.getElementById('builderDiagramCanvas')?.textContent || '',
+            builderTemplateOpts: [...(document.getElementById('builderTemplateSelect')?.options || [])].map(x => x.value).join(','),
+            builderThemeChosen: document.getElementById('builderThemeSelect')?.dataset.userChosen === 'true',
+            findCount: document.getElementById('findMatchBadge')?.textContent || '',
+            editorSelLen: editorEl ? (editorEl.selectionEnd - editorEl.selectionStart) : 0,
+            previewText: document.getElementById('previewContent')?.textContent || '',
+            previewSvgCount: document.querySelectorAll('#previewContent .mermaid-block-card svg').length,
             tabs: document.querySelectorAll('.tab').length,
             theme: document.documentElement.getAttribute('data-theme') || 'light',
             editorHidden: document.getElementById('paneEditor')?.style.display === 'none',
@@ -670,18 +726,36 @@ async function runBrowser() {
             quickMenuOpen: document.getElementById('quickDiagramDropdown')?.classList.contains('open'),
             exportMenuOpen: document.getElementById('exportDropdown')?.classList.contains('open'),
             builderZoom: document.getElementById('btnBuilderZoomReset')?.textContent || '',
+            builderZoomPct: parseInt(document.getElementById('btnBuilderZoomReset')?.textContent || '0', 10),
+            builderCanvasTransform: document.getElementById('builderDiagramCanvas')?.style.transform || '',
             fsZoom: document.getElementById('fsCanvas')?.style.transform || '',
+            fsScale: parseScale(document.getElementById('fsCanvas')?.style.transform),
             printCalls: window.__printCalls || 0,
             downloadsCount: (window.__capturedDownloads || []).length - downloadsBefore,
             clipboardWritten: window.__lastClipboardWrite !== null && window.__lastClipboardWrite.length > 0
           };
 
           let behavioralVerified = false;
-          if (el.tagName === 'LABEL' && o.forAttr) {
-            const targetInput = document.getElementById(o.forAttr);
-            behavioralVerified = !!(targetInput && targetInput.type === 'file');
-          } else if (el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            behavioralVerified = true;
+          if (o.id === 'findInput') {
+            behavioralVerified = afterState.findCount !== beforeState.findCount && /^[1-9]\d*\s+matches$/.test(afterState.findCount);
+          } else if (o.id === 'replaceInput') {
+            behavioralVerified = afterState.editorVal.includes('ProbeReplaceTarget');
+          } else if (o.id === 'editor') {
+            behavioralVerified = afterState.previewText.includes('Probe Heading') && afterState.previewSvgCount > 0;
+          } else if (o.id === 'builderTypeSelect') {
+            behavioralVerified = afterState.builderTemplateOpts !== beforeState.builderTemplateOpts && afterState.builderVal !== beforeState.builderVal && afterState.builderSvgHtml !== beforeState.builderSvgHtml;
+          } else if (o.id === 'builderTemplateSelect') {
+            behavioralVerified = afterState.builderVal !== beforeState.builderVal && afterState.builderSvgHtml !== beforeState.builderSvgHtml;
+          } else if (o.id === 'builderDirectionSelect') {
+            behavioralVerified = afterState.builderVal !== beforeState.builderVal && afterState.builderSvgHtml !== beforeState.builderSvgHtml;
+          } else if (o.id === 'builderThemeSelect') {
+            behavioralVerified = afterState.builderThemeChosen === true && afterState.builderSvgHtml.includes('<svg') && afterState.builderSvgHtml !== beforeState.builderSvgHtml;
+          } else if (o.id === 'builderCodeInput') {
+            behavioralVerified = afterState.builderStageText.includes('ProbeA') && afterState.builderStageText.includes('ProbeB');
+          } else if (o.id === 'tableRowsInput') {
+            behavioralVerified = afterState.editorVal.includes('| Cell 4,1 |');
+          } else if (o.id === 'tableColsInput') {
+            behavioralVerified = afterState.editorVal.includes('| Header 4 |');
           } else if (o.id === 'btnOpenStudio') {
             behavioralVerified = afterState.studioOpen === true;
           } else if (o.id === 'btnQuickDiagram') {
@@ -726,12 +800,20 @@ async function runBrowser() {
             behavioralVerified = !afterState.studioOpen;
           } else if (o.id === 'btnBuilderFormat' || o.key === 'data-insert') {
             behavioralVerified = afterState.builderVal !== beforeState.builderVal;
-          } else if (o.id === 'btnBuilderZoomOut' || o.id === 'btnBuilderZoomIn' || o.id === 'btnBuilderZoomReset') {
-            behavioralVerified = afterState.builderZoom.endsWith('%');
+          } else if (o.id === 'btnBuilderZoomOut') {
+            behavioralVerified = afterState.builderZoom.endsWith('%') && afterState.builderZoomPct < beforeState.builderZoomPct && afterState.builderCanvasTransform !== beforeState.builderCanvasTransform;
+          } else if (o.id === 'btnBuilderZoomIn') {
+            behavioralVerified = afterState.builderZoom.endsWith('%') && afterState.builderZoomPct > beforeState.builderZoomPct && afterState.builderCanvasTransform !== beforeState.builderCanvasTransform;
+          } else if (o.id === 'btnBuilderZoomReset') {
+            behavioralVerified = afterState.builderZoom.endsWith('%') && afterState.builderZoomPct !== beforeState.builderZoomPct && afterState.builderCanvasTransform !== beforeState.builderCanvasTransform;
           } else if (o.id === 'btnBuilderInsert') {
             behavioralVerified = !afterState.studioOpen && afterState.editorVal.length > 0;
-          } else if (o.id === 'btnFsZoomOut' || o.id === 'btnFsZoomIn' || o.id === 'btnFsZoomReset') {
-            behavioralVerified = afterState.fsZoom.includes('scale');
+          } else if (o.id === 'btnFsZoomOut') {
+            behavioralVerified = afterState.fsZoom.includes('scale') && afterState.fsScale < beforeState.fsScale;
+          } else if (o.id === 'btnFsZoomIn') {
+            behavioralVerified = afterState.fsZoom.includes('scale') && afterState.fsScale > beforeState.fsScale;
+          } else if (o.id === 'btnFsZoomReset') {
+            behavioralVerified = afterState.fsZoom.includes('scale') && beforeState.fsScale > 1 && afterState.fsScale === 1;
           } else if (o.id === 'btnCloseFsModal') {
             behavioralVerified = !afterState.fsOpen;
           } else if (o.id === 'btnCancelTable') {

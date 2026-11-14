@@ -31,10 +31,10 @@
 ## G0 Capture Matrix (All Phases' Browser Stop Points)
 - `phase-0/g0-capture/manifest.json` and `stop-points.md`: stop-point definitions (155 stop points across G0–G5).
 - `phase-0/g0-capture/runs/`: run-stamped manifests and per-run console logs for all 4 browsers on frozen candidate `d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e`:
-  - `manifest-chromium-both-2026-11-13T11-19-20-178Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-edge-both-2026-11-13T11-04-56-543Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-chrome-both-2026-11-13T11-12-07-500Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-firefox-both-2026-11-13T10-57-55-984Z.json` (154 pass, 0 fail, 1 blocked — `G5-PRINT-PDF-TALL` blocked per CDP `Page.printToPDF` unavailability)
+  - `manifest-chromium-both-2026-11-13T23-57-15-202Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-edge-both-2026-11-14T01-42-19-093Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-chrome-both-2026-11-14T01-51-49-385Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-firefox-both-2026-11-14T02-01-14-172Z.json` (154 pass, 0 fail, 1 blocked — `G5-PRINT-PDF-TALL` blocked per CDP `Page.printToPDF` unavailability; deferral accepted)
 - `phase-0/g0-capture/artifacts/<browser>/`: per-browser screenshots, counts, and retained sample files (`chromium/`, `edge/`, `chrome/`, `firefox/`):
   - `export-standalone-sample.html`: Reopened and verified rendered MathJax and Mermaid SVGs.
   - `export-standalone-empty.html`: Reopened and verified clean empty document export.
@@ -47,7 +47,7 @@
 - `../final/markdown_studio.html`: frozen final candidate, SHA-256 `d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e` (LF), 5,467 lines — byte-identical to `../working/markdown_studio.html` (LF).
 - `../reports/markdown_studio.patch`: unified patch `a/baseline/markdown_studio.original.html` → `b/final/markdown_studio.html`, SHA-256 `237b3edc9552f0dce296d9034f752e4060f57fa0a14630660b10ca5340893c8e`, 46 hunks, +1,431/−281 lines. Validated: applying all 46 hunks reconstructs `final/markdown_studio.html` byte-for-byte.
 - `../reports/code_diff_report.md`: final diff report — statistics, per-change R/D/A6 table, dependency statement, patch-application proof.
-- `../reports/phase_6_independent_audit.md` and `../reports/phase_6_independent_reaudit_03366ba.md`: independent audit reports defining findings A6-01 through A6-05.
+- `../reports/phase_6_independent_audit.md`, `../reports/phase_6_independent_reaudit_03366ba.md`, and `../reports/phase_6_independent_reaudit_b2ff632.md`: independent audit reports defining findings A6-01 through A6-05 and re-audit closure items.
 - `../reports/qaqc_phase6_reaudit_verification.md`: QA/QC remediation and verification report for the Phase 6 re-audit.
 - `../reports/remediation_audit.md`: final audit — resolution of all findings A6-01..A6-05, phase log (all gates passed), coverage counts, deliverables.
 - `checksums.sha256`: package content checksums covering all deliverables and artifacts.

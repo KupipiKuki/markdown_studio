@@ -45,7 +45,7 @@
 - **Remediation**:
   1. `tests/g0-capture-routine.cjs` now writes all screenshots, count files, and retained sample files under `evidence/phase-0/g0-capture/artifacts/<browser>/` (`chromium/`, `edge/`, `chrome/`, `firefox/`). On-disk byte sizes match manifest byte sizes 100% across all 4 browsers.
   2. All 16 built-in template stop points (`G0-FIX-template-*`) now verify rendering in both Preview (`svgCards: 1, errorCards: 0`) and Diagram Studio (`studioSvgCards: 1, studioErrorCards: 0, bothViewsVerified: true`) and retain paired screenshots (`<id>.png` and `<id>-studio.png`).
-  3. All 111 control stop points (`G0-CTL-C001`..`C111`) set up prerequisite UI state and programmatically assert their post-conditions (`behavioralVerified: true`), with zero `"manual-review"` deferrals.
+  3. All 111 control stop points (`G0-CTL-C001`..`C111`) set up prerequisite UI state and programmatically assert concrete application post-conditions (`behavioralVerified: true`), with zero `"manual-review"` deferrals and zero unconditional event-dispatch passes. Following `reports/phase_6_independent_reaudit_b2ff632.md`, `C014` (`label[for="fileInput"]`) verifies real `filechooser` file loading; `C049` (`#findInput`) verifies `#findMatchBadge` match counts; `C052` (`#replaceInput`) drives `#btnReplace` to update `#editor`; `C059` (`#editor`) verifies `#previewContent` heading + SVG rendering; `C072`–`C075` (`#builderTypeSelect`, `#builderTemplateSelect`, `#builderDirectionSelect`, `#builderThemeSelect`) verify Studio template/code updates, `dataset.userChosen`, and `#builderDiagramCanvas` SVG re-rendering; `C093` (`#builderCodeInput`) verifies `ProbeA`/`ProbeB` SVG output; `C094`–`C096` and `C102`–`C104` verify directional zoom percentage/scale/transform changes; and `C108`–`C109` drive `#btnConfirmTable` to insert 4-row/4-column tables.
 
 ---
 
@@ -63,7 +63,11 @@
 
 | Browser | Version | Run Manifest | Pass | Fail | Blocked | Unrun | Retained PDF (`G5-PRINT-PDF-TALL`) |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Chromium** | `158.0.8127.18` | `manifest-chromium-both-2026-11-13T11-19-20-178Z.json` | **155** | 0 | 0 | 0 | `artifacts/chromium/print-tall-diagram.pdf` (28,093 B, 3 pages, 26/26 steps) |
-| **Edge** (`msedge`) | `157.0.4341.46` | `manifest-edge-both-2026-11-13T11-04-56-543Z.json` | **155** | 0 | 0 | 0 | `artifacts/edge/print-tall-diagram.pdf` (28,107 B, 3 pages, 26/26 steps) |
-| **Chrome** (`chrome`) | `157.0.8103.78` | `manifest-chrome-both-2026-11-13T11-12-07-500Z.json` | **155** | 0 | 0 | 0 | `artifacts/chrome/print-tall-diagram.pdf` (28,093 B, 3 pages, 26/26 steps) |
-| **Firefox** | `159.0` | `manifest-firefox-both-2026-11-13T10-57-55-984Z.json` | **154** | 0 | **1** | 0 | Marked `blocked` (CDP unsupported; 26/26 steps verified in `@media print` DOM) |
+| **Chromium** | `158.0.8127.18` | `manifest-chromium-both-2026-11-13T23-57-15-202Z.json` | **155** | 0 | 0 | 0 | `artifacts/chromium/print-tall-diagram.pdf` (28,093 B, 3 pages, 26/26 steps) |
+| **Edge** (`msedge`) | `157.0.4341.46` | `manifest-edge-both-2026-11-14T01-42-19-093Z.json` | **155** | 0 | 0 | 0 | `artifacts/edge/print-tall-diagram.pdf` (28,107 B, 3 pages, 26/26 steps) |
+| **Chrome** (`chrome`) | `157.0.8103.78` | `manifest-chrome-both-2026-11-14T01-51-49-385Z.json` | **155** | 0 | 0 | 0 | `artifacts/chrome/print-tall-diagram.pdf` (28,093 B, 3 pages, 26/26 steps) |
+| **Firefox** | `159.0` | `manifest-firefox-both-2026-11-14T02-01-14-172Z.json` | **154** | 0 | **1** | 0 | Marked `blocked` (CDP unsupported; 26/26 steps verified in `@media print` DOM; deferral accepted) |
+
+### 2.3 Accepted Deferral: Firefox Automated Paginated PDF (`G5-PRINT-PDF-TALL`)
+- **Reason**: Playwright Firefox (`159.0`) does not support `page.pdf()` / CDP `Page.printToPDF`, so automated PDF generation cannot run in Firefox and `G5-PRINT-PDF-TALL` remains `blocked`.
+- **Mitigation & Impact**: Firefox's `@media print` DOM layout was verified directly (`all26StepsVisible: true`, `svgRenderedHeight: 2176`, `overflow: visible`, `break-inside: auto`), and 3-page PDF pagination (`Step 0`–`Step 25`) was verified visually and via stream/CMap extraction across Edge, Chrome, and Chromium. Per Plan §§3 and 8–9 (which designate Firefox as a secondary compatibility check), this environment-only automation deferral is formally accepted with low residual risk (limited to Gecko-specific page-break placement).
