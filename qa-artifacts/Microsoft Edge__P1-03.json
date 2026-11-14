@@ -1,0 +1,7 @@
+{
+  "browser": "Microsoft Edge",
+  "testId": "P1-03",
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-14T23:41:17.095Z",
+  "markdownAfterInsert": "Para one\n\n```mermaid\nflowchart TD\n  A --> D\n```\n\nPara two\n\n```mermaid\nflowchart LR\n  X --> Y\n```\n\nEnd"
+}
