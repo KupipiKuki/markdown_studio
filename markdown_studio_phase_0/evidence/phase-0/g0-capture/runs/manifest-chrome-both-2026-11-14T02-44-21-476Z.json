@@ -3,13 +3,13 @@
   "candidateSha256": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateSha256LfNormalized": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateNote": "candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.",
-  "generatedAt": "2026-11-14T01:42:19.093Z",
+  "generatedAt": "2026-11-14T02:44:21.476Z",
   "environment": {
     "platform": "win32",
     "arch": "x64",
     "node": "v24.20.0",
-    "browserRequested": "edge (channel msedge)",
-    "browserVersion": "chromium channel=msedge 157.0.4341.46",
+    "browserRequested": "chrome (channel chrome)",
+    "browserVersion": "chromium channel=chrome 157.0.8103.78",
     "headed": true,
     "origin": "both",
     "dryRun": false,
@@ -48,9 +48,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-LAUNCH-FILE.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-LAUNCH-FILE.png"
       ],
-      "timestamp": "2026-11-14T01:33:27.409Z"
+      "timestamp": "2026-11-14T02:36:22.013Z"
     },
     {
       "id": "G0-LAUNCH-HTTP",
@@ -76,9 +76,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-LAUNCH-HTTP.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-LAUNCH-HTTP.png"
       ],
-      "timestamp": "2026-11-14T01:33:29.643Z"
+      "timestamp": "2026-11-14T02:36:23.797Z"
     },
     {
       "id": "G0-FIX-invalid",
@@ -99,10 +99,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-invalid.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-invalid-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-invalid.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-invalid-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:31.717Z"
+      "timestamp": "2026-11-14T02:36:25.653Z"
     },
     {
       "id": "G0-FIX-labels",
@@ -123,10 +123,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-labels.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-labels-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:34.258Z"
+      "timestamp": "2026-11-14T02:36:27.700Z"
     },
     {
       "id": "G0-FIX-long-labels",
@@ -147,10 +147,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-long-labels.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-long-labels-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-long-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-long-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:36.332Z"
+      "timestamp": "2026-11-14T02:36:29.564Z"
     },
     {
       "id": "G0-FIX-mixed-fences",
@@ -171,10 +171,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-mixed-fences.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-mixed-fences-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-mixed-fences.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-mixed-fences-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:38.604Z"
+      "timestamp": "2026-11-14T02:36:31.395Z"
     },
     {
       "id": "G0-FIX-mixed",
@@ -195,10 +195,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-mixed.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-mixed-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-mixed.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-mixed-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:40.644Z"
+      "timestamp": "2026-11-14T02:36:33.004Z"
     },
     {
       "id": "G0-FIX-multi",
@@ -219,10 +219,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-multi.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-multi-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-multi.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-multi-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:43.060Z"
+      "timestamp": "2026-11-14T02:36:34.976Z"
     },
     {
       "id": "G0-FIX-nested",
@@ -243,10 +243,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-nested.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-nested-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-nested.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-nested-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:45.176Z"
+      "timestamp": "2026-11-14T02:36:36.964Z"
     },
     {
       "id": "G0-FIX-outer-fence",
@@ -267,10 +267,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-outer-fence.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-outer-fence-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-outer-fence.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-outer-fence-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:47.019Z"
+      "timestamp": "2026-11-14T02:36:38.556Z"
     },
     {
       "id": "G0-FIX-tall",
@@ -291,10 +291,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-tall.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-tall-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-tall.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-tall-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:49.688Z"
+      "timestamp": "2026-11-14T02:36:40.576Z"
     },
     {
       "id": "G0-FIX-template-architecture-default",
@@ -320,11 +320,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-architecture-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-architecture-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-architecture-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-architecture-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-architecture-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-architecture-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:52.490Z"
+      "timestamp": "2026-11-14T02:36:43.062Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-default",
@@ -350,11 +350,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:55.691Z"
+      "timestamp": "2026-11-14T02:36:45.617Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-pattern",
@@ -380,11 +380,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-pattern.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-pattern-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-classDiagram-pattern-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-pattern.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-pattern-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-classDiagram-pattern-counts.json"
       ],
-      "timestamp": "2026-11-14T01:33:58.680Z"
+      "timestamp": "2026-11-14T02:36:48.012Z"
     },
     {
       "id": "G0-FIX-template-erDiagram-default",
@@ -410,11 +410,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-erDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-erDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-erDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-erDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-erDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-erDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:01.427Z"
+      "timestamp": "2026-11-14T02:36:50.447Z"
     },
     {
       "id": "G0-FIX-template-flowchart-decision",
@@ -440,11 +440,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-decision.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-decision-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-decision-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-decision.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-decision-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-decision-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:04.344Z"
+      "timestamp": "2026-11-14T02:36:53.616Z"
     },
     {
       "id": "G0-FIX-template-flowchart-default",
@@ -470,11 +470,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:07.067Z"
+      "timestamp": "2026-11-14T02:36:56.528Z"
     },
     {
       "id": "G0-FIX-template-flowchart-microservices",
@@ -500,11 +500,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-microservices.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-microservices-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-flowchart-microservices-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-microservices.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-microservices-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-flowchart-microservices-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:09.807Z"
+      "timestamp": "2026-11-14T02:36:58.943Z"
     },
     {
       "id": "G0-FIX-template-gantt-default",
@@ -530,11 +530,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gantt-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gantt-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gantt-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gantt-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gantt-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gantt-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:12.803Z"
+      "timestamp": "2026-11-14T02:37:01.248Z"
     },
     {
       "id": "G0-FIX-template-gitGraph-default",
@@ -560,11 +560,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gitGraph-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gitGraph-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-gitGraph-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gitGraph-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gitGraph-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-gitGraph-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:16.245Z"
+      "timestamp": "2026-11-14T02:37:04.352Z"
     },
     {
       "id": "G0-FIX-template-journey-default",
@@ -590,11 +590,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-journey-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-journey-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-journey-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-journey-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-journey-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-journey-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:19.411Z"
+      "timestamp": "2026-11-14T02:37:07.852Z"
     },
     {
       "id": "G0-FIX-template-mindmap-default",
@@ -620,11 +620,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-mindmap-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-mindmap-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-mindmap-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-mindmap-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-mindmap-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-mindmap-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:24.850Z"
+      "timestamp": "2026-11-14T02:37:11.153Z"
     },
     {
       "id": "G0-FIX-template-pie-default",
@@ -650,11 +650,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-pie-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-pie-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-pie-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-pie-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-pie-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-pie-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:27.953Z"
+      "timestamp": "2026-11-14T02:37:14.824Z"
     },
     {
       "id": "G0-FIX-template-sequence-default",
@@ -680,11 +680,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:31.004Z"
+      "timestamp": "2026-11-14T02:37:17.472Z"
     },
     {
       "id": "G0-FIX-template-sequence-payment",
@@ -710,11 +710,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-payment.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-payment-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-sequence-payment-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-payment.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-payment-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-sequence-payment-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:34.127Z"
+      "timestamp": "2026-11-14T02:37:21.164Z"
     },
     {
       "id": "G0-FIX-template-stateDiagram-default",
@@ -740,11 +740,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-stateDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-stateDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-stateDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-stateDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-stateDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-stateDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:37.138Z"
+      "timestamp": "2026-11-14T02:37:23.685Z"
     },
     {
       "id": "G0-FIX-template-timeline-default",
@@ -770,11 +770,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-timeline-default.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-timeline-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-template-timeline-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-timeline-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-timeline-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-template-timeline-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:39.898Z"
+      "timestamp": "2026-11-14T02:37:26.469Z"
     },
     {
       "id": "G0-FIX-wide",
@@ -795,10 +795,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-wide.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-FIX-wide-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-wide.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-FIX-wide-counts.json"
       ],
-      "timestamp": "2026-11-14T01:34:42.145Z"
+      "timestamp": "2026-11-14T02:37:29.724Z"
     },
     {
       "id": "G0-CTL-C001",
@@ -833,9 +833,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C001.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C001.png"
       ],
-      "timestamp": "2026-11-14T01:34:44.918Z"
+      "timestamp": "2026-11-14T02:37:31.950Z"
     },
     {
       "id": "G0-CTL-C002",
@@ -870,9 +870,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C002.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C002.png"
       ],
-      "timestamp": "2026-11-14T01:34:47.856Z"
+      "timestamp": "2026-11-14T02:37:35.205Z"
     },
     {
       "id": "G0-CTL-C003",
@@ -906,9 +906,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C003.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C003.png"
       ],
-      "timestamp": "2026-11-14T01:34:50.363Z"
+      "timestamp": "2026-11-14T02:37:38.519Z"
     },
     {
       "id": "G0-CTL-C004",
@@ -942,9 +942,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C004.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C004.png"
       ],
-      "timestamp": "2026-11-14T01:34:52.791Z"
+      "timestamp": "2026-11-14T02:37:42.105Z"
     },
     {
       "id": "G0-CTL-C005",
@@ -978,9 +978,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C005.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C005.png"
       ],
-      "timestamp": "2026-11-14T01:34:55.504Z"
+      "timestamp": "2026-11-14T02:37:44.670Z"
     },
     {
       "id": "G0-CTL-C006",
@@ -1014,9 +1014,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C006.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C006.png"
       ],
-      "timestamp": "2026-11-14T01:34:57.985Z"
+      "timestamp": "2026-11-14T02:37:47.148Z"
     },
     {
       "id": "G0-CTL-C007",
@@ -1050,9 +1050,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C007.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C007.png"
       ],
-      "timestamp": "2026-11-14T01:35:00.902Z"
+      "timestamp": "2026-11-14T02:37:49.478Z"
     },
     {
       "id": "G0-CTL-C008",
@@ -1086,9 +1086,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C008.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C008.png"
       ],
-      "timestamp": "2026-11-14T01:35:03.404Z"
+      "timestamp": "2026-11-14T02:37:52.678Z"
     },
     {
       "id": "G0-CTL-C009",
@@ -1122,9 +1122,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C009.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C009.png"
       ],
-      "timestamp": "2026-11-14T01:35:05.951Z"
+      "timestamp": "2026-11-14T02:37:55.210Z"
     },
     {
       "id": "G0-CTL-C010",
@@ -1158,9 +1158,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C010.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C010.png"
       ],
-      "timestamp": "2026-11-14T01:35:08.804Z"
+      "timestamp": "2026-11-14T02:37:58.248Z"
     },
     {
       "id": "G0-CTL-C011",
@@ -1194,9 +1194,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C011.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C011.png"
       ],
-      "timestamp": "2026-11-14T01:35:12.283Z"
+      "timestamp": "2026-11-14T02:38:00.283Z"
     },
     {
       "id": "G0-CTL-C012",
@@ -1230,9 +1230,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C012.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C012.png"
       ],
-      "timestamp": "2026-11-14T01:35:14.787Z"
+      "timestamp": "2026-11-14T02:38:03.465Z"
     },
     {
       "id": "G0-CTL-C013",
@@ -1267,9 +1267,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C013.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C013.png"
       ],
-      "timestamp": "2026-11-14T01:35:17.661Z"
+      "timestamp": "2026-11-14T02:38:05.509Z"
     },
     {
       "id": "G0-CTL-C014",
@@ -1302,9 +1302,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C014.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C014.png"
       ],
-      "timestamp": "2026-11-14T01:35:21.459Z"
+      "timestamp": "2026-11-14T02:38:08.990Z"
     },
     {
       "id": "G0-CTL-C015",
@@ -1339,9 +1339,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C015.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C015.png"
       ],
-      "timestamp": "2026-11-14T01:35:25.612Z"
+      "timestamp": "2026-11-14T02:38:12.428Z"
     },
     {
       "id": "G0-CTL-C016",
@@ -1376,9 +1376,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C016.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C016.png"
       ],
-      "timestamp": "2026-11-14T01:35:29.491Z"
+      "timestamp": "2026-11-14T02:38:15.515Z"
     },
     {
       "id": "G0-CTL-C017",
@@ -1412,9 +1412,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C017.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C017.png"
       ],
-      "timestamp": "2026-11-14T01:35:33.079Z"
+      "timestamp": "2026-11-14T02:38:18.010Z"
     },
     {
       "id": "G0-CTL-C018",
@@ -1448,9 +1448,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C018.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C018.png"
       ],
-      "timestamp": "2026-11-14T01:35:36.210Z"
+      "timestamp": "2026-11-14T02:38:21.099Z"
     },
     {
       "id": "G0-CTL-C019",
@@ -1485,9 +1485,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C019.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C019.png"
       ],
-      "timestamp": "2026-11-14T01:35:39.876Z"
+      "timestamp": "2026-11-14T02:38:24.365Z"
     },
     {
       "id": "G0-CTL-C020",
@@ -1521,9 +1521,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C020.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C020.png"
       ],
-      "timestamp": "2026-11-14T01:35:43.189Z"
+      "timestamp": "2026-11-14T02:38:26.386Z"
     },
     {
       "id": "G0-CTL-C021",
@@ -1557,9 +1557,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C021.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C021.png"
       ],
-      "timestamp": "2026-11-14T01:35:46.497Z"
+      "timestamp": "2026-11-14T02:38:29.621Z"
     },
     {
       "id": "G0-CTL-C022",
@@ -1596,9 +1596,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C022.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C022.png"
       ],
-      "timestamp": "2026-11-14T01:35:50.358Z"
+      "timestamp": "2026-11-14T02:38:32.624Z"
     },
     {
       "id": "G0-CTL-C023",
@@ -1634,9 +1634,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C023.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C023.png"
       ],
-      "timestamp": "2026-11-14T01:35:53.877Z"
+      "timestamp": "2026-11-14T02:38:35.571Z"
     },
     {
       "id": "G0-CTL-C024",
@@ -1673,9 +1673,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C024.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C024.png"
       ],
-      "timestamp": "2026-11-14T01:35:56.355Z"
+      "timestamp": "2026-11-14T02:38:37.773Z"
     },
     {
       "id": "G0-CTL-C025",
@@ -1710,9 +1710,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C025.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C025.png"
       ],
-      "timestamp": "2026-11-14T01:35:59.799Z"
+      "timestamp": "2026-11-14T02:38:40.777Z"
     },
     {
       "id": "G0-CTL-C026",
@@ -1747,9 +1747,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C026.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C026.png"
       ],
-      "timestamp": "2026-11-14T01:36:03.345Z"
+      "timestamp": "2026-11-14T02:38:43.914Z"
     },
     {
       "id": "G0-CTL-C027",
@@ -1784,9 +1784,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C027.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C027.png"
       ],
-      "timestamp": "2026-11-14T01:36:07.016Z"
+      "timestamp": "2026-11-14T02:38:46.859Z"
     },
     {
       "id": "G0-CTL-C028",
@@ -1821,9 +1821,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C028.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C028.png"
       ],
-      "timestamp": "2026-11-14T01:36:10.668Z"
+      "timestamp": "2026-11-14T02:38:49.754Z"
     },
     {
       "id": "G0-CTL-C029",
@@ -1858,9 +1858,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C029.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C029.png"
       ],
-      "timestamp": "2026-11-14T01:36:14.170Z"
+      "timestamp": "2026-11-14T02:38:52.550Z"
     },
     {
       "id": "G0-CTL-C030",
@@ -1895,9 +1895,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C030.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C030.png"
       ],
-      "timestamp": "2026-11-14T01:36:17.783Z"
+      "timestamp": "2026-11-14T02:38:55.462Z"
     },
     {
       "id": "G0-CTL-C031",
@@ -1932,9 +1932,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C031.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C031.png"
       ],
-      "timestamp": "2026-11-14T01:36:21.701Z"
+      "timestamp": "2026-11-14T02:38:58.542Z"
     },
     {
       "id": "G0-CTL-C032",
@@ -1969,9 +1969,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C032.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C032.png"
       ],
-      "timestamp": "2026-11-14T01:36:24.623Z"
+      "timestamp": "2026-11-14T02:39:00.720Z"
     },
     {
       "id": "G0-CTL-C033",
@@ -2006,9 +2006,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C033.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C033.png"
       ],
-      "timestamp": "2026-11-14T01:36:28.537Z"
+      "timestamp": "2026-11-14T02:39:02.864Z"
     },
     {
       "id": "G0-CTL-C034",
@@ -2043,9 +2043,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C034.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C034.png"
       ],
-      "timestamp": "2026-11-14T01:36:31.215Z"
+      "timestamp": "2026-11-14T02:39:05.767Z"
     },
     {
       "id": "G0-CTL-C035",
@@ -2080,9 +2080,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C035.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C035.png"
       ],
-      "timestamp": "2026-11-14T01:36:34.937Z"
+      "timestamp": "2026-11-14T02:39:09.305Z"
     },
     {
       "id": "G0-CTL-C036",
@@ -2117,9 +2117,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C036.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C036.png"
       ],
-      "timestamp": "2026-11-14T01:36:38.444Z"
+      "timestamp": "2026-11-14T02:39:12.501Z"
     },
     {
       "id": "G0-CTL-C037",
@@ -2154,9 +2154,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C037.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C037.png"
       ],
-      "timestamp": "2026-11-14T01:36:41.223Z"
+      "timestamp": "2026-11-14T02:39:15.403Z"
     },
     {
       "id": "G0-CTL-C038",
@@ -2191,9 +2191,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C038.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C038.png"
       ],
-      "timestamp": "2026-11-14T01:36:44.037Z"
+      "timestamp": "2026-11-14T02:39:17.782Z"
     },
     {
       "id": "G0-CTL-C039",
@@ -2228,9 +2228,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C039.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C039.png"
       ],
-      "timestamp": "2026-11-14T01:36:47.846Z"
+      "timestamp": "2026-11-14T02:39:20.749Z"
     },
     {
       "id": "G0-CTL-C040",
@@ -2265,9 +2265,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C040.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C040.png"
       ],
-      "timestamp": "2026-11-14T01:36:50.265Z"
+      "timestamp": "2026-11-14T02:39:23.112Z"
     },
     {
       "id": "G0-CTL-C041",
@@ -2302,9 +2302,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C041.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C041.png"
       ],
-      "timestamp": "2026-11-14T01:36:53.650Z"
+      "timestamp": "2026-11-14T02:39:25.968Z"
     },
     {
       "id": "G0-CTL-C042",
@@ -2339,9 +2339,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C042.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C042.png"
       ],
-      "timestamp": "2026-11-14T01:36:56.502Z"
+      "timestamp": "2026-11-14T02:39:28.139Z"
     },
     {
       "id": "G0-CTL-C043",
@@ -2376,9 +2376,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C043.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C043.png"
       ],
-      "timestamp": "2026-11-14T01:36:59.849Z"
+      "timestamp": "2026-11-14T02:39:31.326Z"
     },
     {
       "id": "G0-CTL-C044",
@@ -2413,9 +2413,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C044.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C044.png"
       ],
-      "timestamp": "2026-11-14T01:37:02.386Z"
+      "timestamp": "2026-11-14T02:39:33.762Z"
     },
     {
       "id": "G0-CTL-C045",
@@ -2450,9 +2450,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C045.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C045.png"
       ],
-      "timestamp": "2026-11-14T01:37:06.204Z"
+      "timestamp": "2026-11-14T02:39:37.468Z"
     },
     {
       "id": "G0-CTL-C046",
@@ -2487,9 +2487,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C046.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C046.png"
       ],
-      "timestamp": "2026-11-14T01:37:08.983Z"
+      "timestamp": "2026-11-14T02:39:40.822Z"
     },
     {
       "id": "G0-CTL-C047",
@@ -2524,9 +2524,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C047.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C047.png"
       ],
-      "timestamp": "2026-11-14T01:37:13.062Z"
+      "timestamp": "2026-11-14T02:39:44.315Z"
     },
     {
       "id": "G0-CTL-C048",
@@ -2561,9 +2561,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C048.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C048.png"
       ],
-      "timestamp": "2026-11-14T01:37:16.437Z"
+      "timestamp": "2026-11-14T02:39:47.762Z"
     },
     {
       "id": "G0-CTL-C049",
@@ -2599,9 +2599,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C049.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C049.png"
       ],
-      "timestamp": "2026-11-14T01:37:20.014Z"
+      "timestamp": "2026-11-14T02:39:49.871Z"
     },
     {
       "id": "G0-CTL-C050",
@@ -2635,9 +2635,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C050.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C050.png"
       ],
-      "timestamp": "2026-11-14T01:37:22.844Z"
+      "timestamp": "2026-11-14T02:39:51.959Z"
     },
     {
       "id": "G0-CTL-C051",
@@ -2671,9 +2671,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C051.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C051.png"
       ],
-      "timestamp": "2026-11-14T01:37:26.362Z"
+      "timestamp": "2026-11-14T02:39:55.421Z"
     },
     {
       "id": "G0-CTL-C052",
@@ -2709,9 +2709,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C052.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C052.png"
       ],
-      "timestamp": "2026-11-14T01:37:29.774Z"
+      "timestamp": "2026-11-14T02:39:58.652Z"
     },
     {
       "id": "G0-CTL-C053",
@@ -2745,9 +2745,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C053.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C053.png"
       ],
-      "timestamp": "2026-11-14T01:37:33.328Z"
+      "timestamp": "2026-11-14T02:40:00.762Z"
     },
     {
       "id": "G0-CTL-C054",
@@ -2781,9 +2781,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C054.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C054.png"
       ],
-      "timestamp": "2026-11-14T01:37:35.949Z"
+      "timestamp": "2026-11-14T02:40:04.238Z"
     },
     {
       "id": "G0-CTL-C055",
@@ -2818,9 +2818,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C055.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C055.png"
       ],
-      "timestamp": "2026-11-14T01:37:39.567Z"
+      "timestamp": "2026-11-14T02:40:06.477Z"
     },
     {
       "id": "G0-CTL-C056",
@@ -2854,9 +2854,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C056.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C056.png"
       ],
-      "timestamp": "2026-11-14T01:37:42.251Z"
+      "timestamp": "2026-11-14T02:40:09.331Z"
     },
     {
       "id": "G0-CTL-C057",
@@ -2892,9 +2892,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C057.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C057.png"
       ],
-      "timestamp": "2026-11-14T01:37:46.005Z"
+      "timestamp": "2026-11-14T02:40:12.490Z"
     },
     {
       "id": "G0-CTL-C058",
@@ -2929,9 +2929,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C058.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C058.png"
       ],
-      "timestamp": "2026-11-14T01:37:49.589Z"
+      "timestamp": "2026-11-14T02:40:14.993Z"
     },
     {
       "id": "G0-CTL-C059",
@@ -2966,9 +2966,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C059.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C059.png"
       ],
-      "timestamp": "2026-11-14T01:37:52.976Z"
+      "timestamp": "2026-11-14T02:40:17.925Z"
     },
     {
       "id": "G0-CTL-C060",
@@ -3003,9 +3003,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C060.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C060.png"
       ],
-      "timestamp": "2026-11-14T01:37:56.598Z"
+      "timestamp": "2026-11-14T02:40:20.000Z"
     },
     {
       "id": "G0-CTL-C061",
@@ -3041,9 +3041,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C061.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C061.png"
       ],
-      "timestamp": "2026-11-14T01:37:59.910Z"
+      "timestamp": "2026-11-14T02:40:22.264Z"
     },
     {
       "id": "G0-CTL-C062",
@@ -3078,9 +3078,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C062.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C062.png"
       ],
-      "timestamp": "2026-11-14T01:38:03.265Z"
+      "timestamp": "2026-11-14T02:40:24.768Z"
     },
     {
       "id": "G0-CTL-C063",
@@ -3115,9 +3115,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C063.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C063.png"
       ],
-      "timestamp": "2026-11-14T01:38:06.047Z"
+      "timestamp": "2026-11-14T02:40:28.131Z"
     },
     {
       "id": "G0-CTL-C064",
@@ -3151,9 +3151,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C064.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C064.png"
       ],
-      "timestamp": "2026-11-14T01:38:09.721Z"
+      "timestamp": "2026-11-14T02:40:30.335Z"
     },
     {
       "id": "G0-CTL-C065",
@@ -3187,9 +3187,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C065.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C065.png"
       ],
-      "timestamp": "2026-11-14T01:38:13.139Z"
+      "timestamp": "2026-11-14T02:40:33.312Z"
     },
     {
       "id": "G0-CTL-C066",
@@ -3223,9 +3223,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C066.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C066.png"
       ],
-      "timestamp": "2026-11-14T01:38:16.494Z"
+      "timestamp": "2026-11-14T02:40:36.877Z"
     },
     {
       "id": "G0-CTL-C067",
@@ -3260,9 +3260,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C067.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C067.png"
       ],
-      "timestamp": "2026-11-14T01:38:19.863Z"
+      "timestamp": "2026-11-14T02:40:41.206Z"
     },
     {
       "id": "G0-CTL-C068",
@@ -3297,9 +3297,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C068.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C068.png"
       ],
-      "timestamp": "2026-11-14T01:38:22.988Z"
+      "timestamp": "2026-11-14T02:40:44.232Z"
     },
     {
       "id": "G0-CTL-C069",
@@ -3335,9 +3335,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C069.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C069.png"
       ],
-      "timestamp": "2026-11-14T01:38:26.324Z"
+      "timestamp": "2026-11-14T02:40:47.945Z"
     },
     {
       "id": "G0-CTL-C070",
@@ -3373,9 +3373,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C070.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C070.png"
       ],
-      "timestamp": "2026-11-14T01:38:29.632Z"
+      "timestamp": "2026-11-14T02:40:50.887Z"
     },
     {
       "id": "G0-CTL-C071",
@@ -3410,9 +3410,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C071.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C071.png"
       ],
-      "timestamp": "2026-11-14T01:38:33.265Z"
+      "timestamp": "2026-11-14T02:40:54.767Z"
     },
     {
       "id": "G0-CTL-C072",
@@ -3446,9 +3446,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C072.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C072.png"
       ],
-      "timestamp": "2026-11-14T01:38:37.109Z"
+      "timestamp": "2026-11-14T02:40:58.148Z"
     },
     {
       "id": "G0-CTL-C073",
@@ -3482,9 +3482,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C073.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C073.png"
       ],
-      "timestamp": "2026-11-14T01:38:40.010Z"
+      "timestamp": "2026-11-14T02:41:01.366Z"
     },
     {
       "id": "G0-CTL-C074",
@@ -3518,9 +3518,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C074.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C074.png"
       ],
-      "timestamp": "2026-11-14T01:38:43.679Z"
+      "timestamp": "2026-11-14T02:41:04.799Z"
     },
     {
       "id": "G0-CTL-C075",
@@ -3554,9 +3554,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C075.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C075.png"
       ],
-      "timestamp": "2026-11-14T01:38:47.567Z"
+      "timestamp": "2026-11-14T02:41:07.505Z"
     },
     {
       "id": "G0-CTL-C076",
@@ -3591,9 +3591,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C076.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C076.png"
       ],
-      "timestamp": "2026-11-14T01:38:51.252Z"
+      "timestamp": "2026-11-14T02:41:11.577Z"
     },
     {
       "id": "G0-CTL-C077",
@@ -3627,9 +3627,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C077.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C077.png"
       ],
-      "timestamp": "2026-11-14T01:38:54.894Z"
+      "timestamp": "2026-11-14T02:41:14.346Z"
     },
     {
       "id": "G0-CTL-C078",
@@ -3663,9 +3663,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C078.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C078.png"
       ],
-      "timestamp": "2026-11-14T01:38:57.585Z"
+      "timestamp": "2026-11-14T02:41:17.748Z"
     },
     {
       "id": "G0-CTL-C079",
@@ -3699,9 +3699,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C079.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C079.png"
       ],
-      "timestamp": "2026-11-14T01:39:01.576Z"
+      "timestamp": "2026-11-14T02:41:21.791Z"
     },
     {
       "id": "G0-CTL-C080",
@@ -3735,9 +3735,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C080.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C080.png"
       ],
-      "timestamp": "2026-11-14T01:39:05.312Z"
+      "timestamp": "2026-11-14T02:41:25.136Z"
     },
     {
       "id": "G0-CTL-C081",
@@ -3771,9 +3771,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C081.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C081.png"
       ],
-      "timestamp": "2026-11-14T01:39:08.129Z"
+      "timestamp": "2026-11-14T02:41:28.328Z"
     },
     {
       "id": "G0-CTL-C082",
@@ -3807,9 +3807,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C082.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C082.png"
       ],
-      "timestamp": "2026-11-14T01:39:11.856Z"
+      "timestamp": "2026-11-14T02:41:31.519Z"
     },
     {
       "id": "G0-CTL-C083",
@@ -3843,9 +3843,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C083.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C083.png"
       ],
-      "timestamp": "2026-11-14T01:39:15.587Z"
+      "timestamp": "2026-11-14T02:41:34.698Z"
     },
     {
       "id": "G0-CTL-C084",
@@ -3879,9 +3879,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C084.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C084.png"
       ],
-      "timestamp": "2026-11-14T01:39:19.584Z"
+      "timestamp": "2026-11-14T02:41:37.463Z"
     },
     {
       "id": "G0-CTL-C085",
@@ -3915,9 +3915,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C085.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C085.png"
       ],
-      "timestamp": "2026-11-14T01:39:23.363Z"
+      "timestamp": "2026-11-14T02:41:41.137Z"
     },
     {
       "id": "G0-CTL-C086",
@@ -3951,9 +3951,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C086.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C086.png"
       ],
-      "timestamp": "2026-11-14T01:39:27.347Z"
+      "timestamp": "2026-11-14T02:41:44.610Z"
     },
     {
       "id": "G0-CTL-C087",
@@ -3987,9 +3987,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C087.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C087.png"
       ],
-      "timestamp": "2026-11-14T01:39:31.202Z"
+      "timestamp": "2026-11-14T02:41:47.808Z"
     },
     {
       "id": "G0-CTL-C088",
@@ -4023,9 +4023,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C088.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C088.png"
       ],
-      "timestamp": "2026-11-14T01:39:35.237Z"
+      "timestamp": "2026-11-14T02:41:51.183Z"
     },
     {
       "id": "G0-CTL-C089",
@@ -4059,9 +4059,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C089.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C089.png"
       ],
-      "timestamp": "2026-11-14T01:39:39.292Z"
+      "timestamp": "2026-11-14T02:41:55.135Z"
     },
     {
       "id": "G0-CTL-C090",
@@ -4095,9 +4095,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C090.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C090.png"
       ],
-      "timestamp": "2026-11-14T01:39:43.263Z"
+      "timestamp": "2026-11-14T02:41:58.695Z"
     },
     {
       "id": "G0-CTL-C091",
@@ -4132,9 +4132,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C091.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C091.png"
       ],
-      "timestamp": "2026-11-14T01:39:46.998Z"
+      "timestamp": "2026-11-14T02:42:01.737Z"
     },
     {
       "id": "G0-CTL-C092",
@@ -4169,9 +4169,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C092.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C092.png"
       ],
-      "timestamp": "2026-11-14T01:39:49.935Z"
+      "timestamp": "2026-11-14T02:42:04.977Z"
     },
     {
       "id": "G0-CTL-C093",
@@ -4206,9 +4206,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C093.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C093.png"
       ],
-      "timestamp": "2026-11-14T01:39:53.736Z"
+      "timestamp": "2026-11-14T02:42:08.372Z"
     },
     {
       "id": "G0-CTL-C094",
@@ -4243,9 +4243,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C094.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C094.png"
       ],
-      "timestamp": "2026-11-14T01:39:57.817Z"
+      "timestamp": "2026-11-14T02:42:12.377Z"
     },
     {
       "id": "G0-CTL-C095",
@@ -4280,9 +4280,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C095.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C095.png"
       ],
-      "timestamp": "2026-11-14T01:40:01.683Z"
+      "timestamp": "2026-11-14T02:42:16.213Z"
     },
     {
       "id": "G0-CTL-C096",
@@ -4317,9 +4317,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C096.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C096.png"
       ],
-      "timestamp": "2026-11-14T01:40:04.749Z"
+      "timestamp": "2026-11-14T02:42:19.604Z"
     },
     {
       "id": "G0-CTL-C097",
@@ -4353,9 +4353,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C097.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C097.png"
       ],
-      "timestamp": "2026-11-14T01:40:08.649Z"
+      "timestamp": "2026-11-14T02:42:22.958Z"
     },
     {
       "id": "G0-CTL-C098",
@@ -4389,9 +4389,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C098.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C098.png"
       ],
-      "timestamp": "2026-11-14T01:40:12.372Z"
+      "timestamp": "2026-11-14T02:42:26.630Z"
     },
     {
       "id": "G0-CTL-C099",
@@ -4425,9 +4425,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C099.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C099.png"
       ],
-      "timestamp": "2026-11-14T01:40:16.220Z"
+      "timestamp": "2026-11-14T02:42:29.990Z"
     },
     {
       "id": "G0-CTL-C100",
@@ -4461,9 +4461,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C100.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C100.png"
       ],
-      "timestamp": "2026-11-14T01:40:20.385Z"
+      "timestamp": "2026-11-14T02:42:33.787Z"
     },
     {
       "id": "G0-CTL-C101",
@@ -4497,9 +4497,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C101.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C101.png"
       ],
-      "timestamp": "2026-11-14T01:40:24.209Z"
+      "timestamp": "2026-11-14T02:42:37.433Z"
     },
     {
       "id": "G0-CTL-C102",
@@ -4533,9 +4533,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C102.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C102.png"
       ],
-      "timestamp": "2026-11-14T01:40:27.732Z"
+      "timestamp": "2026-11-14T02:42:39.689Z"
     },
     {
       "id": "G0-CTL-C103",
@@ -4569,9 +4569,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C103.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C103.png"
       ],
-      "timestamp": "2026-11-14T01:40:31.676Z"
+      "timestamp": "2026-11-14T02:42:43.407Z"
     },
     {
       "id": "G0-CTL-C104",
@@ -4605,9 +4605,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C104.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C104.png"
       ],
-      "timestamp": "2026-11-14T01:40:34.506Z"
+      "timestamp": "2026-11-14T02:42:46.920Z"
     },
     {
       "id": "G0-CTL-C105",
@@ -4641,9 +4641,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C105.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C105.png"
       ],
-      "timestamp": "2026-11-14T01:40:38.380Z"
+      "timestamp": "2026-11-14T02:42:50.325Z"
     },
     {
       "id": "G0-CTL-C106",
@@ -4677,9 +4677,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C106.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C106.png"
       ],
-      "timestamp": "2026-11-14T01:40:41.121Z"
+      "timestamp": "2026-11-14T02:42:52.857Z"
     },
     {
       "id": "G0-CTL-C107",
@@ -4713,9 +4713,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C107.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C107.png"
       ],
-      "timestamp": "2026-11-14T01:40:45.053Z"
+      "timestamp": "2026-11-14T02:42:56.356Z"
     },
     {
       "id": "G0-CTL-C108",
@@ -4753,9 +4753,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C108.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C108.png"
       ],
-      "timestamp": "2026-11-14T01:40:48.839Z"
+      "timestamp": "2026-11-14T02:42:59.747Z"
     },
     {
       "id": "G0-CTL-C109",
@@ -4793,9 +4793,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C109.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C109.png"
       ],
-      "timestamp": "2026-11-14T01:40:52.336Z"
+      "timestamp": "2026-11-14T02:43:03.465Z"
     },
     {
       "id": "G0-CTL-C110",
@@ -4829,9 +4829,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C110.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C110.png"
       ],
-      "timestamp": "2026-11-14T01:40:54.805Z"
+      "timestamp": "2026-11-14T02:43:05.526Z"
     },
     {
       "id": "G0-CTL-C111",
@@ -4865,9 +4865,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G0-CTL-C111.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G0-CTL-C111.png"
       ],
-      "timestamp": "2026-11-14T01:40:58.404Z"
+      "timestamp": "2026-11-14T02:43:07.878Z"
     },
     {
       "id": "G1-X1-ISOLATION-BROWSER",
@@ -4897,9 +4897,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G1-X1-ISOLATION-BROWSER.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G1-X1-ISOLATION-BROWSER.png"
       ],
-      "timestamp": "2026-11-14T01:41:03.166Z"
+      "timestamp": "2026-11-14T02:43:12.458Z"
     },
     {
       "id": "G1-X4-WELCOME-FULLPAGE",
@@ -4919,9 +4919,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G1-X4-WELCOME-FULLPAGE.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G1-X4-WELCOME-FULLPAGE.png"
       ],
-      "timestamp": "2026-11-14T01:41:06.037Z"
+      "timestamp": "2026-11-14T02:43:15.059Z"
     },
     {
       "id": "G1-CLIP-SUCCESS",
@@ -4944,9 +4944,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G1-CLIP-SUCCESS.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G1-CLIP-SUCCESS.png"
       ],
-      "timestamp": "2026-11-14T01:41:09.509Z"
+      "timestamp": "2026-11-14T02:43:17.940Z"
     },
     {
       "id": "G2-LISTENER-50",
@@ -4995,9 +4995,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G2-LISTENER-50.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G2-LISTENER-50.png"
       ],
-      "timestamp": "2026-11-14T01:41:20.764Z"
+      "timestamp": "2026-11-14T02:43:29.815Z"
     },
     {
       "id": "G2-RENDER-GEN",
@@ -5026,9 +5026,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G2-RENDER-GEN.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G2-RENDER-GEN.png"
       ],
-      "timestamp": "2026-11-14T01:41:26.628Z"
+      "timestamp": "2026-11-14T02:43:35.275Z"
     },
     {
       "id": "G3-FIT-TALL-WIDE",
@@ -5085,13 +5085,13 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-FIT-TALL-WIDE-tall-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-FIT-TALL-WIDE-tall-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-FIT-TALL-WIDE-wide-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-FIT-TALL-WIDE-wide-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-FIT-TALL-WIDE.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-FIT-TALL-WIDE-tall-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-FIT-TALL-WIDE-tall-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-FIT-TALL-WIDE-wide-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-FIT-TALL-WIDE-wide-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-FIT-TALL-WIDE.png"
       ],
-      "timestamp": "2026-11-14T01:41:32.465Z"
+      "timestamp": "2026-11-14T02:43:39.499Z"
     },
     {
       "id": "G3-THEME-ISOLATION-3X",
@@ -5132,9 +5132,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-THEME-ISOLATION-3X.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-THEME-ISOLATION-3X.png"
       ],
-      "timestamp": "2026-11-14T01:41:40.532Z"
+      "timestamp": "2026-11-14T02:43:46.581Z"
     },
     {
       "id": "G3-TYPOGRAPHY-LABELS",
@@ -5176,11 +5176,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-TYPOGRAPHY-LABELS-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-TYPOGRAPHY-LABELS-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-TYPOGRAPHY-LABELS.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-TYPOGRAPHY-LABELS-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-TYPOGRAPHY-LABELS-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-TYPOGRAPHY-LABELS.png"
       ],
-      "timestamp": "2026-11-14T01:41:45.311Z"
+      "timestamp": "2026-11-14T02:43:51.031Z"
     },
     {
       "id": "G3-RESIZE-VIEWPORT-REFIT",
@@ -5214,9 +5214,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G3-RESIZE-VIEWPORT-REFIT.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G3-RESIZE-VIEWPORT-REFIT.png"
       ],
-      "timestamp": "2026-11-14T01:41:50.034Z"
+      "timestamp": "2026-11-14T02:43:54.348Z"
     },
     {
       "id": "G4-INSERT-COMMANDS",
@@ -5250,9 +5250,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G4-INSERT-COMMANDS.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G4-INSERT-COMMANDS.png"
       ],
-      "timestamp": "2026-11-14T01:41:54.248Z"
+      "timestamp": "2026-11-14T02:43:58.357Z"
     },
     {
       "id": "G4-SHORTCUT-GUARDS",
@@ -5275,9 +5275,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G4-SHORTCUT-GUARDS.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G4-SHORTCUT-GUARDS.png"
       ],
-      "timestamp": "2026-11-14T01:41:57.951Z"
+      "timestamp": "2026-11-14T02:44:01.771Z"
     },
     {
       "id": "G4-PERSISTENCE-ROUNDTRIP",
@@ -5305,9 +5305,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G4-PERSISTENCE-ROUNDTRIP.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G4-PERSISTENCE-ROUNDTRIP.png"
       ],
-      "timestamp": "2026-11-14T01:42:03.019Z"
+      "timestamp": "2026-11-14T02:44:06.273Z"
     },
     {
       "id": "G5-EXPORT-STANDALONE",
@@ -5373,20 +5373,20 @@
           }
         },
         "retainedFiles": [
-          "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-sample.html",
-          "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-empty.html",
-          "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-invalid.html"
+          "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-sample.html",
+          "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-empty.html",
+          "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-invalid.html"
         ],
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-sample.html",
-        "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-empty.html",
-        "evidence/phase-0/g0-capture/artifacts/edge/export-standalone-invalid.html",
-        "evidence/phase-0/g0-capture/artifacts/edge/G5-EXPORT-STANDALONE.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-sample.html",
+        "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-empty.html",
+        "evidence/phase-0/g0-capture/artifacts/chrome/export-standalone-invalid.html",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G5-EXPORT-STANDALONE.png"
       ],
-      "timestamp": "2026-11-14T01:42:09.334Z"
+      "timestamp": "2026-11-14T02:44:12.029Z"
     },
     {
       "id": "G5-EXPORT-DIAGRAM-FILES",
@@ -5449,17 +5449,17 @@
           "abortedCleanly": true,
           "toast": "No rendered diagram found to export."
         },
-        "retainedSvg": "evidence/phase-0/g0-capture/artifacts/edge/export-diagram-sample.svg",
-        "retainedPng": "evidence/phase-0/g0-capture/artifacts/edge/export-diagram-sample.png",
+        "retainedSvg": "evidence/phase-0/g0-capture/artifacts/chrome/export-diagram-sample.svg",
+        "retainedPng": "evidence/phase-0/g0-capture/artifacts/chrome/export-diagram-sample.png",
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/export-diagram-sample.svg",
-        "evidence/phase-0/g0-capture/artifacts/edge/export-diagram-sample.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G5-EXPORT-DIAGRAM-FILES.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/export-diagram-sample.svg",
+        "evidence/phase-0/g0-capture/artifacts/chrome/export-diagram-sample.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G5-EXPORT-DIAGRAM-FILES.png"
       ],
-      "timestamp": "2026-11-14T01:42:12.998Z"
+      "timestamp": "2026-11-14T02:44:15.355Z"
     },
     {
       "id": "G5-EXPORT-PNG-FAILURE",
@@ -5486,9 +5486,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/G5-EXPORT-PNG-FAILURE.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/G5-EXPORT-PNG-FAILURE.png"
       ],
-      "timestamp": "2026-11-14T01:42:14.554Z"
+      "timestamp": "2026-11-14T02:44:17.764Z"
     },
     {
       "id": "G5-PRINT-PDF-TALL",
@@ -5517,7 +5517,7 @@
           "step0Top": 16,
           "step25Bottom": 2161
         },
-        "cdpPdfSize": 28107,
+        "cdpPdfSize": 28093,
         "cdpSuccess": true,
         "cdpBlocked": false,
         "cdpReason": null,
@@ -5554,16 +5554,16 @@
           "missingSteps": [],
           "foundCount": 26
         },
-        "retainedPdf": "evidence/phase-0/g0-capture/artifacts/edge/print-tall-diagram.pdf",
+        "retainedPdf": "evidence/phase-0/g0-capture/artifacts/chrome/print-tall-diagram.pdf",
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/edge/print-tall-diagram.pdf",
-        "evidence/phase-0/g0-capture/artifacts/edge/G5-PRINT-PDF-TALL-print-emulated.png",
-        "evidence/phase-0/g0-capture/artifacts/edge/G5-PRINT-PDF-TALL.png"
+        "evidence/phase-0/g0-capture/artifacts/chrome/print-tall-diagram.pdf",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G5-PRINT-PDF-TALL-print-emulated.png",
+        "evidence/phase-0/g0-capture/artifacts/chrome/G5-PRINT-PDF-TALL.png"
       ],
-      "timestamp": "2026-11-14T01:42:18.679Z"
+      "timestamp": "2026-11-14T02:44:21.297Z"
     }
   ]
 }

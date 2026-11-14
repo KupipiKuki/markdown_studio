@@ -555,8 +555,9 @@ async function runBrowser() {
           const cidNum = parseInt(String(o.cid).replace(/^C/, ''), 10);
           let setupState = 'default';
 
-          // Track downloads and prompts
+          // Track downloads, clipboard writes, and prompts per control
           const downloadsBefore = (window.__capturedDownloads || []).length;
+          window.__lastClipboardWrite = null;
           window.prompt = () => 'https://example.test/asset.svg';
 
           if (cidNum >= 3 && cidNum <= 12) {
@@ -576,6 +577,14 @@ async function runBrowser() {
             document.getElementById('btnToggleViewer')?.click();
             setupState = 'bothPanesHiddenPrerequisite';
           } else if (cidNum >= 49 && cidNum <= 55) {
+            const ed = document.getElementById('editor');
+            if (ed && (ed.value.match(/Mermaid/g) || []).length < 2) {
+              ed.value = 'Mermaid one and Mermaid two\n\n' + ed.value;
+              ed.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            if (ed && (o.id === 'btnFindPrev' || o.id === 'btnFindNext')) {
+              ed.setSelectionRange(0, 0);
+            }
             document.getElementById('btnToggleFind')?.click();
             const fi = document.getElementById('findInput');
             const ri = document.getElementById('replaceInput');
@@ -587,7 +596,18 @@ async function runBrowser() {
             document.getElementById('btnToggleToc')?.click();
             setupState = 'tocOpenedPrerequisite';
           } else if (o.id === 'btnClearErrorLog' || o.id === 'btnCloseErrorLog') {
-            if (typeof logError === 'function') logError('Synthetic QAQC control test error');
+            if (document.querySelectorAll('#errorLogList li, #errorLogList .error-log-row').length === 0) {
+              const ed = document.getElementById('editor');
+              if (ed) {
+                const orig = ed.value;
+                ed.value = '```mermaid\nflowchart TD\n  bad --->|\n```\n';
+                ed.dispatchEvent(new Event('input', { bubbles: true }));
+                await new Promise(r => setTimeout(r, 400));
+                ed.value = orig;
+                ed.dispatchEvent(new Event('input', { bubbles: true }));
+                await new Promise(r => setTimeout(r, 400));
+              }
+            }
             const errDrawer = document.getElementById('errorLogDrawer');
             if (errDrawer && errDrawer.style.display === 'none') {
               document.getElementById('statusErrorIndicator')?.click();
@@ -602,6 +622,13 @@ async function runBrowser() {
             } else if (o.id === 'btnBuilderZoomReset') {
               document.getElementById('btnBuilderZoomIn')?.click();
               await new Promise(r => setTimeout(r, 100));
+            } else if (o.id === 'btnBuilderInsert') {
+              const b = document.getElementById('builderCodeInput');
+              if (b) {
+                b.value = 'flowchart TD\n  StudioInsertA --> StudioInsertB';
+                b.dispatchEvent(new Event('input', { bubbles: true }));
+                await new Promise(r => setTimeout(r, 200));
+              }
             }
             setupState = 'studioOpenedPrerequisite';
           } else if (cidNum >= 102 && cidNum <= 107) {
@@ -635,6 +662,7 @@ async function runBrowser() {
           };
           const beforeState = {
             editorVal: editorEl ? editorEl.value : '',
+            editorSelLen: editorEl ? (editorEl.selectionEnd - editorEl.selectionStart) : 0,
             builderVal: builderEl ? builderEl.value : '',
             builderSvgHtml: document.getElementById('builderDiagramCanvas')?.innerHTML || '',
             builderTemplateOpts: [...(document.getElementById('builderTemplateSelect')?.options || [])].map(x => x.value).join(','),
@@ -732,14 +760,15 @@ async function runBrowser() {
             fsScale: parseScale(document.getElementById('fsCanvas')?.style.transform),
             printCalls: window.__printCalls || 0,
             downloadsCount: (window.__capturedDownloads || []).length - downloadsBefore,
-            clipboardWritten: window.__lastClipboardWrite !== null && window.__lastClipboardWrite.length > 0
+            clipboardWritten: window.__lastClipboardWrite !== null && window.__lastClipboardWrite.length > 0,
+            clipboardText: window.__lastClipboardWrite || ''
           };
 
           let behavioralVerified = false;
           if (o.id === 'findInput') {
             behavioralVerified = afterState.findCount !== beforeState.findCount && /^[1-9]\d*\s+matches$/.test(afterState.findCount);
           } else if (o.id === 'replaceInput') {
-            behavioralVerified = afterState.editorVal.includes('ProbeReplaceTarget');
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('ProbeReplaceTarget');
           } else if (o.id === 'editor') {
             behavioralVerified = afterState.previewText.includes('Probe Heading') && afterState.previewSvgCount > 0;
           } else if (o.id === 'builderTypeSelect') {
@@ -753,11 +782,11 @@ async function runBrowser() {
           } else if (o.id === 'builderCodeInput') {
             behavioralVerified = afterState.builderStageText.includes('ProbeA') && afterState.builderStageText.includes('ProbeB');
           } else if (o.id === 'tableRowsInput') {
-            behavioralVerified = afterState.editorVal.includes('| Cell 4,1 |');
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('| Cell 4,1 |');
           } else if (o.id === 'tableColsInput') {
-            behavioralVerified = afterState.editorVal.includes('| Header 4 |');
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('| Header 4 |');
           } else if (o.id === 'btnOpenStudio') {
-            behavioralVerified = afterState.studioOpen === true;
+            behavioralVerified = !beforeState.studioOpen && afterState.studioOpen === true;
           } else if (o.id === 'btnQuickDiagram') {
             behavioralVerified = afterState.quickMenuOpen === true;
           } else if (o.id === 'btnExportMenu') {
@@ -768,14 +797,18 @@ async function runBrowser() {
             behavioralVerified = afterState.downloadsCount > 0;
           } else if (o.id === 'btnPrintPdf') {
             behavioralVerified = afterState.printCalls > beforeState.printCalls;
-          } else if (o.id === 'btnCopyHtml' || o.id === 'btnCopyMd' || o.id === 'btnBuilderCopyCode') {
-            behavioralVerified = afterState.clipboardWritten === true;
+          } else if (o.id === 'btnCopyHtml') {
+            behavioralVerified = afterState.clipboardWritten === true && afterState.clipboardText.includes('<');
+          } else if (o.id === 'btnCopyMd') {
+            behavioralVerified = afterState.clipboardWritten === true && afterState.clipboardText === afterState.editorVal;
+          } else if (o.id === 'btnBuilderCopyCode') {
+            behavioralVerified = afterState.clipboardWritten === true && afterState.clipboardText === afterState.builderVal;
           } else if (o.id === 'btnToggleEditor' || o.id === 'btnToolbarToggleEditor' || o.id === 'btnHideEditor' || o.id === 'btnShowEditorInline' || o.id === 'btnEmptyShowEditor') {
             behavioralVerified = afterState.editorHidden !== beforeState.editorHidden;
           } else if (o.id === 'btnToggleViewer' || o.id === 'btnToolbarToggleViewer' || o.id === 'btnHideViewer' || o.id === 'btnShowViewerInline' || o.id === 'btnEmptyShowViewer') {
             behavioralVerified = afterState.viewerHidden !== beforeState.viewerHidden;
           } else if (o.id === 'btnLayoutSplit' || o.id === 'btnEmptyRestoreSplit' || o.id === 'statusViewMode') {
-            behavioralVerified = !afterState.editorHidden && !afterState.viewerHidden;
+            behavioralVerified = (beforeState.editorHidden || beforeState.viewerHidden) && !afterState.editorHidden && !afterState.viewerHidden;
           } else if (o.id === 'btnThemeToggle') {
             behavioralVerified = afterState.theme !== beforeState.theme;
           } else if (o.id === 'btnToggleToc' || o.id === 'btnCloseToc') {
@@ -783,9 +816,9 @@ async function runBrowser() {
           } else if (o.id === 'btnToggleFind' || o.id === 'btnCloseFind') {
             behavioralVerified = afterState.findOpen !== beforeState.findOpen;
           } else if (o.id === 'btnFindPrev' || o.id === 'btnFindNext') {
-            behavioralVerified = !!(editorEl && editorEl.selectionEnd > editorEl.selectionStart);
+            behavioralVerified = beforeState.editorSelLen === 0 && afterState.editorSelLen > 0;
           } else if (o.id === 'btnReplace' || o.id === 'btnReplaceAll') {
-            behavioralVerified = afterState.editorVal.includes('ReplacedMermaid');
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('ReplacedMermaid');
           } else if (o.id === 'btnSyncScroll') {
             behavioralVerified = afterState.syncActive !== beforeState.syncActive;
           } else if (o.id === 'btnToggleViewerWidth') {
@@ -793,11 +826,11 @@ async function runBrowser() {
           } else if (o.id === 'splitResizer') {
             behavioralVerified = document.getElementById('paneEditor')?.style.flex !== '0 0 35%';
           } else if (o.id === 'btnClearErrorLog') {
-            behavioralVerified = afterState.errCount === 0;
+            behavioralVerified = beforeState.errCount > 0 && afterState.errCount === 0;
           } else if (o.id === 'btnCloseErrorLog' || o.id === 'statusErrorIndicator') {
             behavioralVerified = afterState.errOpen !== beforeState.errOpen;
           } else if (o.id === 'btnCloseStudio' || o.id === 'btnBuilderCancel') {
-            behavioralVerified = !afterState.studioOpen;
+            behavioralVerified = beforeState.studioOpen === true && !afterState.studioOpen;
           } else if (o.id === 'btnBuilderFormat' || o.key === 'data-insert') {
             behavioralVerified = afterState.builderVal !== beforeState.builderVal;
           } else if (o.id === 'btnBuilderZoomOut') {
@@ -807,7 +840,7 @@ async function runBrowser() {
           } else if (o.id === 'btnBuilderZoomReset') {
             behavioralVerified = afterState.builderZoom.endsWith('%') && afterState.builderZoomPct !== beforeState.builderZoomPct && afterState.builderCanvasTransform !== beforeState.builderCanvasTransform;
           } else if (o.id === 'btnBuilderInsert') {
-            behavioralVerified = !afterState.studioOpen && afterState.editorVal.length > 0;
+            behavioralVerified = beforeState.studioOpen === true && !afterState.studioOpen && afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('StudioInsertA');
           } else if (o.id === 'btnFsZoomOut') {
             behavioralVerified = afterState.fsZoom.includes('scale') && afterState.fsScale < beforeState.fsScale;
           } else if (o.id === 'btnFsZoomIn') {
@@ -815,13 +848,13 @@ async function runBrowser() {
           } else if (o.id === 'btnFsZoomReset') {
             behavioralVerified = afterState.fsZoom.includes('scale') && beforeState.fsScale > 1 && afterState.fsScale === 1;
           } else if (o.id === 'btnCloseFsModal') {
-            behavioralVerified = !afterState.fsOpen;
+            behavioralVerified = beforeState.fsOpen === true && !afterState.fsOpen;
           } else if (o.id === 'btnCancelTable') {
-            behavioralVerified = !afterState.tableOpen;
+            behavioralVerified = beforeState.tableOpen === true && !afterState.tableOpen;
           } else if (o.id === 'btnConfirmTable') {
-            behavioralVerified = !afterState.tableOpen && afterState.editorVal.includes('| Header 1 |');
+            behavioralVerified = beforeState.tableOpen === true && !afterState.tableOpen && afterState.editorVal !== beforeState.editorVal && afterState.editorVal.includes('| Header 1 |');
           } else if (o.key === 'data-template' || o.key === 'data-action') {
-            behavioralVerified = afterState.editorVal !== beforeState.editorVal || afterState.tableOpen === true;
+            behavioralVerified = afterState.editorVal !== beforeState.editorVal || (!beforeState.tableOpen && afterState.tableOpen === true);
           }
 
           return {

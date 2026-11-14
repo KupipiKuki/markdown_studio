@@ -31,10 +31,10 @@
 ## G0 Capture Matrix (All Phases' Browser Stop Points)
 - `phase-0/g0-capture/manifest.json` and `stop-points.md`: stop-point definitions (155 stop points across G0–G5).
 - `phase-0/g0-capture/runs/`: run-stamped manifests and per-run console logs for all 4 browsers on frozen candidate `d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e`:
-  - `manifest-chromium-both-2026-11-13T23-57-15-202Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-edge-both-2026-11-14T01-42-19-093Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-chrome-both-2026-11-14T01-51-49-385Z.json` (155 pass, 0 fail, 0 blocked)
-  - `manifest-firefox-both-2026-11-14T02-01-14-172Z.json` (154 pass, 0 fail, 1 blocked — `G5-PRINT-PDF-TALL` blocked per CDP `Page.printToPDF` unavailability; deferral accepted)
+  - `manifest-chromium-both-2026-11-14T02-54-51-422Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-edge-both-2026-11-14T02-36-09-068Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-chrome-both-2026-11-14T02-44-21-476Z.json` (155 pass, 0 fail, 0 blocked)
+  - `manifest-firefox-both-2026-11-14T02-27-50-104Z.json` (154 pass, 0 fail, 1 blocked — `G5-PRINT-PDF-TALL` blocked per CDP `Page.printToPDF` unavailability; deferral accepted)
 - `phase-0/g0-capture/artifacts/<browser>/`: per-browser screenshots, counts, and retained sample files (`chromium/`, `edge/`, `chrome/`, `firefox/`):
   - `export-standalone-sample.html`: Reopened and verified rendered MathJax and Mermaid SVGs.
   - `export-standalone-empty.html`: Reopened and verified clean empty document export.

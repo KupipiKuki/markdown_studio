@@ -3,13 +3,13 @@
   "candidateSha256": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateSha256LfNormalized": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateNote": "candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.",
-  "generatedAt": "2026-11-14T02:01:14.172Z",
+  "generatedAt": "2026-11-14T02:54:51.422Z",
   "environment": {
     "platform": "win32",
     "arch": "x64",
     "node": "v24.20.0",
-    "browserRequested": "firefox",
-    "browserVersion": "firefox 159.0",
+    "browserRequested": "chromium",
+    "browserVersion": "chromium 158.0.8127.18",
     "headed": true,
     "origin": "both",
     "dryRun": false,
@@ -18,9 +18,9 @@
   "stopOnFail": false,
   "totals": {
     "stopPoints": 155,
-    "pass": 154,
+    "pass": 155,
     "fail": 0,
-    "blocked": 1,
+    "blocked": 0,
     "unrun": 0
   },
   "records": [
@@ -48,9 +48,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-LAUNCH-FILE.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-LAUNCH-FILE.png"
       ],
-      "timestamp": "2026-11-14T01:53:18.446Z"
+      "timestamp": "2026-11-14T02:46:53.205Z"
     },
     {
       "id": "G0-LAUNCH-HTTP",
@@ -76,9 +76,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-LAUNCH-HTTP.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-LAUNCH-HTTP.png"
       ],
-      "timestamp": "2026-11-14T01:53:20.946Z"
+      "timestamp": "2026-11-14T02:46:54.959Z"
     },
     {
       "id": "G0-FIX-invalid",
@@ -99,10 +99,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-invalid.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-invalid-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-invalid.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-invalid-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:23.268Z"
+      "timestamp": "2026-11-14T02:46:57.122Z"
     },
     {
       "id": "G0-FIX-labels",
@@ -123,10 +123,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-labels.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-labels-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:25.381Z"
+      "timestamp": "2026-11-14T02:46:59.278Z"
     },
     {
       "id": "G0-FIX-long-labels",
@@ -147,10 +147,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-long-labels.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-long-labels-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-long-labels.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-long-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:27.552Z"
+      "timestamp": "2026-11-14T02:47:01.148Z"
     },
     {
       "id": "G0-FIX-mixed-fences",
@@ -171,10 +171,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-fences.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-fences-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-mixed-fences.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-mixed-fences-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:30.292Z"
+      "timestamp": "2026-11-14T02:47:02.868Z"
     },
     {
       "id": "G0-FIX-mixed",
@@ -195,10 +195,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-mixed.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-mixed-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:32.728Z"
+      "timestamp": "2026-11-14T02:47:04.645Z"
     },
     {
       "id": "G0-FIX-multi",
@@ -219,10 +219,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-multi.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-multi-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-multi.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-multi-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:35.121Z"
+      "timestamp": "2026-11-14T02:47:06.323Z"
     },
     {
       "id": "G0-FIX-nested",
@@ -243,10 +243,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-nested.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-nested-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-nested.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-nested-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:37.587Z"
+      "timestamp": "2026-11-14T02:47:08.218Z"
     },
     {
       "id": "G0-FIX-outer-fence",
@@ -267,10 +267,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-outer-fence.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-outer-fence-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-outer-fence.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-outer-fence-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:39.522Z"
+      "timestamp": "2026-11-14T02:47:09.961Z"
     },
     {
       "id": "G0-FIX-tall",
@@ -291,10 +291,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-tall.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-tall-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-tall.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-tall-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:42.928Z"
+      "timestamp": "2026-11-14T02:47:11.936Z"
     },
     {
       "id": "G0-FIX-template-architecture-default",
@@ -320,11 +320,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-architecture-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-architecture-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-architecture-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-architecture-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-architecture-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-architecture-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:46.124Z"
+      "timestamp": "2026-11-14T02:47:14.770Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-default",
@@ -350,11 +350,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:49.448Z"
+      "timestamp": "2026-11-14T02:47:17.536Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-pattern",
@@ -380,11 +380,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-pattern.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-pattern-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-pattern-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-pattern.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-pattern-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-classDiagram-pattern-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:52.466Z"
+      "timestamp": "2026-11-14T02:47:20.542Z"
     },
     {
       "id": "G0-FIX-template-erDiagram-default",
@@ -403,18 +403,18 @@
         "cards": 1,
         "studioSvgCards": 1,
         "studioErrorCards": 0,
-        "studioSvgWidth": 367,
+        "studioSvgWidth": 366,
         "studioSvgHeight": 555,
         "bothViewsVerified": true,
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-erDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-erDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-erDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-erDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-erDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-erDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:55.626Z"
+      "timestamp": "2026-11-14T02:47:22.873Z"
     },
     {
       "id": "G0-FIX-template-flowchart-decision",
@@ -440,11 +440,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-decision.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-decision-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-decision-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-decision.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-decision-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-decision-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:58.766Z"
+      "timestamp": "2026-11-14T02:47:25.512Z"
     },
     {
       "id": "G0-FIX-template-flowchart-default",
@@ -470,11 +470,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:01.782Z"
+      "timestamp": "2026-11-14T02:47:27.768Z"
     },
     {
       "id": "G0-FIX-template-flowchart-microservices",
@@ -500,11 +500,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-microservices.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-microservices-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-microservices-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-microservices.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-microservices-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-flowchart-microservices-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:05.014Z"
+      "timestamp": "2026-11-14T02:47:30.351Z"
     },
     {
       "id": "G0-FIX-template-gantt-default",
@@ -530,11 +530,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gantt-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gantt-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gantt-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gantt-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gantt-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gantt-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:07.758Z"
+      "timestamp": "2026-11-14T02:47:33.051Z"
     },
     {
       "id": "G0-FIX-template-gitGraph-default",
@@ -560,11 +560,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gitGraph-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gitGraph-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gitGraph-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gitGraph-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gitGraph-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-gitGraph-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:10.696Z"
+      "timestamp": "2026-11-14T02:47:35.902Z"
     },
     {
       "id": "G0-FIX-template-journey-default",
@@ -590,11 +590,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-journey-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-journey-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-journey-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-journey-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-journey-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-journey-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:14.418Z"
+      "timestamp": "2026-11-14T02:47:38.393Z"
     },
     {
       "id": "G0-FIX-template-mindmap-default",
@@ -614,17 +614,17 @@
         "studioSvgCards": 1,
         "studioErrorCards": 0,
         "studioSvgWidth": 517,
-        "studioSvgHeight": 209,
+        "studioSvgHeight": 218,
         "bothViewsVerified": true,
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-mindmap-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-mindmap-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-mindmap-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-mindmap-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-mindmap-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-mindmap-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:17.716Z"
+      "timestamp": "2026-11-14T02:47:41.282Z"
     },
     {
       "id": "G0-FIX-template-pie-default",
@@ -644,17 +644,17 @@
         "studioSvgCards": 1,
         "studioErrorCards": 0,
         "studioSvgWidth": 517,
-        "studioSvgHeight": 331,
+        "studioSvgHeight": 332,
         "bothViewsVerified": true,
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-pie-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-pie-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-pie-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-pie-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-pie-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-pie-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:21.075Z"
+      "timestamp": "2026-11-14T02:47:43.778Z"
     },
     {
       "id": "G0-FIX-template-sequence-default",
@@ -680,11 +680,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:24.570Z"
+      "timestamp": "2026-11-14T02:47:46.626Z"
     },
     {
       "id": "G0-FIX-template-sequence-payment",
@@ -710,11 +710,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-payment.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-payment-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-payment-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-payment.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-payment-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-sequence-payment-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:27.705Z"
+      "timestamp": "2026-11-14T02:47:49.423Z"
     },
     {
       "id": "G0-FIX-template-stateDiagram-default",
@@ -740,11 +740,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-stateDiagram-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-stateDiagram-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-stateDiagram-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-stateDiagram-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-stateDiagram-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-stateDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:30.631Z"
+      "timestamp": "2026-11-14T02:47:52.109Z"
     },
     {
       "id": "G0-FIX-template-timeline-default",
@@ -770,11 +770,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-timeline-default.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-timeline-default-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-timeline-default-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-timeline-default.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-timeline-default-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-template-timeline-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:33.471Z"
+      "timestamp": "2026-11-14T02:47:55.645Z"
     },
     {
       "id": "G0-FIX-wide",
@@ -795,10 +795,10 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-wide.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-wide-counts.json"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-wide.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-FIX-wide-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:35.866Z"
+      "timestamp": "2026-11-14T02:47:57.786Z"
     },
     {
       "id": "G0-CTL-C001",
@@ -833,9 +833,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C001.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C001.png"
       ],
-      "timestamp": "2026-11-14T01:54:39.094Z"
+      "timestamp": "2026-11-14T02:48:00.972Z"
     },
     {
       "id": "G0-CTL-C002",
@@ -870,9 +870,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C002.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C002.png"
       ],
-      "timestamp": "2026-11-14T01:54:41.555Z"
+      "timestamp": "2026-11-14T02:48:03.834Z"
     },
     {
       "id": "G0-CTL-C003",
@@ -906,9 +906,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C003.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C003.png"
       ],
-      "timestamp": "2026-11-14T01:54:44.661Z"
+      "timestamp": "2026-11-14T02:48:06.914Z"
     },
     {
       "id": "G0-CTL-C004",
@@ -942,9 +942,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C004.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C004.png"
       ],
-      "timestamp": "2026-11-14T01:54:47.239Z"
+      "timestamp": "2026-11-14T02:48:10.167Z"
     },
     {
       "id": "G0-CTL-C005",
@@ -978,9 +978,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C005.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C005.png"
       ],
-      "timestamp": "2026-11-14T01:54:49.914Z"
+      "timestamp": "2026-11-14T02:48:13.295Z"
     },
     {
       "id": "G0-CTL-C006",
@@ -1014,9 +1014,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C006.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C006.png"
       ],
-      "timestamp": "2026-11-14T01:54:53.095Z"
+      "timestamp": "2026-11-14T02:48:15.346Z"
     },
     {
       "id": "G0-CTL-C007",
@@ -1050,9 +1050,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C007.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C007.png"
       ],
-      "timestamp": "2026-11-14T01:54:55.669Z"
+      "timestamp": "2026-11-14T02:48:18.484Z"
     },
     {
       "id": "G0-CTL-C008",
@@ -1086,9 +1086,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C008.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C008.png"
       ],
-      "timestamp": "2026-11-14T01:54:58.339Z"
+      "timestamp": "2026-11-14T02:48:22.088Z"
     },
     {
       "id": "G0-CTL-C009",
@@ -1122,9 +1122,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C009.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C009.png"
       ],
-      "timestamp": "2026-11-14T01:55:01.351Z"
+      "timestamp": "2026-11-14T02:48:25.294Z"
     },
     {
       "id": "G0-CTL-C010",
@@ -1158,9 +1158,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C010.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C010.png"
       ],
-      "timestamp": "2026-11-14T01:55:04.145Z"
+      "timestamp": "2026-11-14T02:48:28.845Z"
     },
     {
       "id": "G0-CTL-C011",
@@ -1194,9 +1194,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C011.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C011.png"
       ],
-      "timestamp": "2026-11-14T01:55:07.045Z"
+      "timestamp": "2026-11-14T02:48:32.275Z"
     },
     {
       "id": "G0-CTL-C012",
@@ -1230,9 +1230,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C012.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C012.png"
       ],
-      "timestamp": "2026-11-14T01:55:10.224Z"
+      "timestamp": "2026-11-14T02:48:34.478Z"
     },
     {
       "id": "G0-CTL-C013",
@@ -1267,9 +1267,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C013.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C013.png"
       ],
-      "timestamp": "2026-11-14T01:55:13.337Z"
+      "timestamp": "2026-11-14T02:48:37.863Z"
     },
     {
       "id": "G0-CTL-C014",
@@ -1302,9 +1302,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C014.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C014.png"
       ],
-      "timestamp": "2026-11-14T01:55:17.031Z"
+      "timestamp": "2026-11-14T02:48:40.692Z"
     },
     {
       "id": "G0-CTL-C015",
@@ -1339,9 +1339,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C015.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C015.png"
       ],
-      "timestamp": "2026-11-14T01:55:20.144Z"
+      "timestamp": "2026-11-14T02:48:44.375Z"
     },
     {
       "id": "G0-CTL-C016",
@@ -1376,9 +1376,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C016.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C016.png"
       ],
-      "timestamp": "2026-11-14T01:55:22.711Z"
+      "timestamp": "2026-11-14T02:48:47.601Z"
     },
     {
       "id": "G0-CTL-C017",
@@ -1412,9 +1412,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C017.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C017.png"
       ],
-      "timestamp": "2026-11-14T01:55:25.193Z"
+      "timestamp": "2026-11-14T02:48:51.060Z"
     },
     {
       "id": "G0-CTL-C018",
@@ -1448,9 +1448,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C018.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C018.png"
       ],
-      "timestamp": "2026-11-14T01:55:27.583Z"
+      "timestamp": "2026-11-14T02:48:54.205Z"
     },
     {
       "id": "G0-CTL-C019",
@@ -1485,9 +1485,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C019.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C019.png"
       ],
-      "timestamp": "2026-11-14T01:55:30.071Z"
+      "timestamp": "2026-11-14T02:48:57.200Z"
     },
     {
       "id": "G0-CTL-C020",
@@ -1521,9 +1521,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C020.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C020.png"
       ],
-      "timestamp": "2026-11-14T01:55:32.585Z"
+      "timestamp": "2026-11-14T02:49:00.612Z"
     },
     {
       "id": "G0-CTL-C021",
@@ -1557,9 +1557,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C021.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C021.png"
       ],
-      "timestamp": "2026-11-14T01:55:35.092Z"
+      "timestamp": "2026-11-14T02:49:02.592Z"
     },
     {
       "id": "G0-CTL-C022",
@@ -1596,9 +1596,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C022.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C022.png"
       ],
-      "timestamp": "2026-11-14T01:55:37.810Z"
+      "timestamp": "2026-11-14T02:49:05.489Z"
     },
     {
       "id": "G0-CTL-C023",
@@ -1634,9 +1634,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C023.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C023.png"
       ],
-      "timestamp": "2026-11-14T01:55:41.141Z"
+      "timestamp": "2026-11-14T02:49:08.448Z"
     },
     {
       "id": "G0-CTL-C024",
@@ -1673,9 +1673,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C024.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C024.png"
       ],
-      "timestamp": "2026-11-14T01:55:43.552Z"
+      "timestamp": "2026-11-14T02:49:11.370Z"
     },
     {
       "id": "G0-CTL-C025",
@@ -1710,9 +1710,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C025.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C025.png"
       ],
-      "timestamp": "2026-11-14T01:55:46.030Z"
+      "timestamp": "2026-11-14T02:49:13.519Z"
     },
     {
       "id": "G0-CTL-C026",
@@ -1747,9 +1747,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C026.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C026.png"
       ],
-      "timestamp": "2026-11-14T01:55:48.885Z"
+      "timestamp": "2026-11-14T02:49:16.488Z"
     },
     {
       "id": "G0-CTL-C027",
@@ -1784,9 +1784,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C027.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C027.png"
       ],
-      "timestamp": "2026-11-14T01:55:51.241Z"
+      "timestamp": "2026-11-14T02:49:19.729Z"
     },
     {
       "id": "G0-CTL-C028",
@@ -1821,9 +1821,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C028.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C028.png"
       ],
-      "timestamp": "2026-11-14T01:55:54.148Z"
+      "timestamp": "2026-11-14T02:49:22.564Z"
     },
     {
       "id": "G0-CTL-C029",
@@ -1858,9 +1858,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C029.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C029.png"
       ],
-      "timestamp": "2026-11-14T01:55:56.653Z"
+      "timestamp": "2026-11-14T02:49:25.673Z"
     },
     {
       "id": "G0-CTL-C030",
@@ -1895,9 +1895,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C030.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C030.png"
       ],
-      "timestamp": "2026-11-14T01:55:59.550Z"
+      "timestamp": "2026-11-14T02:49:28.598Z"
     },
     {
       "id": "G0-CTL-C031",
@@ -1932,9 +1932,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C031.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C031.png"
       ],
-      "timestamp": "2026-11-14T01:56:02.118Z"
+      "timestamp": "2026-11-14T02:49:31.539Z"
     },
     {
       "id": "G0-CTL-C032",
@@ -1969,9 +1969,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C032.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C032.png"
       ],
-      "timestamp": "2026-11-14T01:56:05.133Z"
+      "timestamp": "2026-11-14T02:49:34.519Z"
     },
     {
       "id": "G0-CTL-C033",
@@ -2006,9 +2006,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C033.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C033.png"
       ],
-      "timestamp": "2026-11-14T01:56:08.554Z"
+      "timestamp": "2026-11-14T02:49:37.508Z"
     },
     {
       "id": "G0-CTL-C034",
@@ -2043,9 +2043,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C034.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C034.png"
       ],
-      "timestamp": "2026-11-14T01:56:11.116Z"
+      "timestamp": "2026-11-14T02:49:39.465Z"
     },
     {
       "id": "G0-CTL-C035",
@@ -2080,9 +2080,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C035.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C035.png"
       ],
-      "timestamp": "2026-11-14T01:56:13.609Z"
+      "timestamp": "2026-11-14T02:49:42.445Z"
     },
     {
       "id": "G0-CTL-C036",
@@ -2117,9 +2117,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C036.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C036.png"
       ],
-      "timestamp": "2026-11-14T01:56:16.111Z"
+      "timestamp": "2026-11-14T02:49:45.349Z"
     },
     {
       "id": "G0-CTL-C037",
@@ -2154,9 +2154,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C037.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C037.png"
       ],
-      "timestamp": "2026-11-14T01:56:19.046Z"
+      "timestamp": "2026-11-14T02:49:48.311Z"
     },
     {
       "id": "G0-CTL-C038",
@@ -2191,9 +2191,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C038.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C038.png"
       ],
-      "timestamp": "2026-11-14T01:56:21.403Z"
+      "timestamp": "2026-11-14T02:49:51.235Z"
     },
     {
       "id": "G0-CTL-C039",
@@ -2228,9 +2228,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C039.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C039.png"
       ],
-      "timestamp": "2026-11-14T01:56:24.210Z"
+      "timestamp": "2026-11-14T02:49:54.248Z"
     },
     {
       "id": "G0-CTL-C040",
@@ -2265,9 +2265,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C040.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C040.png"
       ],
-      "timestamp": "2026-11-14T01:56:27.501Z"
+      "timestamp": "2026-11-14T02:49:57.152Z"
     },
     {
       "id": "G0-CTL-C041",
@@ -2302,9 +2302,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C041.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C041.png"
       ],
-      "timestamp": "2026-11-14T01:56:30.422Z"
+      "timestamp": "2026-11-14T02:49:59.123Z"
     },
     {
       "id": "G0-CTL-C042",
@@ -2339,9 +2339,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C042.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C042.png"
       ],
-      "timestamp": "2026-11-14T01:56:32.865Z"
+      "timestamp": "2026-11-14T02:50:02.076Z"
     },
     {
       "id": "G0-CTL-C043",
@@ -2376,9 +2376,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C043.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C043.png"
       ],
-      "timestamp": "2026-11-14T01:56:36.623Z"
+      "timestamp": "2026-11-14T02:50:05.319Z"
     },
     {
       "id": "G0-CTL-C044",
@@ -2413,9 +2413,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C044.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C044.png"
       ],
-      "timestamp": "2026-11-14T01:56:39.385Z"
+      "timestamp": "2026-11-14T02:50:08.516Z"
     },
     {
       "id": "G0-CTL-C045",
@@ -2450,9 +2450,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C045.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C045.png"
       ],
-      "timestamp": "2026-11-14T01:56:42.063Z"
+      "timestamp": "2026-11-14T02:50:11.888Z"
     },
     {
       "id": "G0-CTL-C046",
@@ -2487,9 +2487,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C046.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C046.png"
       ],
-      "timestamp": "2026-11-14T01:56:44.545Z"
+      "timestamp": "2026-11-14T02:50:14.482Z"
     },
     {
       "id": "G0-CTL-C047",
@@ -2524,9 +2524,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C047.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C047.png"
       ],
-      "timestamp": "2026-11-14T01:56:47.245Z"
+      "timestamp": "2026-11-14T02:50:16.796Z"
     },
     {
       "id": "G0-CTL-C048",
@@ -2561,9 +2561,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C048.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C048.png"
       ],
-      "timestamp": "2026-11-14T01:56:49.676Z"
+      "timestamp": "2026-11-14T02:50:20.264Z"
     },
     {
       "id": "G0-CTL-C049",
@@ -2599,9 +2599,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C049.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C049.png"
       ],
-      "timestamp": "2026-11-14T01:56:52.253Z"
+      "timestamp": "2026-11-14T02:50:23.978Z"
     },
     {
       "id": "G0-CTL-C050",
@@ -2635,9 +2635,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C050.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C050.png"
       ],
-      "timestamp": "2026-11-14T01:56:54.852Z"
+      "timestamp": "2026-11-14T02:50:27.069Z"
     },
     {
       "id": "G0-CTL-C051",
@@ -2671,9 +2671,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C051.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C051.png"
       ],
-      "timestamp": "2026-11-14T01:56:57.300Z"
+      "timestamp": "2026-11-14T02:50:30.207Z"
     },
     {
       "id": "G0-CTL-C052",
@@ -2709,9 +2709,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C052.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C052.png"
       ],
-      "timestamp": "2026-11-14T01:57:00.371Z"
+      "timestamp": "2026-11-14T02:50:33.676Z"
     },
     {
       "id": "G0-CTL-C053",
@@ -2745,9 +2745,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C053.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C053.png"
       ],
-      "timestamp": "2026-11-14T01:57:03.494Z"
+      "timestamp": "2026-11-14T02:50:36.491Z"
     },
     {
       "id": "G0-CTL-C054",
@@ -2781,9 +2781,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C054.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C054.png"
       ],
-      "timestamp": "2026-11-14T01:57:06.286Z"
+      "timestamp": "2026-11-14T02:50:39.549Z"
     },
     {
       "id": "G0-CTL-C055",
@@ -2818,9 +2818,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C055.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C055.png"
       ],
-      "timestamp": "2026-11-14T01:57:09.534Z"
+      "timestamp": "2026-11-14T02:50:43.472Z"
     },
     {
       "id": "G0-CTL-C056",
@@ -2854,9 +2854,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C056.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C056.png"
       ],
-      "timestamp": "2026-11-14T01:57:12.148Z"
+      "timestamp": "2026-11-14T02:50:46.675Z"
     },
     {
       "id": "G0-CTL-C057",
@@ -2892,9 +2892,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C057.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C057.png"
       ],
-      "timestamp": "2026-11-14T01:57:14.816Z"
+      "timestamp": "2026-11-14T02:50:48.892Z"
     },
     {
       "id": "G0-CTL-C058",
@@ -2929,9 +2929,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C058.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C058.png"
       ],
-      "timestamp": "2026-11-14T01:57:17.335Z"
+      "timestamp": "2026-11-14T02:50:52.002Z"
     },
     {
       "id": "G0-CTL-C059",
@@ -2966,9 +2966,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C059.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C059.png"
       ],
-      "timestamp": "2026-11-14T01:57:19.697Z"
+      "timestamp": "2026-11-14T02:50:55.387Z"
     },
     {
       "id": "G0-CTL-C060",
@@ -3003,9 +3003,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C060.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C060.png"
       ],
-      "timestamp": "2026-11-14T01:57:22.471Z"
+      "timestamp": "2026-11-14T02:50:57.571Z"
     },
     {
       "id": "G0-CTL-C061",
@@ -3041,9 +3041,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C061.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C061.png"
       ],
-      "timestamp": "2026-11-14T01:57:24.762Z"
+      "timestamp": "2026-11-14T02:51:01.319Z"
     },
     {
       "id": "G0-CTL-C062",
@@ -3078,9 +3078,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C062.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C062.png"
       ],
-      "timestamp": "2026-11-14T01:57:26.955Z"
+      "timestamp": "2026-11-14T02:51:03.514Z"
     },
     {
       "id": "G0-CTL-C063",
@@ -3115,9 +3115,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C063.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C063.png"
       ],
-      "timestamp": "2026-11-14T01:57:30.566Z"
+      "timestamp": "2026-11-14T02:51:06.484Z"
     },
     {
       "id": "G0-CTL-C064",
@@ -3151,9 +3151,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C064.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C064.png"
       ],
-      "timestamp": "2026-11-14T01:57:33.888Z"
+      "timestamp": "2026-11-14T02:51:09.853Z"
     },
     {
       "id": "G0-CTL-C065",
@@ -3187,9 +3187,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C065.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C065.png"
       ],
-      "timestamp": "2026-11-14T01:57:36.559Z"
+      "timestamp": "2026-11-14T02:51:12.137Z"
     },
     {
       "id": "G0-CTL-C066",
@@ -3223,9 +3223,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C066.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C066.png"
       ],
-      "timestamp": "2026-11-14T01:57:38.913Z"
+      "timestamp": "2026-11-14T02:51:14.231Z"
     },
     {
       "id": "G0-CTL-C067",
@@ -3260,9 +3260,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C067.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C067.png"
       ],
-      "timestamp": "2026-11-14T01:57:41.314Z"
+      "timestamp": "2026-11-14T02:51:18.666Z"
     },
     {
       "id": "G0-CTL-C068",
@@ -3297,9 +3297,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C068.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C068.png"
       ],
-      "timestamp": "2026-11-14T01:57:43.998Z"
+      "timestamp": "2026-11-14T02:51:22.119Z"
     },
     {
       "id": "G0-CTL-C069",
@@ -3335,9 +3335,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C069.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C069.png"
       ],
-      "timestamp": "2026-11-14T01:57:46.319Z"
+      "timestamp": "2026-11-14T02:51:24.423Z"
     },
     {
       "id": "G0-CTL-C070",
@@ -3373,9 +3373,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C070.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C070.png"
       ],
-      "timestamp": "2026-11-14T01:57:48.932Z"
+      "timestamp": "2026-11-14T02:51:27.383Z"
     },
     {
       "id": "G0-CTL-C071",
@@ -3410,9 +3410,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C071.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C071.png"
       ],
-      "timestamp": "2026-11-14T01:57:51.942Z"
+      "timestamp": "2026-11-14T02:51:30.924Z"
     },
     {
       "id": "G0-CTL-C072",
@@ -3446,9 +3446,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C072.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C072.png"
       ],
-      "timestamp": "2026-11-14T01:57:54.547Z"
+      "timestamp": "2026-11-14T02:51:33.539Z"
     },
     {
       "id": "G0-CTL-C073",
@@ -3482,9 +3482,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C073.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C073.png"
       ],
-      "timestamp": "2026-11-14T01:57:58.542Z"
+      "timestamp": "2026-11-14T02:51:37.346Z"
     },
     {
       "id": "G0-CTL-C074",
@@ -3518,9 +3518,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C074.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C074.png"
       ],
-      "timestamp": "2026-11-14T01:58:01.561Z"
+      "timestamp": "2026-11-14T02:51:40.175Z"
     },
     {
       "id": "G0-CTL-C075",
@@ -3554,9 +3554,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C075.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C075.png"
       ],
-      "timestamp": "2026-11-14T01:58:05.052Z"
+      "timestamp": "2026-11-14T02:51:42.927Z"
     },
     {
       "id": "G0-CTL-C076",
@@ -3591,9 +3591,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C076.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C076.png"
       ],
-      "timestamp": "2026-11-14T01:58:08.775Z"
+      "timestamp": "2026-11-14T02:51:45.210Z"
     },
     {
       "id": "G0-CTL-C077",
@@ -3627,9 +3627,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C077.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C077.png"
       ],
-      "timestamp": "2026-11-14T01:58:11.532Z"
+      "timestamp": "2026-11-14T02:51:47.670Z"
     },
     {
       "id": "G0-CTL-C078",
@@ -3663,9 +3663,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C078.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C078.png"
       ],
-      "timestamp": "2026-11-14T01:58:14.212Z"
+      "timestamp": "2026-11-14T02:51:50.180Z"
     },
     {
       "id": "G0-CTL-C079",
@@ -3699,9 +3699,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C079.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C079.png"
       ],
-      "timestamp": "2026-11-14T01:58:17.933Z"
+      "timestamp": "2026-11-14T02:51:53.622Z"
     },
     {
       "id": "G0-CTL-C080",
@@ -3735,9 +3735,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C080.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C080.png"
       ],
-      "timestamp": "2026-11-14T01:58:21.017Z"
+      "timestamp": "2026-11-14T02:51:57.225Z"
     },
     {
       "id": "G0-CTL-C081",
@@ -3771,9 +3771,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C081.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C081.png"
       ],
-      "timestamp": "2026-11-14T01:58:24.019Z"
+      "timestamp": "2026-11-14T02:52:00.839Z"
     },
     {
       "id": "G0-CTL-C082",
@@ -3807,9 +3807,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C082.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C082.png"
       ],
-      "timestamp": "2026-11-14T01:58:26.560Z"
+      "timestamp": "2026-11-14T02:52:04.422Z"
     },
     {
       "id": "G0-CTL-C083",
@@ -3843,9 +3843,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C083.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C083.png"
       ],
-      "timestamp": "2026-11-14T01:58:31.589Z"
+      "timestamp": "2026-11-14T02:52:08.412Z"
     },
     {
       "id": "G0-CTL-C084",
@@ -3879,9 +3879,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C084.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C084.png"
       ],
-      "timestamp": "2026-11-14T01:58:34.847Z"
+      "timestamp": "2026-11-14T02:52:10.909Z"
     },
     {
       "id": "G0-CTL-C085",
@@ -3915,9 +3915,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C085.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C085.png"
       ],
-      "timestamp": "2026-11-14T01:58:37.798Z"
+      "timestamp": "2026-11-14T02:52:14.708Z"
     },
     {
       "id": "G0-CTL-C086",
@@ -3951,9 +3951,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C086.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C086.png"
       ],
-      "timestamp": "2026-11-14T01:58:40.826Z"
+      "timestamp": "2026-11-14T02:52:18.230Z"
     },
     {
       "id": "G0-CTL-C087",
@@ -3987,9 +3987,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C087.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C087.png"
       ],
-      "timestamp": "2026-11-14T01:58:44.177Z"
+      "timestamp": "2026-11-14T02:52:20.869Z"
     },
     {
       "id": "G0-CTL-C088",
@@ -4023,9 +4023,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C088.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C088.png"
       ],
-      "timestamp": "2026-11-14T01:58:47.160Z"
+      "timestamp": "2026-11-14T02:52:24.413Z"
     },
     {
       "id": "G0-CTL-C089",
@@ -4059,9 +4059,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C089.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C089.png"
       ],
-      "timestamp": "2026-11-14T01:58:49.932Z"
+      "timestamp": "2026-11-14T02:52:27.133Z"
     },
     {
       "id": "G0-CTL-C090",
@@ -4095,9 +4095,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C090.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C090.png"
       ],
-      "timestamp": "2026-11-14T01:58:52.581Z"
+      "timestamp": "2026-11-14T02:52:30.439Z"
     },
     {
       "id": "G0-CTL-C091",
@@ -4132,9 +4132,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C091.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C091.png"
       ],
-      "timestamp": "2026-11-14T01:58:55.541Z"
+      "timestamp": "2026-11-14T02:52:32.762Z"
     },
     {
       "id": "G0-CTL-C092",
@@ -4169,9 +4169,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C092.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C092.png"
       ],
-      "timestamp": "2026-11-14T01:58:58.184Z"
+      "timestamp": "2026-11-14T02:52:36.252Z"
     },
     {
       "id": "G0-CTL-C093",
@@ -4206,9 +4206,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C093.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C093.png"
       ],
-      "timestamp": "2026-11-14T01:59:01.660Z"
+      "timestamp": "2026-11-14T02:52:38.627Z"
     },
     {
       "id": "G0-CTL-C094",
@@ -4243,9 +4243,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C094.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C094.png"
       ],
-      "timestamp": "2026-11-14T01:59:04.567Z"
+      "timestamp": "2026-11-14T02:52:42.304Z"
     },
     {
       "id": "G0-CTL-C095",
@@ -4280,9 +4280,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C095.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C095.png"
       ],
-      "timestamp": "2026-11-14T01:59:07.195Z"
+      "timestamp": "2026-11-14T02:52:44.861Z"
     },
     {
       "id": "G0-CTL-C096",
@@ -4317,9 +4317,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C096.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C096.png"
       ],
-      "timestamp": "2026-11-14T01:59:10.102Z"
+      "timestamp": "2026-11-14T02:52:48.591Z"
     },
     {
       "id": "G0-CTL-C097",
@@ -4353,9 +4353,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C097.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C097.png"
       ],
-      "timestamp": "2026-11-14T01:59:13.501Z"
+      "timestamp": "2026-11-14T02:52:52.334Z"
     },
     {
       "id": "G0-CTL-C098",
@@ -4389,9 +4389,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C098.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C098.png"
       ],
-      "timestamp": "2026-11-14T01:59:16.289Z"
+      "timestamp": "2026-11-14T02:52:55.521Z"
     },
     {
       "id": "G0-CTL-C099",
@@ -4425,9 +4425,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C099.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C099.png"
       ],
-      "timestamp": "2026-11-14T01:59:19.417Z"
+      "timestamp": "2026-11-14T02:52:58.844Z"
     },
     {
       "id": "G0-CTL-C100",
@@ -4461,9 +4461,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C100.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C100.png"
       ],
-      "timestamp": "2026-11-14T01:59:22.502Z"
+      "timestamp": "2026-11-14T02:53:01.666Z"
     },
     {
       "id": "G0-CTL-C101",
@@ -4497,9 +4497,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C101.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C101.png"
       ],
-      "timestamp": "2026-11-14T01:59:25.515Z"
+      "timestamp": "2026-11-14T02:53:05.312Z"
     },
     {
       "id": "G0-CTL-C102",
@@ -4533,9 +4533,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C102.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C102.png"
       ],
-      "timestamp": "2026-11-14T01:59:28.303Z"
+      "timestamp": "2026-11-14T02:53:08.835Z"
     },
     {
       "id": "G0-CTL-C103",
@@ -4569,9 +4569,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C103.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C103.png"
       ],
-      "timestamp": "2026-11-14T01:59:31.739Z"
+      "timestamp": "2026-11-14T02:53:11.264Z"
     },
     {
       "id": "G0-CTL-C104",
@@ -4605,9 +4605,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C104.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C104.png"
       ],
-      "timestamp": "2026-11-14T01:59:34.402Z"
+      "timestamp": "2026-11-14T02:53:14.484Z"
     },
     {
       "id": "G0-CTL-C105",
@@ -4641,9 +4641,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C105.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C105.png"
       ],
-      "timestamp": "2026-11-14T01:59:37.210Z"
+      "timestamp": "2026-11-14T02:53:18.330Z"
     },
     {
       "id": "G0-CTL-C106",
@@ -4677,9 +4677,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C106.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C106.png"
       ],
-      "timestamp": "2026-11-14T01:59:40.124Z"
+      "timestamp": "2026-11-14T02:53:22.018Z"
     },
     {
       "id": "G0-CTL-C107",
@@ -4713,9 +4713,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C107.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C107.png"
       ],
-      "timestamp": "2026-11-14T01:59:43.065Z"
+      "timestamp": "2026-11-14T02:53:25.270Z"
     },
     {
       "id": "G0-CTL-C108",
@@ -4753,9 +4753,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C108.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C108.png"
       ],
-      "timestamp": "2026-11-14T01:59:45.692Z"
+      "timestamp": "2026-11-14T02:53:28.689Z"
     },
     {
       "id": "G0-CTL-C109",
@@ -4793,9 +4793,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C109.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C109.png"
       ],
-      "timestamp": "2026-11-14T01:59:48.305Z"
+      "timestamp": "2026-11-14T02:53:31.120Z"
     },
     {
       "id": "G0-CTL-C110",
@@ -4829,9 +4829,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C110.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C110.png"
       ],
-      "timestamp": "2026-11-14T01:59:51.384Z"
+      "timestamp": "2026-11-14T02:53:34.545Z"
     },
     {
       "id": "G0-CTL-C111",
@@ -4865,9 +4865,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C111.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G0-CTL-C111.png"
       ],
-      "timestamp": "2026-11-14T01:59:54.092Z"
+      "timestamp": "2026-11-14T02:53:36.631Z"
     },
     {
       "id": "G1-X1-ISOLATION-BROWSER",
@@ -4897,9 +4897,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G1-X1-ISOLATION-BROWSER.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G1-X1-ISOLATION-BROWSER.png"
       ],
-      "timestamp": "2026-11-14T01:59:58.293Z"
+      "timestamp": "2026-11-14T02:53:41.185Z"
     },
     {
       "id": "G1-X4-WELCOME-FULLPAGE",
@@ -4919,9 +4919,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G1-X4-WELCOME-FULLPAGE.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G1-X4-WELCOME-FULLPAGE.png"
       ],
-      "timestamp": "2026-11-14T02:00:01.946Z"
+      "timestamp": "2026-11-14T02:53:43.776Z"
     },
     {
       "id": "G1-CLIP-SUCCESS",
@@ -4936,17 +4936,17 @@
       "expected": "Clipboard success path returns byte-exact diagram source; rejection path records the exact error toast.",
       "observation": {
         "expected": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
-        "read": "flowchart TD\n  Start([User Request]) --> Router{API Route}\n  Router -->|/auth| AuthSvc[Authentication Service]\n  Router -->|/studio| Studio[Mermaid Studio Engine]\n  \n  subgraph Engine [Studio Processing Pipeline]\n    Studio --> Validator[Syntax Validator]\n    Validator --> Renderer[SVG & Canvas Engine]\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\n  end\n  \n  PanZoom --> Export[/SVG & Retina PNG Export/]\n  Export --> Done([Document Ready!])",
-        "rawMatch": true,
+        "read": "flowchart TD\r\n  Start([User Request]) --> Router{API Route}\r\n  Router -->|/auth| AuthSvc[Authentication Service]\r\n  Router -->|/studio| Studio[Mermaid Studio Engine]\r\n  \r\n  subgraph Engine [Studio Processing Pipeline]\r\n    Studio --> Validator[Syntax Validator]\r\n    Validator --> Renderer[SVG & Canvas Engine]\r\n    Renderer --> PanZoom[Interactive Pan & Zoom Viewport]\r\n  end\r\n  \r\n  PanZoom --> Export[/SVG & Retina PNG Export/]\r\n  Export --> Done([Document Ready!])",
+        "rawMatch": false,
         "match": true,
         "note": "focused-window clipboard success verified (--headed)",
         "headed": true
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G1-CLIP-SUCCESS.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G1-CLIP-SUCCESS.png"
       ],
-      "timestamp": "2026-11-14T02:00:05.134Z"
+      "timestamp": "2026-11-14T02:53:45.740Z"
     },
     {
       "id": "G2-LISTENER-50",
@@ -4995,9 +4995,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G2-LISTENER-50.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G2-LISTENER-50.png"
       ],
-      "timestamp": "2026-11-14T02:00:16.516Z"
+      "timestamp": "2026-11-14T02:53:57.947Z"
     },
     {
       "id": "G2-RENDER-GEN",
@@ -5026,9 +5026,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G2-RENDER-GEN.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G2-RENDER-GEN.png"
       ],
-      "timestamp": "2026-11-14T02:00:21.656Z"
+      "timestamp": "2026-11-14T02:54:03.246Z"
     },
     {
       "id": "G3-FIT-TALL-WIDE",
@@ -5043,7 +5043,7 @@
       "expected": "Tall diagram (2100+ px) and wide diagram (1800+ px) fit inside available viewport without clipping in both views; zoom-reset restores fit; 0 console errors.",
       "observation": {
         "tallPreviewFit": {
-          "vpWidth": 568,
+          "vpWidth": 553,
           "vpHeight": 520,
           "svgRenderedHeight": 488,
           "svgTop": 290,
@@ -5058,8 +5058,8 @@
           "resetRestoresFit": true
         },
         "tallStudioFit": {
-          "wrapWidth": 556.9833374023438,
-          "wrapHeight": 594.7999877929688,
+          "wrapWidth": 557,
+          "wrapHeight": 594.796875,
           "svgRenderedHeight": 555,
           "clippedTop": false,
           "clippedBottom": false,
@@ -5071,27 +5071,27 @@
           "svgRenderedWidth": 536,
           "clippedLeft": false,
           "clippedRight": false,
-          "fitScale": 0.2945621371189743
+          "fitScale": 0.2945788357334845
         },
         "wideStudioFit": {
-          "wrapWidth": 556.9833374023438,
-          "wrapHeight": 594.7999877929688,
+          "wrapWidth": 557,
+          "wrapHeight": 594.796875,
           "svgRenderedWidth": 517,
           "clippedLeft": false,
           "clippedRight": false,
-          "fitScale": 0.2841205688255778
+          "fitScale": 0.28413667551158855
         },
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE-tall-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE-tall-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE-wide-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE-wide-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-FIT-TALL-WIDE-tall-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-FIT-TALL-WIDE-tall-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-FIT-TALL-WIDE-wide-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-FIT-TALL-WIDE-wide-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-FIT-TALL-WIDE.png"
       ],
-      "timestamp": "2026-11-14T02:00:26.385Z"
+      "timestamp": "2026-11-14T02:54:08.848Z"
     },
     {
       "id": "G3-THEME-ISOLATION-3X",
@@ -5132,9 +5132,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-THEME-ISOLATION-3X.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-THEME-ISOLATION-3X.png"
       ],
-      "timestamp": "2026-11-14T02:00:33.622Z"
+      "timestamp": "2026-11-14T02:54:16.143Z"
     },
     {
       "id": "G3-TYPOGRAPHY-LABELS",
@@ -5176,11 +5176,11 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-TYPOGRAPHY-LABELS-preview.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-TYPOGRAPHY-LABELS-studio.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-TYPOGRAPHY-LABELS.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-TYPOGRAPHY-LABELS-preview.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-TYPOGRAPHY-LABELS-studio.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-TYPOGRAPHY-LABELS.png"
       ],
-      "timestamp": "2026-11-14T02:00:38.167Z"
+      "timestamp": "2026-11-14T02:54:19.980Z"
     },
     {
       "id": "G3-RESIZE-VIEWPORT-REFIT",
@@ -5195,12 +5195,12 @@
       "expected": "Diagrams automatically refit to changed pane dimensions after split dragging, viewer toggle, and narrow viewport resize; 0 console errors.",
       "observation": {
         "splitResize": {
-          "initialFitScale": 0.2945621371189743,
-          "expandedFitScale": 0.4374467558707156,
+          "initialFitScale": 0.2945788357334845,
+          "expandedFitScale": 0.43747155455942843,
           "scaleAdaptedToExpanded": true,
-          "resetFitScale": 0.2945621371189743,
+          "resetFitScale": 0.2945788357334845,
           "resetAdapted": true,
-          "afterToggleFitScale": 0.2945621371189743,
+          "afterToggleFitScale": 0.2945788357334845,
           "toggleRefitted": true
         },
         "narrowViewportFit": {
@@ -5208,15 +5208,15 @@
           "svgWidth": 208,
           "clippedLeft": false,
           "clippedRight": false,
-          "fitScale": 0.11430769500139301
+          "fitScale": 0.11431417506075517
         },
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G3-RESIZE-VIEWPORT-REFIT.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G3-RESIZE-VIEWPORT-REFIT.png"
       ],
-      "timestamp": "2026-11-14T02:00:42.680Z"
+      "timestamp": "2026-11-14T02:54:23.336Z"
     },
     {
       "id": "G4-INSERT-COMMANDS",
@@ -5250,9 +5250,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G4-INSERT-COMMANDS.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G4-INSERT-COMMANDS.png"
       ],
-      "timestamp": "2026-11-14T02:00:46.231Z"
+      "timestamp": "2026-11-14T02:54:27.279Z"
     },
     {
       "id": "G4-SHORTCUT-GUARDS",
@@ -5275,9 +5275,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G4-SHORTCUT-GUARDS.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G4-SHORTCUT-GUARDS.png"
       ],
-      "timestamp": "2026-11-14T02:00:50.342Z"
+      "timestamp": "2026-11-14T02:54:31.918Z"
     },
     {
       "id": "G4-PERSISTENCE-ROUNDTRIP",
@@ -5305,9 +5305,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G4-PERSISTENCE-ROUNDTRIP.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G4-PERSISTENCE-ROUNDTRIP.png"
       ],
-      "timestamp": "2026-11-14T02:00:56.198Z"
+      "timestamp": "2026-11-14T02:54:36.556Z"
     },
     {
       "id": "G5-EXPORT-STANDALONE",
@@ -5341,7 +5341,7 @@
           "toast": "Rendered HTML copied to clipboard!",
           "clipboardReadDirect": true,
           "clipboardSpyCaptured": true,
-          "payloadLength": 8701,
+          "payloadLength": 8653,
           "matchesCleanRenderedContent": true,
           "hasSvg": true,
           "hasBothNodes": true,
@@ -5352,7 +5352,7 @@
         },
         "copyMdCheck": {
           "matchesEditorMarkdown": true,
-          "length": 151
+          "length": 163
         },
         "emptyDocumentExport": {
           "hasDoctype": true,
@@ -5373,20 +5373,20 @@
           }
         },
         "retainedFiles": [
-          "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-sample.html",
-          "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-empty.html",
-          "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-invalid.html"
+          "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-sample.html",
+          "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-empty.html",
+          "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-invalid.html"
         ],
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-sample.html",
-        "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-empty.html",
-        "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-invalid.html",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-STANDALONE.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-sample.html",
+        "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-empty.html",
+        "evidence/phase-0/g0-capture/artifacts/chromium/export-standalone-invalid.html",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G5-EXPORT-STANDALONE.png"
       ],
-      "timestamp": "2026-11-14T02:01:03.699Z"
+      "timestamp": "2026-11-14T02:54:41.836Z"
     },
     {
       "id": "G5-EXPORT-DIAGRAM-FILES",
@@ -5410,7 +5410,7 @@
           "hasViewBox": true,
           "hasLabels": true,
           "foreignObjectSanitized": true,
-          "fileSize": 6254,
+          "fileSize": 6186,
           "reopenedInBrowser": {
             "svgRendered": true,
             "svgWidth": 133,
@@ -5434,7 +5434,7 @@
           "isPng": true,
           "width": 265,
           "height": 272,
-          "fileSize": 5231,
+          "fileSize": 9780,
           "reopenedInBrowser": {
             "decoded": true,
             "naturalWidth": 265,
@@ -5442,24 +5442,24 @@
             "expected2xWidth": 265,
             "expected2xHeight": 272,
             "matches2xScale": true,
-            "nonBgSampledPixels": 8395
+            "nonBgSampledPixels": 8391
           }
         },
         "emptySvgGuard": {
           "abortedCleanly": true,
           "toast": "No rendered diagram found to export."
         },
-        "retainedSvg": "evidence/phase-0/g0-capture/artifacts/firefox/export-diagram-sample.svg",
-        "retainedPng": "evidence/phase-0/g0-capture/artifacts/firefox/export-diagram-sample.png",
+        "retainedSvg": "evidence/phase-0/g0-capture/artifacts/chromium/export-diagram-sample.svg",
+        "retainedPng": "evidence/phase-0/g0-capture/artifacts/chromium/export-diagram-sample.png",
         "consoleErrors": 0
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/export-diagram-sample.svg",
-        "evidence/phase-0/g0-capture/artifacts/firefox/export-diagram-sample.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-DIAGRAM-FILES.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/export-diagram-sample.svg",
+        "evidence/phase-0/g0-capture/artifacts/chromium/export-diagram-sample.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G5-EXPORT-DIAGRAM-FILES.png"
       ],
-      "timestamp": "2026-11-14T02:01:07.521Z"
+      "timestamp": "2026-11-14T02:54:45.147Z"
     },
     {
       "id": "G5-EXPORT-PNG-FAILURE",
@@ -5486,9 +5486,9 @@
       },
       "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-PNG-FAILURE.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/G5-EXPORT-PNG-FAILURE.png"
       ],
-      "timestamp": "2026-11-14T02:01:09.582Z"
+      "timestamp": "2026-11-14T02:54:47.373Z"
     },
     {
       "id": "G5-PRINT-PDF-TALL",
@@ -5517,21 +5517,53 @@
           "step0Top": 16,
           "step25Bottom": 2161
         },
-        "cdpPdfSize": null,
-        "cdpSuccess": false,
-        "cdpBlocked": true,
-        "cdpReason": "CDP Page.printToPDF protocol is unsupported in Mozilla Firefox; print layout verified via @media print DOM emulation (all 26 steps Step 0..Step 25 unclipped), marked blocked per Gate G5 rules because native PDF file export is unavailable in Firefox.",
-        "pdfPageCount": null,
-        "pdfStepCheck": null,
-        "retainedPdf": null,
+        "cdpPdfSize": 28091,
+        "cdpSuccess": true,
+        "cdpBlocked": false,
+        "cdpReason": null,
+        "pdfPageCount": 3,
+        "pdfStepCheck": {
+          "foundSteps": [
+            "Step 0",
+            "Step 1",
+            "Step 2",
+            "Step 3",
+            "Step 4",
+            "Step 5",
+            "Step 6",
+            "Step 7",
+            "Step 8",
+            "Step 9",
+            "Step 10",
+            "Step 11",
+            "Step 12",
+            "Step 13",
+            "Step 14",
+            "Step 15",
+            "Step 16",
+            "Step 17",
+            "Step 18",
+            "Step 19",
+            "Step 20",
+            "Step 21",
+            "Step 22",
+            "Step 23",
+            "Step 24",
+            "Step 25"
+          ],
+          "missingSteps": [],
+          "foundCount": 26
+        },
+        "retainedPdf": "evidence/phase-0/g0-capture/artifacts/chromium/print-tall-diagram.pdf",
         "consoleErrors": 0
       },
-      "status": "blocked",
+      "status": "pass",
       "artifacts": [
-        "evidence/phase-0/g0-capture/artifacts/firefox/G5-PRINT-PDF-TALL-print-emulated.png",
-        "evidence/phase-0/g0-capture/artifacts/firefox/G5-PRINT-PDF-TALL.png"
+        "evidence/phase-0/g0-capture/artifacts/chromium/print-tall-diagram.pdf",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G5-PRINT-PDF-TALL-print-emulated.png",
+        "evidence/phase-0/g0-capture/artifacts/chromium/G5-PRINT-PDF-TALL.png"
       ],
-      "timestamp": "2026-11-14T02:01:13.434Z"
+      "timestamp": "2026-11-14T02:54:51.116Z"
     }
   ]
 }

@@ -3,7 +3,7 @@
   "candidateSha256": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateSha256LfNormalized": "d1b2f6f32007cef3e26d904575b9edc3fb97aa5ad015632090f23096d4d66c6e",
   "candidateNote": "candidateSha256 is the raw on-disk file; candidateSha256LfNormalized is the same content with CRLF->LF. Compare the normalized hash against the committed blob hash to detect autocrlf artifacts.",
-  "generatedAt": "2026-11-14T02:01:14.172Z",
+  "generatedAt": "2026-11-14T02:27:50.104Z",
   "environment": {
     "platform": "win32",
     "arch": "x64",
@@ -50,7 +50,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-LAUNCH-FILE.png"
       ],
-      "timestamp": "2026-11-14T01:53:18.446Z"
+      "timestamp": "2026-11-14T02:20:49.751Z"
     },
     {
       "id": "G0-LAUNCH-HTTP",
@@ -78,7 +78,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-LAUNCH-HTTP.png"
       ],
-      "timestamp": "2026-11-14T01:53:20.946Z"
+      "timestamp": "2026-11-14T02:20:51.849Z"
     },
     {
       "id": "G0-FIX-invalid",
@@ -102,7 +102,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-invalid.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-invalid-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:23.268Z"
+      "timestamp": "2026-11-14T02:20:53.467Z"
     },
     {
       "id": "G0-FIX-labels",
@@ -126,7 +126,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-labels.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:25.381Z"
+      "timestamp": "2026-11-14T02:20:55.180Z"
     },
     {
       "id": "G0-FIX-long-labels",
@@ -150,7 +150,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-long-labels.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-long-labels-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:27.552Z"
+      "timestamp": "2026-11-14T02:20:56.915Z"
     },
     {
       "id": "G0-FIX-mixed-fences",
@@ -174,7 +174,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-fences.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-fences-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:30.292Z"
+      "timestamp": "2026-11-14T02:20:58.775Z"
     },
     {
       "id": "G0-FIX-mixed",
@@ -198,7 +198,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-mixed-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:32.728Z"
+      "timestamp": "2026-11-14T02:21:00.617Z"
     },
     {
       "id": "G0-FIX-multi",
@@ -222,7 +222,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-multi.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-multi-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:35.121Z"
+      "timestamp": "2026-11-14T02:21:02.475Z"
     },
     {
       "id": "G0-FIX-nested",
@@ -246,7 +246,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-nested.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-nested-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:37.587Z"
+      "timestamp": "2026-11-14T02:21:04.112Z"
     },
     {
       "id": "G0-FIX-outer-fence",
@@ -270,7 +270,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-outer-fence.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-outer-fence-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:39.522Z"
+      "timestamp": "2026-11-14T02:21:05.752Z"
     },
     {
       "id": "G0-FIX-tall",
@@ -294,7 +294,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-tall.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-tall-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:42.928Z"
+      "timestamp": "2026-11-14T02:21:08.892Z"
     },
     {
       "id": "G0-FIX-template-architecture-default",
@@ -324,7 +324,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-architecture-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-architecture-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:46.124Z"
+      "timestamp": "2026-11-14T02:21:11.481Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-default",
@@ -354,7 +354,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:49.448Z"
+      "timestamp": "2026-11-14T02:21:13.998Z"
     },
     {
       "id": "G0-FIX-template-classDiagram-pattern",
@@ -384,7 +384,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-pattern-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-classDiagram-pattern-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:52.466Z"
+      "timestamp": "2026-11-14T02:21:16.666Z"
     },
     {
       "id": "G0-FIX-template-erDiagram-default",
@@ -414,7 +414,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-erDiagram-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-erDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:55.626Z"
+      "timestamp": "2026-11-14T02:21:19.829Z"
     },
     {
       "id": "G0-FIX-template-flowchart-decision",
@@ -444,7 +444,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-decision-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-decision-counts.json"
       ],
-      "timestamp": "2026-11-14T01:53:58.766Z"
+      "timestamp": "2026-11-14T02:21:22.610Z"
     },
     {
       "id": "G0-FIX-template-flowchart-default",
@@ -474,7 +474,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:01.782Z"
+      "timestamp": "2026-11-14T02:21:24.991Z"
     },
     {
       "id": "G0-FIX-template-flowchart-microservices",
@@ -504,7 +504,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-microservices-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-flowchart-microservices-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:05.014Z"
+      "timestamp": "2026-11-14T02:21:27.698Z"
     },
     {
       "id": "G0-FIX-template-gantt-default",
@@ -534,7 +534,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gantt-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gantt-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:07.758Z"
+      "timestamp": "2026-11-14T02:21:30.338Z"
     },
     {
       "id": "G0-FIX-template-gitGraph-default",
@@ -564,7 +564,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gitGraph-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-gitGraph-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:10.696Z"
+      "timestamp": "2026-11-14T02:21:32.909Z"
     },
     {
       "id": "G0-FIX-template-journey-default",
@@ -594,7 +594,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-journey-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-journey-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:14.418Z"
+      "timestamp": "2026-11-14T02:21:36.150Z"
     },
     {
       "id": "G0-FIX-template-mindmap-default",
@@ -624,7 +624,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-mindmap-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-mindmap-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:17.716Z"
+      "timestamp": "2026-11-14T02:21:39.198Z"
     },
     {
       "id": "G0-FIX-template-pie-default",
@@ -654,7 +654,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-pie-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-pie-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:21.075Z"
+      "timestamp": "2026-11-14T02:21:42.779Z"
     },
     {
       "id": "G0-FIX-template-sequence-default",
@@ -684,7 +684,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:24.570Z"
+      "timestamp": "2026-11-14T02:21:45.553Z"
     },
     {
       "id": "G0-FIX-template-sequence-payment",
@@ -714,7 +714,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-payment-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-sequence-payment-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:27.705Z"
+      "timestamp": "2026-11-14T02:21:48.387Z"
     },
     {
       "id": "G0-FIX-template-stateDiagram-default",
@@ -744,7 +744,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-stateDiagram-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-stateDiagram-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:30.631Z"
+      "timestamp": "2026-11-14T02:21:51.052Z"
     },
     {
       "id": "G0-FIX-template-timeline-default",
@@ -774,7 +774,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-timeline-default-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-template-timeline-default-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:33.471Z"
+      "timestamp": "2026-11-14T02:21:53.334Z"
     },
     {
       "id": "G0-FIX-wide",
@@ -798,7 +798,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-wide.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-FIX-wide-counts.json"
       ],
-      "timestamp": "2026-11-14T01:54:35.866Z"
+      "timestamp": "2026-11-14T02:21:55.764Z"
     },
     {
       "id": "G0-CTL-C001",
@@ -835,7 +835,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C001.png"
       ],
-      "timestamp": "2026-11-14T01:54:39.094Z"
+      "timestamp": "2026-11-14T02:21:57.779Z"
     },
     {
       "id": "G0-CTL-C002",
@@ -872,7 +872,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C002.png"
       ],
-      "timestamp": "2026-11-14T01:54:41.555Z"
+      "timestamp": "2026-11-14T02:21:59.919Z"
     },
     {
       "id": "G0-CTL-C003",
@@ -908,7 +908,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C003.png"
       ],
-      "timestamp": "2026-11-14T01:54:44.661Z"
+      "timestamp": "2026-11-14T02:22:02.573Z"
     },
     {
       "id": "G0-CTL-C004",
@@ -944,7 +944,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C004.png"
       ],
-      "timestamp": "2026-11-14T01:54:47.239Z"
+      "timestamp": "2026-11-14T02:22:05.437Z"
     },
     {
       "id": "G0-CTL-C005",
@@ -980,7 +980,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C005.png"
       ],
-      "timestamp": "2026-11-14T01:54:49.914Z"
+      "timestamp": "2026-11-14T02:22:07.435Z"
     },
     {
       "id": "G0-CTL-C006",
@@ -1016,7 +1016,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C006.png"
       ],
-      "timestamp": "2026-11-14T01:54:53.095Z"
+      "timestamp": "2026-11-14T02:22:09.394Z"
     },
     {
       "id": "G0-CTL-C007",
@@ -1052,7 +1052,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C007.png"
       ],
-      "timestamp": "2026-11-14T01:54:55.669Z"
+      "timestamp": "2026-11-14T02:22:11.318Z"
     },
     {
       "id": "G0-CTL-C008",
@@ -1088,7 +1088,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C008.png"
       ],
-      "timestamp": "2026-11-14T01:54:58.339Z"
+      "timestamp": "2026-11-14T02:22:13.480Z"
     },
     {
       "id": "G0-CTL-C009",
@@ -1124,7 +1124,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C009.png"
       ],
-      "timestamp": "2026-11-14T01:55:01.351Z"
+      "timestamp": "2026-11-14T02:22:15.484Z"
     },
     {
       "id": "G0-CTL-C010",
@@ -1160,7 +1160,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C010.png"
       ],
-      "timestamp": "2026-11-14T01:55:04.145Z"
+      "timestamp": "2026-11-14T02:22:17.515Z"
     },
     {
       "id": "G0-CTL-C011",
@@ -1196,7 +1196,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C011.png"
       ],
-      "timestamp": "2026-11-14T01:55:07.045Z"
+      "timestamp": "2026-11-14T02:22:20.086Z"
     },
     {
       "id": "G0-CTL-C012",
@@ -1232,7 +1232,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C012.png"
       ],
-      "timestamp": "2026-11-14T01:55:10.224Z"
+      "timestamp": "2026-11-14T02:22:22.258Z"
     },
     {
       "id": "G0-CTL-C013",
@@ -1269,7 +1269,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C013.png"
       ],
-      "timestamp": "2026-11-14T01:55:13.337Z"
+      "timestamp": "2026-11-14T02:22:24.864Z"
     },
     {
       "id": "G0-CTL-C014",
@@ -1304,7 +1304,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C014.png"
       ],
-      "timestamp": "2026-11-14T01:55:17.031Z"
+      "timestamp": "2026-11-14T02:22:27.190Z"
     },
     {
       "id": "G0-CTL-C015",
@@ -1341,7 +1341,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C015.png"
       ],
-      "timestamp": "2026-11-14T01:55:20.144Z"
+      "timestamp": "2026-11-14T02:22:29.992Z"
     },
     {
       "id": "G0-CTL-C016",
@@ -1378,7 +1378,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C016.png"
       ],
-      "timestamp": "2026-11-14T01:55:22.711Z"
+      "timestamp": "2026-11-14T02:22:32.238Z"
     },
     {
       "id": "G0-CTL-C017",
@@ -1414,7 +1414,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C017.png"
       ],
-      "timestamp": "2026-11-14T01:55:25.193Z"
+      "timestamp": "2026-11-14T02:22:34.570Z"
     },
     {
       "id": "G0-CTL-C018",
@@ -1450,7 +1450,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C018.png"
       ],
-      "timestamp": "2026-11-14T01:55:27.583Z"
+      "timestamp": "2026-11-14T02:22:36.991Z"
     },
     {
       "id": "G0-CTL-C019",
@@ -1487,7 +1487,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C019.png"
       ],
-      "timestamp": "2026-11-14T01:55:30.071Z"
+      "timestamp": "2026-11-14T02:22:39.055Z"
     },
     {
       "id": "G0-CTL-C020",
@@ -1523,7 +1523,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C020.png"
       ],
-      "timestamp": "2026-11-14T01:55:32.585Z"
+      "timestamp": "2026-11-14T02:22:40.987Z"
     },
     {
       "id": "G0-CTL-C021",
@@ -1559,7 +1559,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C021.png"
       ],
-      "timestamp": "2026-11-14T01:55:35.092Z"
+      "timestamp": "2026-11-14T02:22:43.757Z"
     },
     {
       "id": "G0-CTL-C022",
@@ -1598,7 +1598,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C022.png"
       ],
-      "timestamp": "2026-11-14T01:55:37.810Z"
+      "timestamp": "2026-11-14T02:22:46.107Z"
     },
     {
       "id": "G0-CTL-C023",
@@ -1636,7 +1636,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C023.png"
       ],
-      "timestamp": "2026-11-14T01:55:41.141Z"
+      "timestamp": "2026-11-14T02:22:49.417Z"
     },
     {
       "id": "G0-CTL-C024",
@@ -1675,7 +1675,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C024.png"
       ],
-      "timestamp": "2026-11-14T01:55:43.552Z"
+      "timestamp": "2026-11-14T02:22:51.796Z"
     },
     {
       "id": "G0-CTL-C025",
@@ -1712,7 +1712,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C025.png"
       ],
-      "timestamp": "2026-11-14T01:55:46.030Z"
+      "timestamp": "2026-11-14T02:22:54.090Z"
     },
     {
       "id": "G0-CTL-C026",
@@ -1749,7 +1749,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C026.png"
       ],
-      "timestamp": "2026-11-14T01:55:48.885Z"
+      "timestamp": "2026-11-14T02:22:56.497Z"
     },
     {
       "id": "G0-CTL-C027",
@@ -1786,7 +1786,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C027.png"
       ],
-      "timestamp": "2026-11-14T01:55:51.241Z"
+      "timestamp": "2026-11-14T02:22:59.001Z"
     },
     {
       "id": "G0-CTL-C028",
@@ -1823,7 +1823,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C028.png"
       ],
-      "timestamp": "2026-11-14T01:55:54.148Z"
+      "timestamp": "2026-11-14T02:23:01.372Z"
     },
     {
       "id": "G0-CTL-C029",
@@ -1860,7 +1860,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C029.png"
       ],
-      "timestamp": "2026-11-14T01:55:56.653Z"
+      "timestamp": "2026-11-14T02:23:03.445Z"
     },
     {
       "id": "G0-CTL-C030",
@@ -1897,7 +1897,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C030.png"
       ],
-      "timestamp": "2026-11-14T01:55:59.550Z"
+      "timestamp": "2026-11-14T02:23:06.156Z"
     },
     {
       "id": "G0-CTL-C031",
@@ -1934,7 +1934,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C031.png"
       ],
-      "timestamp": "2026-11-14T01:56:02.118Z"
+      "timestamp": "2026-11-14T02:23:08.753Z"
     },
     {
       "id": "G0-CTL-C032",
@@ -1971,7 +1971,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C032.png"
       ],
-      "timestamp": "2026-11-14T01:56:05.133Z"
+      "timestamp": "2026-11-14T02:23:10.700Z"
     },
     {
       "id": "G0-CTL-C033",
@@ -2008,7 +2008,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C033.png"
       ],
-      "timestamp": "2026-11-14T01:56:08.554Z"
+      "timestamp": "2026-11-14T02:23:13.091Z"
     },
     {
       "id": "G0-CTL-C034",
@@ -2045,7 +2045,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C034.png"
       ],
-      "timestamp": "2026-11-14T01:56:11.116Z"
+      "timestamp": "2026-11-14T02:23:15.607Z"
     },
     {
       "id": "G0-CTL-C035",
@@ -2082,7 +2082,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C035.png"
       ],
-      "timestamp": "2026-11-14T01:56:13.609Z"
+      "timestamp": "2026-11-14T02:23:17.741Z"
     },
     {
       "id": "G0-CTL-C036",
@@ -2119,7 +2119,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C036.png"
       ],
-      "timestamp": "2026-11-14T01:56:16.111Z"
+      "timestamp": "2026-11-14T02:23:20.035Z"
     },
     {
       "id": "G0-CTL-C037",
@@ -2156,7 +2156,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C037.png"
       ],
-      "timestamp": "2026-11-14T01:56:19.046Z"
+      "timestamp": "2026-11-14T02:23:22.412Z"
     },
     {
       "id": "G0-CTL-C038",
@@ -2193,7 +2193,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C038.png"
       ],
-      "timestamp": "2026-11-14T01:56:21.403Z"
+      "timestamp": "2026-11-14T02:23:24.744Z"
     },
     {
       "id": "G0-CTL-C039",
@@ -2230,7 +2230,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C039.png"
       ],
-      "timestamp": "2026-11-14T01:56:24.210Z"
+      "timestamp": "2026-11-14T02:23:26.854Z"
     },
     {
       "id": "G0-CTL-C040",
@@ -2267,7 +2267,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C040.png"
       ],
-      "timestamp": "2026-11-14T01:56:27.501Z"
+      "timestamp": "2026-11-14T02:23:29.020Z"
     },
     {
       "id": "G0-CTL-C041",
@@ -2304,7 +2304,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C041.png"
       ],
-      "timestamp": "2026-11-14T01:56:30.422Z"
+      "timestamp": "2026-11-14T02:23:31.598Z"
     },
     {
       "id": "G0-CTL-C042",
@@ -2341,7 +2341,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C042.png"
       ],
-      "timestamp": "2026-11-14T01:56:32.865Z"
+      "timestamp": "2026-11-14T02:23:34.271Z"
     },
     {
       "id": "G0-CTL-C043",
@@ -2378,7 +2378,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C043.png"
       ],
-      "timestamp": "2026-11-14T01:56:36.623Z"
+      "timestamp": "2026-11-14T02:23:38.279Z"
     },
     {
       "id": "G0-CTL-C044",
@@ -2415,7 +2415,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C044.png"
       ],
-      "timestamp": "2026-11-14T01:56:39.385Z"
+      "timestamp": "2026-11-14T02:23:40.537Z"
     },
     {
       "id": "G0-CTL-C045",
@@ -2452,7 +2452,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C045.png"
       ],
-      "timestamp": "2026-11-14T01:56:42.063Z"
+      "timestamp": "2026-11-14T02:23:43.323Z"
     },
     {
       "id": "G0-CTL-C046",
@@ -2489,7 +2489,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C046.png"
       ],
-      "timestamp": "2026-11-14T01:56:44.545Z"
+      "timestamp": "2026-11-14T02:23:45.828Z"
     },
     {
       "id": "G0-CTL-C047",
@@ -2526,7 +2526,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C047.png"
       ],
-      "timestamp": "2026-11-14T01:56:47.245Z"
+      "timestamp": "2026-11-14T02:23:47.971Z"
     },
     {
       "id": "G0-CTL-C048",
@@ -2563,7 +2563,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C048.png"
       ],
-      "timestamp": "2026-11-14T01:56:49.676Z"
+      "timestamp": "2026-11-14T02:23:50.227Z"
     },
     {
       "id": "G0-CTL-C049",
@@ -2601,7 +2601,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C049.png"
       ],
-      "timestamp": "2026-11-14T01:56:52.253Z"
+      "timestamp": "2026-11-14T02:23:52.715Z"
     },
     {
       "id": "G0-CTL-C050",
@@ -2637,7 +2637,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C050.png"
       ],
-      "timestamp": "2026-11-14T01:56:54.852Z"
+      "timestamp": "2026-11-14T02:23:55.251Z"
     },
     {
       "id": "G0-CTL-C051",
@@ -2673,7 +2673,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C051.png"
       ],
-      "timestamp": "2026-11-14T01:56:57.300Z"
+      "timestamp": "2026-11-14T02:23:57.443Z"
     },
     {
       "id": "G0-CTL-C052",
@@ -2711,7 +2711,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C052.png"
       ],
-      "timestamp": "2026-11-14T01:57:00.371Z"
+      "timestamp": "2026-11-14T02:23:59.563Z"
     },
     {
       "id": "G0-CTL-C053",
@@ -2747,7 +2747,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C053.png"
       ],
-      "timestamp": "2026-11-14T01:57:03.494Z"
+      "timestamp": "2026-11-14T02:24:02.551Z"
     },
     {
       "id": "G0-CTL-C054",
@@ -2783,7 +2783,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C054.png"
       ],
-      "timestamp": "2026-11-14T01:57:06.286Z"
+      "timestamp": "2026-11-14T02:24:04.966Z"
     },
     {
       "id": "G0-CTL-C055",
@@ -2820,7 +2820,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C055.png"
       ],
-      "timestamp": "2026-11-14T01:57:09.534Z"
+      "timestamp": "2026-11-14T02:24:07.620Z"
     },
     {
       "id": "G0-CTL-C056",
@@ -2856,7 +2856,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C056.png"
       ],
-      "timestamp": "2026-11-14T01:57:12.148Z"
+      "timestamp": "2026-11-14T02:24:09.864Z"
     },
     {
       "id": "G0-CTL-C057",
@@ -2894,7 +2894,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C057.png"
       ],
-      "timestamp": "2026-11-14T01:57:14.816Z"
+      "timestamp": "2026-11-14T02:24:12.217Z"
     },
     {
       "id": "G0-CTL-C058",
@@ -2931,7 +2931,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C058.png"
       ],
-      "timestamp": "2026-11-14T01:57:17.335Z"
+      "timestamp": "2026-11-14T02:24:14.512Z"
     },
     {
       "id": "G0-CTL-C059",
@@ -2968,7 +2968,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C059.png"
       ],
-      "timestamp": "2026-11-14T01:57:19.697Z"
+      "timestamp": "2026-11-14T02:24:16.807Z"
     },
     {
       "id": "G0-CTL-C060",
@@ -3005,7 +3005,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C060.png"
       ],
-      "timestamp": "2026-11-14T01:57:22.471Z"
+      "timestamp": "2026-11-14T02:24:18.852Z"
     },
     {
       "id": "G0-CTL-C061",
@@ -3043,7 +3043,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C061.png"
       ],
-      "timestamp": "2026-11-14T01:57:24.762Z"
+      "timestamp": "2026-11-14T02:24:21.017Z"
     },
     {
       "id": "G0-CTL-C062",
@@ -3080,7 +3080,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C062.png"
       ],
-      "timestamp": "2026-11-14T01:57:26.955Z"
+      "timestamp": "2026-11-14T02:24:23.434Z"
     },
     {
       "id": "G0-CTL-C063",
@@ -3117,7 +3117,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C063.png"
       ],
-      "timestamp": "2026-11-14T01:57:30.566Z"
+      "timestamp": "2026-11-14T02:24:26.413Z"
     },
     {
       "id": "G0-CTL-C064",
@@ -3153,7 +3153,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C064.png"
       ],
-      "timestamp": "2026-11-14T01:57:33.888Z"
+      "timestamp": "2026-11-14T02:24:28.513Z"
     },
     {
       "id": "G0-CTL-C065",
@@ -3189,7 +3189,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C065.png"
       ],
-      "timestamp": "2026-11-14T01:57:36.559Z"
+      "timestamp": "2026-11-14T02:24:30.694Z"
     },
     {
       "id": "G0-CTL-C066",
@@ -3225,7 +3225,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C066.png"
       ],
-      "timestamp": "2026-11-14T01:57:38.913Z"
+      "timestamp": "2026-11-14T02:24:33.761Z"
     },
     {
       "id": "G0-CTL-C067",
@@ -3262,7 +3262,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C067.png"
       ],
-      "timestamp": "2026-11-14T01:57:41.314Z"
+      "timestamp": "2026-11-14T02:24:36.674Z"
     },
     {
       "id": "G0-CTL-C068",
@@ -3299,7 +3299,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C068.png"
       ],
-      "timestamp": "2026-11-14T01:57:43.998Z"
+      "timestamp": "2026-11-14T02:24:39.799Z"
     },
     {
       "id": "G0-CTL-C069",
@@ -3337,7 +3337,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C069.png"
       ],
-      "timestamp": "2026-11-14T01:57:46.319Z"
+      "timestamp": "2026-11-14T02:24:41.993Z"
     },
     {
       "id": "G0-CTL-C070",
@@ -3375,7 +3375,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C070.png"
       ],
-      "timestamp": "2026-11-14T01:57:48.932Z"
+      "timestamp": "2026-11-14T02:24:44.329Z"
     },
     {
       "id": "G0-CTL-C071",
@@ -3412,7 +3412,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C071.png"
       ],
-      "timestamp": "2026-11-14T01:57:51.942Z"
+      "timestamp": "2026-11-14T02:24:47.226Z"
     },
     {
       "id": "G0-CTL-C072",
@@ -3448,7 +3448,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C072.png"
       ],
-      "timestamp": "2026-11-14T01:57:54.547Z"
+      "timestamp": "2026-11-14T02:24:49.886Z"
     },
     {
       "id": "G0-CTL-C073",
@@ -3484,7 +3484,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C073.png"
       ],
-      "timestamp": "2026-11-14T01:57:58.542Z"
+      "timestamp": "2026-11-14T02:24:53.166Z"
     },
     {
       "id": "G0-CTL-C074",
@@ -3520,7 +3520,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C074.png"
       ],
-      "timestamp": "2026-11-14T01:58:01.561Z"
+      "timestamp": "2026-11-14T02:24:55.861Z"
     },
     {
       "id": "G0-CTL-C075",
@@ -3556,7 +3556,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C075.png"
       ],
-      "timestamp": "2026-11-14T01:58:05.052Z"
+      "timestamp": "2026-11-14T02:24:58.579Z"
     },
     {
       "id": "G0-CTL-C076",
@@ -3593,7 +3593,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C076.png"
       ],
-      "timestamp": "2026-11-14T01:58:08.775Z"
+      "timestamp": "2026-11-14T02:25:01.129Z"
     },
     {
       "id": "G0-CTL-C077",
@@ -3629,7 +3629,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C077.png"
       ],
-      "timestamp": "2026-11-14T01:58:11.532Z"
+      "timestamp": "2026-11-14T02:25:03.683Z"
     },
     {
       "id": "G0-CTL-C078",
@@ -3665,7 +3665,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C078.png"
       ],
-      "timestamp": "2026-11-14T01:58:14.212Z"
+      "timestamp": "2026-11-14T02:25:06.073Z"
     },
     {
       "id": "G0-CTL-C079",
@@ -3701,7 +3701,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C079.png"
       ],
-      "timestamp": "2026-11-14T01:58:17.933Z"
+      "timestamp": "2026-11-14T02:25:08.629Z"
     },
     {
       "id": "G0-CTL-C080",
@@ -3737,7 +3737,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C080.png"
       ],
-      "timestamp": "2026-11-14T01:58:21.017Z"
+      "timestamp": "2026-11-14T02:25:11.075Z"
     },
     {
       "id": "G0-CTL-C081",
@@ -3773,7 +3773,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C081.png"
       ],
-      "timestamp": "2026-11-14T01:58:24.019Z"
+      "timestamp": "2026-11-14T02:25:13.616Z"
     },
     {
       "id": "G0-CTL-C082",
@@ -3809,7 +3809,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C082.png"
       ],
-      "timestamp": "2026-11-14T01:58:26.560Z"
+      "timestamp": "2026-11-14T02:25:16.078Z"
     },
     {
       "id": "G0-CTL-C083",
@@ -3845,7 +3845,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C083.png"
       ],
-      "timestamp": "2026-11-14T01:58:31.589Z"
+      "timestamp": "2026-11-14T02:25:19.656Z"
     },
     {
       "id": "G0-CTL-C084",
@@ -3881,7 +3881,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C084.png"
       ],
-      "timestamp": "2026-11-14T01:58:34.847Z"
+      "timestamp": "2026-11-14T02:25:22.560Z"
     },
     {
       "id": "G0-CTL-C085",
@@ -3917,7 +3917,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C085.png"
       ],
-      "timestamp": "2026-11-14T01:58:37.798Z"
+      "timestamp": "2026-11-14T02:25:25.604Z"
     },
     {
       "id": "G0-CTL-C086",
@@ -3953,7 +3953,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C086.png"
       ],
-      "timestamp": "2026-11-14T01:58:40.826Z"
+      "timestamp": "2026-11-14T02:25:28.510Z"
     },
     {
       "id": "G0-CTL-C087",
@@ -3989,7 +3989,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C087.png"
       ],
-      "timestamp": "2026-11-14T01:58:44.177Z"
+      "timestamp": "2026-11-14T02:25:31.063Z"
     },
     {
       "id": "G0-CTL-C088",
@@ -4025,7 +4025,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C088.png"
       ],
-      "timestamp": "2026-11-14T01:58:47.160Z"
+      "timestamp": "2026-11-14T02:25:33.619Z"
     },
     {
       "id": "G0-CTL-C089",
@@ -4061,7 +4061,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C089.png"
       ],
-      "timestamp": "2026-11-14T01:58:49.932Z"
+      "timestamp": "2026-11-14T02:25:36.327Z"
     },
     {
       "id": "G0-CTL-C090",
@@ -4097,7 +4097,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C090.png"
       ],
-      "timestamp": "2026-11-14T01:58:52.581Z"
+      "timestamp": "2026-11-14T02:25:38.923Z"
     },
     {
       "id": "G0-CTL-C091",
@@ -4134,7 +4134,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C091.png"
       ],
-      "timestamp": "2026-11-14T01:58:55.541Z"
+      "timestamp": "2026-11-14T02:25:42.105Z"
     },
     {
       "id": "G0-CTL-C092",
@@ -4171,7 +4171,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C092.png"
       ],
-      "timestamp": "2026-11-14T01:58:58.184Z"
+      "timestamp": "2026-11-14T02:25:44.960Z"
     },
     {
       "id": "G0-CTL-C093",
@@ -4208,7 +4208,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C093.png"
       ],
-      "timestamp": "2026-11-14T01:59:01.660Z"
+      "timestamp": "2026-11-14T02:25:48.677Z"
     },
     {
       "id": "G0-CTL-C094",
@@ -4245,7 +4245,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C094.png"
       ],
-      "timestamp": "2026-11-14T01:59:04.567Z"
+      "timestamp": "2026-11-14T02:25:51.519Z"
     },
     {
       "id": "G0-CTL-C095",
@@ -4282,7 +4282,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C095.png"
       ],
-      "timestamp": "2026-11-14T01:59:07.195Z"
+      "timestamp": "2026-11-14T02:25:54.153Z"
     },
     {
       "id": "G0-CTL-C096",
@@ -4319,7 +4319,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C096.png"
       ],
-      "timestamp": "2026-11-14T01:59:10.102Z"
+      "timestamp": "2026-11-14T02:25:56.947Z"
     },
     {
       "id": "G0-CTL-C097",
@@ -4355,7 +4355,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C097.png"
       ],
-      "timestamp": "2026-11-14T01:59:13.501Z"
+      "timestamp": "2026-11-14T02:25:59.636Z"
     },
     {
       "id": "G0-CTL-C098",
@@ -4391,7 +4391,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C098.png"
       ],
-      "timestamp": "2026-11-14T01:59:16.289Z"
+      "timestamp": "2026-11-14T02:26:02.199Z"
     },
     {
       "id": "G0-CTL-C099",
@@ -4427,7 +4427,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C099.png"
       ],
-      "timestamp": "2026-11-14T01:59:19.417Z"
+      "timestamp": "2026-11-14T02:26:05.265Z"
     },
     {
       "id": "G0-CTL-C100",
@@ -4463,7 +4463,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C100.png"
       ],
-      "timestamp": "2026-11-14T01:59:22.502Z"
+      "timestamp": "2026-11-14T02:26:08.647Z"
     },
     {
       "id": "G0-CTL-C101",
@@ -4499,7 +4499,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C101.png"
       ],
-      "timestamp": "2026-11-14T01:59:25.515Z"
+      "timestamp": "2026-11-14T02:26:11.827Z"
     },
     {
       "id": "G0-CTL-C102",
@@ -4535,7 +4535,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C102.png"
       ],
-      "timestamp": "2026-11-14T01:59:28.303Z"
+      "timestamp": "2026-11-14T02:26:14.956Z"
     },
     {
       "id": "G0-CTL-C103",
@@ -4571,7 +4571,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C103.png"
       ],
-      "timestamp": "2026-11-14T01:59:31.739Z"
+      "timestamp": "2026-11-14T02:26:18.697Z"
     },
     {
       "id": "G0-CTL-C104",
@@ -4607,7 +4607,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C104.png"
       ],
-      "timestamp": "2026-11-14T01:59:34.402Z"
+      "timestamp": "2026-11-14T02:26:21.380Z"
     },
     {
       "id": "G0-CTL-C105",
@@ -4643,7 +4643,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C105.png"
       ],
-      "timestamp": "2026-11-14T01:59:37.210Z"
+      "timestamp": "2026-11-14T02:26:24.160Z"
     },
     {
       "id": "G0-CTL-C106",
@@ -4679,7 +4679,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C106.png"
       ],
-      "timestamp": "2026-11-14T01:59:40.124Z"
+      "timestamp": "2026-11-14T02:26:26.684Z"
     },
     {
       "id": "G0-CTL-C107",
@@ -4715,7 +4715,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C107.png"
       ],
-      "timestamp": "2026-11-14T01:59:43.065Z"
+      "timestamp": "2026-11-14T02:26:29.156Z"
     },
     {
       "id": "G0-CTL-C108",
@@ -4755,7 +4755,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C108.png"
       ],
-      "timestamp": "2026-11-14T01:59:45.692Z"
+      "timestamp": "2026-11-14T02:26:31.797Z"
     },
     {
       "id": "G0-CTL-C109",
@@ -4795,7 +4795,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C109.png"
       ],
-      "timestamp": "2026-11-14T01:59:48.305Z"
+      "timestamp": "2026-11-14T02:26:34.169Z"
     },
     {
       "id": "G0-CTL-C110",
@@ -4831,7 +4831,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C110.png"
       ],
-      "timestamp": "2026-11-14T01:59:51.384Z"
+      "timestamp": "2026-11-14T02:26:36.548Z"
     },
     {
       "id": "G0-CTL-C111",
@@ -4867,7 +4867,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G0-CTL-C111.png"
       ],
-      "timestamp": "2026-11-14T01:59:54.092Z"
+      "timestamp": "2026-11-14T02:26:38.877Z"
     },
     {
       "id": "G1-X1-ISOLATION-BROWSER",
@@ -4899,7 +4899,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G1-X1-ISOLATION-BROWSER.png"
       ],
-      "timestamp": "2026-11-14T01:59:58.293Z"
+      "timestamp": "2026-11-14T02:26:42.641Z"
     },
     {
       "id": "G1-X4-WELCOME-FULLPAGE",
@@ -4921,7 +4921,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G1-X4-WELCOME-FULLPAGE.png"
       ],
-      "timestamp": "2026-11-14T02:00:01.946Z"
+      "timestamp": "2026-11-14T02:26:46.474Z"
     },
     {
       "id": "G1-CLIP-SUCCESS",
@@ -4946,7 +4946,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G1-CLIP-SUCCESS.png"
       ],
-      "timestamp": "2026-11-14T02:00:05.134Z"
+      "timestamp": "2026-11-14T02:26:49.960Z"
     },
     {
       "id": "G2-LISTENER-50",
@@ -4997,7 +4997,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G2-LISTENER-50.png"
       ],
-      "timestamp": "2026-11-14T02:00:16.516Z"
+      "timestamp": "2026-11-14T02:27:00.874Z"
     },
     {
       "id": "G2-RENDER-GEN",
@@ -5028,7 +5028,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G2-RENDER-GEN.png"
       ],
-      "timestamp": "2026-11-14T02:00:21.656Z"
+      "timestamp": "2026-11-14T02:27:05.142Z"
     },
     {
       "id": "G3-FIT-TALL-WIDE",
@@ -5091,7 +5091,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE-wide-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-FIT-TALL-WIDE.png"
       ],
-      "timestamp": "2026-11-14T02:00:26.385Z"
+      "timestamp": "2026-11-14T02:27:09.878Z"
     },
     {
       "id": "G3-THEME-ISOLATION-3X",
@@ -5134,7 +5134,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-THEME-ISOLATION-3X.png"
       ],
-      "timestamp": "2026-11-14T02:00:33.622Z"
+      "timestamp": "2026-11-14T02:27:16.791Z"
     },
     {
       "id": "G3-TYPOGRAPHY-LABELS",
@@ -5180,7 +5180,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-TYPOGRAPHY-LABELS-studio.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-TYPOGRAPHY-LABELS.png"
       ],
-      "timestamp": "2026-11-14T02:00:38.167Z"
+      "timestamp": "2026-11-14T02:27:20.912Z"
     },
     {
       "id": "G3-RESIZE-VIEWPORT-REFIT",
@@ -5216,7 +5216,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G3-RESIZE-VIEWPORT-REFIT.png"
       ],
-      "timestamp": "2026-11-14T02:00:42.680Z"
+      "timestamp": "2026-11-14T02:27:24.367Z"
     },
     {
       "id": "G4-INSERT-COMMANDS",
@@ -5252,7 +5252,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G4-INSERT-COMMANDS.png"
       ],
-      "timestamp": "2026-11-14T02:00:46.231Z"
+      "timestamp": "2026-11-14T02:27:27.596Z"
     },
     {
       "id": "G4-SHORTCUT-GUARDS",
@@ -5277,7 +5277,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G4-SHORTCUT-GUARDS.png"
       ],
-      "timestamp": "2026-11-14T02:00:50.342Z"
+      "timestamp": "2026-11-14T02:27:31.102Z"
     },
     {
       "id": "G4-PERSISTENCE-ROUNDTRIP",
@@ -5307,7 +5307,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G4-PERSISTENCE-ROUNDTRIP.png"
       ],
-      "timestamp": "2026-11-14T02:00:56.198Z"
+      "timestamp": "2026-11-14T02:27:35.465Z"
     },
     {
       "id": "G5-EXPORT-STANDALONE",
@@ -5386,7 +5386,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/export-standalone-invalid.html",
         "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-STANDALONE.png"
       ],
-      "timestamp": "2026-11-14T02:01:03.699Z"
+      "timestamp": "2026-11-14T02:27:41.690Z"
     },
     {
       "id": "G5-EXPORT-DIAGRAM-FILES",
@@ -5459,7 +5459,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/export-diagram-sample.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-DIAGRAM-FILES.png"
       ],
-      "timestamp": "2026-11-14T02:01:07.521Z"
+      "timestamp": "2026-11-14T02:27:44.800Z"
     },
     {
       "id": "G5-EXPORT-PNG-FAILURE",
@@ -5488,7 +5488,7 @@
       "artifacts": [
         "evidence/phase-0/g0-capture/artifacts/firefox/G5-EXPORT-PNG-FAILURE.png"
       ],
-      "timestamp": "2026-11-14T02:01:09.582Z"
+      "timestamp": "2026-11-14T02:27:46.195Z"
     },
     {
       "id": "G5-PRINT-PDF-TALL",
@@ -5531,7 +5531,7 @@
         "evidence/phase-0/g0-capture/artifacts/firefox/G5-PRINT-PDF-TALL-print-emulated.png",
         "evidence/phase-0/g0-capture/artifacts/firefox/G5-PRINT-PDF-TALL.png"
       ],
-      "timestamp": "2026-11-14T02:01:13.434Z"
+      "timestamp": "2026-11-14T02:27:49.521Z"
     }
   ]
 }
