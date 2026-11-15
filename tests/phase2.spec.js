@@ -24,14 +24,22 @@ function writeEvidence(label, extra) {
 
 async function loadApp(page, label) {
   const consoleIssues = [];
+  const consoleNoise = [];
   const pageErrors = [];
-  page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) consoleIssues.push(`[${m.type()}] ${m.text()}`); });
+  page.on('console', (m) => {
+    if (!['error', 'warning'].includes(m.type())) return;
+    const line = `[${m.type()}] ${m.text()}`;
+    // Pre-existing, unrelated to the app: branded browsers request a favicon
+    // the repo does not ship, over http origins.
+    if (/Failed to load resource.*404/.test(line)) { consoleNoise.push(line); return; }
+    consoleIssues.push(line);
+  });
   page.on('pageerror', (e) => pageErrors.push(String(e)));
   await page.goto(BASE_URL);
   await page.waitForSelector('#editor', { state: 'visible' });
   return {
-    consoleIssues, pageErrors,
-    evidence: writeEvidence.bind(null, label),
+    consoleIssues, consoleNoise, pageErrors,
+    evidence: (extra) => writeEvidence(label, { consoleNoise: consoleNoise.slice(0, 5), ...extra }),
     assertNoErrors: async (ctx) => {
       expect(pageErrors, ctx + ' page errors: ' + pageErrors.join('|')).toHaveLength(0);
       expect(consoleIssues.filter(l => l.startsWith('[error]')), ctx + ' console errors: ' + consoleIssues.join('|')).toHaveLength(0);

@@ -1,0 +1,54 @@
+{
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T03:33:02.030Z",
+  "consoleNoise": [],
+  "tallFit": {
+    "fitScale": 0.4556489262371615,
+    "zoom": 0.4556489262371615,
+    "manuallyAdjusted": false,
+    "viewportW": 560,
+    "viewportH": 520,
+    "svgScaledW": 42,
+    "svgScaledH": 488,
+    "matrixScale": 0.4556489884853363,
+    "intrinsicW": 92.88333129882812,
+    "intrinsicH": 1071
+  },
+  "wideFit": {
+    "fitScale": 0.7786844437323377,
+    "zoom": 0.7786844437323377,
+    "manuallyAdjusted": false,
+    "viewportW": 560,
+    "viewportH": 120,
+    "svgScaledW": 528,
+    "svgScaledH": 40,
+    "matrixScale": 0.7786840200424194,
+    "intrinsicW": 678.0667114257812,
+    "intrinsicH": 51
+  },
+  "afterResizerDrag": {
+    "fitScale": 0.61203417452447,
+    "zoom": 0.61203417452447,
+    "manuallyAdjusted": false,
+    "viewportW": 447,
+    "viewportH": 120,
+    "svgScaledW": 415,
+    "svgScaledH": 31,
+    "matrixScale": 0.612034022808075,
+    "intrinsicW": 678.0667114257812,
+    "intrinsicH": 51
+  },
+  "afterWindowResize": {
+    "fitScale": 0.3200275081248433,
+    "zoom": 0.3200275081248433,
+    "manuallyAdjusted": false,
+    "viewportW": 249,
+    "viewportH": 120,
+    "svgScaledW": 217,
+    "svgScaledH": 16,
+    "matrixScale": 0.32002800703048706,
+    "intrinsicW": 678.0667114257812,
+    "intrinsicH": 51
+  },
+  "project": "firefox"
+}

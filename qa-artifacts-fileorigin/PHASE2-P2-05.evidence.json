@@ -1,0 +1,18 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T03:29:39.671Z",
+  "cycles": 50,
+  "regCountSamples": [
+    0,
+    0
+  ],
+  "panBefore": {
+    "panX": 0,
+    "panY": 0
+  },
+  "panAfter": {
+    "panX": 50,
+    "panY": 20
+  },
+  "project": "firefox"
+}

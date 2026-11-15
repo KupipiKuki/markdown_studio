@@ -1,0 +1,27 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T03:29:39.895Z",
+  "initial": {
+    "fit": 1,
+    "zoom": 1,
+    "panX": 0
+  },
+  "manual": {
+    "manu": true,
+    "zoom": 1.3224999999999998,
+    "panX": 60,
+    "panY": 45
+  },
+  "afterEdit": {
+    "manu": true,
+    "zoom": 1.3224999999999998,
+    "panX": 60,
+    "panY": 45
+  },
+  "afterRefit": {
+    "zoom": 1.3224999999999998,
+    "panX": 60,
+    "manu": true
+  },
+  "project": "firefox"
+}

@@ -1,0 +1,23 @@
+{
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T03:33:01.874Z",
+  "consoleNoise": [],
+  "docLight": {
+    "nodeFill": "rgb(31, 32, 32)",
+    "h1Color": "rgb(248, 250, 252)",
+    "labelColor": "rgb(204, 204, 204)"
+  },
+  "builderFill": "rgb(205, 228, 152)",
+  "docAfterBuilder": {
+    "nodeFill": "rgb(31, 32, 32)",
+    "h1Color": "rgb(248, 250, 252)",
+    "labelColor": "rgb(204, 204, 204)"
+  },
+  "themeAttr": "light",
+  "docDark": {
+    "nodeFill": "rgb(236, 236, 255)",
+    "h1Color": "rgb(15, 23, 42)",
+    "labelColor": "rgb(51, 51, 51)"
+  },
+  "project": "firefox"
+}
