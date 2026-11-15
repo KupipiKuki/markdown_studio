@@ -43,3 +43,32 @@ The production launch URL remains unknown. QA covered `file://` and localhost HT
 ## Overall decision
 
 **Phase 3 code review: approved for R10–R12, shortcut guarding, and nowrap gutter correction. Phase 3 handoff: conditional / not fully closed due to unasserted soft-wrap gutter drift.** The reported matrix is otherwise strong: 144 passed, 4 expected skips, 0 failures on `file://`; 148 passed, 0 failures on localhost HTTP. Production launch-origin coverage remains open.
+
+---
+
+## Follow-up review — soft-wrap gutter remediation
+
+Reviewed November 15, 2026.
+
+### Candidate verification
+
+- Latest migration branch tip: `0d493658e8a42a68293119df61d91e7d133107cd`.
+- Frozen remediation candidate: `b792bf5cd0fdf34da072dcdbf4765662490e53a1`.
+- Candidate and current branch live-file blob: `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b` (match).
+- QA reports: [`Phase 3 remediation QA/QC`](https://github.com/KupipiKuki/markdown_studio/blob/wp/studio_migration/qa-artifacts/PHASE3-REMEDIATION-QAQC.md) · [`Phase 3 QA results`](https://github.com/KupipiKuki/markdown_studio/blob/wp/studio_migration/qa-artifacts/PHASE3-QA-RESULTS.md).
+
+The current branch is two commits ahead of the frozen code candidate. The live script remains byte-for-byte the same; the follow-up changes contain QA artifacts and reports. The updated P3-06 test asserts wrapped lines and the logical lines immediately after them. The remediation report records a negative control failing on the old candidate and the full Phase 1–3 matrices passing on the fix.
+
+### Resolved finding
+
+The soft-wrap misalignment is addressed: `updateLineNumbers()` positions each logical line number from mirrored text geometry, and the retained remediation evidence reports 0 px drift for sampled wrapped-line starts and following logical lines across the tested browsers and origins. The prior review's P3-06 acceptance gap is closed.
+
+### New performance review concern
+
+In the wrap-mode measurement loop, the code calls `mirror.querySelector('[data-ln="…"]')` once for every logical line. `updateLineNumbers()` also runs from the editor's `input` handler, so this repeated DOM search is on the typing path. Repeatedly searching the entire mirror for each line can scale superlinearly with document length; the QA fixture contains 40 logical lines and does not establish responsiveness on large Markdown files. See the [`updateLineNumbers()` implementation](https://github.com/KupipiKuki/markdown_studio/blob/b792bf5cd0fdf34da072dcdbf4765662490e53a1/scripts/markdown-studio.html#L3544-L3563) and [editor input handler](https://github.com/KupipiKuki/markdown_studio/blob/b792bf5cd0fdf34da072dcdbf4765662490e53a1/scripts/markdown-studio.html#L3928-L3937).
+
+Recommended adjustment: collect the line spans once (for example with `querySelectorAll('[data-ln]')`) and index that collection in the loop, then exercise gutter updates on a representative large synthetic document. This is a static performance risk, not a measured user-visible failure; the remediation report's O(document) complexity statement overlooks the repeated per-line selector.
+
+### Updated disposition
+
+The original P3-06 functional exception is resolved. R10–R12, shortcut guard, nowrap and soft-wrap gutter behavior have passing reported coverage. I recommend resolving or measuring the typing-path lookup cost before final Phase 3 code sign-off. The production launch URL remains a separate cross-phase rollout dependency. I inspected the source and evidence but did not rerun Playwright.
