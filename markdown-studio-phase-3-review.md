@@ -72,3 +72,43 @@ Recommended adjustment: collect the line spans once (for example with `querySele
 ### Updated disposition
 
 The original P3-06 functional exception is resolved. R10–R12, shortcut guard, nowrap and soft-wrap gutter behavior have passing reported coverage. I recommend resolving or measuring the typing-path lookup cost before final Phase 3 code sign-off. The production launch URL remains a separate cross-phase rollout dependency. I inspected the source and evidence but did not rerun Playwright.
+
+---
+
+## Remediation re-review — typing-path performance
+
+Reviewed November 15, 2026 after the coder/QA remediation update.
+
+- Latest remote branch tip: `57ffd9a67d512e59afa932d36ceaeec415e69255`.
+- Live-file blob at that tip: `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`, still identical to the soft-wrap candidate `b792bf5`.
+- The tip's commit message is “Revised phase 3 review to note remaining issues”; changes after `b792bf5` are reports, test evidence, and review documentation. No new `scripts/markdown-studio.html` or `tests/phase3.spec.js` change addresses or measures large-document gutter performance.
+- `qa-artifacts/PHASE3-REMEDIATION-QAQC.md` remains the soft-wrap remediation report. No separate performance report or large-document timing evidence is present in `qa-artifacts/`.
+
+The reviewed hot path is unchanged: soft-wrap `updateLineNumbers()` calls `mirror.querySelector(...)` once per logical line, and the editor `input` handler invokes `updateLineNumbers()` on each keystroke. The repeated query concern therefore remains open. This review cannot confirm that the requested performance remediation has been completed from the current remote branch.
+
+### Updated disposition
+
+The soft-wrap alignment remediation remains approved. The new performance concern remains unresolved in the available branch state; final Phase 3 code sign-off is pending either (a) a change that collects/indexes line spans once plus a large-document responsiveness check, or (b) a documented benchmark demonstrating acceptable performance at a representative document size. The production launch URL remains open as a rollout dependency. No tests were run during this re-review.
+
+---
+
+## Final remediation review — typing-path performance
+
+Reviewed November 15, 2026 after the latest push.
+
+### Candidate verification
+
+- Latest migration branch tip: `6e43ca7620a0a630c56d7ada48bab8917caf0b82`.
+- Frozen performance-remediation candidate: `2cd8810404fc91762524a76b75f99905f0f2a226`.
+- Current branch live-file blob: `cd0b2826906af730fd41a2c9b53a99e24bc3888f`, matching the frozen candidate.
+- QA evidence: [`Phase 3 remediation QA/QC`](https://github.com/KupipiKuki/markdown_studio/blob/wp/studio_migration/qa-artifacts/PHASE3-REMEDIATION-QAQC.md), [`Phase 3 QA results`](https://github.com/KupipiKuki/markdown_studio/blob/wp/studio_migration/qa-artifacts/PHASE3-QA-RESULTS.md), and [P3-06R performance probe](https://github.com/KupipiKuki/markdown_studio/blob/wp/studio_migration/qa-artifacts/p3gutter-perf-probe.js).
+
+### Review result
+
+The wrap-mode implementation now indexes `mirror.children` rather than executing one `querySelector` per logical line. This removes the repeated per-line DOM search from the editor input path while preserving the soft-wrap row-positioning behavior. P3-06R uses a representative 2,000-line document, compares the old and new lookup methods, and measures the app's synchronous input handler.
+
+The reported retest passes the Phase 1–3 suites with retries disabled: `file://` has 148 passes, 4 expected transfer skips, and 0 failures; localhost HTTP has 152 passes and 0 failures. The HTTP and file-origin logs include each of the four browser projects. Retained Firefox measurements are within the median budgets: HTTP 26 ms row-offset pass / 63 ms input handler; file origin 18 ms / 60 ms. The test asserts the lookup median is no slower than the old strategy and that medians remain within 40 ms / 120 ms budgets.
+
+### Final disposition
+
+The Phase 3 code and QA/QC are approved on candidate `2cd8810404fc91762524a76b75f99905f0f2a226`. R10–R12, shortcut guarding, nowrap gutter alignment, soft-wrap gutter alignment, large-document lookup cost, and the Phase 1/2 regressions have passing reported evidence. The production launch URL remains open as a cross-phase rollout dependency. This review inspected the source, logs, reports, and evidence; it did not rerun Playwright.

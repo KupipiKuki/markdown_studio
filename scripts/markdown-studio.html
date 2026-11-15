@@ -1764,15 +1764,73 @@
 
   /* Print Stylesheet for PDF Export */
   @media print {
-    body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+    /* R13 print pagination: let content flow across pages instead of
+       clipping at the viewport; tall diagrams slice across page
+       boundaries rather than disappearing under an overflow cap. */
+    html, body {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      display: block !important;
+      background: #fff !important;
+      color: #000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
     .app-header, .tabbar-container, .format-toolbar, .find-replace-bar, .toc-drawer, .pane-editor, .split-resizer, .statusbar, .modal-overlay, .pane-header, .workspace-empty-state, .error-log-drawer {
       display: none !important;
     }
-    .workspace { overflow: visible !important; height: auto !important; }
-    .pane-preview { display: flex !important; width: 100% !important; overflow: visible !important; }
-    .preview-content { max-width: 100% !important; padding: 0 !important; }
-    .mermaid-header, .diag-action-btn { display: none !important; }
-    .mermaid-block-card { border: none !important; box-shadow: none !important; }
+    .workspace, .pane-preview, .preview-content {
+      display: block !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: visible !important;
+      flex: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .mermaid-header, .diag-action-btn, .mermaid-actions { display: none !important; }
+    .mermaid-block-card {
+      display: block !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      break-inside: auto !important;
+      page-break-inside: auto !important;
+      margin: 0 !important;
+    }
+    .mermaid-error-card, pre, blockquote {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .mermaid-viewport {
+      min-height: 0 !important;
+      max-height: none !important;
+      height: auto !important;
+      overflow: visible !important;
+      background: none !important;
+      padding: 0 !important;
+      display: block !important;
+      cursor: default !important;
+    }
+    .mermaid-canvas {
+      transform: none !important;
+      display: block !important;
+      overflow: visible !important;
+      text-align: center !important;
+    }
+    .mermaid-canvas svg {
+      max-width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
   }
 
 /* Stage 4: Command Palette */
@@ -2868,6 +2926,10 @@
   // --------------------------------------------------------------------------
   let renderDebounceTimer = null;
   let previewRenderGeneration = 0;
+  let previewRenderSettledGen = 0;
+  // R13: tracked so exports/print can await the newest preview render
+  let currentPreviewRenderPromise = null;
+  let currentMathJaxPromise = null;
 
   function getCardMermaidCode(card) {
     if (!card) return '';
@@ -2886,6 +2948,17 @@
   }
 
   async function renderAllPreviewDiagrams() {
+    // R13: generation bump + settle tracking live in this wrapper so export
+    // readiness can tell, without hanging, whether the newest pass settled.
+    const wrapperGen = ++previewRenderGeneration;
+    try {
+      return await renderAllPreviewDiagramsPass(wrapperGen);
+    } finally {
+      previewRenderSettledGen = Math.max(previewRenderSettledGen, wrapperGen);
+    }
+  }
+
+  async function renderAllPreviewDiagramsPass(currentGen) {
     if (typeof mermaid === 'undefined') return;
     const theme = getMermaidTheme();
 
@@ -2895,7 +2968,6 @@
 
     // R15: stamp this async pass; it may only commit results while it is the
     // newest pass and the same document (tab) is still active.
-    const currentGen = ++previewRenderGeneration;
     const activeTabSnapshot = typeof getActiveTab === 'function' ? getActiveTab() : null;
     const activeTabIdSnapshot = activeTabSnapshot ? activeTabSnapshot.id : null;
     function isCurrent() {
@@ -3280,14 +3352,74 @@
   // --------------------------------------------------------------------------
   // Diagram Export Helpers (SVG & High-Res PNG)
   // --------------------------------------------------------------------------
+  // R14: convert Mermaid foreignObject HTML labels to plain SVG <text> for
+  // standalone-SVG viewer compatibility and canvas-safe PNG rasterization.
+  function sanitizeSvgForExport(svgClone) {
+    if (!svgClone || typeof svgClone.querySelectorAll !== 'function') return;
+    const fos = Array.from(svgClone.querySelectorAll('foreignObject'));
+    const isDarkTheme = (typeof document !== 'undefined' && document.documentElement &&
+      document.documentElement.getAttribute && document.documentElement.getAttribute('data-theme') === 'dark');
+    const defaultTextColor = isDarkTheme ? '#f1f5f9' : '#1e293b';
+
+    for (const fo of fos) {
+      const parent = fo.parentNode;
+      if (!parent) continue;
+      const text = fo.textContent.trim();
+      if (!text) {
+        fo.remove();
+        continue;
+      }
+      const w = parseFloat(fo.getAttribute('width')) || 0;
+      const h = parseFloat(fo.getAttribute('height')) || 0;
+      const x = parseFloat(fo.getAttribute('x')) || 0;
+      const y = parseFloat(fo.getAttribute('y')) || 0;
+
+      const span = fo.querySelector('span');
+      const spanColor = (span && span.style && span.style.color) ? span.style.color : defaultTextColor;
+
+      const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      textEl.textContent = text;
+      textEl.setAttribute('x', String(x + w / 2));
+      textEl.setAttribute('y', String(y + h / 2));
+      textEl.setAttribute('text-anchor', 'middle');
+      textEl.setAttribute('dominant-baseline', 'central');
+      textEl.setAttribute('font-family', 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+      textEl.setAttribute('font-size', '14px');
+      textEl.setAttribute('fill', spanColor);
+      parent.replaceChild(textEl, fo);
+    }
+  }
+
   function exportDiagramSvg(containerEl, filename) {
-    const svg = containerEl.querySelector('svg');
+    const svg = containerEl ? containerEl.querySelector('svg') : null;
     if (!svg) {
       showToast('No rendered diagram found to export.');
       return;
     }
     const svgClone = svg.cloneNode(true);
     svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+    // Establish explicit intrinsic dimensions and viewBox on exported SVG
+    const bbox = typeof svg.getBoundingClientRect === 'function' ? svg.getBoundingClientRect() : { width: 0, height: 0 };
+    const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) ||
+      (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ||
+      parseFloat(svg.getAttribute('width')) || bbox.width || 800;
+    const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) ||
+      (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) ||
+      parseFloat(svg.getAttribute('height')) || bbox.height || 600;
+
+    if (intrinsicW && intrinsicH) {
+      svgClone.setAttribute('width', String(Math.round(intrinsicW)));
+      svgClone.setAttribute('height', String(Math.round(intrinsicH)));
+      if (!svgClone.getAttribute('viewBox')) {
+        svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
+      }
+    }
+    svgClone.style.maxWidth = 'none';
+
+    // Convert foreignObject to pure SVG text for external SVG viewer compatibility
+    sanitizeSvgForExport(svgClone);
+
     const svgData = new XMLSerializer().serializeToString(svgClone);
     const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -3297,46 +3429,164 @@
   }
 
   function exportDiagramPng(containerEl, filename) {
-    const svg = containerEl.querySelector('svg');
-    if (!svg) {
-      showToast('No rendered diagram found to export.');
-      return;
-    }
+    // R14: every failure path reports an actionable error (toast + error log),
+    // never shows success, and revokes temporary object URLs.
+    return new Promise((resolve) => {
+      const svg = containerEl ? containerEl.querySelector('svg') : null;
+      if (!svg) {
+        const msg = 'No rendered diagram found to export.';
+        showToast(msg);
+        logError('Export', msg);
+        return resolve({ success: false, error: msg });
+      }
 
-    const svgClone = svg.cloneNode(true);
-    svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    const bbox = svg.getBoundingClientRect();
-    const width = (bbox.width || 800) * 2; // 2x retina scaling
-    const height = (bbox.height || 600) * 2;
+      const svgClone = svg.cloneNode(true);
+      svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
-    const svgData = new XMLSerializer().serializeToString(svgClone);
-    const img = new Image();
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
+      const bbox = typeof svg.getBoundingClientRect === 'function' ? svg.getBoundingClientRect() : { width: 0, height: 0 };
+      const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) ||
+        (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ||
+        parseFloat(svg.getAttribute('width')) || bbox.width || 800;
+      const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) ||
+        (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) ||
+        parseFloat(svg.getAttribute('height')) || bbox.height || 600;
 
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
+      const width = Math.max(100, Math.round(intrinsicW * 2)); // 2x retina scaling
+      const height = Math.max(100, Math.round(intrinsicH * 2));
 
-      // Fill background based on theme
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      ctx.fillStyle = isDark ? '#111827' : '#ffffff';
-      ctx.fillRect(0, 0, width, height);
+      svgClone.setAttribute('width', String(Math.round(intrinsicW)));
+      svgClone.setAttribute('height', String(Math.round(intrinsicH)));
+      if (!svgClone.getAttribute('viewBox')) {
+        svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
+      }
 
-      ctx.drawImage(img, 0, 0, width, height);
-      URL.revokeObjectURL(url);
+      // Convert foreignObject elements to pure SVG text to prevent canvas tainting in Blink/WebKit
+      sanitizeSvgForExport(svgClone);
 
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const pngUrl = URL.createObjectURL(blob);
-        triggerDownload(pngUrl, filename || 'diagram.png');
-        URL.revokeObjectURL(pngUrl);
-        showToast('High-resolution PNG diagram downloaded.');
-      }, 'image/png');
-    };
-    img.src = url;
+      let svgData;
+      try {
+        svgData = new XMLSerializer().serializeToString(svgClone);
+      } catch (err) {
+        const msg = `Failed to serialize SVG: ${err.message || err}`;
+        logError('Export', msg);
+        showToast('Failed to export PNG: diagram serialization failed.');
+        return resolve({ success: false, error: msg });
+      }
+
+      let url = null;
+      try {
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        url = URL.createObjectURL(svgBlob);
+      } catch (err) {
+        const msg = `Failed to create SVG Blob URL: ${err.message || err}`;
+        logError('Export', msg);
+        showToast('Failed to export PNG: Blob URL creation failed.');
+        return resolve({ success: false, error: msg });
+      }
+
+      const img = new Image();
+
+      img.onerror = function () {
+        if (url) {
+          try { URL.revokeObjectURL(url); } catch (e) {}
+          url = null;
+        }
+        const msg = 'Failed to export PNG: image could not be loaded.';
+        logError('Export', 'PNG export image load failure', svgData ? svgData.slice(0, 150) : '');
+        showToast(msg);
+        resolve({ success: false, error: msg });
+      };
+
+      img.onload = function () {
+        let canvas = null;
+        let ctx = null;
+        try {
+          canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          ctx = canvas.getContext('2d');
+        } catch (canvasErr) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = `Failed to create canvas: ${canvasErr.message || canvasErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: canvas creation failed.');
+          return resolve({ success: false, error: msg });
+        }
+
+        if (!ctx) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = 'Canvas 2D context unavailable';
+          logError('Export', `Failed to export PNG: ${msg}`);
+          showToast('Failed to export PNG: canvas context unavailable.');
+          return resolve({ success: false, error: msg });
+        }
+
+        try {
+          // Fill background based on theme
+          const isDark = (typeof document !== 'undefined' && document.documentElement &&
+            document.documentElement.getAttribute && document.documentElement.getAttribute('data-theme') === 'dark');
+          ctx.fillStyle = isDark ? '#111827' : '#ffffff';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.drawImage(img, 0, 0, width, height);
+        } catch (drawErr) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = `Failed to draw diagram to canvas: ${drawErr.message || drawErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: canvas drawing failed.');
+          return resolve({ success: false, error: msg });
+        }
+
+        // Revoke temporary SVG object URL before converting to PNG
+        if (url) {
+          try { URL.revokeObjectURL(url); } catch (e) {}
+          url = null;
+        }
+
+        try {
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              const msg = 'Canvas toBlob returned null';
+              logError('Export', `Failed to export PNG: ${msg}`);
+              showToast('Failed to export PNG: image conversion failed.');
+              return resolve({ success: false, error: msg });
+            }
+            let pngUrl = null;
+            try {
+              pngUrl = URL.createObjectURL(blob);
+              triggerDownload(pngUrl, filename || 'diagram.png');
+              showToast('High-resolution PNG diagram downloaded.');
+              resolve({ success: true });
+            } catch (dlErr) {
+              const msg = `Failed during PNG download: ${dlErr.message || dlErr}`;
+              logError('Export', msg);
+              showToast('Failed to export PNG: download trigger failed.');
+              resolve({ success: false, error: msg });
+            } finally {
+              if (pngUrl) {
+                try { URL.revokeObjectURL(pngUrl); } catch (e) {}
+              }
+            }
+          }, 'image/png');
+        } catch (blobErr) {
+          const msg = `Failed to convert canvas to blob: ${blobErr.message || blobErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: blob creation failed.');
+          resolve({ success: false, error: msg });
+        }
+      };
+
+      img.src = url;
+    });
   }
 
   function triggerDownload(url, filename) {
@@ -3643,14 +3893,18 @@
       }
     });
 
-    // Typeset Math equations with MathJax
+    // Typeset Math equations with MathJax (promise tracked for R13 readiness)
     if (window.MathJax && MathJax.typesetPromise) {
-      MathJax.typesetPromise([preview]).catch(() => {});
+      currentMathJaxPromise = MathJax.typesetPromise([preview]);
+      currentMathJaxPromise.catch(() => {});
     }
 
     // Render Mermaid diagrams with debouncing
     clearTimeout(renderDebounceTimer);
-    renderDebounceTimer = setTimeout(renderAllPreviewDiagrams, 150);
+    renderDebounceTimer = setTimeout(() => {
+      renderDebounceTimer = null;
+      currentPreviewRenderPromise = renderAllPreviewDiagrams();
+    }, 150);
 
     // Update Table of Contents
     updateTableOfContents();
@@ -5305,34 +5559,257 @@
     showToast(`Saved ${filename}`);
   });
 
-  // Export as standalone HTML
-  document.getElementById('btnExportHtml').addEventListener('click', () => {
-    const t = getActiveTab();
-    if (!t) return;
-    const previewContent = document.getElementById('previewContent').innerHTML;
+  // --------------------------------------------------------------------------
+  // Clean Document & Export Determinism Helpers (R13)
+  // --------------------------------------------------------------------------
+  async function ensurePreviewRenderReady() {
+    const maxAttempts = 10;
+    const perAwaitCapMs = 1500;
+    // Await a promise but never hang: a wedged render pass must not freeze
+    // export/print. The settled-generation check below decides readiness.
+    const cap = (p) => {
+      if (!p) return Promise.resolve();
+      return Promise.race([
+        Promise.resolve(p).catch(() => {}),
+        new Promise((resolve) => setTimeout(resolve, perAwaitCapMs)),
+      ]);
+    };
 
-    const fullHtml = `<!DOCTYPE html>
-<html lang="en">
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const activeTab = getActiveTab();
+      if (!activeTab) return false;
+      const tabId = activeTab.id;
+      const contentBefore = activeTab.content;
+
+      // If debounced preview render is pending, flush immediately
+      if (renderDebounceTimer) {
+        clearTimeout(renderDebounceTimer);
+        renderDebounceTimer = null;
+        currentPreviewRenderPromise = renderAllPreviewDiagrams();
+      }
+
+      const watchGen = previewRenderGeneration;
+
+      // Await MathJax typesetting (bounded)
+      await cap(currentMathJaxPromise);
+
+      // Await Mermaid preview rendering (bounded)
+      await cap(currentPreviewRenderPromise);
+
+      // Re-check: the document or tab may have changed during the await
+      const currentTab = getActiveTab();
+      if (!currentTab) return false;
+      const changedMidAwait = currentTab.id !== tabId ||
+        currentTab.content !== contentBefore ||
+        renderDebounceTimer !== null;
+      const renderSettled = previewRenderSettledGen >= watchGen;
+
+      if (!changedMidAwait && renderSettled) {
+        return true;
+      }
+
+      if (attempt === maxAttempts - 1) {
+        showToast('Document rendering is still in progress. Please wait and retry.');
+        logError('Export', 'Aborted: document rendering did not settle within retry limit.');
+        return false;
+      }
+      if (changedMidAwait) {
+        updatePreview();
+      } else {
+        // Unchanged document but the render pass has not settled: give the
+        // in-flight pass a short window before the next bounded check.
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+    }
+    return false;
+  }
+
+  function getCleanRenderedContent(previewEl) {
+    if (!previewEl) return '';
+    const clone = previewEl.cloneNode(true);
+
+    // 1. Remove all diagram action buttons and studio headers, plus the
+    // per-code-block transfer action bars (Notepad++/Notebook) that only
+    // work inside the live Studio.
+    clone.querySelectorAll('.mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn').forEach((el) => el.remove());
+
+    // 2. Remove hidden raw code elements
+    clone.querySelectorAll('.mermaid-raw-code').forEach((el) => el.remove());
+
+    // 3. Error cards / unrendered diagrams become their Mermaid source block
+    clone.querySelectorAll('.mermaid-block-card').forEach((card) => {
+      const errorCard = card.querySelector('.mermaid-error-card');
+      const canvas = card.querySelector('.mermaid-canvas');
+      const hasSvg = canvas && canvas.querySelector('svg');
+
+      if (errorCard || !hasSvg) {
+        const rawCode = card.dataset.mermaidCode
+          ? decodeURIComponent(card.dataset.mermaidCode)
+          : (card.querySelector('pre') ? card.querySelector('pre').textContent.trim() : '');
+        const pre = document.createElement('pre');
+        const codeEl = document.createElement('code');
+        codeEl.className = 'language-mermaid';
+        codeEl.textContent = rawCode;
+        pre.appendChild(codeEl);
+        card.replaceWith(pre);
+        return;
+      }
+
+      // Valid rendered diagram: reset pan/zoom transforms and viewport caps
+      card.style.border = 'none';
+      card.style.boxShadow = 'none';
+      card.style.margin = '1.5em 0';
+      card.style.background = 'transparent';
+
+      const viewport = card.querySelector('.mermaid-viewport');
+      if (viewport) {
+        viewport.style.maxHeight = 'none';
+        viewport.style.height = 'auto';
+        viewport.style.overflow = 'visible';
+        viewport.style.background = 'none';
+        viewport.style.padding = '0';
+        viewport.style.cursor = 'default';
+        viewport.style.display = 'flex';
+        viewport.style.justifyContent = 'center';
+        viewport.style.alignItems = 'center';
+        viewport.removeAttribute('data-zoom');
+        viewport.removeAttribute('data-pan-x');
+        viewport.removeAttribute('data-pan-y');
+      }
+
+      if (canvas) {
+        canvas.style.transform = 'none';
+        canvas.style.transition = 'none';
+        canvas.style.display = 'block';
+        canvas.style.overflow = 'visible';
+        canvas.style.textAlign = 'center';
+      }
+
+      const svg = canvas ? canvas.querySelector('svg') : null;
+      if (svg) {
+        svg.style.maxWidth = '100%';
+        svg.style.height = 'auto';
+        svg.style.display = 'block';
+        svg.style.margin = '0 auto';
+      }
+    });
+
+    return clone.innerHTML;
+  }
+
+  function generateStandaloneHtml(title, cleanContent, theme) {
+    const isDark = theme === 'dark';
+    const bgColor = isDark ? '#0f172a' : '#ffffff';
+    const textColor = isDark ? '#e2e8f0' : '#1e293b';
+    const preBg = isDark ? '#1e293b' : '#f8fafc';
+    const preBorder = isDark ? '#334155' : '#e2e8f0';
+    const codeColor = isDark ? '#f1f5f9' : '#0f172a';
+    const tableBorder = isDark ? '#334155' : '#cbd5e1';
+    const thBg = isDark ? '#1e293b' : '#f1f5f9';
+    const bqBorder = isDark ? '#818cf8' : '#6366f1';
+    const bqColor = isDark ? '#94a3b8' : '#64748b';
+
+    return `<!DOCTYPE html>
+<html lang="en" data-theme="${isDark ? 'dark' : 'light'}">
 <head>
 <meta charset="UTF-8">
-<title>${escapeHtml(t.name)}</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(title)}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
-  body { font-family: 'Inter', sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; color: #1e293b; }
-  pre { background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0; overflow-x: auto; }
-  code { font-family: monospace; font-size: 0.9em; }
-  table { border-collapse: collapse; width: 100%; margin: 1.5em 0; }
-  th, td { border: 1px solid #cbd5e1; padding: 8px 12px; }
-  th { background: #f1f5f9; }
-  img { max-width: 100%; height: auto; }
-  blockquote { border-left: 4px solid #6366f1; margin: 0; padding-left: 16px; color: #64748b; }
-  .mermaid-header, .mermaid-actions { display: none !important; }
+  :root {
+    color-scheme: ${isDark ? 'dark' : 'light'};
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: ${textColor};
+    background: ${bgColor};
+  }
+  pre {
+    background: ${preBg};
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid ${preBorder};
+    color: ${codeColor};
+    overflow-x: auto;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5em 0;
+  }
+  th, td {
+    border: 1px solid ${tableBorder};
+    padding: 8px 12px;
+  }
+  th {
+    background: ${thBg};
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  blockquote {
+    border-left: 4px solid ${bqBorder};
+    margin: 1.5em 0;
+    padding-left: 16px;
+    color: ${bqColor};
+  }
+  .mermaid-block-card {
+    margin: 1.5em 0;
+    border: none !important;
+    background: transparent !important;
+  }
+  .mermaid-viewport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+  .mermaid-canvas {
+    transform: none !important;
+    max-width: 100%;
+    text-align: center;
+  }
+  .mermaid-canvas svg {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+  }
+  .mermaid-header, .mermaid-actions, .diag-action-btn, .mermaid-raw-code,
+  .code-block-actions, .code-action-btn {
+    display: none !important;
+  }
 </style>
 </head>
 <body>
-${previewContent}
+${cleanContent}
 </body>
 </html>`;
+  }
+
+  // Export as standalone HTML
+  document.getElementById('btnExportHtml').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
+    const t = getActiveTab();
+    if (!t) return;
+    const previewEl = document.getElementById('previewContent');
+    const cleanContent = getCleanRenderedContent(previewEl);
+    const theme = (document.documentElement.getAttribute('data-theme')) || 'light';
+    const fullHtml = generateStandaloneHtml(t.name, cleanContent, theme);
 
     const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -5342,21 +5819,26 @@ ${previewContent}
   });
 
   // Export as PDF / Print
-  document.getElementById('btnPrintPdf').addEventListener('click', () => {
+  document.getElementById('btnPrintPdf').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
     window.print();
   });
 
   // Copy Rendered HTML
-  document.getElementById('btnCopyHtml').addEventListener('click', () => {
-    const html = document.getElementById('previewContent').innerHTML;
-    navigator.clipboard.writeText(html).then(() => showToast('Rendered HTML copied to clipboard!'));
+  document.getElementById('btnCopyHtml').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
+    const previewEl = document.getElementById('previewContent');
+    const cleanHtml = getCleanRenderedContent(previewEl);
+    copyToClipboard(cleanHtml, 'Rendered HTML copied to clipboard!');
   });
 
   // Copy Raw Markdown
   document.getElementById('btnCopyMd').addEventListener('click', () => {
     const t = getActiveTab();
     if (!t) return;
-    navigator.clipboard.writeText(t.content).then(() => showToast('Raw Markdown copied to clipboard!'));
+    copyToClipboard(t.content, 'Raw Markdown copied to clipboard!');
   });
 
   // File Loader (Open files)
@@ -5426,7 +5908,7 @@ ${previewContent}
       hljsThemeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
     }
     initMermaid();
-    renderAllPreviewDiagrams();
+    currentPreviewRenderPromise = renderAllPreviewDiagrams();
   }
 
   // --------------------------------------------------------------------------
