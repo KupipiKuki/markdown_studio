@@ -2858,8 +2858,12 @@
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
       const canvas = card.querySelector('.mermaid-canvas');
+      const hasSource = !!card.querySelector('.mermaid-raw-code');
       const code = getCardMermaidCode(card);
-      if (!canvas || !code) continue;
+      // Empty or whitespace-only sources must still reach mermaid.parse() so they
+      // show the syntax-error card with the repair action instead of a blank block.
+      // Only a card with no source node at all is unrenderable.
+      if (!canvas || !hasSource) continue;
       const uniqueId = 'mmd-' + uid();
       const cardIndex = card.dataset.diagramIndex ? parseInt(card.dataset.diagramIndex, 10) + 1 : 1;
 

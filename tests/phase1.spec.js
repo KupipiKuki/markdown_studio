@@ -204,6 +204,44 @@ test('P1-04 invalid diagram repair via Fix in Studio', async ({ page }, testInfo
   evidence({ repairedMarkdown: repaired });
 });
 
+test('P1-04b empty and whitespace-only fences surface the repair path, not a blank block', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P1-04b');
+  const doc =
+    `Intro\n\n${F}mermaid\n${F}\n\nMid\n\n${F}mermaid\n   \n\n${F}\n\nEnd\n\n${F}mermaid\nflowchart TD\n  X --> Y\n${F}`;
+  await setDoc(page, doc);
+
+  const card0 = page.locator('.mermaid-block-card[data-diagram-index="0"]');
+  const card1 = page.locator('.mermaid-block-card[data-diagram-index="1"]');
+  const card2 = page.locator('.mermaid-block-card[data-diagram-index="2"]');
+
+  // Empty and whitespace-only fences must show the syntax-error card with a
+  // repair action instead of rendering blank.
+  await expect(card0.locator('.mermaid-error-card')).toBeVisible();
+  await expect(card1.locator('.mermaid-error-card')).toBeVisible();
+  await expect(card2.locator('.mermaid-canvas svg')).toBeVisible();
+  await shot(page, testInfo, 'P1-04b_error_state');
+
+  // Repair the empty fence through the error-card action
+  await clickUntilOpen(page, () => card0.locator('.mermaid-error-card [data-action="edit-diagram"]').click());
+  await page.fill('#builderCodeInput', 'flowchart TD\n  A --> B');
+  await page.click('#btnBuilderInsert');
+  await expect(page.locator('#studioModal')).not.toHaveClass(/open/);
+
+  await expect(card0.locator('.mermaid-canvas svg')).toBeVisible({ timeout: 20000 });
+  const out = await page.inputValue('#editor');
+  expect(out).toContain(`${F}mermaid\nflowchart TD\n  A --> B\n${F}`);
+  expect(out).toContain('Intro');
+  expect(out).toContain('Mid\n\n' + F + 'mermaid');
+  expect(out).toContain('End\n\n' + F + 'mermaid\nflowchart TD\n  X --> Y\n' + F);
+  expect((out.match(/^```mermaid$/gm) || []).length).toBeGreaterThanOrEqual(1); // empty fence still present, not collapsed
+
+  // The other two cards are unaffected: whitespace fence still errors (repairable), valid card still renders
+  await expect(card1.locator('.mermaid-error-card')).toBeVisible();
+  await expect(card2.locator('.mermaid-canvas svg')).toBeVisible();
+  await shot(page, testInfo, 'P1-04b_repaired');
+  evidence({ repairedMarkdown: out });
+});
+
 // ---------------------------------------------------------------------------
 // P1-05 — Error-log Copy/Dismiss
 // ---------------------------------------------------------------------------
