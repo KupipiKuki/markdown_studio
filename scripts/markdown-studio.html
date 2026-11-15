@@ -3544,14 +3544,19 @@
     const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     let mhtml = '';
     for (let i = 0; i < count; i++) {
-      mhtml += (i ? '\n' : '') + '<span data-ln="' + i + '">' + esc(lineTexts[i]) + '</span>';
+      mhtml += (i ? '\n' : '') + '<span>' + esc(lineTexts[i]) + '</span>';
     }
     mirror.innerHTML = mhtml;
     document.body.appendChild(mirror);
+    // Collect the mirror's spans ONCE: mirror.children is an ordered
+    // live collection matching the logical lines 1:1, so the row-offset
+    // pass stays linear (a per-line querySelector would be quadratic and
+    // would slow typing in large documents — review remediation).
+    const rowSpans = mirror.children;
     let html = '';
     let lastRowTop = 0;
     for (let i = 0; i < count; i++) {
-      const span = mirror.querySelector('[data-ln="' + i + '"]');
+      const span = rowSpans[i];
       const rowTop = span ? span.offsetTop : i * pitch;
       lastRowTop = rowTop;
       html += '<span style="position:absolute;top:' + (gutterPadTop + rowTop) + 'px;right:8px;">' + (i + 1) + '</span>';

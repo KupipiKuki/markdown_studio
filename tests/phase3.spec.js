@@ -564,3 +564,113 @@ test('P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes'
     project: testInfo.project.name,
   });
 });
+
+// ---------------------------------------------------------------------------
+// P3-06R — Large-document gutter responsiveness (review remediation 2)
+// ---------------------------------------------------------------------------
+test('P3-06R large-document gutter row-offset cost stays inside typing budgets', async ({ page }, testInfo) => {
+  const ctx = await loadApp(page, 'P3-06R');
+  test.setTimeout(150_000);
+  await page.setViewportSize({ width: 1280, height: 900 });
+
+  // Representative large file: 2000 mixed lines, every 5th paragraph-length
+  // (soft-wrapped to ~3 visual rows at this width). page.fill() is not used:
+  // it stalls on this input volume while the app renders; set + input event.
+  const lines = [];
+  const para = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud ';
+  for (let i = 0; i < 2000; i++) lines.push(i % 5 === 0 ? `${i + 1}. ${para}` : `Line ${i + 1}: short text`);
+  await page.evaluate((v) => {
+    const ed = document.getElementById('editor');
+    ed.value = v;
+    ed.dispatchEvent(new Event('input'));
+  }, lines.join('\n'));
+  await page.waitForTimeout(400);
+
+  const r = await page.evaluate((lineTexts) => {
+    const gutter = document.getElementById('lineNumbers');
+    const ed = document.getElementById('editor');
+    const gutterPadTop = 16, pitch = 21.6;
+    const edCS = getComputedStyle(ed);
+    const padL = parseFloat(edCS.paddingLeft), padR = parseFloat(edCS.paddingRight);
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    function buildMirror(withAttr) {
+      const mirror = document.createElement('div');
+      mirror.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;' +
+        'font-family:' + edCS.fontFamily + ';font-size:' + edCS.fontSize + ';' +
+        'line-height:' + edCS.lineHeight + ';white-space:' + edCS.whiteSpace + ';' +
+        'word-break:' + edCS.wordBreak + ';overflow-wrap:' + edCS.overflowWrap + ';' +
+        'tab-size:' + edCS.tabSize + ';box-sizing:content-box;padding:0;margin:0;border:0;' +
+        'width:' + (ed.clientWidth - padL - padR) + 'px;';
+      let mhtml = '';
+      for (let i = 0; i < lineTexts.length; i++) {
+        mhtml += (i ? '\n' : '') + '<span' + (withAttr ? ' data-ln="' + i + '"' : '') + '>' + esc(lineTexts[i]) + '</span>';
+      }
+      mirror.innerHTML = mhtml;
+      document.body.appendChild(mirror);
+      return mirror;
+    }
+
+    // Mirrors the app's updateLineNumbers() wrap pass with each lookup
+    // strategy; writes into the live gutter so layout costs are real.
+    function emit(total, lookup, mirror) {
+      let html = '';
+      let lastRowTop = 0;
+      for (let i = 0; i < total; i++) {
+        const span = lookup(mirror, i);
+        const rowTop = span ? span.offsetTop : i * pitch;
+        lastRowTop = rowTop;
+        html += '<span style="position:absolute;top:' + (gutterPadTop + rowTop) + 'px;right:8px;">' + (i + 1) + '</span>';
+      }
+      html += '<span style="position:absolute;top:' + (gutterPadTop + lastRowTop + pitch + 16) + 'px;width:1px;height:1px;"></span>';
+      gutter.innerHTML = html;
+    }
+
+    const mA = buildMirror(false), mQ = buildMirror(true);
+    const childrenMs = [], queryMs = [], inputHandlerMs = [];
+    for (let run = 0; run < 10; run++) {
+      let t = performance.now();
+      emit(mA.children.length, (m, i) => m.children[i], mA);
+      childrenMs.push(performance.now() - t);
+      t = performance.now();
+      emit(mQ.children.length, (m, i) => m.querySelector('[data-ln="' + i + '"]'), mQ);
+      queryMs.push(performance.now() - t);
+    }
+    mA.remove(); mQ.remove();
+
+    // End-to-end: the app's synchronous input handler (gutter + stats +
+    // markdown preview render + state persistence) on the 2000-line doc.
+    for (let run = 0; run < 5; run++) {
+      const t = performance.now();
+      ed.dispatchEvent(new Event('input'));
+      inputHandlerMs.push(performance.now() - t);
+    }
+
+    return { lineCount: lineTexts.length, childrenMs, queryMs, inputHandlerMs };
+  }, lines);
+
+  const med = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+  const childrenMedian = med(r.childrenMs);
+  const queryMedian = med(r.queryMs);
+  const handlerMedian = med(r.inputHandlerMs);
+
+  // Budgets (observed: children 10-14ms median, handler 35-49ms median on
+  // Chromium/Firefox headless; multi-x margin for machine-load variance).
+  expect(childrenMedian, 'children-array row-offset pass median (2000 lines) <= 40ms').toBeLessThanOrEqual(40);
+  expect(handlerMedian, 'end-to-end input handler median (2000 lines) <= 120ms').toBeLessThanOrEqual(120);
+  // The remediated lookup must not be slower than the old strategy; the old
+  // per-line querySelector is recorded for comparison (observed ~2x slower).
+  expect(childrenMedian, 'children lookup not slower than per-line querySelector').toBeLessThanOrEqual(queryMedian * 1.25);
+
+  await ctx.assertNoErrors('P3-06R');
+  await ctx.evidence({
+    perf: {
+      lineCount: r.lineCount,
+      childrenLookupMs: { min: Math.min(...r.childrenMs), median: childrenMedian, max: Math.max(...r.childrenMs) },
+      perLineQuerySelectorMs: { min: Math.min(...r.queryMs), median: queryMedian, max: Math.max(...r.queryMs) },
+      inputHandlerMs: { min: Math.min(...r.inputHandlerMs), median: handlerMedian, max: Math.max(...r.inputHandlerMs) },
+      budgets: { rowOffsetPassMs: 40, inputHandlerMs: 120 },
+    },
+    project: testInfo.project.name,
+  });
+});
