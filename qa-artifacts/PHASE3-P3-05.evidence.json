@@ -1,0 +1,11 @@
+{
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T12:32:14.699Z",
+  "consoleNoise": [],
+  "final": {
+    "value": "**```m**ermaid\nflowchart TD\n  A --> B\n```\n\npara text",
+    "selStart": 2,
+    "selEnd": 6
+  },
+  "project": "firefox"
+}

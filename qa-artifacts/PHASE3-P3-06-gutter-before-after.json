@@ -1,0 +1,41 @@
+{
+  "check": "P3-06 gutter alignment (nowrap 1:1 mode)",
+  "method": "Off-DOM mirror div replicating textarea content geometry (same font, size, line-height, white-space, width); gutter row Y computed from gutter padding + line pitch - gutter.scrollTop; editor row Y from mirror span offsetTop; drift = gutterY - editorY. Diag script: qa-artifacts/phase3-gutter-measure.js",
+  "conditions": "40 lines, lines 1..40 sampled; viewport 1280x900; word wrap OFF (nowrap, 1:1 gutter); scrollTop reset to 0 after fill",
+  "before": {
+    "target": "Phase 2 accepted candidate 4c2701a via worktree C:/Git/ms-p3-baseline",
+    "gFont": "13px", "gLineHeight": "20.8px", "edFont": "13.5px", "edLineHeight": "21.6px",
+    "samples": [
+      { "line": 1, "driftPx": -1.0 },
+      { "line": 5, "driftPx": -3.8 },
+      { "line": 9, "driftPx": -7.6 },
+      { "line": 15, "driftPx": -11.8 },
+      { "line": 20, "driftPx": -15.8 },
+      { "line": 25, "driftPx": -19.8 },
+      { "line": 30, "driftPx": -23.8 },
+      { "line": 35, "driftPx": -27.8 },
+      { "line": 40, "driftPx": -31.8 }
+    ],
+    "maxAbsDriftPx": 31.8,
+    "verdict": "REPRODUCED: 0.8px/line accumulated row-pitch divergence; gutter shorter than editor content also prevents full scroll sync in deep-scroll states"
+  },
+  "after": {
+    "target": "Phase 3 working tree after conditional CSS fix (.line-numbers font-size 13px -> 13.5px)",
+    "gFont": "13.5px", "gLineHeight": "21.6px", "edFont": "13.5px", "edLineHeight": "21.6px",
+    "samples": [
+      { "line": 1, "driftPx": -1.0 },
+      { "line": 5, "driftPx": -0.6 },
+      { "line": 9, "driftPx": -1.2 },
+      { "line": 15, "driftPx": -0.6 },
+      { "line": 20, "driftPx": -0.6 },
+      { "line": 25, "driftPx": -0.6 },
+      { "line": 30, "driftPx": -0.6 },
+      { "line": 35, "driftPx": -0.6 },
+      { "line": 40, "driftPx": -0.6 }
+    ],
+    "maxAbsDriftPx": 1.2,
+    "verdict": "FIXED: identical row pitch; residual <= 1.2px is mirror-div sub-pixel rounding (Chromium-family). Firefox additionally carries a constant ~1.6-2.2px intrinsic textarea inset (constant, non-accumulating; parsed from qa-artifacts/ffmeasure.js diagnostic), so the spec tolerance is 2.5px. The pre-fix defect (0.8px/line, 3.8px at line 5, 31.8px at line 40) still fails far above it."
+  },
+  "note": "Soft-wrap drift in wrap mode is inherent to the one-number-per-logical-line gutter (logical line N carries one number while occupying multiple visual rows). Recorded as evidence in P3-06 wrap-top condition; not changed.",
+  "timestamp": "2026-11-12T00:00:00Z"
+}

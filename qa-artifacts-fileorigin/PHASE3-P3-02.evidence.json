@@ -1,0 +1,11 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T12:30:32.420Z",
+  "consoleNoise": [],
+  "final": {
+    "value": "plain ~~~~words",
+    "selStart": 8,
+    "selEnd": 8
+  },
+  "project": "firefox"
+}
