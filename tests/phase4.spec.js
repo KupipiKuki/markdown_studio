@@ -304,6 +304,93 @@ test('P4-01 exports and print wait for the newest render, not a stale one', asyn
 });
 
 // ---------------------------------------------------------------------------
+// P4-01R — Remediation regression: readiness must not accept an older render
+// after a theme change starts a newer generation mid-wait
+// ---------------------------------------------------------------------------
+test('P4-01R readiness waits for a themed rerender started mid-export', async ({ page }, testInfo) => {
+  test.setTimeout(120_000);
+  const ctx = await loadApp(page, 'P4-01R');
+
+  // Instrument: the first themed render (gen N) is slow (1.5s); the theme
+  // rerender (gen N+1) is slower (3s), so the OLD pass settles first while
+  // the NEW one is still in flight — exactly the review's race setup.
+  await page.evaluate(() => {
+    window.__renderLog = [];
+    window.__exportBlobAt = null;
+    const orig = (window.__origRender = window.mermaid.render.bind(window.mermaid));
+    window.mermaid.render = async (id, code) => {
+      if (String(code).includes('THEMERACE')) {
+        const n = (window.__themeRaceCalls = (window.__themeRaceCalls || 0) + 1);
+        const delayMs = n === 1 ? 1500 : 3000;
+        await new Promise((r) => setTimeout(r, delayMs));
+        const out = await orig(id, code);
+        window.__renderLog.push({ n, endedAt: performance.now() });
+        return out;
+      }
+      return orig(id, code);
+    };
+    const origCreate = (window.__origCreateTheme = URL.createObjectURL.bind(URL));
+    URL.createObjectURL = (b) => {
+      if (b instanceof Blob && window.__exportBlobAt === null) window.__exportBlobAt = performance.now();
+      return origCreate(b);
+    };
+  });
+
+  const doc = '# Theme Race\n\n' + F + 'mermaid\nflowchart TD\n  A[THEMERACE alpha] --> B[THEMERACE beta]\n' + F + '\n';
+  await setDoc(page, doc);
+  await page.waitForTimeout(250); // debounce fired: gen N (light theme) is in flight
+
+  await clearToast(page);
+  const dlPromise = page.waitForEvent('download', { timeout: 40000 }).catch(() => null);
+  await exportClick(page, '#btnExportHtml'); // readiness begins waiting on gen N
+  await page.click('#btnThemeToggle'); // applyTheme starts gen N+1 (dark theme)
+  const dl = await dlPromise;
+  expect(dl, 'standalone export eventually produced a download').not.toBeNull();
+
+  const saved = path.join(TMP_DIR, `P4-01R_theme_${testInfo.project.name}.html`);
+  await dl.saveAs(saved);
+  const html = fs.readFileSync(saved, 'utf8');
+
+  // The theme rerender may still be mid-flight when the export download
+  // arrives on broken builds (that is the defect). Wait until BOTH renders
+  // have settled so the ordering assertion below is meaningful.
+  await page.waitForFunction(() => (window.__renderLog || []).length === 2, null, { timeout: 20000 })
+    .catch(() => {});
+  const state = await page.evaluate(() => ({
+    renderLog: window.__renderLog,
+    exportBlobAt: window.__exportBlobAt,
+    theme: document.documentElement.getAttribute('data-theme'),
+  }));
+
+  // Preconditions: exactly two themed render passes; the older settled first,
+  // i.e. there was a window where accepting gen N would have been wrong.
+  expect(state.renderLog.length, 'exactly the original and the themed rerender: ' + JSON.stringify(state.renderLog)).toBe(2);
+  expect(state.renderLog[0].n).toBe(1);
+  expect(state.renderLog[1].n).toBe(2);
+  expect(state.renderLog[0].endedAt).toBeLessThan(state.renderLog[1].endedAt);
+
+  // Core assertion: the export ran only AFTER the newer (themed) render
+  // settled — never in the stale window after the old render settled.
+  expect(state.exportBlobAt, 'export must not proceed before the newest render settles')
+    .toBeGreaterThanOrEqual(state.renderLog[1].endedAt);
+
+  // The exported document declares the theme current at export time
+  // (the app starts dark; the toggle produced light).
+  expect(state.theme).toBe('light');
+  expect(html).toContain('data-theme="light"');
+  expect(html).toContain('THEMERACE');
+
+  await ctx.assertNoErrors('P4-01R');
+  await ctx.evidence({
+    renderLog: state.renderLog,
+    exportBlobAt: state.exportBlobAt,
+    exportAfterNewestSettled: state.exportBlobAt >= state.renderLog[1].endedAt,
+    themeAtExport: state.theme,
+    project: testInfo.project.name,
+  });
+});
+
+// ---------------------------------------------------------------------------
 // P4-02 — Clean rendered HTML copy
 // ---------------------------------------------------------------------------
 test('P4-02 rendered HTML copy is clean and does not mutate the live preview', async ({ page }, testInfo) => {

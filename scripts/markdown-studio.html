@@ -5588,8 +5588,6 @@
         currentPreviewRenderPromise = renderAllPreviewDiagrams();
       }
 
-      const watchGen = previewRenderGeneration;
-
       // Await MathJax typesetting (bounded)
       await cap(currentMathJaxPromise);
 
@@ -5602,7 +5600,13 @@
       const changedMidAwait = currentTab.id !== tabId ||
         currentTab.content !== contentBefore ||
         renderDebounceTimer !== null;
-      const renderSettled = previewRenderSettledGen >= watchGen;
+      // Ready only when the *current* generation has settled. If a newer
+      // pass started while we were awaiting (e.g. a theme toggle calls
+      // renderAllPreviewDiagrams() directly), the settled generation lags
+      // the current one and this check fails, sending the next attempt to
+      // the new currentPreviewRenderPromise instead of accepting the stale
+      // render.
+      const renderSettled = previewRenderSettledGen >= previewRenderGeneration;
 
       if (!changedMidAwait && renderSettled) {
         return true;
