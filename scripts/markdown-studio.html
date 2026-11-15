@@ -998,6 +998,35 @@
     height: auto;
     max-width: 100%;
   }
+  /* Mermaid SVG Label Typography (R06): reset document styles that leak into
+     foreignObject-based (htmlLabels) diagram labels so they follow the
+     Studio typography set via mermaid fontFamily. */
+  .mermaid-canvas foreignObject,
+  #builderDiagramCanvas foreignObject {
+    line-height: normal;
+  }
+  .mermaid-canvas foreignObject *,
+  #builderDiagramCanvas foreignObject * {
+    box-sizing: border-box;
+  }
+  .mermaid-canvas foreignObject p,
+  #builderDiagramCanvas foreignObject p,
+  .mermaid-canvas foreignObject div,
+  #builderDiagramCanvas foreignObject div,
+  .mermaid-canvas foreignObject span,
+  #builderDiagramCanvas foreignObject span {
+    margin: 0;
+    padding: 0;
+  }
+  .mermaid-canvas foreignObject code,
+  #builderDiagramCanvas foreignObject code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+  }
 
   /* Mermaid Error Card */
   .mermaid-error-card {
@@ -2834,6 +2863,7 @@
   // Robust Diagram Rendering Engine
   // --------------------------------------------------------------------------
   let renderDebounceTimer = null;
+  let previewRenderGeneration = 0;
 
   function getCardMermaidCode(card) {
     if (!card) return '';
@@ -2855,8 +2885,27 @@
     if (typeof mermaid === 'undefined') return;
     const theme = getMermaidTheme();
 
+    // R08: enforce the document Mermaid theme at the start of every preview
+    // render pass, so a custom builder theme cannot leak into the preview.
+    initMermaid(theme);
+
+    // R15: stamp this async pass; it may only commit results while it is the
+    // newest pass and the same document (tab) is still active.
+    const currentGen = ++previewRenderGeneration;
+    const activeTabSnapshot = typeof getActiveTab === 'function' ? getActiveTab() : null;
+    const activeTabIdSnapshot = activeTabSnapshot ? activeTabSnapshot.id : null;
+    function isCurrent() {
+      if (previewRenderGeneration !== currentGen) return false;
+      if (typeof getActiveTab === 'function' && activeTabIdSnapshot) {
+        const currentTab = getActiveTab();
+        if (currentTab && currentTab.id !== activeTabIdSnapshot) return false;
+      }
+      return true;
+    }
+
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
+      if (!isCurrent()) return;
       const canvas = card.querySelector('.mermaid-canvas');
       const hasSource = !!card.querySelector('.mermaid-raw-code');
       const code = getCardMermaidCode(card);
@@ -2872,6 +2921,8 @@
         await mermaid.parse(code);
       } catch (parseErr) {
         cleanStrayMermaidElements();
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
         const errMessage = parseErr && (parseErr.str || parseErr.message) ? (parseErr.str || parseErr.message) : String(parseErr);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
         canvas.innerHTML = `
@@ -2916,16 +2967,29 @@
         }
         canvas.innerHTML = renderedSvg;
 
-        // Ensure rendered SVG has proper scalable attributes
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
+
+        // R07: record the diagram's intrinsic dimensions so pan/zoom can fit
+        // tall and wide diagrams to the available viewport.
         const svgEl = canvas.querySelector('svg');
         if (svgEl) {
-          svgEl.style.maxWidth = '100%';
-          svgEl.style.height = 'auto';
+          const dims = getSvgIntrinsicDimensions(svgEl);
+          svgEl.style.width = dims.width + 'px';
+          svgEl.style.height = dims.height + 'px';
+          svgEl.style.maxWidth = 'none';
+          if (svgEl.dataset) {
+            svgEl.dataset.intrinsicWidth = dims.width;
+            svgEl.dataset.intrinsicHeight = dims.height;
+          }
         }
       } catch (err) {
         cleanStrayMermaidElements();
         const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
         if (stray) stray.remove();
+
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
 
         const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
@@ -2944,8 +3008,112 @@
       }
     }
 
-    // Attach pan/zoom handlers to each rendered diagram viewport
-    setupPreviewDiagramInteractivity();
+    // Attach pan/zoom handlers only if this generation is still the latest (R15)
+    if (isCurrent()) {
+      setupPreviewDiagramInteractivity();
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Diagram Sizing & Fitting (R07)
+  // --------------------------------------------------------------------------
+  function getSvgIntrinsicDimensions(svgEl) {
+    if (!svgEl) return { width: 100, height: 100 };
+    const vbStr = typeof svgEl.getAttribute === 'function' ? (svgEl.getAttribute('viewBox') || '') : '';
+    const vb = vbStr.trim().split(/[\s,]+/).map(parseFloat);
+    let w = vb.length === 4 && vb[2] > 0 ? vb[2] : 0;
+    let h = vb.length === 4 && vb[3] > 0 ? vb[3] : 0;
+    if (!w && typeof svgEl.getAttribute === 'function') {
+      const attrW = parseFloat(svgEl.getAttribute('width'));
+      if (attrW > 0) w = attrW;
+    }
+    if (!h && typeof svgEl.getAttribute === 'function') {
+      const attrH = parseFloat(svgEl.getAttribute('height'));
+      if (attrH > 0) h = attrH;
+    }
+    if ((!w || !h) && typeof svgEl.getBBox === 'function') {
+      try {
+        const bbox = svgEl.getBBox();
+        if (bbox && bbox.width > 0) w = bbox.width;
+        if (bbox && bbox.height > 0) h = bbox.height;
+      } catch (e) {}
+    }
+    if ((!w || !h) && typeof svgEl.getBoundingClientRect === 'function') {
+      const rect = svgEl.getBoundingClientRect();
+      if (rect && rect.width > 0) w = rect.width;
+      if (rect && rect.height > 0) h = rect.height;
+    }
+    return { width: w || 100, height: h || 100 };
+  }
+
+  function computeDiagramFitScale(svgWidth, svgHeight, availWidth, availHeight) {
+    const sw = Math.max(svgWidth || 100, 1);
+    const sh = Math.max(svgHeight || 100, 1);
+    const aw = Math.max(availWidth || 100, 20);
+    const ah = Math.max(availHeight || 100, 20);
+    const scaleX = aw / sw;
+    const scaleY = ah / sh;
+    const fitScale = Math.min(scaleX, scaleY, 1.0);
+    return { scaleX, scaleY, fitScale };
+  }
+
+  function refitAllDiagrams() {
+    const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
+    cards.forEach(card => {
+      const viewport = card.querySelector('.mermaid-viewport');
+      const canvas = card.querySelector('.mermaid-canvas');
+      const svgEl = canvas ? canvas.querySelector('svg') : null;
+      if (!viewport || !canvas || !svgEl) return;
+      // Keep deliberate user zoom/pan on refit (R07 / P2-03)
+      if (viewport.dataset && viewport.dataset.manuallyAdjusted === 'true') return;
+
+      const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+      const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+
+      const availW = Math.max(viewport.clientWidth - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+
+      const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+      viewport.dataset.fitScale = fitScale;
+      viewport.dataset.zoom = fitScale;
+      viewport.dataset.panX = 0;
+      viewport.dataset.panY = 0;
+      canvas.style.transition = 'none';
+      canvas.style.transform = `translate(0px, 0px) scale(${fitScale})`;
+      requestAnimationFrame(() => { canvas.style.transition = 'transform 0.05s ease-out'; });
+    });
+
+    // Refit the open Studio/builder diagram as well, unless the user adjusted it
+    if (typeof studioModal !== 'undefined' && studioModal && studioModal.classList.contains('open')) {
+      const svgEl = typeof builderCanvas !== 'undefined' && builderCanvas ? builderCanvas.querySelector('svg') : null;
+      if (svgEl && typeof builderWrap !== 'undefined' && builderWrap && builderWrap.dataset.manuallyAdjusted !== 'true') {
+        const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+        const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+        const availW = Math.max(builderWrap.clientWidth - 40, 40);
+        const availH = Math.max(builderWrap.clientHeight - 40, 40);
+        const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+        builderWrap.dataset.fitScale = fitScale;
+        if (typeof builderZoom !== 'undefined') {
+          builderZoom = fitScale;
+          builderPanX = 0;
+          builderPanY = 0;
+          if (typeof updateBuilderTransform === 'function') updateBuilderTransform(true);
+        }
+      }
+    }
+  }
+
+  let _refitRafPending = false;
+  function requestRefitAllDiagrams() {
+    if (_refitRafPending) return;
+    _refitRafPending = true;
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => { _refitRafPending = false; refitAllDiagrams(); });
+    } else {
+      _refitRafPending = false;
+      refitAllDiagrams();
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -2977,21 +3145,60 @@
       const canvas = card.querySelector('.mermaid-canvas');
       if (!viewport || !canvas) return;
 
-      let panX = parseFloat(viewport.dataset.panX || 0);
-      let panY = parseFloat(viewport.dataset.panY || 0);
-      let zoom = parseFloat(viewport.dataset.zoom || 1);
+      // R07: fit tall/wide diagrams to the available viewport, but keep any
+      // deliberate user zoom/pan from an earlier render of the same diagram.
+      // The preview DOM is rebuilt on every parse, so manual interaction is
+      // remembered in a per-document map keyed by diagram index + source.
+      const svgEl = canvas.querySelector('svg');
+      const svgW = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicWidth))
+        || (svgEl ? getSvgIntrinsicDimensions(svgEl).width : 100);
+      const svgH = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicHeight))
+        || (svgEl ? getSvgIntrinsicDimensions(svgEl).height : 100);
+      const availW = Math.max((viewport.clientWidth || 560) - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+      const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+      if (viewport.dataset) viewport.dataset.fitScale = fitScale;
+
+      if (!window._diagramInteractionMemory) window._diagramInteractionMemory = new Map();
+      const memKeyTab = (typeof getActiveTab === 'function' && getActiveTab()) ? getActiveTab().id : 'doc';
+      const memKey = memKeyTab + ':' + (card.dataset.diagramIndex || 0);
+      const memEntry = window._diagramInteractionMemory.get(memKey);
+      const cardCode = getCardMermaidCode(card);
+      let hasManualInteraction = false;
+      if (memEntry && memEntry.manu === true && memEntry.code === cardCode) {
+        hasManualInteraction = true;
+      } else if (memEntry) {
+        window._diagramInteractionMemory.delete(memKey);
+      }
+      if (viewport.dataset) viewport.dataset.manuallyAdjusted = hasManualInteraction ? 'true' : 'false';
+      let panX = hasManualInteraction ? memEntry.panX : 0;
+      let panY = hasManualInteraction ? memEntry.panY : 0;
+      let zoom = hasManualInteraction ? memEntry.zoom : fitScale;
+      const minZoom = Math.min(0.05, fitScale * 0.5);
+      const maxZoom = 5.0;
 
       function updateTransform() {
         canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
         viewport.dataset.panX = panX;
         viewport.dataset.panY = panY;
         viewport.dataset.zoom = zoom;
+        window._diagramInteractionMemory.set(memKey, {
+          code: cardCode,
+          zoom: zoom,
+          panX: panX,
+          panY: panY,
+          manu: viewport.dataset.manuallyAdjusted === 'true'
+        });
       }
+
+      updateTransform();
 
       // Mouse Drag to Pan
       viewport.onmousedown = (e) => {
         if (e.target.closest('.diag-action-btn') || e.target.closest('button')) return;
         viewport.classList.add('grabbing');
+        if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
         activeDragViewport = {
           viewport: viewport,
           startX: e.clientX - panX,
@@ -3008,8 +3215,9 @@
       // Mouse Wheel to Zoom
       viewport.onwheel = (e) => {
         e.preventDefault();
+        if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
         const factor = e.deltaY < 0 ? 1.15 : 0.87;
-        const newZoom = Math.min(Math.max(zoom * factor, 0.3), 5.0);
+        const newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
         zoom = newZoom;
         updateTransform();
       };
@@ -3022,13 +3230,21 @@
           const rawCode = getCardMermaidCode(card);
 
           if (action === 'zoom-in') {
-            zoom = Math.min(zoom * 1.25, 5.0);
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
+            zoom = Math.min(zoom * 1.25, maxZoom);
             updateTransform();
           } else if (action === 'zoom-out') {
-            zoom = Math.max(zoom * 0.8, 0.3);
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
+            zoom = Math.max(zoom * 0.8, minZoom);
             updateTransform();
           } else if (action === 'zoom-reset') {
-            zoom = 1;
+            // Reset returns to the computed fit, not raw 100% (R07)
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'false';
+            if (Math.abs(zoom - fitScale) > 0.01 || panX !== 0 || panY !== 0) {
+              zoom = fitScale;
+            } else {
+              zoom = 1;
+            }
             panX = 0;
             panY = 0;
             updateTransform();
@@ -3998,6 +4214,11 @@
     if (persist) {
       persistViewState();
     }
+
+    // R07: diagrams must refit after view-mode/split changes
+    if (viewerVisible && typeof requestRefitAllDiagrams === 'function') {
+      requestRefitAllDiagrams();
+    }
   }
 
   function toggleEditor() {
@@ -4057,6 +4278,8 @@
     if (percentage > 15 && percentage < 85) {
       paneEditor.style.flex = `0 0 ${percentage}%`;
       lastSplitRatio = percentage;
+      // R07: refit diagrams to the changing pane size as the drag proceeds
+      requestRefitAllDiagrams();
     }
   });
 
@@ -4066,6 +4289,7 @@
       resizer.classList.remove('dragging');
       document.body.style.cursor = '';
       persistViewState();
+      requestRefitAllDiagrams();
     }
   });
 
@@ -4075,7 +4299,11 @@
     paneEditor.style.flex = '0 0 50%';
     showToast('Reset view to 50/50 split');
     persistViewState();
+    requestRefitAllDiagrams();
   });
+
+  // R07: refit when the browser window is resized
+  window.addEventListener('resize', requestRefitAllDiagrams);
 
   // Header controls
   const btnToggleEd = document.getElementById('btnToggleEditor');
@@ -4337,6 +4565,7 @@
   let builderPanY = 0;
   let isBuilderDragging = false;
   let builderStartX, builderStartY;
+  let studioRenderGeneration = 0;
 
   btnOpenStudio.addEventListener('click', () => {
     openStudioWithCode(null, null);
@@ -4346,6 +4575,8 @@
   btnBuilderCancel.addEventListener('click', closeStudio);
 
   function openStudioWithCode(codeToEdit, diagramIndex) {
+    // R15: invalidate any builder render still in flight from a previous session
+    studioRenderGeneration++;
     activeEditingDiagramIndex = diagramIndex;
     studioModal.classList.add('open');
 
@@ -4362,6 +4593,7 @@
     builderZoom = 1;
     builderPanX = 0;
     builderPanY = 0;
+    if (builderWrap && builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'false';
     updateBuilderTransform();
     renderBuilderDiagram();
   }
@@ -4369,6 +4601,11 @@
   function closeStudio() {
     studioModal.classList.remove('open');
     activeEditingDiagramIndex = null;
+    // R15: a builder render still in flight must not write after close
+    studioRenderGeneration++;
+    // R08: restore the document Mermaid theme so builder's custom theme
+    // cannot leak into subsequent preview renders
+    initMermaid(getMermaidTheme());
   }
 
   function detectDiagramType(code) {
@@ -4475,12 +4712,22 @@
       return;
     }
 
+    // R15: stamp this builder render; commit results only while it is the
+    // newest session generation and the Studio modal is still open.
+    const currentStudioGen = ++studioRenderGeneration;
+    function isStudioCurrent() {
+      if (studioRenderGeneration !== currentStudioGen) return false;
+      if (studioModal && studioModal.classList && !studioModal.classList.contains('open')) return false;
+      return true;
+    }
+
     const uniqueId = 'builder-mmd-' + uid();
     const customTheme = builderThemeSelect.value;
 
     try {
       initMermaid(customTheme);
       await mermaid.parse(code);
+      if (!isStudioCurrent()) return;
       let renderedSvg;
       try {
         const res = await mermaid.render(uniqueId, code);
@@ -4506,14 +4753,44 @@
           throw firstErr;
         }
       }
+      if (!isStudioCurrent()) return;
+
       builderCanvas.innerHTML = renderedSvg;
 
       builderValidationBadge.className = 'validation-status-badge valid';
       builderValidationBadge.innerHTML = '<span>✓ Diagram Valid</span>';
+
+      // R07: record intrinsic dimensions and fit the builder diagram to the
+      // wrap unless the user has manually zoomed/panned it.
+      const svgEl = builderCanvas.querySelector('svg');
+      if (svgEl) {
+        const dims = getSvgIntrinsicDimensions(svgEl);
+        svgEl.style.width = dims.width + 'px';
+        svgEl.style.height = dims.height + 'px';
+        svgEl.style.maxWidth = 'none';
+        if (svgEl.dataset) {
+          svgEl.dataset.intrinsicWidth = dims.width;
+          svgEl.dataset.intrinsicHeight = dims.height;
+        }
+
+        const availW = Math.max((builderWrap.clientWidth || 600) - 40, 40);
+        const availH = Math.max((builderWrap.clientHeight || 500) - 40, 40);
+        const { fitScale } = computeDiagramFitScale(dims.width, dims.height, availW, availH);
+        if (builderWrap.dataset) builderWrap.dataset.fitScale = fitScale;
+
+        if (builderWrap.dataset && builderWrap.dataset.manuallyAdjusted !== 'true') {
+          builderZoom = fitScale;
+          builderPanX = 0;
+          builderPanY = 0;
+          updateBuilderTransform(true);
+        }
+      }
     } catch (err) {
       cleanStrayMermaidElements();
       const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
       if (stray) stray.remove();
+
+      if (!isStudioCurrent()) return;
 
       const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
       builderValidationBadge.className = 'validation-status-badge invalid';
@@ -4531,14 +4808,19 @@
   }
 
   // Builder Pan & Zoom Handlers
-  function updateBuilderTransform() {
+  function updateBuilderTransform(immediate = false) {
+    if (immediate) builderCanvas.style.transition = 'none';
     builderCanvas.style.transform = `translate(${builderPanX}px, ${builderPanY}px) scale(${builderZoom})`;
+    if (immediate) {
+      requestAnimationFrame(() => { builderCanvas.style.transition = 'transform 0.05s ease-out'; });
+    }
     document.getElementById('btnBuilderZoomReset').textContent = `${Math.round(builderZoom * 100)}%`;
   }
 
   builderWrap.addEventListener('mousedown', (e) => {
     isBuilderDragging = true;
     builderWrap.classList.add('grabbing');
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderStartX = e.clientX - builderPanX;
     builderStartY = e.clientY - builderPanY;
     e.preventDefault();
@@ -4560,21 +4842,28 @@
 
   builderWrap.addEventListener('wheel', (e) => {
     e.preventDefault();
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     const factor = e.deltaY < 0 ? 1.15 : 0.87;
     builderZoom = Math.min(Math.max(builderZoom * factor, 0.3), 5.0);
     updateBuilderTransform();
   });
 
   document.getElementById('btnBuilderZoomIn').onclick = () => {
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderZoom = Math.min(builderZoom * 1.25, 5.0);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomOut').onclick = () => {
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderZoom = Math.max(builderZoom * 0.8, 0.3);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomReset').onclick = () => {
-    builderZoom = 1;
+    // Explicit reset is a deliberate user choice: return to the fit scale
+    // when one exists, then treat it as manual from here on.
+    const fit = builderWrap.dataset && parseFloat(builderWrap.dataset.fitScale);
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
+    builderZoom = fit > 0 ? fit : 1;
     builderPanX = 0;
     builderPanY = 0;
     updateBuilderTransform();
