@@ -1,0 +1,19 @@
+{
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T19:45:31.553Z",
+  "consoleNoise": [],
+  "liveBefore": {
+    "actionButtons": 16,
+    "headers": 2,
+    "errorCards": 1,
+    "zoomAttr": "1.25"
+  },
+  "liveAfter": {
+    "actionButtons": 16,
+    "headers": 2,
+    "errorCards": 1,
+    "zoomAttr": "1.25"
+  },
+  "cleanHtmlLength": 7882,
+  "project": "firefox"
+}

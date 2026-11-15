@@ -1,0 +1,15 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T19:40:36.470Z",
+  "consoleNoise": [
+    "[error] [JavaScript Error: \"Security Error: Content at file:///C:/Git/markdown_studio/scripts/markdown-studio.html may not load data from blob:FAKE-URL.\"]"
+  ],
+  "validPngBytes": 4969,
+  "failureToasts": [
+    "image could not be loaded",
+    "Blob URL creation failed",
+    "image conversion failed"
+  ],
+  "objectUrlHygiene": "all created URLs revoked on success and failure paths",
+  "project": "firefox"
+}

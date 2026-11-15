@@ -1,0 +1,14 @@
+{
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T19:45:32.859Z",
+  "consoleNoise": [],
+  "standaloneState": {
+    "h1": "Rich Export Fixture",
+    "svgs": 1,
+    "buttons": 0,
+    "bodyFont": "Inter, sans-serif",
+    "bodyWidth": true
+  },
+  "savedAs": "P4-03_rich_firefox.html",
+  "project": "firefox"
+}
