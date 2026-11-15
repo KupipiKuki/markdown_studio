@@ -84,6 +84,16 @@ async function openStudioFromCard(page, index, newCode) {
   await expect(page.locator('#studioModal')).not.toHaveClass(/open/);
 }
 
+/** Same flow, but triggered from the syntax-error card's "Fix in Studio" button. */
+async function openStudioFromCardViaErrorCard(page, index, newCode) {
+  await clickUntilOpen(page, () => page.click(
+    `.mermaid-block-card[data-diagram-index="${index}"] .mermaid-error-card [data-action="edit-diagram"]`
+  ));
+  await page.fill('#builderCodeInput', newCode);
+  await page.click('#btnBuilderInsert');
+  await expect(page.locator('#studioModal')).not.toHaveClass(/open/);
+}
+
 const strayCount = (page) => page.evaluate((sel) => document.querySelectorAll(sel).length, STRAY_SELECTOR);
 
 // ---------------------------------------------------------------------------
@@ -240,6 +250,72 @@ test('P1-04b empty and whitespace-only fences surface the repair path, not a bla
   await expect(card2.locator('.mermaid-canvas svg')).toBeVisible();
   await shot(page, testInfo, 'P1-04b_repaired');
   evidence({ repairedMarkdown: out });
+});
+
+// ---------------------------------------------------------------------------
+// P2 remediation edge cases — empty fences in every supported fence context
+// ---------------------------------------------------------------------------
+test('P2-01 empty tilde fence surfaces repair path and keeps ~~~ on repair', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P2-01');
+  await setDoc(page, `Head\n\n~~~mermaid\n~~~\n\nTail`);
+  const card = page.locator('.mermaid-block-card[data-diagram-index="0"]');
+  await expect(card.locator('.mermaid-error-card')).toBeVisible();
+  await openStudioFromCardViaErrorCard(page, 0, 'flowchart TD\n  A --> B');
+  const out = await page.inputValue('#editor');
+  expect(out).toContain('~~~mermaid\nflowchart TD\n  A --> B\n~~~');
+  expect(out.startsWith('Head\n\n')).toBe(true);
+  expect(out.endsWith('Tail')).toBe(true);
+  await expect(card.locator('.mermaid-canvas svg')).toBeVisible();
+  evidence({ output: out });
+});
+
+test('P2-02 empty fences inside blockquote and list still surface repair path', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P2-02');
+  const doc = `Quote\n\n> ${F}mermaid\n> ${F}\n\nList\n\n- item\n  ${F}mermaid\n  ${F}\n`;
+  await setDoc(page, doc);
+  const bqCard = page.locator('.mermaid-block-card[data-diagram-index="0"]');
+  const listCard = page.locator('.mermaid-block-card[data-diagram-index="1"]');
+  await expect(bqCard.locator('.mermaid-error-card')).toBeVisible();
+  await expect(listCard.locator('.mermaid-error-card')).toBeVisible();
+  await shot(page, testInfo, 'P2-02_error_cards');
+  evidence({ cards: 2 });
+});
+
+test('P2-03 repairing the second of two empty fences targets only that span', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P2-03');
+  const doc = `${F}mermaid\n${F}\n\nmiddle text\n\n${F}mermaid\n${F}\n\nend`;
+  await setDoc(page, doc);
+  await expect(page.locator('.mermaid-block-card')).toHaveCount(2);
+  await expect(page.locator('.mermaid-error-card')).toHaveCount(2);
+
+  await openStudioFromCardViaErrorCard(page, 1, 'flowchart TD\n  B --> C');
+  const out = await page.inputValue('#editor');
+  const parts = out.split('middle text');
+  expect(parts[0]).toBe(`${F}mermaid\n${F}\n\n`); // first fence stays empty
+  expect(parts[1]).toBe(`\n\n${F}mermaid\nflowchart TD\n  B --> C\n${F}\n\nend`);
+  await expect(page.locator('.mermaid-block-card[data-diagram-index="0"] .mermaid-error-card')).toBeVisible();
+  await expect(page.locator('.mermaid-block-card[data-diagram-index="1"] .mermaid-canvas svg')).toBeVisible();
+  evidence({ output: out });
+});
+
+test('P2-04 empty non-mermaid fence is untouched (no card, no error)', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P2-04');
+  await setDoc(page, `${F}js\n${F}\n\n${F}mermaid\n${F}`);
+  await page.waitForTimeout(1000);
+  // Only the empty mermaid fence becomes a card (and it errors, not blank)
+  await expect(page.locator('.mermaid-block-card')).toHaveCount(1);
+  await expect(page.locator('.mermaid-block-card[data-diagram-index="0"] .mermaid-error-card')).toBeVisible();
+  // The js block still renders as an ordinary code block
+  await expect(page.locator('#previewContent pre code.language-js')).toHaveCount(1);
+  evidence({ mermaidCards: 1 });
+});
+
+test('P2-05 tab/whitespace-only fence content surfaces repair path', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'P2-05');
+  await setDoc(page, `${F}mermaid\n\t \n  \n${F}`);
+  const card = page.locator('.mermaid-block-card[data-diagram-index="0"]');
+  await expect(card.locator('.mermaid-error-card')).toBeVisible();
+  evidence({});
 });
 
 // ---------------------------------------------------------------------------

@@ -1,0 +1,7 @@
+{
+  "browser": "chromium",
+  "testId": "P2-04",
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T02:16:25.018Z",
+  "mermaidCards": 1
+}

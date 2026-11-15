@@ -1,0 +1,7 @@
+{
+  "browser": "Google Chrome",
+  "testId": "P2-01",
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T02:16:44.541Z",
+  "output": "Head\n\n~~~mermaid\nflowchart TD\n  A --> B\n~~~\n\nTail"
+}

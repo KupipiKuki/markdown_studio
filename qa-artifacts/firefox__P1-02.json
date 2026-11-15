@@ -2,7 +2,7 @@
   "browser": "firefox",
   "testId": "P1-02",
   "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T02:06:40.647Z",
+  "timestamp": "2026-11-15T02:16:53.292Z",
   "sourceAfterRender": "flowchart TD\n  A --> B",
   "sourceAfterRerender": "flowchart TD\n  A --> C\n  B --> C",
   "docAfterEdit": "Intro\n\n```mermaid\nflowchart TD\n  A --> C\n  B --> C\n```\n\nOutro"

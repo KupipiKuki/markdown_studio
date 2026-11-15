@@ -2,7 +2,7 @@
   "browser": "firefox",
   "testId": "P1-06e",
   "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T02:04:43.818Z",
+  "timestamp": "2026-11-15T02:14:51.735Z",
   "crlfNormalizedByEditor": true,
   "normalizedDoc": "Para\n\n```mermaid\nflowchart TD\n  A --> B\n```\nTail",
   "output": "Para\n\n```mermaid\nflowchart LR\n  X --> Y\n```\nTail"
