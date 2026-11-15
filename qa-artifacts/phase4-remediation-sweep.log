@@ -1,0 +1,46 @@
+
+Running 36 tests using 10 workers
+
+  ✓   4 [chromium] › tests\phase4.spec.js:396:1 › P4-02 rendered HTML copy is clean and does not mutate the live preview (3.9s)
+  ✓  10 [chromium] › tests\phase4.spec.js:750:1 › P4-08 tall diagram paginates across printed pages without clipping (4.1s)
+  ✓   8 [chromium] › tests\phase4.spec.js:615:1 › P4-06 SVG export carries no foreignObject, keeps labels readable (4.2s)
+  ✓   6 [chromium] › tests\phase4.spec.js:455:1 › P4-03 standalone HTML export opens in a fresh context with clean content (4.4s)
+  ✓   7 [chromium] › tests\phase4.spec.js:509:1 › P4-04 clipboard paths use current content and surface denial (6.1s)
+  ✓   1 [chromium] › tests\phase4.spec.js:310:1 › P4-01R readiness waits for a themed rerender started mid-export (6.2s)
+  ✓  12 [Microsoft Edge] › tests\phase4.spec.js:396:1 › P4-02 rendered HTML copy is clean and does not mutate the live preview (4.1s)
+  ✓  13 [Microsoft Edge] › tests\phase4.spec.js:455:1 › P4-03 standalone HTML export opens in a fresh context with clean content (4.4s)
+  ✓   9 [Microsoft Edge] › tests\phase4.spec.js:225:1 › P4-01 exports and print wait for the newest render, not a stale one (10.6s)
+  ✓  11 [Microsoft Edge] › tests\phase4.spec.js:310:1 › P4-01R readiness waits for a themed rerender started mid-export (5.7s)
+  ✓   2 [chromium] › tests\phase4.spec.js:225:1 › P4-01 exports and print wait for the newest render, not a stale one (10.6s)
+  ✓  14 [Microsoft Edge] › tests\phase4.spec.js:509:1 › P4-04 clipboard paths use current content and surface denial (5.9s)
+  ✓  16 [Microsoft Edge] › tests\phase4.spec.js:615:1 › P4-06 SVG export carries no foreignObject, keeps labels readable (4.5s)
+  ✓  18 [Microsoft Edge] › tests\phase4.spec.js:750:1 › P4-08 tall diagram paginates across printed pages without clipping (4.4s)
+  ✓   5 [chromium] › tests\phase4.spec.js:669:1 › P4-07 PNG export succeeds, fails visibly, and revokes object URLs (16.2s)
+  ✓  19 [Google Chrome] › tests\phase4.spec.js:396:1 › P4-02 rendered HTML copy is clean and does not mutate the live preview (4.0s)
+  ✓  22 [Google Chrome] › tests\phase4.spec.js:455:1 › P4-03 standalone HTML export opens in a fresh context with clean content (4.1s)
+  ✓  21 [Google Chrome] › tests\phase4.spec.js:310:1 › P4-01R readiness waits for a themed rerender started mid-export (5.6s)
+  ✓  23 [Google Chrome] › tests\phase4.spec.js:509:1 › P4-04 clipboard paths use current content and surface denial (5.4s)
+  ✓  26 [Google Chrome] › tests\phase4.spec.js:615:1 › P4-06 SVG export carries no foreignObject, keeps labels readable (3.9s)
+  ✓  27 [Google Chrome] › tests\phase4.spec.js:750:1 › P4-08 tall diagram paginates across printed pages without clipping (3.8s)
+  ✓  20 [Google Chrome] › tests\phase4.spec.js:225:1 › P4-01 exports and print wait for the newest render, not a stale one (10.4s)
+  ✓  17 [Microsoft Edge] › tests\phase4.spec.js:669:1 › P4-07 PNG export succeeds, fails visibly, and revokes object URLs (15.9s)
+  ✓  29 [firefox] › tests\phase4.spec.js:310:1 › P4-01R readiness waits for a themed rerender started mid-export (6.4s)
+  ✓  30 [firefox] › tests\phase4.spec.js:396:1 › P4-02 rendered HTML copy is clean and does not mutate the live preview (4.9s)
+  ✓   3 [chromium] › tests\phase4.spec.js:565:1 › P4-05 never-settling render aborts every export/print with feedback (27.7s)
+  ✓  31 [firefox] › tests\phase4.spec.js:455:1 › P4-03 standalone HTML export opens in a fresh context with clean content (6.3s)
+  ✓  28 [firefox] › tests\phase4.spec.js:225:1 › P4-01 exports and print wait for the newest render, not a stale one (11.1s)
+  ✓  25 [Google Chrome] › tests\phase4.spec.js:669:1 › P4-07 PNG export succeeds, fails visibly, and revokes object URLs (15.3s)
+  ✓  32 [firefox] › tests\phase4.spec.js:509:1 › P4-04 clipboard paths use current content and surface denial (7.2s)
+  ✓  34 [firefox] › tests\phase4.spec.js:615:1 › P4-06 SVG export carries no foreignObject, keeps labels readable (4.7s)
+  ✓  36 [firefox] › tests\phase4.spec.js:750:1 › P4-08 tall diagram paginates across printed pages without clipping (5.1s)
+  ✓  15 [Microsoft Edge] › tests\phase4.spec.js:565:1 › P4-05 never-settling render aborts every export/print with feedback (27.2s)
+  ✓  24 [Google Chrome] › tests\phase4.spec.js:565:1 › P4-05 never-settling render aborts every export/print with feedback (26.8s)
+  ✓  35 [firefox] › tests\phase4.spec.js:669:1 › P4-07 PNG export succeeds, fails visibly, and revokes object URLs (16.3s)
+  ✓  33 [firefox] › tests\phase4.spec.js:565:1 › P4-05 never-settling render aborts every export/print with feedback (29.1s)
+
+  36 passed (57.7s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report qa-artifacts\playwright-report[39m
+[36m[39m

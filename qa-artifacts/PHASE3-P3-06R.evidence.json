@@ -1,23 +1,23 @@
 {
   "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T20:41:52.965Z",
+  "timestamp": "2026-11-15T21:20:29.702Z",
   "consoleNoise": [],
   "perf": {
     "lineCount": 2000,
     "childrenLookupMs": {
-      "min": 16,
-      "median": 20,
-      "max": 31
+      "min": 23,
+      "median": 35,
+      "max": 60
     },
     "perLineQuerySelectorMs": {
-      "min": 33,
-      "median": 39,
-      "max": 56
+      "min": 52,
+      "median": 71,
+      "max": 95
     },
     "inputHandlerMs": {
-      "min": 51,
-      "median": 69,
-      "max": 73
+      "min": 89,
+      "median": 113,
+      "max": 131
     },
     "budgets": {
       "rowOffsetPassMs": 40,
