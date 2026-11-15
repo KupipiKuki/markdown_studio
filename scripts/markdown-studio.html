@@ -599,6 +599,7 @@
   }
   .line-numbers {
     width: 48px;
+    position: relative;
     padding: 16px 8px 16px 0;
     text-align: right;
     font-family: var(--font-mono);
@@ -3502,12 +3503,64 @@
   function updateLineNumbers() {
     const editor = document.getElementById('editor');
     const gutter = document.getElementById('lineNumbers');
-    const lines = editor.value.split('\n').length;
-    let numbers = '';
-    for (let i = 1; i <= lines; i++) {
-      numbers += i + '<br>';
+    const lineTexts = editor.value.split('\n');
+    const count = lineTexts.length;
+    const edCS = getComputedStyle(editor);
+    const gutterPadTop = parseFloat(getComputedStyle(gutter).paddingTop) || 0;
+    const pitch = parseFloat(edCS.lineHeight) || parseFloat(edCS.fontSize) * 1.6;
+
+    // In nowrap (1:1) mode — or whenever the editor geometry is unavailable
+    // (e.g. the editor pane is hidden) — every logical line is one row.
+    const canMeasure = edCS.whiteSpace === 'pre-wrap' && editor.clientWidth > 0;
+    if (!canMeasure) {
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        html += '<span style="position:absolute;top:' + (gutterPadTop + i * pitch) + 'px;right:8px;">' + (i + 1) + '</span>';
+      }
+      // Trailing spacer keeps the gutter's scroll range equal to the
+      // editor's (absolutely positioned children do not include the
+      // gutter's bottom padding in scrollable overflow), so scrollTop sync
+      // stays exact at every scroll position.
+      const padBottom = parseFloat(getComputedStyle(gutter).paddingBottom) || 0;
+      html += '<span style="position:absolute;top:' + (gutterPadTop + count * pitch + padBottom) + 'px;width:1px;height:1px;"></span>';
+      gutter.innerHTML = html;
+      return;
     }
-    gutter.innerHTML = numbers;
+
+    // Soft-wrap mode: a logical line may occupy several visual rows, so each
+    // number must sit on the FIRST visual row of its logical line. Measure
+    // the per-line row offsets with a hidden mirror that replicates the
+    // editor's content geometry (same font, pitch, wrapping rules, width),
+    // then position every number at that row (R: soft-wrap gutter alignment).
+    const padL = parseFloat(edCS.paddingLeft);
+    const padR = parseFloat(edCS.paddingRight);
+    const mirror = document.createElement('div');
+    mirror.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;' +
+      'font-family:' + edCS.fontFamily + ';font-size:' + edCS.fontSize + ';' +
+      'line-height:' + edCS.lineHeight + ';white-space:' + edCS.whiteSpace + ';' +
+      'word-break:' + edCS.wordBreak + ';overflow-wrap:' + edCS.overflowWrap + ';' +
+      'tab-size:' + edCS.tabSize + ';box-sizing:content-box;padding:0;margin:0;border:0;' +
+      'width:' + (editor.clientWidth - padL - padR) + 'px;';
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let mhtml = '';
+    for (let i = 0; i < count; i++) {
+      mhtml += (i ? '\n' : '') + '<span data-ln="' + i + '">' + esc(lineTexts[i]) + '</span>';
+    }
+    mirror.innerHTML = mhtml;
+    document.body.appendChild(mirror);
+    let html = '';
+    let lastRowTop = 0;
+    for (let i = 0; i < count; i++) {
+      const span = mirror.querySelector('[data-ln="' + i + '"]');
+      const rowTop = span ? span.offsetTop : i * pitch;
+      lastRowTop = rowTop;
+      html += '<span style="position:absolute;top:' + (gutterPadTop + rowTop) + 'px;right:8px;">' + (i + 1) + '</span>';
+    }
+    // Trailing spacer: see the nowrap branch above (scroll-range parity)
+    const padBottom = parseFloat(getComputedStyle(gutter).paddingBottom) || 0;
+    html += '<span style="position:absolute;top:' + (gutterPadTop + lastRowTop + pitch + padBottom) + 'px;width:1px;height:1px;"></span>';
+    mirror.remove();
+    gutter.innerHTML = html;
   }
 
   function updateStatistics() {
@@ -4247,6 +4300,12 @@
     if (viewerVisible && typeof requestRefitAllDiagrams === 'function') {
       requestRefitAllDiagrams();
     }
+
+    // Editor pane visibility changes its measured width; the gutter must
+    // re-measure soft-wrap rows when the editor becomes visible again.
+    if (editorVisible) {
+      updateLineNumbers();
+    }
   }
 
   function toggleEditor() {
@@ -4308,6 +4367,8 @@
       lastSplitRatio = percentage;
       // R07: refit diagrams to the changing pane size as the drag proceeds
       requestRefitAllDiagrams();
+      // Editor width changes soft-wrap row counts in the gutter
+      updateLineNumbers();
     }
   });
 
@@ -4318,6 +4379,7 @@
       document.body.style.cursor = '';
       persistViewState();
       requestRefitAllDiagrams();
+      updateLineNumbers();
     }
   });
 
@@ -4466,6 +4528,8 @@
       editorTextarea.classList.add('nowrap');
       btnToggleWrap.classList.remove('active');
     }
+    // Wrap mode changes which visual row each logical line starts on
+    updateLineNumbers();
     if (persist) {
       persistViewState();
       showToast(wordWrap ? 'Word Wrap ON' : 'Word Wrap OFF (1:1 Line Gutter)');
@@ -4478,6 +4542,9 @@
   }
 
   btnToggleWrap.addEventListener('click', toggleWordWrap);
+
+  // Editor width changes (window resize) also change soft-wrap row counts
+  window.addEventListener('resize', () => updateLineNumbers());
 
   // --------------------------------------------------------------------------
   // Find and Replace

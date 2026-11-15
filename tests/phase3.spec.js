@@ -355,7 +355,7 @@ test('P3-05 global shortcuts guarded in inputs/overlays; Escape still dismisses'
 // ---------------------------------------------------------------------------
 // P3-06 — Gutter alignment (reproduce-first; conditional fix)
 // ---------------------------------------------------------------------------
-test('P3-06 nowrap gutter rows align within 2.5px; wrap-mode drift recorded', async ({ page }, testInfo) => {
+test('P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes', async ({ page }, testInfo) => {
   const ctx = await loadApp(page, 'P3-06');
   test.setTimeout(150_000);
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -464,14 +464,91 @@ test('P3-06 nowrap gutter rows align within 2.5px; wrap-mode drift recorded', as
   m = await runCondition('nowrap_split_dragged', false);
   for (const s of m.samples) expect(Math.abs(s.driftPx), `nowrap split drift line ${s.line}`).toBeLessThanOrEqual(TOL);
 
-  // Wrap mode: drift on soft-wrapped rows is inherent to the
-  // one-number-per-logical-line gutter; recorded as evidence, not asserted.
-  await page.click('#btnToggleWrap'); // back ON
+  // Soft-wrap mode (review remediation): each gutter number must sit on the
+  // FIRST visual row of its logical line. Sampled set deliberately includes
+  // lines 1, 8, 15, 22, 29, 36 (the wrapped ones) and the lines right after
+  // them (2, 9, 16, 23, 30, 37), so a number drifting down on the row after a
+  // wrapped line fails the assertion. Gutter positions are read from the
+  // actual number elements (implementation-agnostic), not assumed by pitch.
+  const measureWrap = () => page.evaluate(() => {
+    const ed = document.getElementById('editor');
+    const gutter = document.getElementById('lineNumbers');
+    const edCS = getComputedStyle(ed);
+    const gCS = getComputedStyle(gutter);
+    const padTop = parseFloat(edCS.paddingTop);
+    const padL = parseFloat(edCS.paddingLeft);
+    const padR = parseFloat(edCS.paddingRight);
+    const mirror = document.createElement('div');
+    mirror.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;' +
+      'font-family:' + edCS.fontFamily + ';font-size:' + edCS.fontSize + ';' +
+      'line-height:' + edCS.lineHeight + ';white-space:' + edCS.whiteSpace + ';' +
+      'word-break:' + edCS.wordBreak + ';overflow-wrap:' + edCS.overflowWrap + ';' +
+      'tab-size:' + edCS.tabSize + ';box-sizing:content-box;padding:0;margin:0;border:0;' +
+      'width:' + (ed.clientWidth - padL - padR) + 'px;';
+    const content = ed.value.split('\n');
+    const esc = (x) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let html = '';
+    content.forEach((line, i) => { html += (i ? '\n' : '') + '<span data-ln="' + i + '">' + esc(line) + '</span>'; });
+    mirror.innerHTML = html;
+    document.body.appendChild(mirror);
+    const edRect = ed.getBoundingClientRect();
+    const gRect = gutter.getBoundingClientRect();
+    const samples = [];
+    const check = [1, 2, 8, 9, 15, 16, 22, 23, 30, 37, 40];
+    for (const n of check) {
+      const i = n - 1;
+      const mSpan = mirror.querySelector('[data-ln="' + i + '"]');
+      const num = gutter.children[i];
+      if (!mSpan || !num) continue;
+      const editorAbsY = edRect.top + padTop + mSpan.offsetTop - ed.scrollTop;
+      const gutterAbsY = gRect.top + num.offsetTop - gutter.scrollTop;
+      samples.push({ line: n, gutterY: Math.round(gutterAbsY * 10) / 10, editorY: Math.round(editorAbsY * 10) / 10, driftPx: Math.round((gutterAbsY - editorAbsY) * 10) / 10 });
+    }
+    mirror.remove();
+    return {
+      samples,
+      maxAbsDrift: Math.max(...samples.map((s2) => Math.abs(s2.driftPx))),
+      whiteSpace: edCS.whiteSpace,
+      edScrollHeight: ed.scrollHeight, gScrollHeight: gutter.scrollHeight,
+      gFontSize: gCS.fontSize, edFontSize: edCS.fontSize,
+      gLineHeight: gCS.lineHeight, edLineHeight: edCS.lineHeight,
+    };
+  });
+
+  const wrapConditions = {};
+  const runWrapCondition = async (name, screenshot) => {
+    const w = await measureWrap();
+    wrapConditions[name] = w;
+    for (const s of w.samples) expect(Math.abs(s.driftPx), `wrap ${name} drift line ${s.line}`).toBeLessThanOrEqual(TOL);
+    expect(w.samples.length, 'wrap sampled lines').toBe(11);
+    if (screenshot) {
+      await page.screenshot({ path: path.join(ART_DIR, `PHASE3-P3-06_${name}.png`) });
+    }
+    return w;
+  };
+
+  await page.click('#btnToggleWrap'); // back ON (soft wrap)
   await expect(page.locator('#btnToggleWrap')).toHaveClass(/active/);
   await page.evaluate(() => { document.getElementById('editor').scrollTop = 0; });
   await settle();
-  m = await runCondition('wrap_top', true);
-  expect(m.samples.length).toBeGreaterThan(0);
+  let w = await runWrapCondition('wrap_top', true);
+  expect(w.whiteSpace).toBe('pre-wrap');
+
+  // Wrapped and scrolled: numbers must stay on their logical line's first row
+  await page.evaluate(() => { document.getElementById('editor').scrollTop = 400; });
+  await settle();
+  w = await runWrapCondition('wrap_scrolled', false);
+
+  // Wrap content must also stay aligned after a width change (window resize)
+  await page.setViewportSize({ width: 900, height: 700 });
+  await settle();
+  w = await runWrapCondition('wrap_window_resized', false);
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await settle();
+
+  // Gutter scroll range must track the (taller) wrapped content so the editor
+  // scrollTop sync stays meaningful
+  expect(Math.abs(wrapConditions.wrap_top.gScrollHeight - wrapConditions.wrap_top.edScrollHeight), 'gutter vs editor scrollHeight').toBeLessThanOrEqual(8);
 
   await ctx.assertNoErrors('P3-06');
   await ctx.evidence({
@@ -479,7 +556,7 @@ test('P3-06 nowrap gutter rows align within 2.5px; wrap-mode drift recorded', as
       top: conditions.nowrap_top, scrolled: conditions.nowrap_scrolled,
       resized: conditions.nowrap_window_resized, split: conditions.nowrap_split_dragged,
     },
-    wrapTop: m,
+    wrap: wrapConditions,
     stats: {
       gFontSize: m.gFontSize, edFontSize: m.edFontSize,
       gLineHeight: m.gLineHeight, edLineHeight: m.edLineHeight,
