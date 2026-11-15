@@ -3,14 +3,15 @@
 Frozen candidate under test:
 
 - Branch: `wp/studio_migration`
-- Commit: `921e60c` ("Stage 3 (Phase 3): editor action safety, palette decode, shortcut guard, gutter pitch")
-- Live file: `scripts/markdown-studio.html`, git blob `a250ede3571d718cf9a16782d664c430ea7d280e`
+- Commit: `921e60c` ("Stage 3 (Phase 3): editor action safety, palette decode, shortcut guard, gutter pitch"); remediated by `b792bf5` ("P3 review fix: soft-wrap gutter alignment") after the independent review — see the addendum. Current candidate: `b792bf5`, blob `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`, app-script diff vs base 4c2701a: 137 additions / 19 deletions.
+- Live file at `921e60c`: `scripts/markdown-studio.html`, git blob `a250ede3571d718cf9a16782d664c430ea7d280e`
 - Implementation base (per Phase 3 handoff pins, re-verified before coding): tip `c25154a67e82ca51c76377f0f29688f8a85e8a85d3172`, live blob `4623d798d35dcf30961504e2a9206eb67c002a14`, Phase 2 accepted candidate `4c2701a8fa6dadaf7a8a1e03460b1b72e1bbb80b`
 - Changed files: `scripts/markdown-studio.html` (**65 additions / 14 deletions** vs base 4c2701a, six hunks) and new `tests/phase3.spec.js`
 
 ## Candidate history (QA freeze log)
 
 1. `921e60c` — Phase 3 candidates for R10, R11, R12, the global shortcut guard, and the conditional gutter fix, plus the P3-01..P3-06 spec. Early matrix run against a pre-tuning draft of the spec surfaced only harness-side issues (single-click races on card handlers wired after the async render loop; missing settle time for the asynchronous programmatic `scroll` event; one wrong expected value; Firefox focus semantics), all fixed in the spec. The application script was **not** touched after the freeze (blob unchanged: `a250ede3`). Final matrix below ran against exactly this candidate with the final spec, amended in the follow-up evidence commit.
+2. `b792bf5` ("P3 review fix: soft-wrap gutter alignment") — remediation of the independent review's open acceptance item (soft-wrap gutter alignment was recorded but never asserted; retained evidence showed drift to -260.6px at line 40 after earlier lines wrapped). `updateLineNumbers()` reworked: wrap mode measures each logical line's first visual row (hidden mirror of the editor geometry) and positions each number there via absolutely positioned spans; nowrap keeps a fast-path 1:1 pitch list; a trailing 1px spacer keeps the gutter scroll range equal to the editor's (abs children do not include the gutter's bottom padding in scrollable overflow); gutter re-measures on wrap toggle, window resize, split-resizer drag, and editor-pane visibility changes. P3-06 extended with asserted wrap-mode cases (top / scrolled / window-resized, sampled set including the lines immediately after wrapped rows, gutter/editor scroll-range parity). Retest on this candidate below. **Current frozen candidate** (blob `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`); app-script diff vs base 4c2701a: 137 additions / 19 deletions.
 
 ## Change map (handoff finding -> verdict -> live location)
 
@@ -62,3 +63,40 @@ npx playwright test tests/phase3.spec.js --project=chromium --project="Microsoft
 P1_BASE_URL=http://127.0.0.1:8642/scripts/markdown-studio.html npx playwright test tests/phase1.spec.js tests/phase2.spec.js tests/phase3.spec.js --project=... --retries=0 --reporter=line
 node qa-artifacts/phase3-gutter-measure.js [<path-to-markdown-studio.html>]   # gutter drift diagnostic
 ```
+
+---
+
+# Addendum — reviewer remediation (candidate b792bf5)
+
+## Finding
+
+The independent review (`markdown-studio-phase-3-review.md`, Nov 15, 2026) approved the Phase 3 code for R10–R12, shortcut guarding, and the nowrap gutter correction, but held the Phase 3 handoff **conditionally open** on one item: P3-06 in soft-wrap mode. The final spec measured wrap-mode drift but only asserted the nowrap cases; retained Firefox http evidence recorded wrap-mode drift growing to **-260.6px by logical line 40** once earlier lines wrapped, and the handoff ("Line numbers stay aligned with visible editor rows, including soft wraps") does not exempt soft-wrap alignment.
+
+## Fix (candidate b792bf5)
+
+`updateLineNumbers()` now emits each number as an absolutely positioned span on the **first visual row of its logical line**:
+
+- Soft-wrap mode measures per-line row offsets with a hidden mirror div replicating the editor's exact content geometry (font family/size, line-height, white-space, word-break, overflow-wrap, tab-size, width = editor content width), then places number N at the measured row offset. The measurement is O(document) mirror build, same order as the previous full gutter rebuild.
+- Nowrap (1:1) mode keeps a fast-path pitch-positioned list, equal to prior geometry (P3-06 nowrap conditions unchanged and still green).
+- The gutter is `position: relative` (CSS) and a trailing 1px spacer restores the bottom-padding scroll range: absolutely positioned children do not include the gutter's bottom padding in scrollable overflow, so without the spacer the gutter was ~16px shorter than the editor and could not track deep scroll positions (caught by the nowrap scrolled condition during remediation: 15px drift, now 0).
+- The gutter re-measures on wrap toggle, window resize, split-resizer drag/mouseup, and editor-pane visibility changes (fast-path fallback when the editor pane is hidden).
+
+## Acceptance coverage added (P3-06, reviewer requirement 1)
+
+The wrap branch became asserted acceptance, not just evidence capture. Gutter positions are read from the actual number elements (implementation-agnostic):
+
+- Samples deliberately include the wrapped lines (1, 8, 15, 22, 29, 36) and **the logical lines immediately after wrapped lines** (2, 9, 16, 23, 30, 37) plus 40 — a number that failed to drop down with its wrapped predecessors fails the assertion.
+- Conditions: wrap top, wrap scrolled, wrap window-resized, each asserting |drift| <= 2.5px, plus gutter/editor scroll-range parity (<= 8px) proving `scrollTop` sync stays exact over wrapped content.
+
+## Retest results (candidate b792bf5, full 8-pair rerun, --retries=0)
+
+| Suite | file:// | http://127.0.0.1:8642 |
+| --- | --- | --- |
+| Phase 3 checks incl. the new wrap assertions | 24 passed | 24 passed |
+| Phase 1 regression (24 x 4) | 92 passed / 4 skipped (SM-03) | 96 passed |
+| Phase 2 regression (7 x 4) | 28 passed | 28 passed |
+| **Total** | **144 passed / 4 skipped / 0 failed** | **148 passed / 0 failed** |
+
+Logs: `qa-artifacts/phase3remediation-matrix-fileorigin.log`, `qa-artifacts/phase3remediation-matrix-http.log` (both exit 0).
+
+Wrap-mode evidence: P3-06 (including the wrap assertion, sampled lines after wrapped rows, and scroll-range parity) passed in all four browsers at both origins (matrix rows above). Retained last-writer evidence (Firefox http): wrap sampled drift 0.0px on every sampled line at wrap top/scrolled/window-resized, scroll ranges 1155px editor vs 1158px gutter over wrapped content; nowrap conditions all within 2.2px (Firefox intrinsic textarea inset, inside the 2.5px tolerance). Before-record: -260.6px @ line 40 retained from the pre-remediation run. Production launch origin remains the standing open coverage item.

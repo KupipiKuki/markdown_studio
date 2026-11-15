@@ -2,7 +2,7 @@
   "browser": "firefox",
   "testId": "SM-05",
   "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T12:32:07.117Z",
+  "timestamp": "2026-11-15T14:31:33.339Z",
   "before": {
     "theme": "dark",
     "fullWidth": null,

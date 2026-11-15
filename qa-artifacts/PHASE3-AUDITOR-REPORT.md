@@ -72,3 +72,45 @@ Evidence: `qa-artifacts/PHASE3-QA-RESULTS.md` (change map + matrix + repro comma
 ## 7. Recommendation
 
 Phase 3 is ready for the independent review decision on candidate `921e60c` (evidence commit `d8d722a`). Recommend recording a Phase 3 pass with the production-launch-URL item kept open across phases.
+
+---
+
+# Addendum — independent-review remediation (supersedes §7)
+
+Reviewer finding (`markdown-studio-phase-3-review.md`, Nov 15, 2026): Phase 3 code work approved for R10–R12, shortcut guarding, and the nowrap gutter correction; the handoff remained **conditionally open** because P3-06's soft-wrap branch was an evidence capture, not a passing acceptance assertion — retained Firefox http evidence recorded wrap-mode drift to **-260.6px by logical line 40** after prior lines wrapped, and the handoff does not exempt soft-wrap alignment. Reviewer option 1 (implement and test wrap-tracking gutter row positioning, including the next logical line after a wrapped line) was chosen.
+
+## Fix
+
+Candidate `b792bf5cd0fdf34da072dcdbf4765662490e53a1` ("P3 review fix: soft-wrap gutter alignment"), live-file blob `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`, SHA-256 `84a0eff6a8e8b0a7f6c4a2fa5bc424cd4638d52b926139ad52bc993186d29d1d`. `updateLineNumbers()` rewritten: number N is emitted as an absolutely positioned span on the first visual row of its logical line; wrap mode measures per-line row offsets with a hidden mirror replicating the editor geometry; nowrap keeps a fast-path 1:1 pitch list (geometry unchanged); the gutter is `position: relative` and a 1px trailing spacer keeps its scroll range equal to the editor's (abs children exclude the gutter's bottom padding from scrollable overflow — without it the nowrap scrolled condition failed at 15px during remediation, now 0). The gutter re-measures on wrap toggle, window resize, split-resizer drag, and editor-pane visibility changes. App-script diff vs base 4c2701a at this candidate: **137 additions / 19 deletions** (was 65/14 at `921e60c`). Scope/boundary unchanged: no export/print/PNG/SVG, storage, CDN, BroadcastChannel, transfer-queue, or slide/presentation code in the remediation diff.
+
+## Acceptance coverage added
+
+P3-06's wrap branch is now asserted acceptance: sampled lines include every wrapped line (1, 8, 15, 22, 29, 36) **and the logical lines immediately after wrapped lines** (2, 9, 16, 23, 30, 37) plus 40; conditions wrap top, wrap scrolled, wrap window-resized each assert |drift| <= 2.5px, plus gutter/editor scroll-range parity; gutter positions read from the actual number elements. Nowrap conditions unchanged and still green.
+
+## Retest matrix (full 8-pair rerun on candidate b792bf5, --retries=0)
+
+- `file://` — 144 passed / 4 skipped (SM-03 by design) / 0 failed
+- `http://127.0.0.1:8642` — 148 passed / 0 failed
+
+All three suites reran (Phase 3 checks P3-01..P3-06 with the new wrap assertions, full Phase 1 regression/workflow, full Phase 2 regression) on Chromium 159, Edge 159, Chrome 159, and Firefox 159 at both origins. Wrap-mode sampled drift on the retained last-writer evidence: 0.0px on every sampled line including lines after wrapped rows (before: -260.6px @ line 40). No unexplained failure.
+
+## Full SHA record
+
+
+- Remediation candidate: `b792bf5cd0fdf34da072dcdbf4765662490e53a1`
+- Live file: `scripts/markdown-studio.html`, git blob `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`, SHA-256 `84a0eff6a8e8b0a7f6c4a2fa5bc424cd4638d52b926139ad52bc993186d29d1d`
+- Pre-remediation candidates: `921e60c91a4c960ce4e4c160bb0a4ffafbe7198a` (blob `a250ede3571d718cf9a16782d664c430ea7d280e`), base `4c2701a8fa6dadaf7a8a1e03460b1b72e1bbb80b` (blob `4623d798d35dcf30961504e2a9206eb67c002a14`)
+
+## Updated exit-gate status
+
+| Gate item | Status |
+| --- | --- |
+| Reviewer's open acceptance item resolved via option 1 (wrap-tracking gutter) with passing assertions | MET on `b792bf5` |
+| Numbers on the logical line after a wrapped line covered | MET (samples 2, 9, 16, 23, 30, 37 asserted in wrap top / scrolled / window-resized, all 8 pairs) |
+| Nowrap correction preserved by the rework | MET (nowrap top/scrolled/resized/split-dragged green within the 2.5px tolerance; retained last-writer evidence max 2.2px — Firefox intrinsic textarea inset) |
+| Phase 1/2 regressions and workflow smoke | MET (green in the 8-pair rerun) |
+| Production launch URL recorded | OPEN (unchanged cross-phase coverage dependency) |
+
+## Updated recommendation
+
+The review's single open code item is remediated on candidate `b792bf5` with the requested acceptance assertions passing in all eight browser/origin pairs, and the Phase 3 handoff's P3-06 requirement ("aligned with visible editor rows, including soft wraps") is now satisfied rather than deferred. Phase 3 is ready for sign-off on candidate `b792bf5`, with the production launch URL remaining the single open coverage dependency.
