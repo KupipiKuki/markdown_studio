@@ -69,3 +69,44 @@ Harness: Playwright `@playwright/test` 1.65.1, headless, fresh context per test 
 ## 7. Recommendation
 
 The frozen candidate `68560b0` satisfies the Phase 1 handoff: scoped diff, faithful port of the audited behaviors (R01–R05 changed; D001 verified already-satisfied), contracts and CDN versions untouched, and a fully green 8-pair QA matrix with retained evidence. Recommend the independent reviewer record a Phase 1 pass decision, with the production launch URL as the single open item before declaring launch-origin coverage complete. Do not proceed to Phase 2 until that decision is recorded.
+
+---
+
+# Addendum — auditor P2 finding remediation (supersedes §7 for the frozen candidate)
+
+Auditor finding (held the Phase 1 pass): *"P2 — Empty Mermaid blocks are skipped… leaves an empty Mermaid fence blank instead of showing the syntax-error card and repair action."* The auditor also restated the open production-launch-URL item.
+
+## Fix
+
+Candidate `67341bacd7225c473f3ea4d254c24886e6fd6d8e` ("P2 fix: route empty Mermaid fences through parse to the repair path") changes the preview render loop skip condition at `scripts/markdown-studio.html` (~l. 2859): it now skips only cards with no `.mermaid-raw-code` source node at all, and lets empty/whitespace-only source flow into `mermaid.parse()`, which surfaces the standard syntax-error card with the "Fix in Studio" action. No other behavior, contract, or CDN pin changed; the diff is 1 file hunk plus the regression spec. Live-file blob at this commit: `d59ab4bee1eb90720a47dffcce1f26d3422285e5`, SHA-256 `53b1a965f9ce8bd85a15d3452dd59fc655b0bb195dae4fdee74cc8ae577fa4b8`.
+
+## Regression coverage added
+
+`tests/phase1.spec.js` P1-04b: an empty fence and a whitespace-only fence must each display the syntax-error card with the repair action (previously blank); repairing the empty fence through the error-card action must write into exactly that fence, leave the neighboring whitespace fence and valid fence untouched, and render the repaired card. Both fences' repair action is exercised.
+
+## Retest matrix (full, per the handoff retest rule)
+
+All eight browser/origin pairs re-run against `67341ba` (not just targeted):
+
+- `file://` — 72 passed / 4 skipped (SM-03 by design on file://)
+- `http://127.0.0.1:8642` — 76 passed / 0 failed
+
+Evidence retained per pair: `qa-artifacts-fileorigin/` (file run) and `qa-artifacts/` (http run); see the updated `qa-artifacts/PHASE1-QA-RESULTS.md` for the full matrix including P1-04b.
+
+## Exit-gate status after remediation
+
+| Gate item | Status |
+| --- | --- |
+| Finder's P2 finding resolved with regression coverage | MET on `67341ba` |
+| QA tested the frozen candidate and retained evidence for every pair | MET (76 + 72 checks across 8 pairs) |
+| No unexplained failures | MET |
+| Saved tabs/preferences, cross-Studio, live-only smoke | MET (SM-01..SM-05 green) |
+| Production launch URL recorded | **OPEN** — auditor and QA agree this must be recorded and entered into the matrix before launch-origin coverage is declared complete |
+
+## Updated recommendation
+
+The auditor's P2 finding is remediated on candidate `67341ba` with regression coverage and a fully green retest matrix. Phase 1 is again ready for the independent reviewer's pass decision on this candidate, with the production launch URL as the single remaining open item. Do not proceed to Phase 2 until that decision is recorded.
+
+## Observation for later phases (not a Phase 1 finding)
+
+The slide/presentation render path (`slides` renderer, ~l. 3549) has its own empty-source handling (`if (!canvas || !rawCodeEl) return;`) and was not part of the P2 finding; empty fences inside a slide may still render blank there. Recommend recording this in the later lifecycle/phase backlog rather than expanding Phase 1 scope.

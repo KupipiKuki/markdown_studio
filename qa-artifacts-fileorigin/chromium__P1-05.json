@@ -2,7 +2,7 @@
   "browser": "chromium",
   "testId": "P1-05",
   "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-14T23:39:48.051Z",
+  "timestamp": "2026-11-15T02:04:15.049Z",
   "firstEntry": "Diagram #1: No diagram type detected matching given configuration for text: this is not a mermaid diagram",
   "dismissedEntry": "Diagram #2: Parse error on line 2: ...broken garbage here ----------------------^ Expecting 'SOLID_OPEN_ARROW', 'DOTTED_OPEN_ARROW', 'SOLID_ARROW', 'DOTTED_ARROW', 'SOLID_CROSS', 'DOTTED_CROSS', 'SOLID_POINT', 'DOTTED_POINT', got 'NEWLINE'",
   "toastAfterCopy": "Clipboard copy failed: Failed to execute 'writeText' on 'Clipboard': Write permission denied.",
