@@ -461,6 +461,26 @@ test('P2-07 stale builder renders cannot overwrite the latest Studio state', asy
   expect(snapshotAfter).toBe(snapshotAtClose);
   expect(await page.evaluate(() => document.querySelector('#builderDiagramCanvas').textContent)).not.toContain('Close Race');
   await page.screenshot({ path: path.join(ART_DIR, `PHASE2-P2-07_${testInfo.project.name}_closed.png`) });
+
+  // Auditor P2: clear the builder mid-render; the empty state must survive the
+  // delayed render that was in flight when the input was cleared.
+  await clickUntilStudioOpen(page, () => page.click('.mermaid-block-card[data-diagram-index="0"] .diag-action-btn[data-action="edit-diagram"]'));
+  await page.fill('#builderCodeInput', 'flowchart TD\n  SLOWX[Clear Race]\n  Y1 --> Y2');
+  await page.waitForTimeout(500); // slow render now in flight
+  await page.fill('#builderCodeInput', ''); // clear mid-render
+  const emptyAtClear = await page.evaluate(() => document.querySelector('#builderDiagramCanvas').textContent);
+  await page.waitForTimeout(3500); // let the delayed render wake up
+  const emptyAfterDelay = await page.evaluate(() => document.querySelector('#builderDiagramCanvas').textContent);
+  expect(emptyAfterDelay).toContain('Empty diagram');
+  expect(emptyAfterDelay).not.toContain('Clear Race');
+  expect(emptyAfterDelay).toBe(emptyAtClear); // stale render did not restore output
+  await page.screenshot({ path: path.join(ART_DIR, `PHASE2-P2-07_${testInfo.project.name}_cleared_midrender.png`) });
   await ctx.assertNoErrors('P2-07');
-  ctx.evidence({ quickWins: builderText.includes('Builder Quick'), validBadgeAfterRace: badgeText2, canvasUnchangedAfterClose: snapshotAfter === snapshotAtClose, project: testInfo.project.name });
+  ctx.evidence({
+    quickWins: builderText.includes('Builder Quick'),
+    validBadgeAfterRace: badgeText2,
+    canvasUnchangedAfterClose: snapshotAfter === snapshotAtClose,
+    emptyStateSurvivesMidRenderClear: emptyAfterDelay === emptyAtClear && emptyAfterDelay.includes('Empty diagram'),
+    project: testInfo.project.name,
+  });
 });

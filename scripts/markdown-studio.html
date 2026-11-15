@@ -4706,6 +4706,10 @@
 
   // Real-time render inside builder with error handling
   async function renderBuilderDiagram() {
+    // R15: a new pass immediately invalidates any render still in flight —
+    // including the empty-input path, so a stale render can never restore
+    // output after the builder has been cleared (auditor P2).
+    studioRenderGeneration++;
     const code = builderCodeInput.value.trim();
     if (!code) {
       builderCanvas.innerHTML = '<div style="color:var(--text-muted); padding:30px;">Empty diagram</div>';
@@ -4714,7 +4718,7 @@
 
     // R15: stamp this builder render; commit results only while it is the
     // newest session generation and the Studio modal is still open.
-    const currentStudioGen = ++studioRenderGeneration;
+    const currentStudioGen = studioRenderGeneration;
     function isStudioCurrent() {
       if (studioRenderGeneration !== currentStudioGen) return false;
       if (studioModal && studioModal.classList && !studioModal.classList.contains('open')) return false;
