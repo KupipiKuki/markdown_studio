@@ -602,7 +602,10 @@
     padding: 16px 8px 16px 0;
     text-align: right;
     font-family: var(--font-mono);
-    font-size: 13px;
+    /* Match #editor's font size: same font + same line-height (1.6) then
+       yields an identical row pitch, so nowrap 1:1 gutter numbers stay
+       aligned with editor rows (accumulating 0.8px/line drift otherwise). */
+    font-size: 13.5px;
     line-height: 1.6;
     color: var(--text-muted);
     opacity: 0.6;
@@ -3978,11 +3981,28 @@
     const start = editorEl.selectionStart;
     const end = editorEl.selectionEnd;
     const text = editorEl.value;
-    const selected = text.substring(start, end) || 'text';
+    const selected = text.substring(start, end);
 
     editorEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
-    editorEl.selectionStart = start + before.length;
-    editorEl.selectionEnd = start + before.length + selected.length;
+    if (start !== end) {
+      editorEl.selectionStart = start + before.length;
+      editorEl.selectionEnd = start + before.length + selected.length;
+    } else {
+      // No selection: place the caret between the inserted wrappers without
+      // injecting any literal placeholder text (R10).
+      editorEl.selectionStart = editorEl.selectionEnd = start + before.length;
+    }
+    editorEl.focus();
+    editorEl.dispatchEvent(new Event('input'));
+  }
+
+  function insertSnippet(snippet) {
+    const start = editorEl.selectionStart;
+    const end = editorEl.selectionEnd;
+    const text = editorEl.value;
+
+    editorEl.value = text.substring(0, start) + snippet + text.substring(end);
+    editorEl.selectionStart = editorEl.selectionEnd = start + snippet.length;
     editorEl.focus();
     editorEl.dispatchEvent(new Event('input'));
   }
@@ -4030,7 +4050,15 @@
           break;
         case 'image':
           const imgUrl = prompt('Enter image URL:', 'https://');
-          if (imgUrl) wrapSelection('![Alt text](', `${imgUrl})`);
+          if (imgUrl) {
+            // R11: use the selection (if any) as alt text and insert the full
+            // image snippet so the URL is never concatenated after the
+            // selected text.
+            const imgStart = editorEl.selectionStart;
+            const imgEnd = editorEl.selectionEnd;
+            const alt = (imgStart !== imgEnd) ? editorEl.value.substring(imgStart, imgEnd) : 'Alt text';
+            insertSnippet(`![${alt}](${imgUrl})`);
+          }
           break;
         case 'table':
           document.getElementById('tableModal').classList.add('open');
@@ -4675,7 +4703,10 @@
   // Builder Quick Palette Inserts
   document.querySelectorAll('#builderSidebar .palette-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const snippet = btn.dataset.insert;
+      // R12: palette data-insert values carry escaped newline/tab sequences;
+      // decode them on insertion without touching unrelated backslashes.
+      let snippet = btn.dataset.insert || '';
+      snippet = snippet.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
       const start = builderCodeInput.selectionStart;
       const end = builderCodeInput.selectionEnd;
       const val = builderCodeInput.value;
@@ -5344,6 +5375,34 @@ ${previewContent}
     }
     const ctrl = e.ctrlKey || e.metaKey;
 
+    // Global dialog dismissals work everywhere
+    if (e.key === 'Escape') {
+      closeStudio();
+      document.getElementById('fsModal').classList.remove('open');
+      document.getElementById('tableModal').classList.remove('open');
+      findBar.classList.remove('show');
+      toggleErrorLog(false);
+      return;
+    }
+
+    // Shortcut guard: editor/document-mutating shortcuts must not act on the
+    // background document while the user is typing in another control
+    // (#builderCodeInput, #findInput, #replaceInput, other inputs) or while
+    // focus is inside an open overlay dialog (R10-adjacent guard). Escape is
+    // exempt (handled above).
+    const activeEl = document.activeElement;
+    const focusedInOverlay = !!(activeEl && activeEl.closest &&
+      activeEl.closest('.modal-overlay.open, .cmd-palette-overlay.open, .find-replace-bar.show'));
+    const isOtherInput = !!(activeEl && activeEl !== editorEl && (
+      activeEl.tagName === 'INPUT' ||
+      activeEl.tagName === 'TEXTAREA' ||
+      activeEl.tagName === 'SELECT' ||
+      activeEl.isContentEditable
+    ));
+    if (focusedInOverlay || isOtherInput) {
+      return;
+    }
+
     if (e.altKey && !e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
       e.preventDefault();
       toggleWordWrap();
@@ -5377,14 +5436,6 @@ ${previewContent}
     } else if (ctrl && e.key.toLowerCase() === 'n') {
       e.preventDefault();
       addTab();
-    } else if (e.key === 'Escape' && slideDeckModal.classList.contains('open')) {
-      closeSlideDeck();
-    } else if (e.key === 'Escape') {
-      closeStudio();
-      document.getElementById('fsModal').classList.remove('open');
-      document.getElementById('tableModal').classList.remove('open');
-      findBar.classList.remove('show');
-      toggleErrorLog(false);
     }
   });
 
