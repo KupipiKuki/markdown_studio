@@ -10,7 +10,7 @@ Prepared for the independent reviewer. Handoff under audit: `markdown-studio-pha
 | Phase 1 reviewed commit (implementation base) | `67341ba` / branch tip at handoff `0efbc87`, live blob `d59ab4b` | verified identical | yes |
 | Phase 2 frozen candidate | (recorded in PHASE2-QA-RESULTS.md) | `e9ddc57e1f5110acafaf65e864cd03174351113f` | yes |
 | Live file blob at candidate | (recorded) | `7b05e1515dcb41de2ab98ccaaef35479c4b67f58`, SHA-256 `7fd69d0128ba0045d0a6355deb0e6141efa85ad85bbca08dabad19961aea22be` | recorded |
-| Changed files | candidate scope only | `scripts/markdown-studio.html` (+317/−14) and new `tests/phase2.spec.js`; nothing else (`git diff --stat 0efbc87 e9ddc57`) | yes |
+| Changed files | candidate scope only | `scripts/markdown-studio.html` (**303 additions / 14 deletions** vs base; count corrected per the auditor's review — this report previously listed "+317/−14" and the QA report "+283/−14", both wrong) and new `tests/phase2.spec.js`; nothing else (`git diff --numstat 0efbc87 e9ddc57`) | yes |
 
 ## 2. Scope / boundary audit
 
@@ -65,3 +65,38 @@ Evidence: `qa-artifacts/PHASE2-QA-RESULTS.md` (change map + matrix + repro comma
 ## 7. Recommendation
 
 Phase 2 is ready for the independent review decision on candidate `e9ddc57`. Recommend recording a Phase 2 pass with the production-launch-URL item kept open across phases. Do not start Phase 3 until the decision is recorded and the branch is pushed for review.
+
+---
+
+# Addendum — auditor P2 finding remediation (supersedes §7 for the frozen candidate)
+
+Auditor findings: (1) *"P2 — Clearing the Studio builder during a pending render can restore stale output"* — the empty-input path in `renderBuilderDiagram` returned before advancing `studioRenderGeneration`, so a delayed render in flight could pass its generation check and overwrite the cleared state; (2) report diff counts were inconsistent.
+
+## Fix
+
+Candidate `4c2701a8fa6dadaf7a8a1e03460b1b72e1bbb80b` ("P2 fix: invalidate pending builder renders on empty input") advances `studioRenderGeneration` at the top of `renderBuilderDiagram`, before the empty-input branch, so every pass — including empty input — invalidates renders still in flight. No other behavior changed; the hunk is 4 lines plus the extended test. App-script diff vs base at this commit: **307 additions / 14 deletions**; live-file blob `4623d798d35dcf30961504e2a9206eb67c002a14`. The `e9ddc57` count correction (303/14) is recorded in §1 above and in the QA results.
+
+## Regression coverage added
+
+`tests/phase2.spec.js` P2-07 final phase implements the auditor's exact case: start a slow (delayed) builder render, clear the builder input mid-render, wait out the delay, and assert the "Empty diagram" state remains and the delayed render's node never appears (`emptyStateSurvivesMidRenderClear` recorded per run in the P2-07 evidence JSONs).
+
+## Retest matrix (full 8-pair rerun on candidate 4c2701a)
+
+- `file://` — 120 passed / 4 skipped (SM-03 by design) / 0 failed
+- `http://127.0.0.1:8642` — 124 passed / 0 failed
+
+Both suites reran (Phase 2 checks P2-01..P2-07 including the new case, plus the full Phase 1 regression/workflow suite) on Chromium 159, Edge 159, Chrome 159, and Firefox 159 at both origins. No unexplained failure.
+
+## Updated exit-gate status
+
+| Gate item | Status |
+| --- | --- |
+| Auditor P2 finding resolved with the requested regression case | MET on `4c2701a` |
+| R15 exit gate closed (stale renders invalidated on every pass, including empty input) | MET |
+| Diff counts corrected in QA and auditor reports | MET (303/14 for `e9ddc57`; 307/14 for `4c2701a`) |
+| Phase 1 regressions and live smoke | MET (green in the rerun) |
+| Production launch URL recorded | OPEN (unchanged coverage dependency) |
+
+## Updated recommendation
+
+The auditor's P2 finding is remediated on candidate `4c2701a` with the requested test case passing in all eight browser/origin pairs, and the report counts are corrected. R15's exit gate can be closed. Phase 2 is again ready for sign-off on candidate `4c2701a`, with the production launch URL remaining the single open coverage dependency.
