@@ -1,6 +1,6 @@
 {
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T03:33:03.472Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T04:03:04.167Z",
   "consoleNoise": [],
   "cycles": 50,
   "regCountSamples": [

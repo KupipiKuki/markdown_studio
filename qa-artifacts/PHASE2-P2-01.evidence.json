@@ -1,6 +1,6 @@
 {
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T03:32:58.998Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T04:02:58.566Z",
   "consoleNoise": [],
   "normal": {
     "hasForeignObjectLabel": true,
@@ -13,5 +13,5 @@
     "fontFamily": "Inter, sans-serif",
     "margin": "0px"
   },
-  "project": "firefox"
+  "project": "chromium"
 }
