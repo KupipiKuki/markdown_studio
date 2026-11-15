@@ -1,0 +1,21 @@
+{
+  "browser": "firefox",
+  "testId": "SM-05",
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T00:53:00.669Z",
+  "before": {
+    "theme": "dark",
+    "fullWidth": null,
+    "viewMode": null
+  },
+  "after": {
+    "theme": "light",
+    "fullWidth": "false",
+    "viewMode": "{\"editorVisible\":true,\"viewerVisible\":false,\"lastSplitRatio\":50,\"wordWrap\":true}"
+  },
+  "persisted": {
+    "theme": "light",
+    "fullWidth": "false",
+    "viewMode": "{\"editorVisible\":true,\"viewerVisible\":false,\"lastSplitRatio\":50,\"wordWrap\":true}"
+  }
+}

@@ -433,3 +433,60 @@ test('SM-03 studio bus transfer imports a tab (shared http origin only)', async 
   evidence({ imported: true });
   await peer.close();
 });
+
+test('SM-04 tab switching keeps per-tab content separate', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'SM-04');
+  const docA = `Tab A marker\n\n${F}mermaid\nflowchart TD\n  A --> B\n${F}`;
+  const docB = `Tab B marker\n\n${F}mermaid\nflowchart LR\n  C --> D\n${F}`;
+  await setDoc(page, docA);
+  await page.click('#btnTabAdd');
+  await expect(page.locator('#tabbar .tab')).toHaveCount(2);
+  await setDoc(page, docB);
+
+  // Switch back to the first tab
+  await page.locator('#tabbar .tab').nth(0).click();
+  await expect(page.locator('#editor')).toHaveValue(docA);
+  await expect(page.locator('.mermaid-block-card[data-diagram-index="0"] .mermaid-raw-code')).toHaveText(/A --> B/);
+
+  // And forward again
+  await page.locator('#tabbar .tab').nth(1).click();
+  await expect(page.locator('#editor')).toHaveValue(docB);
+  await expect(page.locator('.mermaid-block-card[data-diagram-index="0"] .mermaid-raw-code')).toHaveText(/C --> D/);
+  await shot(page, testInfo, 'SM-04_tabs');
+  evidence({ tabs: 2 });
+});
+
+test('SM-05 theme, viewer width and view mode persist across reload', async ({ page }, testInfo) => {
+  const { evidence } = await loadApp(page, testInfo, 'SM-05');
+  const before = await page.evaluate(() => ({
+    theme: localStorage.getItem('markflow_theme') || 'dark',
+    fullWidth: localStorage.getItem('markflow_viewer_full_width'),
+    viewMode: localStorage.getItem('markflow_view_mode_v2'),
+  }));
+
+  await page.click('#btnThemeToggle');
+  const expectedTheme = before.theme === 'dark' ? 'light' : 'dark';
+  await page.click('#btnToggleViewerWidth');
+  await page.click('#btnToggleViewer');
+  const after = await page.evaluate(() => ({
+    theme: localStorage.getItem('markflow_theme'),
+    fullWidth: localStorage.getItem('markflow_viewer_full_width'),
+    viewMode: localStorage.getItem('markflow_view_mode_v2'),
+  }));
+  expect(after.theme).toBe(expectedTheme);
+  expect(after.fullWidth).not.toBe(before.fullWidth); // toggled and persisted
+  expect(after.viewMode).not.toBeNull();
+
+  await page.reload();
+  await page.waitForSelector('#editor', { state: 'visible' });
+  const persisted = await page.evaluate(() => ({
+    theme: localStorage.getItem('markflow_theme'),
+    fullWidth: localStorage.getItem('markflow_viewer_full_width'),
+    viewMode: localStorage.getItem('markflow_view_mode_v2'),
+  }));
+  expect(persisted.theme).toBe(expectedTheme);
+  expect(persisted.fullWidth).toBe(after.fullWidth);
+  expect(persisted.viewMode).toBe(after.viewMode);
+  await shot(page, testInfo, 'SM-05_reloaded_prefs');
+  evidence({ before, after, persisted });
+});

@@ -1,0 +1,7 @@
+{
+  "browser": "Microsoft Edge",
+  "testId": "SM-04",
+  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T00:52:57.140Z",
+  "tabs": 2
+}
