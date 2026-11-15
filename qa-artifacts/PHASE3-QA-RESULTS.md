@@ -11,7 +11,8 @@ Frozen candidate under test:
 ## Candidate history (QA freeze log)
 
 1. `921e60c` — Phase 3 candidates for R10, R11, R12, the global shortcut guard, and the conditional gutter fix, plus the P3-01..P3-06 spec. Early matrix run against a pre-tuning draft of the spec surfaced only harness-side issues (single-click races on card handlers wired after the async render loop; missing settle time for the asynchronous programmatic `scroll` event; one wrong expected value; Firefox focus semantics), all fixed in the spec. The application script was **not** touched after the freeze (blob unchanged: `a250ede3`). Final matrix below ran against exactly this candidate with the final spec, amended in the follow-up evidence commit.
-2. `b792bf5` ("P3 review fix: soft-wrap gutter alignment") — remediation of the independent review's open acceptance item (soft-wrap gutter alignment was recorded but never asserted; retained evidence showed drift to -260.6px at line 40 after earlier lines wrapped). `updateLineNumbers()` reworked: wrap mode measures each logical line's first visual row (hidden mirror of the editor geometry) and positions each number there via absolutely positioned spans; nowrap keeps a fast-path 1:1 pitch list; a trailing 1px spacer keeps the gutter scroll range equal to the editor's (abs children do not include the gutter's bottom padding in scrollable overflow); gutter re-measures on wrap toggle, window resize, split-resizer drag, and editor-pane visibility changes. P3-06 extended with asserted wrap-mode cases (top / scrolled / window-resized, sampled set including the lines immediately after wrapped rows, gutter/editor scroll-range parity). Retest on this candidate below. **Current frozen candidate** (blob `cb53b627c39fdb9fa51a69a0d3d7a6747dee189b`); app-script diff vs base 4c2701a: 137 additions / 19 deletions.
+2. `b792bf5` ("P3 review fix: soft-wrap gutter alignment") — remediation of the independent review's open acceptance item (soft-wrap gutter alignment was recorded but never asserted; retained evidence showed drift to -260.6px at line 40 after earlier lines wrapped). `updateLineNumbers()` reworked: wrap mode measures each logical line's first visual row (hidden mirror of the editor geometry) and positions each number there via absolutely positioned spans; nowrap keeps a fast-path 1:1 pitch list; a trailing 1px spacer keeps the gutter scroll range equal to the editor's (abs children do not include the gutter's bottom padding in scrollable overflow); gutter re-measures on wrap toggle, window resize, split-resizer drag, and editor-pane visibility changes. P3-06 extended with asserted wrap-mode cases (top / scrolled / window-resized, sampled set including the lines immediately after wrapped rows, gutter/editor scroll-range parity). Retest on this candidate below. App-script diff vs base 4c2701a: 137 additions / 19 deletions.
+3. `2cd8810` ("P3 review fix 2: collect gutter mirror spans once") — remediation of the review's second concern: the wrap pass ran one `querySelector` per logical line (quadratic overall) on every editor input, and large-document responsiveness was unmeasured. The mirror's spans are now collected once (`mirror.children`, ordered 1:1 with logical lines) and indexed directly — the row-offset pass is linear; per-line `data-ln` attributes dropped. New P3-06R check measures a representative 2000-line mixed document (every 5th line paragraph-length): app-equivalent row-offset pass with both lookup strategies against the live gutter, plus the end-to-end input handler; budgets pass median <= 40ms, handler median <= 120ms, new lookup not slower than the old. Observed: children 10-26ms median vs 20-48ms per-line querySelector (~2x slower), handler 35-63ms median (the handler includes the pre-existing 2000-line markdown preview render). **Current frozen candidate** (blob `cd0b2826906af730fd41a2c9b53a99e24bc3888f`, SHA-256 `882663fcb2ad13a318b9e7aaeb25215695796babbccb0b8596f0f4e6b954f805`).
 
 ## Change map (handoff finding -> verdict -> live location)
 
@@ -100,3 +101,38 @@ The wrap branch became asserted acceptance, not just evidence capture. Gutter po
 Logs: `qa-artifacts/phase3remediation-matrix-fileorigin.log`, `qa-artifacts/phase3remediation-matrix-http.log` (both exit 0).
 
 Wrap-mode evidence: P3-06 (including the wrap assertion, sampled lines after wrapped rows, and scroll-range parity) passed in all four browsers at both origins (matrix rows above). Retained last-writer evidence (Firefox http): wrap sampled drift 0.0px on every sampled line at wrap top/scrolled/window-resized, scroll ranges 1155px editor vs 1158px gutter over wrapped content; nowrap conditions all within 2.2px (Firefox intrinsic textarea inset, inside the 2.5px tolerance). Before-record: -260.6px @ line 40 retained from the pre-remediation run. Production launch origin remains the standing open coverage item.
+
+---
+
+# Addendum 2 — review remediation 2: linear gutter row-offset pass + large-document budgets (candidate 2cd8810)
+
+## Finding
+
+The revised review (`markdown-studio-phase-3-review.md`) accepted the soft-wrap remediation but held one new concern before final sign-off: `updateLineNumbers()` performed a `querySelector` per logical line on every editor input (quadratic overall), and QA's 40-line fixture measured nothing about large-document responsiveness. The reviewer asked to collect the spans once or measure and document performance on a representative large file.
+
+## Fix (candidate 2cd8810)
+
+Both: the wrap pass now collects the mirror spans once via `mirror.children` (element children are ordered 1:1 with the logical lines; text nodes between them are excluded by definition of `children`) and indexes them directly, making the pass linear. The per-line `data-ln` attributes (only needed for the removed lookups) were dropped, shrinking the mirror markup build as well.
+
+## Measured performance (P3-06R, representative large file)
+
+Fixture: 2000 mixed lines, every 5th paragraph-length (~3 soft-wrapped rows at 1280px), set via a single input event (page.fill stalls at this volume). Measured in-page against the app's live DOM: the app-equivalent row-offset pass with (a) the remediated children-array lookup and (b) the pre-remediation per-line querySelector, plus (c) the app's full synchronous input handler (gutter + statistics + markdown preview render + tab render + persistence).
+
+| Measurement (median, 2000 lines) | Chromium-family | Firefox | Budget |
+| --- | --- | --- | --- |
+| (a) children-array pass | 10-14 ms | 14-26 ms | <= 40 ms |
+| (b) per-line querySelector (pre-remediation) | 20 ms | 48 ms | comparison record |
+| (c) end-to-end input handler | 35 ms | 49-63 ms | <= 120 ms |
+
+The remediated lookup is ~2x faster than the pre-remediation strategy at 2000 lines, and the gap grows quadratically with document length. The full handler budget documents typing responsiveness on a 2000-line document; its larger share is the pre-existing markdown preview render, untouched by this phase. P3-06R passes in all four browsers at both origins; evidence in `qa-artifacts/PHASE3-P3-06R.evidence.json` (http run latest, file run in `qa-artifacts-fileorigin/`).
+
+## Retest matrix (candidate 2cd8810, full rerun, --retries=0)
+
+| Suite | file:// | http://127.0.0.1:8642 |
+| --- | --- | --- |
+| Phase 3 checks incl. P3-06 wrap assertions and P3-06R perf (7 tests x 4 browsers) | 28 passed | 28 passed |
+| Phase 1 regression (24 x 4) | 92 passed / 4 skipped (SM-03) | 96 passed |
+| Phase 2 regression (7 x 4) | 28 passed | 28 passed |
+| **Total** | **148 passed / 4 skipped / 0 failed** | **152 passed / 0 failed** |
+
+Logs: `qa-artifacts/phase3remediation2-matrix-fileorigin.log`, `qa-artifacts/phase3remediation2-matrix-http.log` (both exit 0). Wrap-alignment evidence from the P3-06 runs at this candidate remains 0.0px sampled drift. Production launch origin remains the standing open coverage item.

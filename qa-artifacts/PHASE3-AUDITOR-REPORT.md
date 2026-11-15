@@ -114,3 +114,47 @@ All three suites reran (Phase 3 checks P3-01..P3-06 with the new wrap assertions
 ## Updated recommendation
 
 The review's single open code item is remediated on candidate `b792bf5` with the requested acceptance assertions passing in all eight browser/origin pairs, and the Phase 3 handoff's P3-06 requirement ("aligned with visible editor rows, including soft wraps") is now satisfied rather than deferred. Phase 3 is ready for sign-off on candidate `b792bf5`, with the production launch URL remaining the single open coverage dependency.
+
+---
+
+# Addendum 2 — revised review: linear row-offset pass + measured large-document budgets (supersedes the prior updated recommendation)
+
+The revised review accepted the soft-wrap remediation but held one new pre-sign-off concern: `updateLineNumbers()` ran a `querySelector` per logical line on every editor input (quadratic overall), and the QA fixture (40 lines) did not measure large-document responsiveness.
+
+## Fix
+
+Candidate `2cd8810404fc91762524a76b75f99905f0f2a226`, blob `cd0b2826906af730fd41a2c9b53a99e24bc3888f`, SHA-256 `882663fcb2ad13a318b9e7aaeb25215695796babbccb0b8596f0f4e6b954f805` (re-hashed from the committed tree). The wrap pass collects the mirror spans once via `mirror.children` (element children are ordered 1:1 with the logical lines) and indexes them directly — linear; per-line `data-ln` attributes dropped. App-script diff vs base 4c2701a at this candidate: **142 additions / 19 deletions** (was 137/19 at `b792bf5`). Scope/boundary unchanged.
+
+## Measured performance (new P3-06R)
+
+Representative large file: 2000 mixed lines, every 5th paragraph-length (soft-wrapped). In-page measurement against the live app DOM:
+
+- Remediated children-array row-offset pass: **10-14 ms median** (Chromium probe), **14-26 ms** (Firefox probe and matrix runs) — budget <= 40 ms, met in all four browsers at both origins.
+- Pre-remediation per-line querySelector: **20-48 ms median** — the direct comparison the reviewer asked for; ~2x slower at 2000 lines with a quadratic growth curve.
+- End-to-end input handler on the 2000-line document (gutter + stats + markdown preview render + persistence): **35-63 ms median** — budget <= 120 ms, met everywhere; the dominant share is the pre-existing preview render, untouched by this phase.
+
+## Retest matrix (full 8-pair rerun on 2cd8810, --retries=0)
+
+- `file://` — 148 passed / 4 skipped (SM-03 by design) / 0 failed
+- `http://127.0.0.1:8642` — 152 passed / 0 failed
+
+All three suites reran, Phase 3 now comprising P3-01..P3-05, P3-06 (nowrap + asserted wrap alignment) and P3-06R (large-document budgets) on Chromium 159, Edge 159, Chrome 159, and Firefox 159 at both origins. The 40-line alignment evidence is unchanged (0.0px wrap drift). No unexplained failure.
+
+## Updated SHA record
+
+- Remediation-2 candidate: `2cd8810404fc91762524a76b75f99905f0f2a226` ("P3 review fix 2: collect gutter mirror spans once; large-document perf budget"), blob `cd0b2826906af730fd41a2c9b53a99e24bc3888f`
+- Prior candidates: `b792bf5` (soft-wrap alignment; blob `cb53b627...`), `921e60c` (original Phase 3; blob `a250ede3...`), base `4c2701a` (blob `4623d798...`)
+
+## Updated exit-gate status
+
+| Gate item | Status |
+| --- | --- |
+| Reviewer's performance concern resolved (collect spans once) | MET on `2cd8810` (linear pass; mirrors spans collected once) |
+| Large-document responsiveness measured and budgeted | MET (P3-06R: 2000-line fixture; budgets met in all 8 pairs) |
+| Soft-wrap alignment and nowrap correction preserved | MET (P3-06 wrap assertions green at this candidate; 0.0px sampled wrap drift) |
+| Phase 1/2 regressions and workflow smoke | MET (green in the 8-pair rerun) |
+| Production launch URL recorded | OPEN (unchanged cross-phase coverage dependency) |
+
+## Updated recommendation
+
+The revised review's single new concern is remediated and measured on candidate `2cd8810`: the row-offset pass is linear, the measured budgets hold in all eight browser/origin pairs, and the pre-remediation strategy is directly recorded as ~2x slower. Phase 3 is ready for final sign-off on candidate `2cd8810`, with the production launch URL remaining the single open coverage dependency.
