@@ -1,7 +1,7 @@
 {
   "browser": "chromium",
   "testId": "P1-03",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:55:58.493Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:54:15.975Z",
   "markdownAfterInsert": "Para one\n\n```mermaid\nflowchart TD\n  A --> D\n```\n\nPara two\n\n```mermaid\nflowchart LR\n  X --> Y\n```\n\nEnd"
 }

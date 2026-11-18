@@ -1,7 +1,7 @@
 {
   "browser": "Microsoft Edge",
   "testId": "P2-01",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:56:14.449Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:55:53.800Z",
   "output": "Head\n\n~~~mermaid\nflowchart TD\n  A --> B\n~~~\n\nTail"
 }

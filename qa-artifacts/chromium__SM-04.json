@@ -1,7 +1,7 @@
 {
   "browser": "chromium",
   "testId": "SM-04",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:56:01.442Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:54:54.405Z",
   "tabs": 2
 }

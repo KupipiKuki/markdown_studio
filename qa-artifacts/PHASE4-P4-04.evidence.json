@@ -1,6 +1,6 @@
 {
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:57:23.296Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:50:23.528Z",
   "consoleNoise": [],
   "clipboardOps": "raw x2, denial x2, rendered x1",
   "project": "firefox"

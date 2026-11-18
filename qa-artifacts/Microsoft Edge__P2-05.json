@@ -1,6 +1,6 @@
 {
   "browser": "Microsoft Edge",
   "testId": "P2-05",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:56:17.030Z"
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:56:02.533Z"
 }

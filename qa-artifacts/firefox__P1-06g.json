@@ -1,7 +1,7 @@
 {
   "browser": "firefox",
   "testId": "P1-06g",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:57:09.772Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:48:36.446Z",
   "output": "```js\nconst s = \"```mermaid wrong```\";\n```\n\n```mermaid\nflowchart LR\n  C --> D\n```"
 }

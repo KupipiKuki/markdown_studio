@@ -1,6 +1,6 @@
 {
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:57:10.881Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:56:34.512Z",
   "consoleNoise": [],
   "normal": {
     "hasForeignObjectLabel": true,
@@ -13,5 +13,5 @@
     "fontFamily": "Inter, sans-serif",
     "margin": "0px"
   },
-  "project": "firefox"
+  "project": "Microsoft Edge"
 }

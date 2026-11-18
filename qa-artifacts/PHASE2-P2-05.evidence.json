@@ -1,6 +1,6 @@
 {
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:57:13.600Z",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T00:56:48.244Z",
   "consoleNoise": [],
   "cycles": 50,
   "regCountSamples": [
@@ -15,5 +15,5 @@
     "panX": 50,
     "panY": 20
   },
-  "project": "firefox"
+  "project": "Microsoft Edge"
 }
