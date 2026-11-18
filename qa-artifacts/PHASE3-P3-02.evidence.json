@@ -1,6 +1,6 @@
 {
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:49:36.378Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:09.720Z",
   "consoleNoise": [],
   "final": {
     "value": "plain ~~~~words",

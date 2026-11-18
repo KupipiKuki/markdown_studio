@@ -1,7 +1,7 @@
 {
   "browser": "chromium",
   "testId": "P1-06d",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:54:38.642Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:16:57.262Z",
   "output": "- item\n\n  ```mermaid\nflowchart LR\n  C --> D\n  ```\n\nTail"
 }

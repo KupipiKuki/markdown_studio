@@ -1,5 +1,7 @@
 # Phase 5 Reconciliation Plan — Coder Instructions & Resolution Path
 
+> **⚠️ SUPERSEDED (Round 2, November 17, 2026)**: This plan was drafted before the reconciliation fix (`9e84517`) and cites the obsolete 520/8 totals, which were themselves a miscount (corrected first to 401/7/408, then, in Round 2, to the authoritative **410 passed / 6 skipped / 416 possible runs** from a full rerun against `9e84517`). The reconciliation it planned is complete and verified. Current results: `PHASE5-QA-RESULTS.md` and `PHASE5-AUDITOR-REPORT.md` (both Round 2). Retained as historical planning material only.
+
 **Prepared**: November 17, 2026  
 **Status**: Ready for review and execution  
 **Reference**: `markdown-studio-phase-5-handoff.md`, `markdown-studio-phase-5-qaqc-handoff.md`  

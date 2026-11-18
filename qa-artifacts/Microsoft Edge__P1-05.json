@@ -1,8 +1,8 @@
 {
   "browser": "Microsoft Edge",
   "testId": "P1-05",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:56:05.061Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:17:53.712Z",
   "firstEntry": "Diagram #1: No diagram type detected matching given configuration for text: this is not a mermaid diagram",
   "dismissedEntry": "Diagram #2: Parse error on line 2: ...broken garbage here ----------------------^ Expecting 'SOLID_OPEN_ARROW', 'DOTTED_OPEN_ARROW', 'SOLID_ARROW', 'DOTTED_ARROW', 'SOLID_CROSS', 'DOTTED_CROSS', 'SOLID_POINT', 'DOTTED_POINT', got 'NEWLINE'",
   "toastAfterCopy": "Error details copied to clipboard",

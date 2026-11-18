@@ -1,7 +1,7 @@
 {
   "browser": "firefox",
   "testId": "P2-02",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:48:10.617Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:19:49.582Z",
   "cards": 2
 }

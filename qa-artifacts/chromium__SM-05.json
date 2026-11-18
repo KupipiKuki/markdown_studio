@@ -1,8 +1,8 @@
 {
   "browser": "chromium",
   "testId": "SM-05",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:54:56.346Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:17:03.209Z",
   "before": {
     "theme": "dark",
     "fullWidth": null,

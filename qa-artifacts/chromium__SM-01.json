@@ -1,7 +1,7 @@
 {
   "browser": "chromium",
   "testId": "SM-01",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:54:51.188Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:17:00.461Z",
   "persistedDoc": "```mermaid\nflowchart TD\n  P --> Q\n```\n\nText persists."
 }

@@ -1,62 +1,62 @@
 {
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:49:52.047Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:18.257Z",
   "consoleNoise": [],
   "nowrap": {
     "top": {
       "samples": [
         {
           "line": 1,
-          "gutterY": -7,
-          "editorY": -5,
+          "gutterY": 243,
+          "editorY": 245,
           "driftPx": -2
         },
         {
           "line": 5,
-          "gutterY": 79.4,
-          "editorY": 81,
+          "gutterY": 329.4,
+          "editorY": 331,
           "driftPx": -1.6
         },
         {
           "line": 9,
-          "gutterY": 165.8,
-          "editorY": 168,
+          "gutterY": 415.8,
+          "editorY": 418,
           "driftPx": -2.2
         },
         {
           "line": 15,
-          "gutterY": 295.4,
-          "editorY": 297,
+          "gutterY": 545.4,
+          "editorY": 547,
           "driftPx": -1.6
         },
         {
           "line": 20,
-          "gutterY": 403.4,
-          "editorY": 405,
+          "gutterY": 653.4,
+          "editorY": 655,
           "driftPx": -1.6
         },
         {
           "line": 25,
-          "gutterY": 511.4,
-          "editorY": 513,
+          "gutterY": 761.4,
+          "editorY": 763,
           "driftPx": -1.6
         },
         {
           "line": 30,
-          "gutterY": 619.4,
-          "editorY": 621,
+          "gutterY": 869.4,
+          "editorY": 871,
           "driftPx": -1.6
         },
         {
           "line": 35,
-          "gutterY": 727.4,
-          "editorY": 729,
+          "gutterY": 977.4,
+          "editorY": 979,
           "driftPx": -1.6
         },
         {
           "line": 40,
-          "gutterY": 835.4,
-          "editorY": 837,
+          "gutterY": 1085.4,
+          "editorY": 1087,
           "driftPx": -1.6
         }
       ],

@@ -1,10 +1,10 @@
 {
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:57:29.624Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:22.525Z",
   "consoleNoise": [],
   "quickWins": true,
   "validBadgeAfterRace": "✓ Diagram Valid",
   "canvasUnchangedAfterClose": true,
   "emptyStateSurvivesMidRenderClear": true,
-  "project": "Microsoft Edge"
+  "project": "firefox"
 }

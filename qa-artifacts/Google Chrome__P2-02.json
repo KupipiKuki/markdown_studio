@@ -1,7 +1,7 @@
 {
   "browser": "Google Chrome",
   "testId": "P2-02",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:56:39.231Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:18:50.479Z",
   "cards": 2
 }

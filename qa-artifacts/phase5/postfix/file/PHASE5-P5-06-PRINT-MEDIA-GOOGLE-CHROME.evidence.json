@@ -1,0 +1,90 @@
+{
+  "test": "P5-06 print media emulation hides code-block transfer buttons (computed styles)",
+  "browser": "Google Chrome",
+  "candidateCommit": "9e84517122515e5e6a6e5557892bb869466e5922",
+  "candidateBlob": "567402aac4d087dd1695309fd2a561c8d033de9d",
+  "candidateSha256": "33FB72F87FFE9E7D33B916F59076C6FD77D655B7C6786AB933A9E9DCB09F8781",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "timestamp": "2026-11-18T02:22:43.279Z",
+  "screenMedia": {
+    ".code-block-actions": {
+      "count": 2,
+      "hidden": [
+        false,
+        false
+      ],
+      "allHidden": false
+    },
+    ".code-action-btn": {
+      "count": 4,
+      "hidden": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "allHidden": false
+    },
+    ".diag-action-btn": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    },
+    ".mermaid-header": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    },
+    ".mermaid-actions": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    }
+  },
+  "printMedia": {
+    ".code-block-actions": {
+      "count": 2,
+      "hidden": [
+        true,
+        true
+      ],
+      "allHidden": true
+    },
+    ".code-action-btn": {
+      "count": 4,
+      "hidden": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "allHidden": true
+    },
+    ".diag-action-btn": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    },
+    ".mermaid-header": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    },
+    ".mermaid-actions": {
+      "count": 0,
+      "hidden": [],
+      "allHidden": false
+    }
+  },
+  "printMediaHidesButtons": true,
+  "screenMediaShowsButtons": true,
+  "pdfGenerated": true,
+  "pdfFile": "postfix-print-export-google-chrome.pdf",
+  "pdfPages": 1,
+  "pdfBlockReason": null,
+  "screenshotFile": "postfix-print-emulated-google-chrome.png",
+  "verificationMethod": "Playwright page.emulateMedia({media:'print'}) + getComputedStyle assertions on live controls; page.pdf() artifact",
+  "result": "PASS",
+  "notes": "Computed print-media styles hide .code-block-actions and .code-action-btn while both remain visible on screen. No stylesheet injected."
+}

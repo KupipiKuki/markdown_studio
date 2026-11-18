@@ -1,7 +1,7 @@
 {
   "browser": "firefox",
   "testId": "SM-03",
-  "launchURL": "http://127.0.0.1:8642/scripts/markdown-studio.html",
-  "timestamp": "2026-11-15T21:57:15.964Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:00.876Z",
   "imported": true
 }

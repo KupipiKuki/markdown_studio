@@ -1,211 +1,148 @@
-# Phase 5 Post-Fix Print Evidence Summary
+# Phase 5 Post-Fix Print Evidence Summary (Rev 2)
 
-**Candidate**: `9e84517122515e5e6a6e5557892bb869466e5922`  
-**Blob**: `567402aac4d087dd1695309fd2a561c8d033de9d`  
-**Date**: November 17, 2026  
+**Candidate**: `9e84517122515e5e6a6e5557892bb869466e5922`
+**Blob**: `567402aac4d087dd1695309fd2a561c8d033de9d`
+**Live-file SHA-256**: `33FB72F87FFE9E7D33B916F59076C6FD77D655B7C6786AB933A9E9DCB09F8781`
+**Date**: November 17, 2026 (Rev 2 — supersedes the original summary)
 **Purpose**: Verify code-block transfer buttons are hidden in print output after fix
+
+> **Rev 2 note**: This revision corrects two inaccuracies flagged by the auditor:
+> 1. The P5-06 test now uses **Playwright print-media emulation** (`page.emulateMedia({ media: 'print' })`) and asserts the **computed styles of the actual controls** — it no longer injects its own print stylesheet and no longer merely checks that a matching CSS rule exists.
+> 2. The PDF artifact table now matches what the branch actually contains: **Chromium, Microsoft Edge, and Google Chrome PDFs**. A Firefox PDF is not generated because Playwright's Firefox cannot produce PDFs (the same documented limitation as the P5-04 skip); Firefox print evidence is the print-emulated screenshot instead.
 
 ---
 
 ## Executive Summary
 
-The CSS fix has been applied in candidate `9e84517` to hide `.code-block-actions` and `.code-action-btn` in print media. This evidence package provides:
+The CSS fix in candidate `9e84517` hides `.code-block-actions` and `.code-action-btn` in print media. This evidence package provides:
 
-1. ✅ **PDF exports** of the starter document with code blocks (all browsers)
-2. ✅ **PNG screenshots** of the page where controls would have appeared (Chromium, Edge)
-3. ✅ **Evidence records** with browser, candidate, page number, and confirmation
-4. ✅ **Playwright print-media assertion** verifying CSS rules exist
+1. ✅ **Computed print-visibility assertions** — P5-06 emulates print media and asserts `getComputedStyle(...).display === 'none'` for every `.code-block-actions` and `.code-action-btn` element, while asserting the same controls are **visible under screen media emulation** (`display !== 'none'`). No stylesheet is injected.
+2. ✅ **Print PDF exports** (Chromium, Microsoft Edge, Google Chrome) generated via `page.pdf()` — `page.pdf()` renders with print media, so the PDFs are direct print-output artifacts.
+3. ✅ **Print-emulated screenshots** for all 4 browsers (Firefox included).
+4. ✅ **Evidence records** with browser, candidate identity, per-element computed-style results.
 
-**Result**: All evidence confirms code-block transfer buttons are NOT visible in print output.
+**Result**: All evidence confirms code-block transfer buttons are NOT visible in print output, verified at the computed-style level, not by CSS-rule inspection.
 
 ---
 
 ## Test Document
 
-The following document was used for all tests:
+The following document was used for all tests (two code blocks — the controls under test):
 
 ```markdown
-# Post-Fix Print Test
+# Post-Fix Print Media Verification
 
-This document tests that code-block transfer buttons are hidden in print output.
-
-## Code Block with Transfer Buttons
+## Code Block 1
 
 ```python
 # Test code block
-print("This code block has transfer buttons in the live view")
-print("But they should be hidden in print output")
+print("test")
 ```
 
-## Mermaid Diagram
-
-```mermaid
-flowchart TD
-  A[Start] --> B[Process]
-  B --> C[End]
-```
-
-## Another Code Block
+## Code Block 2
 
 ```javascript
 // Another code block
-function test() {
-  console.log("Transfer buttons should be hidden in print");
-}
+function test() {}
 ```
 ```
 
 ---
 
-## Evidence Files
+## What P5-06 Actually Verifies (per auditor requirement)
 
-### PDF Exports (Print Output)
+The test (`tests/phase5-postfix-print-test.spec.js`) performs, in order:
 
-| Browser | File | Size | Pages | Status |
-|---------|------|------|-------|--------|
-| Chromium | `postfix-print-export-chromium.pdf` | 93,932 bytes | 2 | ✅ Generated |
-| Microsoft Edge | `postfix-print-export-microsoft-edge.pdf` | 93,932 bytes | 2 | ✅ Generated |
-| Google Chrome | `postfix-print-export-google-chrome.pdf` | ~94KB | 2 | ✅ Generated |
-| Firefox | `postfix-print-export-firefox.pdf` | ~94KB | 2 | ✅ Generated |
+1. **Screen media emulation** (`page.emulateMedia({ media: 'screen' })`):
+   - Asserts `.code-block-actions` containers and `.code-action-btn` buttons **exist** in the live preview (counts > 0).
+   - Asserts they are **visible** — every element's computed `display` is **not** `none`.
+2. **Print media emulation** (`page.emulateMedia({ media: 'print' })` — Playwright native, no injected styles):
+   - Asserts the same elements **still exist in the DOM** (so "hidden" cannot mean "removed").
+   - Asserts **every** `.code-block-actions` and `.code-action-btn` element has computed `display === 'none'`.
+   - Asserts diagram controls (`.diag-action-btn`, `.mermaid-header`, `.mermaid-actions`), when present, are also `display: none`.
+3. **Round-trip**: switches back to screen media and asserts the buttons are visible again.
+4. **Artifacts**:
+   - Chromium-family projects: `page.pdf()` export (print-media rendering by definition).
+   - All projects: full-page screenshot captured under print-media emulation.
+5. **Cleanliness**: asserts zero page errors and zero console errors.
 
-**Verification**: Open each PDF and confirm no code-block transfer buttons ("↗ Notepad++", "▶ Run in Notebook") are visible on any page.
+**No stylesheet is injected.** The assertion target is the app's own `@media print` rule at line 1797 of `scripts/markdown-studio.html`.
 
-### PNG Screenshots (Visual Reference)
+---
+
+## PDF Exports (Print Output)
 
 | Browser | File | Size | Status |
 |---------|------|------|--------|
-| Chromium | `postfix-print-view-chromium.png` | 117,894 bytes | ✅ Generated |
-| Microsoft Edge | `postfix-print-view-microsoft-edge.png` | 117,894 bytes | ✅ Generated |
+| Chromium | `postfix-print-export-chromium.pdf` | 76,767 bytes | ✅ Generated (Rev 2) |
+| Microsoft Edge | `postfix-print-export-microsoft-edge.pdf` | 79,762 bytes | ✅ Generated (Rev 2) |
+| Google Chrome | `postfix-print-export-google-chrome.pdf` | 79,748 bytes | ✅ Generated (Rev 2) |
+| Firefox | — | — | ⛔ Not generated: Playwright Firefox does not support `page.pdf()` (`PDF generation is only supported for Headless Chromium`). Same engine limitation documented for the P5-04 skip. Firefox print evidence = print-emulated screenshot + computed-style assertions. |
 
-**Note**: These are full-page screenshots showing the document before printing. The code-block buttons are visible in the live view but will be hidden in actual print output due to the `@media print` CSS rule.
+**Verification**: Open each PDF and confirm no code-block transfer buttons ("↗ Notepad++", "▶ Run in Notebook") are visible on any page. Because `page.pdf()` renders under print media, these PDFs are direct artifacts of the print output.
 
-### Evidence Records
+---
+
+## Print-Emulated Screenshots
+
+Captured after `page.emulateMedia({ media: 'print' })` — the print CSS is active in these captures:
+
+| Browser | File | Size | Status |
+|---------|------|------|--------|
+| Chromium | `postfix-print-emulated-chromium.png` | 25,489 bytes | ✅ Generated |
+| Microsoft Edge | `postfix-print-emulated-microsoft-edge.png` | 25,684 bytes | ✅ Generated |
+| Google Chrome | `postfix-print-emulated-google-chrome.png` | 25,684 bytes | ✅ Generated |
+| Firefox | `postfix-print-emulated-firefox.png` | 25,701 bytes | ✅ Generated |
+
+(Legacy full-page screen-view screenshots `postfix-print-view-chromium.png` / `postfix-print-view-microsoft-edge.png` from the earlier evidence pass are retained for reference; they show the screen view where the buttons are intentionally visible.)
+
+---
+
+## Evidence Records
 
 | Browser | File | Contains |
 |---------|------|----------|
-| Chromium | `PHASE5-POSTFIX-PRINT-CHROMIUM.evidence.json` | Browser, candidate, PDF pages, confirmation |
-| Microsoft Edge | `PHASE5-POSTFIX-PRINT-MICROSOFT-EDGE.evidence.json` | Browser, candidate, PDF pages, confirmation |
-| Google Chrome | `PHASE5-P5-06-PRINT-MEDIA-GOOGLE-CHROME.evidence.json` | CSS rule verification, Playwright assertion |
-| Firefox | `PHASE5-P5-06-PRINT-MEDIA-FIREFOX.evidence.json` | CSS rule verification, Playwright assertion |
+| Chromium | `PHASE5-P5-06-PRINT-MEDIA-CHROMIUM.evidence.json` | Computed styles (screen + print), PDF, screenshot |
+| Microsoft Edge | `PHASE5-P5-06-PRINT-MEDIA-MICROSOFT-EDGE.evidence.json` | Computed styles (screen + print), PDF, screenshot |
+| Google Chrome | `PHASE5-P5-06-PRINT-MEDIA-GOOGLE-CHROME.evidence.json` | Computed styles (screen + print), PDF, screenshot |
+| Firefox | `PHASE5-P5-06-PRINT-MEDIA-FIREFOX.evidence.json` | Computed styles (screen + print), screenshot, PDF-block reason |
 
----
-
-## Detailed Evidence Records
-
-### Chromium Evidence
-
-**File**: `PHASE5-POSTFIX-PRINT-CHROMIUM.evidence.json`
+Each record contains:
 
 ```json
 {
-  "browser": "Chromium",
+  "test": "P5-06 print media emulation hides code-block transfer buttons (computed styles)",
+  "browser": "<project name>",
   "candidateCommit": "9e84517122515e5e6a6e5557892bb869466e5922",
   "candidateBlob": "567402aac4d087dd1695309fd2a561c8d033de9d",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "launchMode": "file",
-  "testDocument": "Post-fix print test with code blocks",
-  "pdfGenerated": true,
-  "pdfPages": 2,
-  "screenshotGenerated": true,
-  "codeBlockTransferButtonsVisible": false,
-  "codeBlockTransferButtonsAbsent": true,
-  "verificationMethod": "Visual inspection of PDF and screenshot + computed style check",
-  "timestamp": "2026-11-18T01:50:38.844Z",
-  "notes": "Code-block transfer buttons (Notepad++, Run in Notebook) are NOT visible in print output"
-}
-```
-
-**PDF**: `postfix-print-export-chromium.pdf`  
-**Page with code blocks**: Page 1  
-**Code-block transfer buttons absent**: ✅ Confirmed
-
----
-
-### Microsoft Edge Evidence
-
-**File**: `PHASE5-POSTFIX-PRINT-MICROSOFT-EDGE.evidence.json`
-
-```json
-{
-  "browser": "Microsoft Edge",
-  "candidateCommit": "9e84517122515e5e6a6e5557892bb869466e5922",
-  "candidateBlob": "567402aac4d087dd1695309fd2a561c8d033de9d",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "launchMode": "file",
-  "testDocument": "Post-fix print test with code blocks",
-  "pdfGenerated": true,
-  "pdfPages": 2,
-  "screenshotGenerated": true,
-  "codeBlockTransferButtonsVisible": false,
-  "codeBlockTransferButtonsAbsent": true,
-  "verificationMethod": "Visual inspection of PDF and screenshot + computed style check",
-  "timestamp": "2026-11-18T01:50:38.844Z",
-  "notes": "Code-block transfer buttons (Notepad++, Run in Notebook) are NOT visible in print output"
-}
-```
-
-**PDF**: `postfix-print-export-microsoft-edge.pdf`  
-**Page with code blocks**: Page 1  
-**Code-block transfer buttons absent**: ✅ Confirmed
-
----
-
-### Google Chrome Evidence
-
-**File**: `PHASE5-P5-06-PRINT-MEDIA-GOOGLE-CHROME.evidence.json`
-
-This record includes the **Playwright print-media assertion** as requested by the auditor.
-
-```json
-{
-  "browser": "Google Chrome",
-  "candidateCommit": "9e84517122515e5e6a6e5557892bb869466e5922",
-  "candidateBlob": "567402aac4d087dd1695309fd2a561c8d033de9d",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "launchMode": "file",
-  "timestamp": "2026-11-18T01:51:XX.XXXZ",
-  "test": "P5-06 print media hides code-block and diagram action buttons",
-  "normalView": {
-    "codeBlockActions": 2,
-    "codeActionBtns": 4,
-    "diagActionBtns": 0,
-    "mermaidHeaders": 0,
-    "mermaidActions": 0
-  },
-  "hasPrintRule": true,
+  "candidateSha256": "33FB72F87FFE9E7D33B916F59076C6FD77D655B7C6786AB933A9E9DCB09F8781",
+  "screenMedia": { ".code-block-actions": { "count": 2, "allHidden": false }, ".code-action-btn": { "count": 4, "allHidden": false }, "...": "..." },
+  "printMedia": { ".code-block-actions": { "count": 2, "allHidden": true }, ".code-action-btn": { "count": 4, "allHidden": true }, "...": "..." },
   "printMediaHidesButtons": true,
-  "cssRules": [
-    {
-      "selector": ".mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn",
-      "style": "display: none !important;"
-    },
-    {
-      "selector": ".code-block-actions",
-      "style": "display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 6px;"
-    }
-  ],
-  "verificationMethod": "Playwright print-media assertion + CSS rule inspection",
-  "result": "PASS",
-  "notes": "CSS @media print rule exists and hides code-block-actions, code-action-btn, diag-action-btn, mermaid-header, mermaid-actions"
+  "screenMediaShowsButtons": true,
+  "pdfGenerated": true,
+  "pdfFile": "postfix-print-export-<browser>.pdf",
+  "pdfBlockReason": null,
+  "screenshotFile": "postfix-print-emulated-<browser>.png",
+  "verificationMethod": "Playwright page.emulateMedia({media:'print'}) + getComputedStyle assertions on live controls; page.pdf() artifact",
+  "result": "PASS"
 }
 ```
 
-**Key Findings**:
-- ✅ `@media print` rule exists
-- ✅ Rule includes `.code-block-actions` and `.code-action-btn`
-- ✅ Rule sets `display: none !important;`
-- ✅ Playwright assertion confirms rule is present
-
 ---
 
-### Firefox Evidence
+## Test Run Result (Rev 2, all four projects, both origins)
 
-**File**: `PHASE5-P5-06-PRINT-MEDIA-FIREFOX.evidence.json`
+```
+npx playwright test tests/phase5-postfix-print-test.spec.js --retries=0
 
-Same structure as Google Chrome, confirming:
-- ✅ `@media print` rule exists
-- ✅ Rule includes all required selectors
-- ✅ Playwright assertion passes
+  file:// origin: 4 passed (chromium, Microsoft Edge, Google Chrome, firefox)
+  http:// origin: 4 passed (chromium, Microsoft Edge, Google Chrome, firefox)
+
+  Total: 8 passed / 0 failed / 0 skipped
+```
+
+Artifacts land in `postfix/file/` and `postfix/http/` respectively.
 
 ---
 
@@ -213,9 +150,9 @@ Same structure as Google Chrome, confirming:
 
 **File**: `../css-verification.txt`
 
-Contains direct verification that the fix is present in candidate `9e84517`:
+The app's own print rule (unchanged, verified in candidate `9e84517`):
 
-```
+```css
 @media print {
   .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn {
     display: none !important;
@@ -223,98 +160,64 @@ Contains direct verification that the fix is present in candidate `9e84517`:
 }
 ```
 
-**Consistency Check**: This matches the selector set in `getCleanRenderedContent()` at line 5638.
+**Consistency Check**: Selector set matches `getCleanRenderedContent()` at line 5638. Note that CSS-rule presence is now only a supplementary check — the primary evidence is the computed-style behavior under print-media emulation.
 
 ---
 
-## Playwright Print-Media Test
+## Files Summary (Rev 2)
 
-**File**: `../../tests/phase5-postfix-print-test.spec.js`
+Artifacts are split per launch origin (P5-06 runs on both):
 
-This test explicitly verifies the CSS rule using Playwright:
-
-1. ✅ Loads the app with test document containing code blocks
-2. ✅ Checks normal view (buttons exist)
-3. ✅ Inspects CSS rules for `@media print`
-4. ✅ Confirms rule includes `.code-block-actions, .code-action-btn`
-5. ✅ Confirms rule sets `display: none !important;`
-6. ✅ **Result**: PASS for all 4 browsers
-
-**Test Output**:
 ```
-  ✓  [chromium] › P5-06 print media hides code-block and diagram action buttons
-  ✓  [Microsoft Edge] › P5-06 print media hides code-block and diagram action buttons  
-  ✓  [Google Chrome] › P5-06 print media hides code-block and diagram action buttons
-  ✓  [firefox] › P5-06 print media hides code-block and diagram action buttons
-
-  4 passed
+qa-artifacts/phase5/postfix/
+├── PHASE5-POSTFIX-PRINT-SUMMARY.md                    (this document)
+├── file/                                              (file:// origin run)
+│   ├── PHASE5-P5-06-PRINT-MEDIA-CHROMIUM.evidence.json
+│   ├── PHASE5-P5-06-PRINT-MEDIA-MICROSOFT-EDGE.evidence.json
+│   ├── PHASE5-P5-06-PRINT-MEDIA-GOOGLE-CHROME.evidence.json
+│   ├── PHASE5-P5-06-PRINT-MEDIA-FIREFOX.evidence.json
+│   ├── postfix-print-export-chromium.pdf
+│   ├── postfix-print-export-microsoft-edge.pdf
+│   ├── postfix-print-export-google-chrome.pdf
+│   ├── postfix-print-emulated-chromium.png
+│   ├── postfix-print-emulated-microsoft-edge.png
+│   ├── postfix-print-emulated-google-chrome.png
+│   └── postfix-print-emulated-firefox.png
+├── http/                                              (http:// origin run — same contents)
+└── legacy-rev1/                                       (superseded Rev-1 artifacts, retained for reference)
+    ├── PHASE5-POSTFIX-PRINT-CHROMIUM.evidence.json
+    ├── PHASE5-POSTFIX-PRINT-MICROSOFT-EDGE.evidence.json
+    ├── postfix-print-view-chromium.png                (screen view, buttons visible)
+    └── postfix-print-view-microsoft-edge.png          (screen view, buttons visible)
 ```
+
+**Result**: P5-06 = 8/8 passed (2 origins × 4 browsers). PDFs for Chromium/Edge/Chrome on both origins; Firefox print-emulated screenshots on both origins.
 
 ---
 
-## Verification Steps
+## Verification Steps for the Auditor
 
-To independently verify this evidence:
-
-### 1. Check the CSS Fix
+### 1. Rerun the test
 ```bash
-cd /c/Git/markdown_studio
-git show 9e84517:scripts/markdown-studio.html | grep -A1 "@media print" | grep "code-block-actions"
+npx playwright test tests/phase5-postfix-print-test.spec.js --retries=0
 ```
+Expected: 4 passed (Chromium, Edge, Chrome, Firefox).
 
-**Expected Output**:
-```
-.mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
-```
+### 2. Inspect an evidence record
+`PHASE5-P5-06-PRINT-MEDIA-CHROMIUM.evidence.json` shows per-element computed-style booleans under both screen and print emulation, plus candidate identity.
 
-### 2. Open PDFs and Verify
-Open each PDF file and verify:
-- The document contains code blocks
-- The code blocks render correctly
-- **No code-block transfer buttons ("↗ Notepad++", "▶ Run in Notebook") are visible**
-- The diagram renders correctly
-- **No diagram action buttons are visible**
+### 3. Open the PDFs
+Open `postfix-print-export-chromium.pdf`, `postfix-print-export-microsoft-edge.pdf`, `postfix-print-export-google-chrome.pdf` and confirm no transfer buttons are rendered.
 
-### 3. Check Evidence Records
-Each evidence JSON file contains:
-- Browser name
-- Candidate commit (`9e84517`)
-- Candidate blob (`567402aa`)
-- Page number where code blocks appear
-- Confirmation that buttons are absent
+### 4. Check the print-emulated screenshot for Firefox
+`postfix-print-emulated-firefox.png` was captured with print media emulated; no transfer buttons appear.
 
 ---
 
 ## Conclusion
 
-**Status**: ✅ **POST-FIX EVIDENCE COMPLETE**
+**Status**: ✅ **POST-FIX PRINT EVIDENCE COMPLETE (Rev 2)**
 
-All required evidence has been generated:
-1. ✅ Post-fix PDFs of starter document with code blocks (all browsers)
-2. ✅ PNGs of the page where controls would have appeared (Chromium, Edge)
-3. ✅ Evidence records with browser, candidate, page number, confirmation
-4. ✅ Playwright print-media assertion (P5-06 test passing for all browsers)
-
-**Result**: The code-block transfer buttons are confirmed to be **NOT visible** in print output for all browsers after the fix in candidate `9e84517`.
-
----
-
-## Files Summary
-
-```
-qa-artifacts/phase5/postfix/
-├── PHASE5-POSTFIX-PRINT-CHROMIUM.evidence.json
-├── PHASE5-POSTFIX-PRINT-MICROSOFT-EDGE.evidence.json
-├── PHASE5-P5-06-PRINT-MEDIA-CHROMIUM.evidence.json
-├── PHASE5-P5-06-PRINT-MEDIA-GOOGLE-CHROME.evidence.json
-├── PHASE5-P5-06-PRINT-MEDIA-MICROSOFT-EDGE.evidence.json
-├── PHASE5-P5-06-PRINT-MEDIA-FIREFOX.evidence.json
-├── postfix-print-export-chromium.pdf
-├── postfix-print-export-microsoft-edge.pdf
-├── postfix-print-export-google-chrome.pdf
-├── postfix-print-export-firefox.pdf
-├── postfix-print-view-chromium.png
-└── postfix-print-view-microsoft-edge.png
-```
-
-**Total**: 11 evidence files generated
+- Computed print-visibility is verified directly via Playwright print-media emulation — the actual controls exist on screen, exist in the DOM under print emulation, and compute to `display: none` there.
+- PDF artifacts exist for Chromium, Edge, and Chrome; Firefox is documented as not PDF-capable under Playwright, with an equivalent print-emulated screenshot and the same computed-style assertions.
+- This summary no longer claims artifacts it does not contain.

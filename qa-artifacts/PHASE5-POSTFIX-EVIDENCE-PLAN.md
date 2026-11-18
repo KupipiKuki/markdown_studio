@@ -1,5 +1,7 @@
 # Phase 5 Post-Fix Evidence Plan
 
+> **⚠️ SUPERSEDED (Round 2, November 17, 2026)**: This plan has been fully executed and improved upon. The evidence it asked for now exists in stronger form — P5-06 was rewritten to use Playwright print-media emulation with computed-style assertions (no injected stylesheet), and the resulting artifacts live in `qa-artifacts/phase5/postfix/{file,http}/` with an honest index in `PHASE5-POSTFIX-PRINT-SUMMARY.md` (Rev 2). Totals cited below (401/7) were corrected in Round 2 to 410/6/416. This document is retained as historical planning material only.
+
 **Purpose**: Generate evidence required by auditor to verify code-block transfer buttons are hidden in print output after the fix.
 
 **Auditor Requirement**:

@@ -1,0 +1,48 @@
+﻿[
+    {
+        "mode":  "file",
+        "log":  "qa-artifacts\\phase5-regression-fileorigin.log",
+        "passed":  203,
+        "skipped":  5,
+        "perPhase":  [
+                         "phase1: 92 passed",
+                         "phase2: 28 passed",
+                         "phase3: 28 passed",
+                         "phase4: 36 passed",
+                         "phase5: 19 passed"
+                     ],
+        "perBrowser":  [
+                           "chromium: 51 passed",
+                           "Microsoft Edge: 51 passed",
+                           "Google Chrome: 51 passed",
+                           "firefox: 50 passed"
+                       ],
+        "skips":  [
+                      "-   22 [chromium] ΓÇ║ tests\\phase1.spec.js:534:1 ΓÇ║ SM-03 studio bus transfer imports a tab (shared http origin only)",
+                      "-   74 [Microsoft Edge] ΓÇ║ tests\\phase1.spec.js:534:1 ΓÇ║ SM-03 studio bus transfer imports a tab (shared http origin only)",
+                      "-  126 [Google Chrome] ΓÇ║ tests\\phase1.spec.js:534:1 ΓÇ║ SM-03 studio bus transfer imports a tab (shared http origin only)",
+                      "-  178 [firefox] ΓÇ║ tests\\phase1.spec.js:534:1 ΓÇ║ SM-03 studio bus transfer imports a tab (shared http origin only)",
+                      "-  207 [firefox] ΓÇ║ tests\\phase5.spec.js:522:1 ΓÇ║ P5-04 tall diagram PDF paginates all 26 steps across pages without clipping"
+                  ]
+    },
+    {
+        "mode":  "http",
+        "log":  "qa-artifacts\\phase5-regression-http.log",
+        "passed":  207,
+        "skipped":  1,
+        "perPhase":  [
+                         "phase1: 96 passed",
+                         "phase2: 28 passed",
+                         "phase3: 28 passed",
+                         "phase4: 36 passed",
+                         "phase5: 19 passed"
+                     ],
+        "perBrowser":  [
+                           "chromium: 52 passed",
+                           "Microsoft Edge: 52 passed",
+                           "Google Chrome: 52 passed",
+                           "firefox: 51 passed"
+                       ],
+        "skips":  "-  207 [firefox] ΓÇ║ tests\\phase5.spec.js:522:1 ΓÇ║ P5-04 tall diagram PDF paginates all 26 steps across pages without clipping"
+    }
+]

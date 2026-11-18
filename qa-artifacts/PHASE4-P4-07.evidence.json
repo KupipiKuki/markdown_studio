@@ -1,10 +1,10 @@
 {
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:51:10.643Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:42.298Z",
   "consoleNoise": [
-    "[error] [JavaScript Error: \"Security Error: Content at file:///C:/Git/markdown_studio/scripts/markdown-studio.html may not load data from blob:FAKE-URL.\"]"
+    "[error] [JavaScript Error: \"Security Error: Content at http://127.0.0.1:4173/scripts/markdown-studio.html may not load data from blob:FAKE-URL.\"]"
   ],
-  "validPngBytes": 4969,
+  "validPngBytes": 4997,
   "failureToasts": [
     "image could not be loaded",
     "Blob URL creation failed",

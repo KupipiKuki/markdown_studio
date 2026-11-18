@@ -1,7 +1,7 @@
 {
   "browser": "firefox",
   "testId": "P2-03",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:48:13.353Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:19:53.210Z",
   "output": "```mermaid\n```\n\nmiddle text\n\n```mermaid\nflowchart TD\n  B --> C\n```\n\nend"
 }

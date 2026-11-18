@@ -1,208 +1,185 @@
 /**
- * Phase 5 Post-Fix Print Media Test
- * 
- * Explicit test to verify that code-block transfer buttons are hidden in print media.
- * This addresses the auditor's requirement for "a Playwright print-media assertion 
- * checking their computed visibility".
- * 
- * Test ID: P5-06 (Post-Fix)
+ * Phase 5 Post-Fix Print Media Test (P5-06)
+ *
+ * Verifies with REAL print-media emulation that code-block transfer buttons
+ * are hidden in print output, while remaining visible on screen.
+ *
+ * Remediation for auditor review (Phase 5, round 2):
+ *  - Uses Playwright's page.emulateMedia({ media: 'print' }) — no injected stylesheets.
+ *  - Asserts the COMPUTED styles (getComputedStyle) of the actual
+ *    .code-block-actions / .code-action-btn controls in the live preview.
+ *  - Asserts the same controls are visible under screen media emulation.
+ *  - Produces a print PDF via page.pdf() on Chromium-family projects and a
+ *    print-emulated screenshot on Firefox (page.pdf is unsupported there,
+ *    consistent with the documented P5-04 skip).
+ *
+ * Artifacts: qa-artifacts/phase5/postfix/
+ * Test ID: P5-06 (Post-Fix, remediation round 2)
  */
 
 const { test, expect } = require('@playwright/test');
 const path = require('path');
+const fs = require('fs');
 
 const FILE_PATH = path.resolve(__dirname, '..', 'scripts', 'markdown-studio.html');
-const BASE_URL = 'file:///' + FILE_PATH.replace(/\\/g, '/');
+const BASE_URL = process.env.P1_BASE_URL || ('file:///' + FILE_PATH.replace(/\\/g, '/'));
+const IS_HTTP = /^https?:\/\//i.test(BASE_URL);
 
-// Test document with code blocks
-const TEST_DOCUMENT = `# Post-Fix Print Media Verification
+const CANDIDATE_COMMIT = '9e84517122515e5e6a6e5557892bb869466e5922';
+const CANDIDATE_BLOB = '567402aac4d087dd1695309fd2a561c8d033de9d';
+const CANDIDATE_SHA256 = '33FB72F87FFE9E7D33B916F59076C6FD77D655B7C6786AB933A9E9DCB09F8781';
 
-This test verifies that code-block transfer buttons are hidden in print media
-after the fix applied in candidate 9e84517.
+// Test document with code blocks (code-block actions render for these)
+const TEST_DOCUMENT = [
+  '# Post-Fix Print Media Verification',
+  '',
+  'This test verifies that code-block transfer buttons are hidden in print media',
+  'after the fix applied in candidate 9e84517.',
+  '',
+  '## Code Block 1',
+  '',
+  '```python',
+  '# Test code block',
+  'print("test")',
+  '```',
+  '',
+  '## Code Block 2',
+  '',
+  '```javascript',
+  '// Another code block',
+  'function test() {}',
+  '```',
+].join('\n');
 
-## Code Block 1
+// Computed visibility info for the actual controls in the preview
+function collectControlState() {
+  const selectors = ['.code-block-actions', '.code-action-btn', '.diag-action-btn', '.mermaid-header', '.mermaid-actions'];
+  const state = {};
+  for (const sel of selectors) {
+    const els = Array.from(document.querySelectorAll(sel));
+    state[sel] = {
+      count: els.length,
+      hidden: els.map((el) => getComputedStyle(el).display === 'none'),
+      allHidden: els.length > 0 && els.every((el) => getComputedStyle(el).display === 'none'),
+    };
+  }
+  return state;
+}
 
-\`\`\`python
-# Test code block
-print("test")
-\`\`\`
+test('P5-06 print media emulation hides code-block transfer buttons (computed styles), screen view keeps them visible', async ({ page }, testInfo) => {
+  test.setTimeout(120_000);
 
-## Code Block 2
-
-\`\`\`javascript
-// Another code block
-function test() {}
-\`\`\`
-`;
-
-test('P5-06 print media hides code-block and diagram action buttons', async ({ page }, testInfo) => {
-  test.setTimeout(60_000);
-  
   const browserName = testInfo.project.name;
-  const evidenceDir = path.resolve(__dirname, '..', 'qa-artifacts', 'phase5', 'postfix');
+  const evidenceDir = path.resolve(__dirname, '..', 'qa-artifacts', 'phase5', 'postfix', IS_HTTP ? 'http' : 'file');
+  fs.mkdirSync(evidenceDir, { recursive: true });
   const timestamp = new Date().toISOString();
-  
-  // Navigate to the app
+
+  const consoleErrors = [];
+  const pageErrors = [];
+  page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
+  page.on('pageerror', (e) => pageErrors.push(String(e)));
+
+  // Load the app
   await page.goto(BASE_URL);
   await page.waitForSelector('#editor', { state: 'visible' });
-  await page.waitForFunction(() => typeof window.mermaid !== 'undefined', null, { timeout: 30000 });
-  
-  // Set test document
+  await page.waitForFunction(() => typeof window.mermaid !== 'undefined' && typeof window.marked !== 'undefined', null, { timeout: 30000 });
+
+  // Set the test document and wait for render
   await page.evaluate((doc) => {
     const editor = document.getElementById('editor');
     editor.value = doc;
     editor.dispatchEvent(new Event('input'));
   }, TEST_DOCUMENT);
-  
-  // Wait for rendering
-  await page.waitForTimeout(2500);
-  
-  // STEP 1: Verify buttons exist in normal view
-  const normalViewButtons = await page.evaluate(() => {
-    return {
-      codeBlockActions: document.querySelectorAll('.code-block-actions').length,
-      codeActionBtns: document.querySelectorAll('.code-action-btn').length,
-      diagActionBtns: document.querySelectorAll('.diag-action-btn').length,
-      mermaidHeaders: document.querySelectorAll('.mermaid-header').length,
-      mermaidActions: document.querySelectorAll('.mermaid-actions').length
-    };
-  });
-  
-  // In normal view, we expect code-block buttons to exist
-  // (They may or may not exist depending on whether diagrams rendered)
-  console.log(`Normal view button counts:`, normalViewButtons);
-  
-  // STEP 2: Emulate print media using Playwright's emulation
-  // We can't directly emulate @media print, but we can:
-  // a) Check the CSS rules exist
-  // b) Check that the buttons would be hidden by the rules
-  
-  const cssRules = await page.evaluate(() => {
-    const stylesheets = Array.from(document.styleSheets);
-    const printRules = [];
-    
-    for (const sheet of stylesheets) {
-      try {
-        const rules = sheet.cssRules || sheet.rules;
-        for (const rule of rules) {
-          if (rule instanceof CSSMediaRule && rule.conditionText.includes('print')) {
-            // This is a @media print rule
-            for (const subRule of rule.cssRules) {
-              if (subRule.selectorText && subRule.selectorText.includes('code-block-actions')) {
-                printRules.push({
-                  selector: subRule.selectorText,
-                  style: subRule.style.cssText
-                });
-              }
-            }
-          } else if (rule.selectorText && rule.selectorText.includes('code-block-actions')) {
-            printRules.push({
-              selector: rule.selectorText,
-              style: rule.style.cssText
-            });
-          }
-        }
-      } catch (e) {
-        // Cross-origin stylesheets may throw
-      }
+  await page.waitForFunction(() => document.querySelectorAll('.code-action-btn').length > 0, null, { timeout: 30000 });
+  await page.waitForTimeout(1500);
+
+  // STEP 1: Screen media — controls must exist AND be visible (computed display != none)
+  await page.emulateMedia({ media: 'screen' });
+  const screenState = await page.evaluate(collectControlState);
+  expect(screenState['.code-block-actions'].count, 'Code-block action containers must exist in screen view').toBeGreaterThan(0);
+  expect(screenState['.code-action-btn'].count, 'Code-block transfer buttons must exist in screen view').toBeGreaterThan(0);
+  expect(screenState['.code-block-actions'].allHidden, 'Code-block action containers must be VISIBLE on screen').toBe(false);
+  expect(screenState['.code-action-btn'].allHidden, 'Code-block transfer buttons must be VISIBLE on screen').toBe(false);
+
+  // STEP 2: Print media emulation (Playwright native) — same controls must be display:none
+  await page.emulateMedia({ media: 'print' });
+  const printState = await page.evaluate(collectControlState);
+  expect(printState['.code-block-actions'].count, 'Code-block action containers must still exist in DOM under print emulation').toBe(screenState['.code-block-actions'].count);
+  expect(printState['.code-action-btn'].count, 'Code-block transfer buttons must still exist in DOM under print emulation').toBe(screenState['.code-action-btn'].count);
+  expect(printState['.code-block-actions'].allHidden, 'Code-block action containers must be display:none under print emulation').toBe(true);
+  expect(printState['.code-action-btn'].allHidden, 'Code-block transfer buttons must be display:none under print emulation').toBe(true);
+
+  // Diagram controls, when present, must also be hidden in print
+  const diagramOk =
+    (printState['.diag-action-btn'].count === 0 || printState['.diag-action-btn'].allHidden) &&
+    (printState['.mermaid-header'].count === 0 || printState['.mermaid-header'].allHidden) &&
+    (printState['.mermaid-actions'].count === 0 || printState['.mermaid-actions'].allHidden);
+  expect(diagramOk, 'Diagram controls must be hidden under print emulation when present').toBe(true);
+
+  // STEP 3: Print artifact
+  let pdfGenerated = false;
+  let pdfPages = null;
+  let pdfFile = null;
+  let screenshotFile = null;
+  let pdfBlockReason = null;
+
+  if (typeof page.pdf === 'function') {
+    // page.pdf() renders with print media — the PDF itself is the artifact proof
+    pdfFile = path.join(evidenceDir, `postfix-print-export-${browserName.toLowerCase().replace(/\s+/g, '-')}.pdf`);
+    try {
+      const pdfBuf = await page.pdf({ format: 'A4', printBackground: true });
+      fs.writeFileSync(pdfFile, pdfBuf);
+      pdfGenerated = true;
+      // Page count from raw PDF bytes: count /Type /Page objects (non-compressed page tree)
+      const raw = pdfBuf.toString('latin1');
+      const matches = raw.match(/\/Type\s*\/Page[^s]/g);
+      pdfPages = matches ? matches.length : null;
+    } catch (err) {
+      pdfBlockReason = String(err && err.message ? err.message : err);
     }
-    return printRules;
-  });
-  
-  console.log(`CSS rules for code-block-actions:`, cssRules);
-  
-  // STEP 3: Check that the @media print rule exists and hides the buttons
-  const hasPrintRule = cssRules.some(rule => 
-    rule.selector.includes('code-block-actions') && 
-    rule.style.includes('display: none')
-  );
-  
-  expect(hasPrintRule, 'A @media print rule hiding code-block-actions should exist').toBe(true);
-  
-  // STEP 4: Inject a print stylesheet and check computed styles
-  // This simulates what would happen in actual print media
-  await page.addStyleTag({ 
-    content: `
-      @media print {
-        .code-block-actions, .code-action-btn, .diag-action-btn, .mermaid-header, .mermaid-actions {
-          display: none !important;
-        }
-      }
-    ` 
-  });
-  
-  // Wait for styles to apply
-  await page.waitForTimeout(500);
-  
-  // Now check if buttons would be hidden in print media
-  // Note: We can't directly check @media print styles, but we can check
-  // that the elements exist and would be affected by the rule
-  const printMediaCheck = await page.evaluate(() => {
-    const codeBlockActions = document.querySelectorAll('.code-block-actions');
-    const codeActionBtns = document.querySelectorAll('.code-action-btn');
-    const diagActionBtns = document.querySelectorAll('.diag-action-btn');
-    
-    // Check if the CSS rule exists that would hide them
-    const hasRule = Array.from(document.styleSheets).some(sheet => {
-      try {
-        return Array.from(sheet.cssRules || []).some(rule => {
-          if (rule instanceof CSSMediaRule && rule.conditionText.includes('print')) {
-            return Array.from(rule.cssRules).some(subRule => 
-              subRule.selectorText && subRule.selectorText.includes('code-block-actions')
-            );
-          }
-          return false;
-        });
-      } catch (e) {
-        return false;
-      }
-    });
-    
-    return {
-      hasPrintRule: hasRule,
-      codeBlockActionsCount: codeBlockActions.length,
-      codeActionBtnsCount: codeActionBtns.length,
-      diagActionBtnsCount: diagActionBtns.length,
-      // The actual visibility in print media cannot be checked without printing,
-      // but we can confirm the rule exists
-      printMediaHidesButtons: hasRule
-    };
-  });
-  
-  console.log(`Print media check:`, printMediaCheck);
-  
-  // The key assertion: the @media print rule exists and would hide the buttons
-  expect(printMediaCheck.hasPrintRule, 'Print media rule for code-block-actions should exist').toBe(true);
-  expect(printMediaCheck.printMediaHidesButtons, 'Print media should hide the buttons').toBe(true);
-  
-  // STEP 5: Generate evidence record
+  } else {
+    pdfBlockReason = 'page.pdf is not supported by this browser engine (Playwright Firefox)';
+  }
+
+  // Print-emulated screenshot as visual evidence (works everywhere, incl. Firefox)
+  screenshotFile = path.join(evidenceDir, `postfix-print-emulated-${browserName.toLowerCase().replace(/\s+/g, '-')}.png`);
+  await page.screenshot({ path: screenshotFile, fullPage: true });
+
+  // Back to screen for sanity
+  await page.emulateMedia({ media: 'screen' });
+  const backToScreenState = await page.evaluate(collectControlState);
+  expect(backToScreenState['.code-action-btn'].allHidden, 'Buttons must be visible again after switching back to screen media').toBe(false);
+
+  expect(pageErrors, `P5-06 page errors: ${pageErrors.join('|')}`).toHaveLength(0);
+  expect(consoleErrors.filter((l) => !/Failed to load resource.*404/.test(l)), `P5-06 console errors: ${consoleErrors.join('|')}`).toHaveLength(0);
+
+  // STEP 4: Evidence record
   const evidence = {
+    test: 'P5-06 print media emulation hides code-block transfer buttons (computed styles)',
     browser: browserName,
-    candidateCommit: '9e84517122515e5e6a6e5557892bb869466e5922',
-    candidateBlob: '567402aac4d087dd1695309fd2a561c8d033de9d',
+    candidateCommit: CANDIDATE_COMMIT,
+    candidateBlob: CANDIDATE_BLOB,
+    candidateSha256: CANDIDATE_SHA256,
     launchURL: BASE_URL,
-    launchMode: 'file',
-    timestamp: timestamp,
-    test: 'P5-06 print media hides code-block and diagram action buttons',
-    normalView: normalViewButtons,
-    hasPrintRule: printMediaCheck.hasPrintRule,
-    printMediaHidesButtons: printMediaCheck.printMediaHidesButtons,
-    cssRules: cssRules,
-    verificationMethod: 'Playwright print-media assertion + CSS rule inspection',
-    result: printMediaCheck.printMediaHidesButtons ? 'PASS' : 'FAIL',
-    notes: printMediaCheck.printMediaHidesButtons 
-      ? 'CSS @media print rule exists and hides code-block-actions, code-action-btn, diag-action-btn, mermaid-header, mermaid-actions' 
-      : 'FAILED: Print media rule not found'
+    launchMode: IS_HTTP ? 'http' : 'file',
+    timestamp,
+    screenMedia: screenState,
+    printMedia: printState,
+    printMediaHidesButtons: printState['.code-block-actions'].allHidden && printState['.code-action-btn'].allHidden,
+    screenMediaShowsButtons: !screenState['.code-block-actions'].allHidden && !screenState['.code-action-btn'].allHidden,
+    pdfGenerated,
+    pdfFile: pdfGenerated && pdfFile ? path.basename(pdfFile) : null,
+    pdfPages,
+    pdfBlockReason,
+    screenshotFile: path.basename(screenshotFile),
+    verificationMethod: "Playwright page.emulateMedia({media:'print'}) + getComputedStyle assertions on live controls; page.pdf() artifact",
+    result: 'PASS',
+    notes: 'Computed print-media styles hide .code-block-actions and .code-action-btn while both remain visible on screen. No stylesheet injected.',
   };
-  
-  // Save evidence
+
   const evidencePath = path.join(evidenceDir, `PHASE5-P5-06-PRINT-MEDIA-${browserName.toUpperCase().replace(/\s+/g, '-')}.evidence.json`);
-  require('fs').writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
-  
-  console.log(`Evidence saved: ${evidencePath}`);
-  console.log(`Result: ${evidence.result}`);
-  console.log(`Notes: ${evidence.notes}`);
-  
-  // Assert the test passes
-  expect(evidence.result, 'Print media test should pass').toBe('PASS');
+  fs.writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
+
+  expect(evidence.printMediaHidesButtons, 'Print media must hide the buttons (computed)').toBe(true);
+  expect(evidence.screenMediaShowsButtons, 'Screen media must show the buttons (computed)').toBe(true);
 });

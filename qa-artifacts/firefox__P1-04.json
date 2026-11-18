@@ -1,7 +1,7 @@
 {
   "browser": "firefox",
   "testId": "P1-04",
-  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
-  "timestamp": "2026-11-18T00:48:04.645Z",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:19:47.764Z",
   "repairedMarkdown": "Doc start\n\n```mermaid\nflowchart TD\n  A --> B\n  B --> C\n```\n\n```mermaid\nflowchart LR\n  X --> Y\n```\n\nDoc end"
 }
