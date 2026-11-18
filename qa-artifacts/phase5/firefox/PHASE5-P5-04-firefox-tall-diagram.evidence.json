@@ -1,0 +1,70 @@
+{
+  "pdfFile": "tall-diagram.pdf",
+  "pdfBytes": 73766,
+  "numPages": 4,
+  "pageSummaries": [
+    {
+      "pageNumber": 1,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 5629,
+      "steps": [],
+      "textSample": "Tall Pagination Fixture\nMarkdown Editor & Mermaid Studio file:///C:/Git/markdown_studio/scripts/markdown-studio.html\n1 of 4 11/17/2026, 7:05 PM"
+    },
+    {
+      "pageNumber": 2,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 19811,
+      "steps": [
+        "Step 1",
+        "Step 2",
+        "Step 3",
+        "Step 4",
+        "Step 5",
+        "Step 6",
+        "Step 7",
+        "Step 8",
+        "Step 9",
+        "Step 10",
+        "Step 11",
+        "Step 12"
+      ],
+      "textSample": "Step 1\nStep 2\nStep 3\nStep 4\nStep 5\nStep 6\nStep 7\nStep 8\nStep 9\nStep 10\nStep 11\nStep 12\nMarkdown Editor & Mermaid Studio file:///C:/Git/markdown_studio/scripts/markdown-studio.html\n2 of 4 11/17/2026, 7"
+    },
+    {
+      "pageNumber": 3,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 21259,
+      "steps": [
+        "Step 12",
+        "Step 13",
+        "Step 14",
+        "Step 15",
+        "Step 16",
+        "Step 17",
+        "Step 18",
+        "Step 19",
+        "Step 20",
+        "Step 21",
+        "Step 22",
+        "Step 23"
+      ],
+      "textSample": "Step 12\nStep 13\nStep 14\nStep 15\nStep 16\nStep 17\nStep 18\nStep 19\nStep 20\nStep 21\nStep 22\nStep 23\nMarkdown Editor & Mermaid Studio file:///C:/Git/markdown_studio/scripts/markdown-studio.html\n3 of 4 11/1"
+    },
+    {
+      "pageNumber": 4,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 7502,
+      "steps": [
+        "Step 24",
+        "Step 25",
+        "Step 26"
+      ],
+      "textSample": "Step 24\nStep 25\nStep 26\nMarkdown Editor & Mermaid Studio file:///C:/Git/markdown_studio/scripts/markdown-studio.html\n4 of 4 11/17/2026, 7:05 PM"
+    }
+  ],
+  "missingSteps": []
+}
