@@ -1,0 +1,96 @@
+Phase 5 Post-Fix CSS Verification
+===================================
+
+Candidate: 9e84517122515e5e6a6e5557892bb869466e5922
+File: scripts/markdown-studio.html
+Date: 2026-11-17
+
+---
+
+Verification 1: @media print CSS Rule (Line 1797)
+---------------------------------------------------
+
+Command: git show 9e84517:scripts/markdown-studio.html | grep -B2 -A2 "code-block-actions" | head -10
+
+Result:
+```
+      margin: 0 !important;
+    }
+    .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
+    .mermaid-block-card {
+      display: block !important;
+```
+
+Status: ✅ PASS - CSS rule includes .code-block-actions and .code-action-btn
+
+---
+
+Verification 2: Consistency with getCleanRenderedContent() (Line 5638)
+-----------------------------------------------------------------------
+
+Command: git show 9e84517:scripts/markdown-studio.html | grep -n "code-block-actions" | head -5
+
+Result:
+```
+1797:    .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
+1914:.code-block-actions {
+5638:    clone.querySelectorAll('.mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn').forEach((el) => el.remove());
+```
+
+Status: ✅ PASS - Both @media print (line 1797) and getCleanRenderedContent() (line 5638) use the same selector set
+
+---
+
+Verification 3: Direct File Check
+-------------------------------
+
+Command: grep -n "code-block-actions" scripts/markdown-studio.html | head -5
+
+Result:
+```
+1797:    .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
+1914:.code-block-actions {
+5638:    clone.querySelectorAll('.mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn').forEach((el) => el.remove());
+```
+
+Status: ✅ PASS - Current working tree contains the fix
+
+---
+
+Verification 4: Git Diff
+------------------------
+
+Command: git diff 02b5363 9e84517 -- scripts/markdown-studio.html
+
+Result:
+```
+@@ -1794,7 +1794,7 @@
+       padding: 0 !important;
+       margin: 0 !important;
+     }
+-    .mermaid-header, .diag-action-btn, .mermaid-actions { display: none !important; }
++    .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
+     .mermaid-block-card {
+       display: block !important;
+       background: transparent !important;
+```
+
+Status: ✅ PASS - Single line change from 02b5363 to 9e84517
+
+---
+
+Summary
+-------
+
+All CSS verification checks PASSED. The fix is correctly applied in candidate 9e84517.
+
+- @media print CSS hides .code-block-actions and .code-action-btn
+- Consistent with getCleanRenderedContent() behavior
+- Single line change only
+- No unintended modifications
+
+---
+
+Generated: 2026-11-17
+Verifier: Mistral Vibe
+Candidate: 9e84517122515e5e6a6e5557892bb869466e5922
