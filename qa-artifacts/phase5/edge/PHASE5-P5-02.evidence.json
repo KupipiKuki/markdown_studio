@@ -1,0 +1,58 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "edge",
+  "timestamp": "2026-11-17T23:25:25.627Z",
+  "consoleNoise": [
+    "[error] Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "results": {
+    "valid": {
+      "copiedLength": 7371,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": "Valid Export Fixture",
+        "svgs": 1,
+        "svgRect": {
+          "x": 559.65625,
+          "y": 162.21875,
+          "width": 160.6875,
+          "height": 136,
+          "top": 162.21875,
+          "right": 720.34375,
+          "bottom": 298.21875,
+          "left": 559.65625
+        },
+        "codeBlocks": [],
+        "bodyText": "Valid Export Fixture\nParagraph with bold and inline.\n\n        \n          \n          \n          \n            #mmd-idqdmbpvs1{font-family:Inter,sans-serif;font-size:16px;fill:#ccc;}#mmd-idqdmbpvs1 .error-icon{fill:#a44141;}#mmd-idqdmbpvs1 .error-text{fill:#ddd;stroke:#ddd;}#mmd-idqdmbpvs1 .edge-thickness-normal{stroke-width:2px;}#mmd-idqdmbpvs1 .edge-thickness-thick{stroke-width:3.5px;}#mmd-idqdmbpvs1 .edge-pattern-solid{stroke-dasharray:0;}#mmd-idqdmbpvs1 .edge-pattern-dashed{stroke-dasharray:3;}#mmd-idqdmbpvs1 .edge-pattern-dotted{stroke-dasharray:2;}#mmd-idqdmbpvs1 .marker{fill:lightgrey;stroke:lightgrey;}#mmd-idqdmbpvs1 .marker.cross{stroke:lightgrey;}#mmd-idqdmbpvs1 svg{font-family:Inter,sans-serif;font-size:16px;}#mmd-idqdmbpvs1 .label{font-family:Inter,sans-serif;color:#ccc;}#mmd-idqdmbpvs1 .cluster-label text{fill:#F9FFFE;}#mmd-idqdmbpvs1 .cluster-label span,#mmd-idqdmbpvs1 p{color:#F9FFFE;}#mmd-idqdmbpvs1 .label text,#mmd-idqdmbpvs1 span,#mmd-idqdmbpvs1 p{fill:#ccc;color:#ccc;}#mmd-idqdmbpvs1 .node rect,#mmd-idqdmbpvs1 .node circle,#mmd-idqdmbpvs1 .node ellipse,#mmd-idqdmbpvs1 .node polygon,#mmd-idqdmbpvs1 .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mmd-idqdmbpvs1 .flowchart-label text{text-anchor:middle;}#mmd-idqdmbpvs1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mmd-idqdmbpvs1 .node .label{text-align:center;}#mmd-idqdmbpvs1 .node.clickable{cursor:pointer;}#mmd-idqdmbpvs1 .arrowheadPath{fill:lightgrey;}#mmd-idqdmbpvs1 .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mmd-idqdmbpvs1 .flowchart-link{stroke:lightgrey;fill:none;}#mmd-idqdmbpvs1 .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mmd-idqdmbpvs1 .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mmd-idqdmbpvs1 .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mmd-idqdmbpvs1 .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mmd-idqdmbpvs1 .cluster text{fill:#F9FFFE;}#mmd-idqdmbpvs1 .cluster span,#mmd-idqdmbpvs1 p{color:#F9FFFE;}#mmd-idqdmbpvs1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Inter,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mmd-idqdmbpvs1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mmd-idqdmbpvs1 :root{--mermaid-font-family:Inter,sans-serif;}Valid Node AlphaValid Node Beta"
+      }
+    },
+    "invalid": {
+      "copiedLength": 147,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": "Invalid Diagram Fixture",
+        "svgs": 0,
+        "svgRect": null,
+        "codeBlocks": [
+          "flowchart TD\n  BROKEN_NODE -->["
+        ],
+        "bodyText": "Invalid Diagram Fixture\n\n        flowchart TD\n  BROKEN_NODE -->["
+      }
+    },
+    "empty": {
+      "copiedLength": 0,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": null,
+        "svgs": 0,
+        "svgRect": null,
+        "codeBlocks": [],
+        "bodyText": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "browser": "firefox",
+  "timestamp": "2026-11-17T23:26:12.059Z",
+  "consoleNoise": [],
+  "storageKeys": {
+    "editorState": true,
+    "theme": "dark"
+  },
+  "reloadPreservedContent": true,
+  "transferVerified": false,
+  "transferNote": "file:// origin is not the same-origin HTTP transfer scenario"
+}

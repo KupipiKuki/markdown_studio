@@ -1,0 +1,56 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "chromium",
+  "timestamp": "2026-11-17T23:25:25.219Z",
+  "consoleNoise": [],
+  "results": {
+    "valid": {
+      "copiedLength": 7364,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": "Valid Export Fixture",
+        "svgs": 1,
+        "svgRect": {
+          "x": 559.65625,
+          "y": 162.21875,
+          "width": 160.6875,
+          "height": 136,
+          "top": 162.21875,
+          "right": 720.34375,
+          "bottom": 298.21875,
+          "left": 559.65625
+        },
+        "codeBlocks": [],
+        "bodyText": "Valid Export Fixture\nParagraph with bold and inline.\n\n        \n          \n          \n          \n            #mmd-idshnar7er{font-family:Inter,sans-serif;font-size:16px;fill:#ccc;}#mmd-idshnar7er .error-icon{fill:#a44141;}#mmd-idshnar7er .error-text{fill:#ddd;stroke:#ddd;}#mmd-idshnar7er .edge-thickness-normal{stroke-width:2px;}#mmd-idshnar7er .edge-thickness-thick{stroke-width:3.5px;}#mmd-idshnar7er .edge-pattern-solid{stroke-dasharray:0;}#mmd-idshnar7er .edge-pattern-dashed{stroke-dasharray:3;}#mmd-idshnar7er .edge-pattern-dotted{stroke-dasharray:2;}#mmd-idshnar7er .marker{fill:lightgrey;stroke:lightgrey;}#mmd-idshnar7er .marker.cross{stroke:lightgrey;}#mmd-idshnar7er svg{font-family:Inter,sans-serif;font-size:16px;}#mmd-idshnar7er .label{font-family:Inter,sans-serif;color:#ccc;}#mmd-idshnar7er .cluster-label text{fill:#F9FFFE;}#mmd-idshnar7er .cluster-label span,#mmd-idshnar7er p{color:#F9FFFE;}#mmd-idshnar7er .label text,#mmd-idshnar7er span,#mmd-idshnar7er p{fill:#ccc;color:#ccc;}#mmd-idshnar7er .node rect,#mmd-idshnar7er .node circle,#mmd-idshnar7er .node ellipse,#mmd-idshnar7er .node polygon,#mmd-idshnar7er .node path{fill:#1f2020;stroke:#81B1DB;stroke-width:1px;}#mmd-idshnar7er .flowchart-label text{text-anchor:middle;}#mmd-idshnar7er .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mmd-idshnar7er .node .label{text-align:center;}#mmd-idshnar7er .node.clickable{cursor:pointer;}#mmd-idshnar7er .arrowheadPath{fill:lightgrey;}#mmd-idshnar7er .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mmd-idshnar7er .flowchart-link{stroke:lightgrey;fill:none;}#mmd-idshnar7er .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mmd-idshnar7er .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mmd-idshnar7er .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mmd-idshnar7er .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mmd-idshnar7er .cluster text{fill:#F9FFFE;}#mmd-idshnar7er .cluster span,#mmd-idshnar7er p{color:#F9FFFE;}#mmd-idshnar7er div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Inter,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mmd-idshnar7er .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mmd-idshnar7er :root{--mermaid-font-family:Inter,sans-serif;}Valid Node AlphaValid Node Beta"
+      }
+    },
+    "invalid": {
+      "copiedLength": 147,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": "Invalid Diagram Fixture",
+        "svgs": 0,
+        "svgRect": null,
+        "codeBlocks": [
+          "flowchart TD\n  BROKEN_NODE -->["
+        ],
+        "bodyText": "Invalid Diagram Fixture\n\n        flowchart TD\n  BROKEN_NODE -->["
+      }
+    },
+    "empty": {
+      "copiedLength": 0,
+      "reopen": {
+        "buttons": 0,
+        "controls": 0,
+        "h1": null,
+        "svgs": 0,
+        "svgRect": null,
+        "codeBlocks": [],
+        "bodyText": ""
+      }
+    }
+  }
+}

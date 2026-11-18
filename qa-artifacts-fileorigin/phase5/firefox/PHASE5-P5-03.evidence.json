@@ -1,0 +1,67 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "browser": "firefox",
+  "timestamp": "2026-11-17T23:26:12.568Z",
+  "consoleNoise": [],
+  "svgEvidence": {
+    "export-flowchart.svg": {
+      "hasSvg": true,
+      "widthAttr": 162,
+      "heightAttr": 136,
+      "viewBox": "-8 -8 161.86666870117188 136",
+      "bboxWidth": 161.86666870117188,
+      "bboxHeight": 136,
+      "textCount": 2,
+      "matched": [
+        {
+          "label": "FCLABEL_ALPHA",
+          "found": true,
+          "width": 103.5,
+          "height": 21
+        },
+        {
+          "label": "FCLABEL_BETA",
+          "found": true,
+          "width": 91.61666870117188,
+          "height": 21
+        }
+      ]
+    },
+    "export-sequence.svg": {
+      "hasSvg": true,
+      "widthAttr": 450,
+      "heightAttr": 215,
+      "viewBox": "-50 -10 450 215",
+      "bboxWidth": 450,
+      "bboxHeight": 215,
+      "textCount": 6,
+      "matched": [
+        {
+          "label": "Sender",
+          "found": true,
+          "width": 47.133331298828125,
+          "height": 18
+        },
+        {
+          "label": "Receiver",
+          "found": true,
+          "width": 57.26666259765625,
+          "height": 18
+        },
+        {
+          "label": "SEQLABEL_MSG",
+          "found": true,
+          "width": 114.79998779296875,
+          "height": 18.033340454101562
+        }
+      ]
+    }
+  },
+  "pngInspect": {
+    "naturalWidth": 324,
+    "naturalHeight": 272,
+    "totalPixels": 88128,
+    "nonBgPixels": 41280
+  }
+}

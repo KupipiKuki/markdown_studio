@@ -1,0 +1,16 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "edge",
+  "timestamp": "2026-11-17T23:25:22.689Z",
+  "consoleNoise": [
+    "[error] Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "storageKeys": {
+    "editorState": true,
+    "theme": "dark"
+  },
+  "reloadPreservedContent": true,
+  "transferVerified": true,
+  "transferNote": "same-origin BroadcastChannel verified"
+}

@@ -1,0 +1,13 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "firefox",
+  "timestamp": "2026-11-17T23:25:32.952Z",
+  "consoleNoise": [],
+  "permissionsGranted": false,
+  "mdReadbackVerified": false,
+  "htmlReadbackVerified": false,
+  "mdExactMatch": true,
+  "htmlExactMatch": true,
+  "denialAndRecoveryVerified": true
+}

@@ -1,0 +1,67 @@
+{
+  "pdfFile": "Markdown Editor & Mermaid Studio.pdf",
+  "pdfBytes": 356135,
+  "numPages": 4,
+  "pageSummaries": [
+    {
+      "pageNumber": 1,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 26690,
+      "steps": [],
+      "textSample": "Welcome to MarkFlow Studio\nA modern, high-performance Markdown Editor with an Advanced Mermaid Diagram Studio and live\nmathematical typesetting.\nCore Features\n• Mermaid Diagram Studio: Visual builder,"
+    },
+    {
+      "pageNumber": 2,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 82369,
+      "steps": [],
+      "textSample": "Sequence Interaction Flow\nStudio Processing Pipelin\n/auth/studio\nSyntax Validato\nMermaid Studio Engin\nSVG & Canvas Engine\nInteractive Pan & Zoom Viewpo\nUser Request\nAPI Route\nAuthentication Servic\nSVG"
+    },
+    {
+      "pageNumber": 3,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 43037,
+      "steps": [],
+      "textSample": "Mathematical Formulas (MathJax)\nGaussian Integral display equation:\nEuler's identity:\nPolyglot Syntax Highlighting\n↗ Notepad++ ▶ Run in Notebook\ndef calculate_fibonacci(n: int) -> list[int]:\n\"\"\"Genera"
+    },
+    {
+      "pageNumber": 4,
+      "width": 612,
+      "height": 792,
+      "nonWhitePixels": 6887,
+      "steps": [],
+      "textSample": "interface DiagramConfig {\ntheme: 'dark' | 'default' | 'neutral';\nzoomLevel: number;\nenablePan: boolean;\n}\nEnjoy editing!\nMarkdown Editor & Mermaid Studio file:///C:/Git/markdown_studio/scripts/markdow"
+    }
+  ],
+  "missingSteps": [
+    "Step 1",
+    "Step 2",
+    "Step 3",
+    "Step 4",
+    "Step 5",
+    "Step 6",
+    "Step 7",
+    "Step 8",
+    "Step 9",
+    "Step 10",
+    "Step 11",
+    "Step 12",
+    "Step 13",
+    "Step 14",
+    "Step 15",
+    "Step 16",
+    "Step 17",
+    "Step 18",
+    "Step 19",
+    "Step 20",
+    "Step 21",
+    "Step 22",
+    "Step 23",
+    "Step 24",
+    "Step 25",
+    "Step 26"
+  ]
+}
