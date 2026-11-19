@@ -599,10 +599,14 @@
   }
   .line-numbers {
     width: 48px;
+    position: relative;
     padding: 16px 8px 16px 0;
     text-align: right;
     font-family: var(--font-mono);
-    font-size: 13px;
+    /* Match #editor's font size: same font + same line-height (1.6) then
+       yields an identical row pitch, so nowrap 1:1 gutter numbers stay
+       aligned with editor rows (accumulating 0.8px/line drift otherwise). */
+    font-size: 13.5px;
     line-height: 1.6;
     color: var(--text-muted);
     opacity: 0.6;
@@ -997,6 +1001,35 @@
     margin: 0 auto;
     height: auto;
     max-width: 100%;
+  }
+  /* Mermaid SVG Label Typography (R06): reset document styles that leak into
+     foreignObject-based (htmlLabels) diagram labels so they follow the
+     Studio typography set via mermaid fontFamily. */
+  .mermaid-canvas foreignObject,
+  #builderDiagramCanvas foreignObject {
+    line-height: normal;
+  }
+  .mermaid-canvas foreignObject *,
+  #builderDiagramCanvas foreignObject * {
+    box-sizing: border-box;
+  }
+  .mermaid-canvas foreignObject p,
+  #builderDiagramCanvas foreignObject p,
+  .mermaid-canvas foreignObject div,
+  #builderDiagramCanvas foreignObject div,
+  .mermaid-canvas foreignObject span,
+  #builderDiagramCanvas foreignObject span {
+    margin: 0;
+    padding: 0;
+  }
+  .mermaid-canvas foreignObject code,
+  #builderDiagramCanvas foreignObject code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
   }
 
   /* Mermaid Error Card */
@@ -1731,15 +1764,73 @@
 
   /* Print Stylesheet for PDF Export */
   @media print {
-    body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+    /* R13 print pagination: let content flow across pages instead of
+       clipping at the viewport; tall diagrams slice across page
+       boundaries rather than disappearing under an overflow cap. */
+    html, body {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      display: block !important;
+      background: #fff !important;
+      color: #000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
     .app-header, .tabbar-container, .format-toolbar, .find-replace-bar, .toc-drawer, .pane-editor, .split-resizer, .statusbar, .modal-overlay, .pane-header, .workspace-empty-state, .error-log-drawer {
       display: none !important;
     }
-    .workspace { overflow: visible !important; height: auto !important; }
-    .pane-preview { display: flex !important; width: 100% !important; overflow: visible !important; }
-    .preview-content { max-width: 100% !important; padding: 0 !important; }
-    .mermaid-header, .diag-action-btn { display: none !important; }
-    .mermaid-block-card { border: none !important; box-shadow: none !important; }
+    .workspace, .pane-preview, .preview-content {
+      display: block !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: visible !important;
+      flex: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn { display: none !important; }
+    .mermaid-block-card {
+      display: block !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      break-inside: auto !important;
+      page-break-inside: auto !important;
+      margin: 0 !important;
+    }
+    .mermaid-error-card, pre, blockquote {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .mermaid-viewport {
+      min-height: 0 !important;
+      max-height: none !important;
+      height: auto !important;
+      overflow: visible !important;
+      background: none !important;
+      padding: 0 !important;
+      display: block !important;
+      cursor: default !important;
+    }
+    .mermaid-canvas {
+      transform: none !important;
+      display: block !important;
+      overflow: visible !important;
+      text-align: center !important;
+    }
+    .mermaid-canvas svg {
+      max-width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
   }
 
 /* Stage 4: Command Palette */
@@ -2585,9 +2676,13 @@
   // Custom Marked Renderer
   const customRenderer = new marked.Renderer();
 
+  function isMermaidLanguage(lang) {
+    return typeof lang === 'string' && /^mermaid(?:\s.*)?$/.test(lang.trim());
+  }
+
   let renderedDiagramCounter = 0;
   customRenderer.code = function(code, language) {
-    if (language === 'mermaid') {
+    if (isMermaidLanguage(language)) {
       const diagramIndex = renderedDiagramCounter++;
       const cleanCode = code.trim();
       return `
@@ -2608,10 +2703,9 @@
               <button class="diag-action-btn" data-action="export-png" title="Export as PNG">PNG</button>
             </div>
           </div>
+          <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
           <div class="mermaid-viewport" data-zoom="1" data-pan-x="0" data-pan-y="0">
-            <div class="mermaid-canvas">
-              <pre class="mermaid-raw-code" style="display:none;">${escapeHtml(cleanCode)}</pre>
-            </div>
+            <div class="mermaid-canvas"></div>
           </div>
         </div>
       `;
@@ -2696,10 +2790,36 @@
     drawer.style.display = shouldOpen ? 'flex' : 'none';
   }
 
-  window.copyErrorText = function(text) {
+  function copyToClipboard(text, successToast = 'Copied to clipboard!') {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => showToast('Error details copied to clipboard'));
+      navigator.clipboard.writeText(text)
+        .then(() => showToast(successToast))
+        .catch(err => {
+          showToast('Clipboard copy failed: ' + (err && err.message ? err.message : 'Permission denied'));
+        });
+    } else {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        if (success) {
+          showToast(successToast);
+        } else {
+          showToast('Clipboard copy unavailable in this environment');
+        }
+      } catch (e) {
+        showToast('Clipboard copy unavailable in this environment');
+      }
     }
+  }
+
+  window.copyErrorText = function(text) {
+    copyToClipboard(text, 'Error details copied to clipboard');
   };
 
   function renderErrorLogUI() {
@@ -2744,7 +2864,6 @@
           const sourceClass = (item.source || '').toLowerCase();
           const countPill = item.count > 1 ? `<span style="background:var(--bg-panel); border:1px solid var(--border); border-radius:999px; padding:0 5px; font-size:10px; font-weight:700; margin-left:4px;">×${item.count}</span>` : '';
           const escapedSnippet = item.snippet ? escapeHtml(item.snippet.slice(0, 120)) + (item.snippet.length > 120 ? '...' : '') : '';
-          const copyMsg = item.message.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
           return `
             <div class="error-log-row" data-id="${item.id}">
               <span class="error-log-time">${escapeHtml(item.time)}</span>
@@ -2753,8 +2872,8 @@
                 <span>${escapeHtml(item.message)}</span>${countPill}
                 ${escapedSnippet ? `<div style="opacity:0.75; font-size:10.5px; margin-top:2px; font-family:var(--font-mono);">${escapedSnippet}</div>` : ''}
               </div>
-              <button class="error-log-copy-btn" onclick="copyErrorText('${copyMsg}')" title="Copy Error Message">📋</button>
-              <button class="error-log-dismiss-btn" onclick="dismissError('${item.id}')" title="Dismiss">✕</button>
+              <button class="error-log-copy-btn" data-error-id="${item.id}" title="Copy Error Message">📋</button>
+              <button class="error-log-dismiss-btn" data-error-id="${item.id}" title="Dismiss">✕</button>
             </div>
           `;
         }).join('');
@@ -2806,18 +2925,70 @@
   // Robust Diagram Rendering Engine
   // --------------------------------------------------------------------------
   let renderDebounceTimer = null;
+  let previewRenderGeneration = 0;
+  let previewRenderSettledGen = 0;
+  // R13: tracked so exports/print can await the newest preview render
+  let currentPreviewRenderPromise = null;
+  let currentMathJaxPromise = null;
+
+  function getCardMermaidCode(card) {
+    if (!card) return '';
+    if (card.dataset && card.dataset.mermaidCode) {
+      try {
+        return decodeURIComponent(card.dataset.mermaidCode).trim();
+      } catch (e) {
+        // Fallback to DOM element
+      }
+    }
+    const rawEl = card.querySelector('.mermaid-raw-code');
+    if (rawEl && rawEl.textContent) {
+      return rawEl.textContent.trim();
+    }
+    return '';
+  }
 
   async function renderAllPreviewDiagrams() {
+    // R13: generation bump + settle tracking live in this wrapper so export
+    // readiness can tell, without hanging, whether the newest pass settled.
+    const wrapperGen = ++previewRenderGeneration;
+    try {
+      return await renderAllPreviewDiagramsPass(wrapperGen);
+    } finally {
+      previewRenderSettledGen = Math.max(previewRenderSettledGen, wrapperGen);
+    }
+  }
+
+  async function renderAllPreviewDiagramsPass(currentGen) {
     if (typeof mermaid === 'undefined') return;
     const theme = getMermaidTheme();
 
+    // R08: enforce the document Mermaid theme at the start of every preview
+    // render pass, so a custom builder theme cannot leak into the preview.
+    initMermaid(theme);
+
+    // R15: stamp this async pass; it may only commit results while it is the
+    // newest pass and the same document (tab) is still active.
+    const activeTabSnapshot = typeof getActiveTab === 'function' ? getActiveTab() : null;
+    const activeTabIdSnapshot = activeTabSnapshot ? activeTabSnapshot.id : null;
+    function isCurrent() {
+      if (previewRenderGeneration !== currentGen) return false;
+      if (typeof getActiveTab === 'function' && activeTabIdSnapshot) {
+        const currentTab = getActiveTab();
+        if (currentTab && currentTab.id !== activeTabIdSnapshot) return false;
+      }
+      return true;
+    }
+
     const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
     for (let card of cards) {
+      if (!isCurrent()) return;
       const canvas = card.querySelector('.mermaid-canvas');
-      const rawCodeEl = card.querySelector('.mermaid-raw-code');
-      if (!canvas || !rawCodeEl) continue;
-
-      const code = rawCodeEl.textContent.trim();
+      const hasSource = !!card.querySelector('.mermaid-raw-code');
+      const code = getCardMermaidCode(card);
+      // Empty or whitespace-only sources must still reach mermaid.parse() so they
+      // show the syntax-error card with the repair action instead of a blank block.
+      // Only a card with no source node at all is unrenderable.
+      if (!canvas || !hasSource) continue;
       const uniqueId = 'mmd-' + uid();
       const cardIndex = card.dataset.diagramIndex ? parseInt(card.dataset.diagramIndex, 10) + 1 : 1;
 
@@ -2826,6 +2997,8 @@
         await mermaid.parse(code);
       } catch (parseErr) {
         cleanStrayMermaidElements();
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
         const errMessage = parseErr && (parseErr.str || parseErr.message) ? (parseErr.str || parseErr.message) : String(parseErr);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
         canvas.innerHTML = `
@@ -2870,16 +3043,29 @@
         }
         canvas.innerHTML = renderedSvg;
 
-        // Ensure rendered SVG has proper scalable attributes
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
+
+        // R07: record the diagram's intrinsic dimensions so pan/zoom can fit
+        // tall and wide diagrams to the available viewport.
         const svgEl = canvas.querySelector('svg');
         if (svgEl) {
-          svgEl.style.maxWidth = '100%';
-          svgEl.style.height = 'auto';
+          const dims = getSvgIntrinsicDimensions(svgEl);
+          svgEl.style.width = dims.width + 'px';
+          svgEl.style.height = dims.height + 'px';
+          svgEl.style.maxWidth = 'none';
+          if (svgEl.dataset) {
+            svgEl.dataset.intrinsicWidth = dims.width;
+            svgEl.dataset.intrinsicHeight = dims.height;
+          }
         }
       } catch (err) {
         cleanStrayMermaidElements();
         const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
         if (stray) stray.remove();
+
+        if (!isCurrent()) return;
+        if (card.isConnected === false) continue;
 
         const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
         logError('Mermaid', `Diagram #${cardIndex}: ${errMessage}`, code);
@@ -2898,8 +3084,112 @@
       }
     }
 
-    // Attach pan/zoom handlers to each rendered diagram viewport
-    setupPreviewDiagramInteractivity();
+    // Attach pan/zoom handlers only if this generation is still the latest (R15)
+    if (isCurrent()) {
+      setupPreviewDiagramInteractivity();
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Diagram Sizing & Fitting (R07)
+  // --------------------------------------------------------------------------
+  function getSvgIntrinsicDimensions(svgEl) {
+    if (!svgEl) return { width: 100, height: 100 };
+    const vbStr = typeof svgEl.getAttribute === 'function' ? (svgEl.getAttribute('viewBox') || '') : '';
+    const vb = vbStr.trim().split(/[\s,]+/).map(parseFloat);
+    let w = vb.length === 4 && vb[2] > 0 ? vb[2] : 0;
+    let h = vb.length === 4 && vb[3] > 0 ? vb[3] : 0;
+    if (!w && typeof svgEl.getAttribute === 'function') {
+      const attrW = parseFloat(svgEl.getAttribute('width'));
+      if (attrW > 0) w = attrW;
+    }
+    if (!h && typeof svgEl.getAttribute === 'function') {
+      const attrH = parseFloat(svgEl.getAttribute('height'));
+      if (attrH > 0) h = attrH;
+    }
+    if ((!w || !h) && typeof svgEl.getBBox === 'function') {
+      try {
+        const bbox = svgEl.getBBox();
+        if (bbox && bbox.width > 0) w = bbox.width;
+        if (bbox && bbox.height > 0) h = bbox.height;
+      } catch (e) {}
+    }
+    if ((!w || !h) && typeof svgEl.getBoundingClientRect === 'function') {
+      const rect = svgEl.getBoundingClientRect();
+      if (rect && rect.width > 0) w = rect.width;
+      if (rect && rect.height > 0) h = rect.height;
+    }
+    return { width: w || 100, height: h || 100 };
+  }
+
+  function computeDiagramFitScale(svgWidth, svgHeight, availWidth, availHeight) {
+    const sw = Math.max(svgWidth || 100, 1);
+    const sh = Math.max(svgHeight || 100, 1);
+    const aw = Math.max(availWidth || 100, 20);
+    const ah = Math.max(availHeight || 100, 20);
+    const scaleX = aw / sw;
+    const scaleY = ah / sh;
+    const fitScale = Math.min(scaleX, scaleY, 1.0);
+    return { scaleX, scaleY, fitScale };
+  }
+
+  function refitAllDiagrams() {
+    const cards = document.querySelectorAll('#previewContent .mermaid-block-card');
+    cards.forEach(card => {
+      const viewport = card.querySelector('.mermaid-viewport');
+      const canvas = card.querySelector('.mermaid-canvas');
+      const svgEl = canvas ? canvas.querySelector('svg') : null;
+      if (!viewport || !canvas || !svgEl) return;
+      // Keep deliberate user zoom/pan on refit (R07 / P2-03)
+      if (viewport.dataset && viewport.dataset.manuallyAdjusted === 'true') return;
+
+      const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+      const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+
+      const availW = Math.max(viewport.clientWidth - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+
+      const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+      viewport.dataset.fitScale = fitScale;
+      viewport.dataset.zoom = fitScale;
+      viewport.dataset.panX = 0;
+      viewport.dataset.panY = 0;
+      canvas.style.transition = 'none';
+      canvas.style.transform = `translate(0px, 0px) scale(${fitScale})`;
+      requestAnimationFrame(() => { canvas.style.transition = 'transform 0.05s ease-out'; });
+    });
+
+    // Refit the open Studio/builder diagram as well, unless the user adjusted it
+    if (typeof studioModal !== 'undefined' && studioModal && studioModal.classList.contains('open')) {
+      const svgEl = typeof builderCanvas !== 'undefined' && builderCanvas ? builderCanvas.querySelector('svg') : null;
+      if (svgEl && typeof builderWrap !== 'undefined' && builderWrap && builderWrap.dataset.manuallyAdjusted !== 'true') {
+        const svgW = parseFloat(svgEl.dataset.intrinsicWidth) || getSvgIntrinsicDimensions(svgEl).width;
+        const svgH = parseFloat(svgEl.dataset.intrinsicHeight) || getSvgIntrinsicDimensions(svgEl).height;
+        const availW = Math.max(builderWrap.clientWidth - 40, 40);
+        const availH = Math.max(builderWrap.clientHeight - 40, 40);
+        const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+        builderWrap.dataset.fitScale = fitScale;
+        if (typeof builderZoom !== 'undefined') {
+          builderZoom = fitScale;
+          builderPanX = 0;
+          builderPanY = 0;
+          if (typeof updateBuilderTransform === 'function') updateBuilderTransform(true);
+        }
+      }
+    }
+  }
+
+  let _refitRafPending = false;
+  function requestRefitAllDiagrams() {
+    if (_refitRafPending) return;
+    _refitRafPending = true;
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => { _refitRafPending = false; refitAllDiagrams(); });
+    } else {
+      _refitRafPending = false;
+      refitAllDiagrams();
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -2931,21 +3221,60 @@
       const canvas = card.querySelector('.mermaid-canvas');
       if (!viewport || !canvas) return;
 
-      let panX = parseFloat(viewport.dataset.panX || 0);
-      let panY = parseFloat(viewport.dataset.panY || 0);
-      let zoom = parseFloat(viewport.dataset.zoom || 1);
+      // R07: fit tall/wide diagrams to the available viewport, but keep any
+      // deliberate user zoom/pan from an earlier render of the same diagram.
+      // The preview DOM is rebuilt on every parse, so manual interaction is
+      // remembered in a per-document map keyed by diagram index + source.
+      const svgEl = canvas.querySelector('svg');
+      const svgW = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicWidth))
+        || (svgEl ? getSvgIntrinsicDimensions(svgEl).width : 100);
+      const svgH = (svgEl && svgEl.dataset && parseFloat(svgEl.dataset.intrinsicHeight))
+        || (svgEl ? getSvgIntrinsicDimensions(svgEl).height : 100);
+      const availW = Math.max((viewport.clientWidth || 560) - 32, 40);
+      const currentVpH = viewport.clientHeight > 0 ? viewport.clientHeight : 520;
+      const availH = Math.max(Math.min(currentVpH, 520) - 32, 40);
+      const { fitScale } = computeDiagramFitScale(svgW, svgH, availW, availH);
+      if (viewport.dataset) viewport.dataset.fitScale = fitScale;
+
+      if (!window._diagramInteractionMemory) window._diagramInteractionMemory = new Map();
+      const memKeyTab = (typeof getActiveTab === 'function' && getActiveTab()) ? getActiveTab().id : 'doc';
+      const memKey = memKeyTab + ':' + (card.dataset.diagramIndex || 0);
+      const memEntry = window._diagramInteractionMemory.get(memKey);
+      const cardCode = getCardMermaidCode(card);
+      let hasManualInteraction = false;
+      if (memEntry && memEntry.manu === true && memEntry.code === cardCode) {
+        hasManualInteraction = true;
+      } else if (memEntry) {
+        window._diagramInteractionMemory.delete(memKey);
+      }
+      if (viewport.dataset) viewport.dataset.manuallyAdjusted = hasManualInteraction ? 'true' : 'false';
+      let panX = hasManualInteraction ? memEntry.panX : 0;
+      let panY = hasManualInteraction ? memEntry.panY : 0;
+      let zoom = hasManualInteraction ? memEntry.zoom : fitScale;
+      const minZoom = Math.min(0.05, fitScale * 0.5);
+      const maxZoom = 5.0;
 
       function updateTransform() {
         canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
         viewport.dataset.panX = panX;
         viewport.dataset.panY = panY;
         viewport.dataset.zoom = zoom;
+        window._diagramInteractionMemory.set(memKey, {
+          code: cardCode,
+          zoom: zoom,
+          panX: panX,
+          panY: panY,
+          manu: viewport.dataset.manuallyAdjusted === 'true'
+        });
       }
+
+      updateTransform();
 
       // Mouse Drag to Pan
       viewport.onmousedown = (e) => {
         if (e.target.closest('.diag-action-btn') || e.target.closest('button')) return;
         viewport.classList.add('grabbing');
+        if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
         activeDragViewport = {
           viewport: viewport,
           startX: e.clientX - panX,
@@ -2962,8 +3291,9 @@
       // Mouse Wheel to Zoom
       viewport.onwheel = (e) => {
         e.preventDefault();
+        if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
         const factor = e.deltaY < 0 ? 1.15 : 0.87;
-        const newZoom = Math.min(Math.max(zoom * factor, 0.3), 5.0);
+        const newZoom = Math.min(Math.max(zoom * factor, minZoom), maxZoom);
         zoom = newZoom;
         updateTransform();
       };
@@ -2973,16 +3303,24 @@
         btn.onclick = (e) => {
           e.stopPropagation();
           const action = btn.dataset.action;
-          const rawCode = card.querySelector('.mermaid-raw-code') ? card.querySelector('.mermaid-raw-code').textContent.trim() : '';
+          const rawCode = getCardMermaidCode(card);
 
           if (action === 'zoom-in') {
-            zoom = Math.min(zoom * 1.25, 5.0);
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
+            zoom = Math.min(zoom * 1.25, maxZoom);
             updateTransform();
           } else if (action === 'zoom-out') {
-            zoom = Math.max(zoom * 0.8, 0.3);
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'true';
+            zoom = Math.max(zoom * 0.8, minZoom);
             updateTransform();
           } else if (action === 'zoom-reset') {
-            zoom = 1;
+            // Reset returns to the computed fit, not raw 100% (R07)
+            if (viewport.dataset) viewport.dataset.manuallyAdjusted = 'false';
+            if (Math.abs(zoom - fitScale) > 0.01 || panX !== 0 || panY !== 0) {
+              zoom = fitScale;
+            } else {
+              zoom = 1;
+            }
             panX = 0;
             panY = 0;
             updateTransform();
@@ -3000,20 +3338,88 @@
           }
         };
       });
+      card.onclick = (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest('[data-action="edit-diagram"]') : null;
+        if (!btn || (btn.classList && btn.classList.contains('diag-action-btn'))) return;
+        if (e.stopPropagation) e.stopPropagation();
+        const rawCode = getCardMermaidCode(card);
+        const index = parseInt(card.dataset.diagramIndex, 10);
+        openStudioWithCode(rawCode, Number.isNaN(index) ? 0 : index);
+      };
     });
   }
 
   // --------------------------------------------------------------------------
   // Diagram Export Helpers (SVG & High-Res PNG)
   // --------------------------------------------------------------------------
+  // R14: convert Mermaid foreignObject HTML labels to plain SVG <text> for
+  // standalone-SVG viewer compatibility and canvas-safe PNG rasterization.
+  function sanitizeSvgForExport(svgClone) {
+    if (!svgClone || typeof svgClone.querySelectorAll !== 'function') return;
+    const fos = Array.from(svgClone.querySelectorAll('foreignObject'));
+    const isDarkTheme = (typeof document !== 'undefined' && document.documentElement &&
+      document.documentElement.getAttribute && document.documentElement.getAttribute('data-theme') === 'dark');
+    const defaultTextColor = isDarkTheme ? '#f1f5f9' : '#1e293b';
+
+    for (const fo of fos) {
+      const parent = fo.parentNode;
+      if (!parent) continue;
+      const text = fo.textContent.trim();
+      if (!text) {
+        fo.remove();
+        continue;
+      }
+      const w = parseFloat(fo.getAttribute('width')) || 0;
+      const h = parseFloat(fo.getAttribute('height')) || 0;
+      const x = parseFloat(fo.getAttribute('x')) || 0;
+      const y = parseFloat(fo.getAttribute('y')) || 0;
+
+      const span = fo.querySelector('span');
+      const spanColor = (span && span.style && span.style.color) ? span.style.color : defaultTextColor;
+
+      const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      textEl.textContent = text;
+      textEl.setAttribute('x', String(x + w / 2));
+      textEl.setAttribute('y', String(y + h / 2));
+      textEl.setAttribute('text-anchor', 'middle');
+      textEl.setAttribute('dominant-baseline', 'central');
+      textEl.setAttribute('font-family', 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+      textEl.setAttribute('font-size', '14px');
+      textEl.setAttribute('fill', spanColor);
+      parent.replaceChild(textEl, fo);
+    }
+  }
+
   function exportDiagramSvg(containerEl, filename) {
-    const svg = containerEl.querySelector('svg');
+    const svg = containerEl ? containerEl.querySelector('svg') : null;
     if (!svg) {
       showToast('No rendered diagram found to export.');
       return;
     }
     const svgClone = svg.cloneNode(true);
     svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+    // Establish explicit intrinsic dimensions and viewBox on exported SVG
+    const bbox = typeof svg.getBoundingClientRect === 'function' ? svg.getBoundingClientRect() : { width: 0, height: 0 };
+    const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) ||
+      (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ||
+      parseFloat(svg.getAttribute('width')) || bbox.width || 800;
+    const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) ||
+      (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) ||
+      parseFloat(svg.getAttribute('height')) || bbox.height || 600;
+
+    if (intrinsicW && intrinsicH) {
+      svgClone.setAttribute('width', String(Math.round(intrinsicW)));
+      svgClone.setAttribute('height', String(Math.round(intrinsicH)));
+      if (!svgClone.getAttribute('viewBox')) {
+        svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
+      }
+    }
+    svgClone.style.maxWidth = 'none';
+
+    // Convert foreignObject to pure SVG text for external SVG viewer compatibility
+    sanitizeSvgForExport(svgClone);
+
     const svgData = new XMLSerializer().serializeToString(svgClone);
     const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -3023,46 +3429,164 @@
   }
 
   function exportDiagramPng(containerEl, filename) {
-    const svg = containerEl.querySelector('svg');
-    if (!svg) {
-      showToast('No rendered diagram found to export.');
-      return;
-    }
+    // R14: every failure path reports an actionable error (toast + error log),
+    // never shows success, and revokes temporary object URLs.
+    return new Promise((resolve) => {
+      const svg = containerEl ? containerEl.querySelector('svg') : null;
+      if (!svg) {
+        const msg = 'No rendered diagram found to export.';
+        showToast(msg);
+        logError('Export', msg);
+        return resolve({ success: false, error: msg });
+      }
 
-    const svgClone = svg.cloneNode(true);
-    svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    const bbox = svg.getBoundingClientRect();
-    const width = (bbox.width || 800) * 2; // 2x retina scaling
-    const height = (bbox.height || 600) * 2;
+      const svgClone = svg.cloneNode(true);
+      svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
-    const svgData = new XMLSerializer().serializeToString(svgClone);
-    const img = new Image();
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
+      const bbox = typeof svg.getBoundingClientRect === 'function' ? svg.getBoundingClientRect() : { width: 0, height: 0 };
+      const intrinsicW = (svg.dataset && parseFloat(svg.dataset.intrinsicWidth)) ||
+        (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ||
+        parseFloat(svg.getAttribute('width')) || bbox.width || 800;
+      const intrinsicH = (svg.dataset && parseFloat(svg.dataset.intrinsicHeight)) ||
+        (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) ||
+        parseFloat(svg.getAttribute('height')) || bbox.height || 600;
 
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
+      const width = Math.max(100, Math.round(intrinsicW * 2)); // 2x retina scaling
+      const height = Math.max(100, Math.round(intrinsicH * 2));
 
-      // Fill background based on theme
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      ctx.fillStyle = isDark ? '#111827' : '#ffffff';
-      ctx.fillRect(0, 0, width, height);
+      svgClone.setAttribute('width', String(Math.round(intrinsicW)));
+      svgClone.setAttribute('height', String(Math.round(intrinsicH)));
+      if (!svgClone.getAttribute('viewBox')) {
+        svgClone.setAttribute('viewBox', `0 0 ${Math.round(intrinsicW)} ${Math.round(intrinsicH)}`);
+      }
 
-      ctx.drawImage(img, 0, 0, width, height);
-      URL.revokeObjectURL(url);
+      // Convert foreignObject elements to pure SVG text to prevent canvas tainting in Blink/WebKit
+      sanitizeSvgForExport(svgClone);
 
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const pngUrl = URL.createObjectURL(blob);
-        triggerDownload(pngUrl, filename || 'diagram.png');
-        URL.revokeObjectURL(pngUrl);
-        showToast('High-resolution PNG diagram downloaded.');
-      }, 'image/png');
-    };
-    img.src = url;
+      let svgData;
+      try {
+        svgData = new XMLSerializer().serializeToString(svgClone);
+      } catch (err) {
+        const msg = `Failed to serialize SVG: ${err.message || err}`;
+        logError('Export', msg);
+        showToast('Failed to export PNG: diagram serialization failed.');
+        return resolve({ success: false, error: msg });
+      }
+
+      let url = null;
+      try {
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        url = URL.createObjectURL(svgBlob);
+      } catch (err) {
+        const msg = `Failed to create SVG Blob URL: ${err.message || err}`;
+        logError('Export', msg);
+        showToast('Failed to export PNG: Blob URL creation failed.');
+        return resolve({ success: false, error: msg });
+      }
+
+      const img = new Image();
+
+      img.onerror = function () {
+        if (url) {
+          try { URL.revokeObjectURL(url); } catch (e) {}
+          url = null;
+        }
+        const msg = 'Failed to export PNG: image could not be loaded.';
+        logError('Export', 'PNG export image load failure', svgData ? svgData.slice(0, 150) : '');
+        showToast(msg);
+        resolve({ success: false, error: msg });
+      };
+
+      img.onload = function () {
+        let canvas = null;
+        let ctx = null;
+        try {
+          canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          ctx = canvas.getContext('2d');
+        } catch (canvasErr) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = `Failed to create canvas: ${canvasErr.message || canvasErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: canvas creation failed.');
+          return resolve({ success: false, error: msg });
+        }
+
+        if (!ctx) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = 'Canvas 2D context unavailable';
+          logError('Export', `Failed to export PNG: ${msg}`);
+          showToast('Failed to export PNG: canvas context unavailable.');
+          return resolve({ success: false, error: msg });
+        }
+
+        try {
+          // Fill background based on theme
+          const isDark = (typeof document !== 'undefined' && document.documentElement &&
+            document.documentElement.getAttribute && document.documentElement.getAttribute('data-theme') === 'dark');
+          ctx.fillStyle = isDark ? '#111827' : '#ffffff';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.drawImage(img, 0, 0, width, height);
+        } catch (drawErr) {
+          if (url) {
+            try { URL.revokeObjectURL(url); } catch (e) {}
+            url = null;
+          }
+          const msg = `Failed to draw diagram to canvas: ${drawErr.message || drawErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: canvas drawing failed.');
+          return resolve({ success: false, error: msg });
+        }
+
+        // Revoke temporary SVG object URL before converting to PNG
+        if (url) {
+          try { URL.revokeObjectURL(url); } catch (e) {}
+          url = null;
+        }
+
+        try {
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              const msg = 'Canvas toBlob returned null';
+              logError('Export', `Failed to export PNG: ${msg}`);
+              showToast('Failed to export PNG: image conversion failed.');
+              return resolve({ success: false, error: msg });
+            }
+            let pngUrl = null;
+            try {
+              pngUrl = URL.createObjectURL(blob);
+              triggerDownload(pngUrl, filename || 'diagram.png');
+              showToast('High-resolution PNG diagram downloaded.');
+              resolve({ success: true });
+            } catch (dlErr) {
+              const msg = `Failed during PNG download: ${dlErr.message || dlErr}`;
+              logError('Export', msg);
+              showToast('Failed to export PNG: download trigger failed.');
+              resolve({ success: false, error: msg });
+            } finally {
+              if (pngUrl) {
+                try { URL.revokeObjectURL(pngUrl); } catch (e) {}
+              }
+            }
+          }, 'image/png');
+        } catch (blobErr) {
+          const msg = `Failed to convert canvas to blob: ${blobErr.message || blobErr}`;
+          logError('Export', msg);
+          showToast('Failed to export PNG: blob creation failed.');
+          resolve({ success: false, error: msg });
+        }
+      };
+
+      img.src = url;
+    });
   }
 
   function triggerDownload(url, filename) {
@@ -3229,12 +3753,69 @@
   function updateLineNumbers() {
     const editor = document.getElementById('editor');
     const gutter = document.getElementById('lineNumbers');
-    const lines = editor.value.split('\n').length;
-    let numbers = '';
-    for (let i = 1; i <= lines; i++) {
-      numbers += i + '<br>';
+    const lineTexts = editor.value.split('\n');
+    const count = lineTexts.length;
+    const edCS = getComputedStyle(editor);
+    const gutterPadTop = parseFloat(getComputedStyle(gutter).paddingTop) || 0;
+    const pitch = parseFloat(edCS.lineHeight) || parseFloat(edCS.fontSize) * 1.6;
+
+    // In nowrap (1:1) mode — or whenever the editor geometry is unavailable
+    // (e.g. the editor pane is hidden) — every logical line is one row.
+    const canMeasure = edCS.whiteSpace === 'pre-wrap' && editor.clientWidth > 0;
+    if (!canMeasure) {
+      let html = '';
+      for (let i = 0; i < count; i++) {
+        html += '<span style="position:absolute;top:' + (gutterPadTop + i * pitch) + 'px;right:8px;">' + (i + 1) + '</span>';
+      }
+      // Trailing spacer keeps the gutter's scroll range equal to the
+      // editor's (absolutely positioned children do not include the
+      // gutter's bottom padding in scrollable overflow), so scrollTop sync
+      // stays exact at every scroll position.
+      const padBottom = parseFloat(getComputedStyle(gutter).paddingBottom) || 0;
+      html += '<span style="position:absolute;top:' + (gutterPadTop + count * pitch + padBottom) + 'px;width:1px;height:1px;"></span>';
+      gutter.innerHTML = html;
+      return;
     }
-    gutter.innerHTML = numbers;
+
+    // Soft-wrap mode: a logical line may occupy several visual rows, so each
+    // number must sit on the FIRST visual row of its logical line. Measure
+    // the per-line row offsets with a hidden mirror that replicates the
+    // editor's content geometry (same font, pitch, wrapping rules, width),
+    // then position every number at that row (R: soft-wrap gutter alignment).
+    const padL = parseFloat(edCS.paddingLeft);
+    const padR = parseFloat(edCS.paddingRight);
+    const mirror = document.createElement('div');
+    mirror.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;' +
+      'font-family:' + edCS.fontFamily + ';font-size:' + edCS.fontSize + ';' +
+      'line-height:' + edCS.lineHeight + ';white-space:' + edCS.whiteSpace + ';' +
+      'word-break:' + edCS.wordBreak + ';overflow-wrap:' + edCS.overflowWrap + ';' +
+      'tab-size:' + edCS.tabSize + ';box-sizing:content-box;padding:0;margin:0;border:0;' +
+      'width:' + (editor.clientWidth - padL - padR) + 'px;';
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let mhtml = '';
+    for (let i = 0; i < count; i++) {
+      mhtml += (i ? '\n' : '') + '<span>' + esc(lineTexts[i]) + '</span>';
+    }
+    mirror.innerHTML = mhtml;
+    document.body.appendChild(mirror);
+    // Collect the mirror's spans ONCE: mirror.children is an ordered
+    // live collection matching the logical lines 1:1, so the row-offset
+    // pass stays linear (a per-line querySelector would be quadratic and
+    // would slow typing in large documents — review remediation).
+    const rowSpans = mirror.children;
+    let html = '';
+    let lastRowTop = 0;
+    for (let i = 0; i < count; i++) {
+      const span = rowSpans[i];
+      const rowTop = span ? span.offsetTop : i * pitch;
+      lastRowTop = rowTop;
+      html += '<span style="position:absolute;top:' + (gutterPadTop + rowTop) + 'px;right:8px;">' + (i + 1) + '</span>';
+    }
+    // Trailing spacer: see the nowrap branch above (scroll-range parity)
+    const padBottom = parseFloat(getComputedStyle(gutter).paddingBottom) || 0;
+    html += '<span style="position:absolute;top:' + (gutterPadTop + lastRowTop + pitch + padBottom) + 'px;width:1px;height:1px;"></span>';
+    mirror.remove();
+    gutter.innerHTML = html;
   }
 
   function updateStatistics() {
@@ -3312,14 +3893,18 @@
       }
     });
 
-    // Typeset Math equations with MathJax
+    // Typeset Math equations with MathJax (promise tracked for R13 readiness)
     if (window.MathJax && MathJax.typesetPromise) {
-      MathJax.typesetPromise([preview]).catch(() => {});
+      currentMathJaxPromise = MathJax.typesetPromise([preview]);
+      currentMathJaxPromise.catch(() => {});
     }
 
     // Render Mermaid diagrams with debouncing
     clearTimeout(renderDebounceTimer);
-    renderDebounceTimer = setTimeout(renderAllPreviewDiagrams, 150);
+    renderDebounceTimer = setTimeout(() => {
+      renderDebounceTimer = null;
+      currentPreviewRenderPromise = renderAllPreviewDiagrams();
+    }, 150);
 
     // Update Table of Contents
     updateTableOfContents();
@@ -3708,11 +4293,28 @@
     const start = editorEl.selectionStart;
     const end = editorEl.selectionEnd;
     const text = editorEl.value;
-    const selected = text.substring(start, end) || 'text';
+    const selected = text.substring(start, end);
 
     editorEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
-    editorEl.selectionStart = start + before.length;
-    editorEl.selectionEnd = start + before.length + selected.length;
+    if (start !== end) {
+      editorEl.selectionStart = start + before.length;
+      editorEl.selectionEnd = start + before.length + selected.length;
+    } else {
+      // No selection: place the caret between the inserted wrappers without
+      // injecting any literal placeholder text (R10).
+      editorEl.selectionStart = editorEl.selectionEnd = start + before.length;
+    }
+    editorEl.focus();
+    editorEl.dispatchEvent(new Event('input'));
+  }
+
+  function insertSnippet(snippet) {
+    const start = editorEl.selectionStart;
+    const end = editorEl.selectionEnd;
+    const text = editorEl.value;
+
+    editorEl.value = text.substring(0, start) + snippet + text.substring(end);
+    editorEl.selectionStart = editorEl.selectionEnd = start + snippet.length;
     editorEl.focus();
     editorEl.dispatchEvent(new Event('input'));
   }
@@ -3760,7 +4362,15 @@
           break;
         case 'image':
           const imgUrl = prompt('Enter image URL:', 'https://');
-          if (imgUrl) wrapSelection('![Alt text](', `${imgUrl})`);
+          if (imgUrl) {
+            // R11: use the selection (if any) as alt text and insert the full
+            // image snippet so the URL is never concatenated after the
+            // selected text.
+            const imgStart = editorEl.selectionStart;
+            const imgEnd = editorEl.selectionEnd;
+            const alt = (imgStart !== imgEnd) ? editorEl.value.substring(imgStart, imgEnd) : 'Alt text';
+            insertSnippet(`![${alt}](${imgUrl})`);
+          }
           break;
         case 'table':
           document.getElementById('tableModal').classList.add('open');
@@ -3944,6 +4554,17 @@
     if (persist) {
       persistViewState();
     }
+
+    // R07: diagrams must refit after view-mode/split changes
+    if (viewerVisible && typeof requestRefitAllDiagrams === 'function') {
+      requestRefitAllDiagrams();
+    }
+
+    // Editor pane visibility changes its measured width; the gutter must
+    // re-measure soft-wrap rows when the editor becomes visible again.
+    if (editorVisible) {
+      updateLineNumbers();
+    }
   }
 
   function toggleEditor() {
@@ -4003,6 +4624,10 @@
     if (percentage > 15 && percentage < 85) {
       paneEditor.style.flex = `0 0 ${percentage}%`;
       lastSplitRatio = percentage;
+      // R07: refit diagrams to the changing pane size as the drag proceeds
+      requestRefitAllDiagrams();
+      // Editor width changes soft-wrap row counts in the gutter
+      updateLineNumbers();
     }
   });
 
@@ -4012,6 +4637,8 @@
       resizer.classList.remove('dragging');
       document.body.style.cursor = '';
       persistViewState();
+      requestRefitAllDiagrams();
+      updateLineNumbers();
     }
   });
 
@@ -4021,7 +4648,11 @@
     paneEditor.style.flex = '0 0 50%';
     showToast('Reset view to 50/50 split');
     persistViewState();
+    requestRefitAllDiagrams();
   });
+
+  // R07: refit when the browser window is resized
+  window.addEventListener('resize', requestRefitAllDiagrams);
 
   // Header controls
   const btnToggleEd = document.getElementById('btnToggleEditor');
@@ -4156,6 +4787,8 @@
       editorTextarea.classList.add('nowrap');
       btnToggleWrap.classList.remove('active');
     }
+    // Wrap mode changes which visual row each logical line starts on
+    updateLineNumbers();
     if (persist) {
       persistViewState();
       showToast(wordWrap ? 'Word Wrap ON' : 'Word Wrap OFF (1:1 Line Gutter)');
@@ -4168,6 +4801,9 @@
   }
 
   btnToggleWrap.addEventListener('click', toggleWordWrap);
+
+  // Editor width changes (window resize) also change soft-wrap row counts
+  window.addEventListener('resize', () => updateLineNumbers());
 
   // --------------------------------------------------------------------------
   // Find and Replace
@@ -4283,6 +4919,7 @@
   let builderPanY = 0;
   let isBuilderDragging = false;
   let builderStartX, builderStartY;
+  let studioRenderGeneration = 0;
 
   btnOpenStudio.addEventListener('click', () => {
     openStudioWithCode(null, null);
@@ -4292,6 +4929,8 @@
   btnBuilderCancel.addEventListener('click', closeStudio);
 
   function openStudioWithCode(codeToEdit, diagramIndex) {
+    // R15: invalidate any builder render still in flight from a previous session
+    studioRenderGeneration++;
     activeEditingDiagramIndex = diagramIndex;
     studioModal.classList.add('open');
 
@@ -4308,6 +4947,7 @@
     builderZoom = 1;
     builderPanX = 0;
     builderPanY = 0;
+    if (builderWrap && builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'false';
     updateBuilderTransform();
     renderBuilderDiagram();
   }
@@ -4315,6 +4955,11 @@
   function closeStudio() {
     studioModal.classList.remove('open');
     activeEditingDiagramIndex = null;
+    // R15: a builder render still in flight must not write after close
+    studioRenderGeneration++;
+    // R08: restore the document Mermaid theme so builder's custom theme
+    // cannot leak into subsequent preview renders
+    initMermaid(getMermaidTheme());
   }
 
   function detectDiagramType(code) {
@@ -4384,7 +5029,10 @@
   // Builder Quick Palette Inserts
   document.querySelectorAll('#builderSidebar .palette-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const snippet = btn.dataset.insert;
+      // R12: palette data-insert values carry escaped newline/tab sequences;
+      // decode them on insertion without touching unrelated backslashes.
+      let snippet = btn.dataset.insert || '';
+      snippet = snippet.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
       const start = builderCodeInput.selectionStart;
       const end = builderCodeInput.selectionEnd;
       const val = builderCodeInput.value;
@@ -4415,10 +5063,23 @@
 
   // Real-time render inside builder with error handling
   async function renderBuilderDiagram() {
+    // R15: a new pass immediately invalidates any render still in flight —
+    // including the empty-input path, so a stale render can never restore
+    // output after the builder has been cleared (auditor P2).
+    studioRenderGeneration++;
     const code = builderCodeInput.value.trim();
     if (!code) {
       builderCanvas.innerHTML = '<div style="color:var(--text-muted); padding:30px;">Empty diagram</div>';
       return;
+    }
+
+    // R15: stamp this builder render; commit results only while it is the
+    // newest session generation and the Studio modal is still open.
+    const currentStudioGen = studioRenderGeneration;
+    function isStudioCurrent() {
+      if (studioRenderGeneration !== currentStudioGen) return false;
+      if (studioModal && studioModal.classList && !studioModal.classList.contains('open')) return false;
+      return true;
     }
 
     const uniqueId = 'builder-mmd-' + uid();
@@ -4427,6 +5088,7 @@
     try {
       initMermaid(customTheme);
       await mermaid.parse(code);
+      if (!isStudioCurrent()) return;
       let renderedSvg;
       try {
         const res = await mermaid.render(uniqueId, code);
@@ -4452,14 +5114,44 @@
           throw firstErr;
         }
       }
+      if (!isStudioCurrent()) return;
+
       builderCanvas.innerHTML = renderedSvg;
 
       builderValidationBadge.className = 'validation-status-badge valid';
       builderValidationBadge.innerHTML = '<span>✓ Diagram Valid</span>';
+
+      // R07: record intrinsic dimensions and fit the builder diagram to the
+      // wrap unless the user has manually zoomed/panned it.
+      const svgEl = builderCanvas.querySelector('svg');
+      if (svgEl) {
+        const dims = getSvgIntrinsicDimensions(svgEl);
+        svgEl.style.width = dims.width + 'px';
+        svgEl.style.height = dims.height + 'px';
+        svgEl.style.maxWidth = 'none';
+        if (svgEl.dataset) {
+          svgEl.dataset.intrinsicWidth = dims.width;
+          svgEl.dataset.intrinsicHeight = dims.height;
+        }
+
+        const availW = Math.max((builderWrap.clientWidth || 600) - 40, 40);
+        const availH = Math.max((builderWrap.clientHeight || 500) - 40, 40);
+        const { fitScale } = computeDiagramFitScale(dims.width, dims.height, availW, availH);
+        if (builderWrap.dataset) builderWrap.dataset.fitScale = fitScale;
+
+        if (builderWrap.dataset && builderWrap.dataset.manuallyAdjusted !== 'true') {
+          builderZoom = fitScale;
+          builderPanX = 0;
+          builderPanY = 0;
+          updateBuilderTransform(true);
+        }
+      }
     } catch (err) {
       cleanStrayMermaidElements();
       const stray = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
       if (stray) stray.remove();
+
+      if (!isStudioCurrent()) return;
 
       const errMessage = err && (err.str || err.message) ? (err.str || err.message) : String(err);
       builderValidationBadge.className = 'validation-status-badge invalid';
@@ -4477,14 +5169,19 @@
   }
 
   // Builder Pan & Zoom Handlers
-  function updateBuilderTransform() {
+  function updateBuilderTransform(immediate = false) {
+    if (immediate) builderCanvas.style.transition = 'none';
     builderCanvas.style.transform = `translate(${builderPanX}px, ${builderPanY}px) scale(${builderZoom})`;
+    if (immediate) {
+      requestAnimationFrame(() => { builderCanvas.style.transition = 'transform 0.05s ease-out'; });
+    }
     document.getElementById('btnBuilderZoomReset').textContent = `${Math.round(builderZoom * 100)}%`;
   }
 
   builderWrap.addEventListener('mousedown', (e) => {
     isBuilderDragging = true;
     builderWrap.classList.add('grabbing');
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderStartX = e.clientX - builderPanX;
     builderStartY = e.clientY - builderPanY;
     e.preventDefault();
@@ -4506,21 +5203,28 @@
 
   builderWrap.addEventListener('wheel', (e) => {
     e.preventDefault();
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     const factor = e.deltaY < 0 ? 1.15 : 0.87;
     builderZoom = Math.min(Math.max(builderZoom * factor, 0.3), 5.0);
     updateBuilderTransform();
   });
 
   document.getElementById('btnBuilderZoomIn').onclick = () => {
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderZoom = Math.min(builderZoom * 1.25, 5.0);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomOut').onclick = () => {
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
     builderZoom = Math.max(builderZoom * 0.8, 0.3);
     updateBuilderTransform();
   };
   document.getElementById('btnBuilderZoomReset').onclick = () => {
-    builderZoom = 1;
+    // Explicit reset is a deliberate user choice: return to the fit scale
+    // when one exists, then treat it as manual from here on.
+    const fit = builderWrap.dataset && parseFloat(builderWrap.dataset.fitScale);
+    if (builderWrap.dataset) builderWrap.dataset.manuallyAdjusted = 'true';
+    builderZoom = fit > 0 ? fit : 1;
     builderPanX = 0;
     builderPanY = 0;
     updateBuilderTransform();
@@ -4542,29 +5246,210 @@
   };
 
   // Insert or Replace into active Markdown document
+  function getMermaidSpans(markdown) {
+    const spans = [];
+    const newline = markdown.includes('\r\n') ? '\r\n' : '\n';
+    const docLines = markdown.split(/\r?\n/);
+    const tokens = (typeof marked !== 'undefined' && marked.lexer)
+      ? marked.lexer(markdown.replace(/\r\n/g, '\n'))
+      : [];
+
+    function lineAtOffset(text, offset) {
+      let line = 0;
+      for (let i = 0; i < offset && i < text.length; i++) {
+        if (text[i] === '\n') line++;
+      }
+      return line;
+    }
+
+    function charOffsetOfLine(lines, lineIdx) {
+      let off = 0;
+      for (let l = 0; l < lineIdx && l < lines.length; l++) {
+        off += lines[l].length + newline.length;
+      }
+      return off;
+    }
+
+    function recordSpan(charStart, charEnd, startLine, endLine, rawSpan, code, lang) {
+      const firstLine = (docLines[startLine] || '').replace(/\r$/, '');
+      const bqMatch = firstLine.match(/^[ \t]*(?:>[ \t]?)+/);
+      const listMatch = !bqMatch ? firstLine.match(/^[ \t]*(?:[-*+]|\d+\.)[ \t]+/) : null;
+      const linePrefix = bqMatch ? bqMatch[0] : (listMatch ? listMatch[0] : '');
+      const rest = firstLine.slice(linePrefix.length);
+
+      const fenceMatch = rest.match(/^([ \t]{0,3})(([`~])\3{2,})([^\n]*)$/);
+      let indent = '';
+      let fence = '```';
+      let infoRaw = lang ? (lang.startsWith('mermaid') ? lang : 'mermaid') : 'mermaid';
+
+      if (fenceMatch) {
+        indent = fenceMatch[1];
+        fence = fenceMatch[2];
+        infoRaw = fenceMatch[4];
+      }
+
+      spans.push({
+        diagramIndex: spans.length,
+        start: charStart,
+        end: charEnd,
+        raw: rawSpan,
+        code,
+        lang,
+        fence,
+        indent,
+        linePrefix,
+        infoRaw,
+        endsWithNewline: rawSpan.endsWith('\n') || rawSpan.endsWith('\r\n')
+      });
+    }
+
+    function walkTopLevel(tokenList) {
+      let topOffset = 0;
+      const normalizedMarkdown = markdown.replace(/\r\n/g, '\n');
+      for (const token of tokenList) {
+        const startLine = lineAtOffset(normalizedMarkdown, topOffset);
+        const tokenLines = token.raw.split('\n');
+        const tokenLineCount = token.raw.endsWith('\n') ? tokenLines.length - 1 : tokenLines.length;
+        const endLine = startLine + tokenLineCount;
+
+        if (token.type === 'code' && isMermaidLanguage(token.lang)) {
+          const startChar = charOffsetOfLine(docLines, startLine);
+          const endChar = endLine < docLines.length ? charOffsetOfLine(docLines, endLine) : markdown.length;
+          const rawSpan = markdown.slice(startChar, endChar);
+          recordSpan(startChar, endChar, startLine, endLine, rawSpan, token.text, token.lang);
+        } else if (token.type === 'blockquote' && token.tokens) {
+          walkBlockquote(token, startLine);
+        } else if (token.type === 'list' && token.items) {
+          walkList(token, startLine);
+        }
+        topOffset += token.raw.length;
+      }
+    }
+
+    function walkBlockquote(bqToken, bqDocStartLine) {
+      let innerOffset = 0;
+      for (const inner of bqToken.tokens) {
+        const innerStartLine = lineAtOffset(bqToken.text, innerOffset);
+        const innerLines = inner.raw.split('\n');
+        const innerLineCount = inner.raw.endsWith('\n') ? innerLines.length - 1 : innerLines.length;
+        const docStartLine = bqDocStartLine + innerStartLine;
+        const docEndLine = docStartLine + innerLineCount;
+
+        if (inner.type === 'code' && isMermaidLanguage(inner.lang)) {
+          const startChar = charOffsetOfLine(docLines, docStartLine);
+          const endChar = docEndLine < docLines.length ? charOffsetOfLine(docLines, docEndLine) : markdown.length;
+
+          const rawSpan = markdown.slice(startChar, endChar);
+          recordSpan(startChar, endChar, docStartLine, docEndLine, rawSpan, inner.text, inner.lang);
+        } else if (inner.type === 'blockquote' && inner.tokens) {
+          walkBlockquote(inner, docStartLine);
+        } else if (inner.type === 'list' && inner.items) {
+          walkList(inner, docStartLine);
+        }
+        innerOffset += inner.raw.length;
+      }
+    }
+
+    function walkList(listToken, listDocStartLine) {
+      let itemLineIdx = listDocStartLine;
+      for (const item of listToken.items) {
+        const itemLines = item.raw.split('\n');
+        const itemLineCount = item.raw.endsWith('\n') ? itemLines.length - 1 : itemLines.length;
+        if (item.tokens) {
+          let innerOffset = 0;
+          for (const token of item.tokens) {
+            const innerStartLine = lineAtOffset(item.text, innerOffset);
+            const tokenLines = token.raw.split('\n');
+            const tokenLineCount = token.raw.endsWith('\n') ? tokenLines.length - 1 : tokenLines.length;
+            const startLine = itemLineIdx + innerStartLine;
+            const endLine = startLine + tokenLineCount;
+
+            if (token.type === 'code' && isMermaidLanguage(token.lang)) {
+              const startChar = charOffsetOfLine(docLines, startLine);
+              const endChar = endLine < docLines.length ? charOffsetOfLine(docLines, endLine) : markdown.length;
+              const rawSpan = markdown.slice(startChar, endChar);
+              recordSpan(startChar, endChar, startLine, endLine, rawSpan, token.text, token.lang);
+            } else if (token.type === 'blockquote' && token.tokens) {
+              walkBlockquote(token, startLine);
+            }
+            innerOffset += token.raw.length;
+          }
+        }
+        itemLineIdx += itemLineCount;
+      }
+    }
+
+    walkTopLevel(tokens);
+    return spans;
+  }
+
+  function replaceDiagramSource(markdown, targetIndex, newCode) {
+    const spans = getMermaidSpans(markdown);
+    const target = spans.find(s => s.diagramIndex === targetIndex);
+    const newline = markdown.includes('\r\n') ? '\r\n' : '\n';
+
+    if (!target) {
+      const fenced = `${newline}\`\`\`mermaid${newline}${newCode.trim()}${newline}\`\`\`${newline}`;
+      return markdown + fenced;
+    }
+
+    const cleanCode = newCode.trim();
+    const codeLines = cleanCode ? cleanCode.split(/\r?\n/) : [];
+    const prefix = target.linePrefix || '';
+    const indent = target.indent || '';
+    const fence = target.fence || '```';
+    const infoRaw = target.infoRaw !== undefined ? target.infoRaw : 'mermaid';
+
+    const isListPrefix = /^([ \t]*(?:[-*+]|\d+\.)[ \t]+)/.test(prefix);
+    const subsequentPrefix = isListPrefix ? ' '.repeat(prefix.length) : prefix;
+
+    const replacementLines = [];
+    replacementLines.push(`${prefix}${indent}${fence}${infoRaw}`);
+    for (const line of codeLines) {
+      replacementLines.push(`${subsequentPrefix}${line}`);
+    }
+    replacementLines.push(`${subsequentPrefix}${indent}${fence}`);
+    if (target.endsWithNewline) {
+      replacementLines.push('');
+    }
+
+    const replacementText = replacementLines.join(newline);
+    return markdown.slice(0, target.start) + replacementText + markdown.slice(target.end);
+  }
+
   btnBuilderInsert.onclick = () => {
     const code = builderCodeInput.value.trim();
     const fenced = `\n\`\`\`mermaid\n${code}\n\`\`\`\n`;
 
     if (activeEditingDiagramIndex !== null) {
-      // Replace existing diagram block by finding corresponding ```mermaid block
-      const fullText = editorEl.value;
-      const mermaidRegex = /```mermaid[\s\S]*?```/g;
-      let match;
-      let currentIndex = 0;
-      let replaced = false;
+      if (typeof marked !== 'undefined' && marked.lexer) {
+        editorEl.value = replaceDiagramSource(editorEl.value, activeEditingDiagramIndex, code);
+      } else {
+        // Fallback regex path for environments without marked
+        const fullText = editorEl.value;
+        const mermaidFenceRegex = /(?:^|\n)([ \t]{0,3})(([`~])\3{2,})[ \t]*mermaid\b[^\n]*\n([\s\S]*?)\n[ \t]*\2[~`]*[ \t]*(?=\n|$)/g;
+        let match;
+        let currentIndex = 0;
+        let replaced = false;
 
-      while ((match = mermaidRegex.exec(fullText)) !== null) {
-        if (currentIndex === activeEditingDiagramIndex) {
-          editorEl.value = fullText.substring(0, match.index) + `\`\`\`mermaid\n${code}\n\`\`\`` + fullText.substring(match.index + match[0].length);
-          replaced = true;
-          break;
+        while ((match = mermaidFenceRegex.exec(fullText)) !== null) {
+          if (currentIndex === activeEditingDiagramIndex) {
+            const leadingNewline = match[0].startsWith('\n');
+            const matchStart = leadingNewline ? match.index + 1 : match.index;
+            const matchEnd = match.index + match[0].length;
+            const indent = match[1] || '';
+            const fence = match[2];
+            const replacement = `${indent}${fence}mermaid\n${code}\n${indent}${fence}`;
+            editorEl.value = fullText.substring(0, matchStart) + replacement + fullText.substring(matchEnd);
+            replaced = true;
+            break;
+          }
+          currentIndex++;
         }
-        currentIndex++;
-      }
 
-      if (!replaced) {
-        wrapSelection(fenced, '');
+        if (!replaced) {
+          wrapSelection(fenced, '');
+        }
       }
     } else {
       wrapSelection(fenced, '');
@@ -4674,34 +5559,261 @@
     showToast(`Saved ${filename}`);
   });
 
-  // Export as standalone HTML
-  document.getElementById('btnExportHtml').addEventListener('click', () => {
-    const t = getActiveTab();
-    if (!t) return;
-    const previewContent = document.getElementById('previewContent').innerHTML;
+  // --------------------------------------------------------------------------
+  // Clean Document & Export Determinism Helpers (R13)
+  // --------------------------------------------------------------------------
+  async function ensurePreviewRenderReady() {
+    const maxAttempts = 10;
+    const perAwaitCapMs = 1500;
+    // Await a promise but never hang: a wedged render pass must not freeze
+    // export/print. The settled-generation check below decides readiness.
+    const cap = (p) => {
+      if (!p) return Promise.resolve();
+      return Promise.race([
+        Promise.resolve(p).catch(() => {}),
+        new Promise((resolve) => setTimeout(resolve, perAwaitCapMs)),
+      ]);
+    };
 
-    const fullHtml = `<!DOCTYPE html>
-<html lang="en">
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const activeTab = getActiveTab();
+      if (!activeTab) return false;
+      const tabId = activeTab.id;
+      const contentBefore = activeTab.content;
+
+      // If debounced preview render is pending, flush immediately
+      if (renderDebounceTimer) {
+        clearTimeout(renderDebounceTimer);
+        renderDebounceTimer = null;
+        currentPreviewRenderPromise = renderAllPreviewDiagrams();
+      }
+
+      // Await MathJax typesetting (bounded)
+      await cap(currentMathJaxPromise);
+
+      // Await Mermaid preview rendering (bounded)
+      await cap(currentPreviewRenderPromise);
+
+      // Re-check: the document or tab may have changed during the await
+      const currentTab = getActiveTab();
+      if (!currentTab) return false;
+      const changedMidAwait = currentTab.id !== tabId ||
+        currentTab.content !== contentBefore ||
+        renderDebounceTimer !== null;
+      // Ready only when the *current* generation has settled. If a newer
+      // pass started while we were awaiting (e.g. a theme toggle calls
+      // renderAllPreviewDiagrams() directly), the settled generation lags
+      // the current one and this check fails, sending the next attempt to
+      // the new currentPreviewRenderPromise instead of accepting the stale
+      // render.
+      const renderSettled = previewRenderSettledGen >= previewRenderGeneration;
+
+      if (!changedMidAwait && renderSettled) {
+        return true;
+      }
+
+      if (attempt === maxAttempts - 1) {
+        showToast('Document rendering is still in progress. Please wait and retry.');
+        logError('Export', 'Aborted: document rendering did not settle within retry limit.');
+        return false;
+      }
+      if (changedMidAwait) {
+        updatePreview();
+      } else {
+        // Unchanged document but the render pass has not settled: give the
+        // in-flight pass a short window before the next bounded check.
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+    }
+    return false;
+  }
+
+  function getCleanRenderedContent(previewEl) {
+    if (!previewEl) return '';
+    const clone = previewEl.cloneNode(true);
+
+    // 1. Remove all diagram action buttons and studio headers, plus the
+    // per-code-block transfer action bars (Notepad++/Notebook) that only
+    // work inside the live Studio.
+    clone.querySelectorAll('.mermaid-header, .diag-action-btn, .mermaid-actions, .code-block-actions, .code-action-btn').forEach((el) => el.remove());
+
+    // 2. Remove hidden raw code elements
+    clone.querySelectorAll('.mermaid-raw-code').forEach((el) => el.remove());
+
+    // 3. Error cards / unrendered diagrams become their Mermaid source block
+    clone.querySelectorAll('.mermaid-block-card').forEach((card) => {
+      const errorCard = card.querySelector('.mermaid-error-card');
+      const canvas = card.querySelector('.mermaid-canvas');
+      const hasSvg = canvas && canvas.querySelector('svg');
+
+      if (errorCard || !hasSvg) {
+        const rawCode = card.dataset.mermaidCode
+          ? decodeURIComponent(card.dataset.mermaidCode)
+          : (card.querySelector('pre') ? card.querySelector('pre').textContent.trim() : '');
+        const pre = document.createElement('pre');
+        const codeEl = document.createElement('code');
+        codeEl.className = 'language-mermaid';
+        codeEl.textContent = rawCode;
+        pre.appendChild(codeEl);
+        card.replaceWith(pre);
+        return;
+      }
+
+      // Valid rendered diagram: reset pan/zoom transforms and viewport caps
+      card.style.border = 'none';
+      card.style.boxShadow = 'none';
+      card.style.margin = '1.5em 0';
+      card.style.background = 'transparent';
+
+      const viewport = card.querySelector('.mermaid-viewport');
+      if (viewport) {
+        viewport.style.maxHeight = 'none';
+        viewport.style.height = 'auto';
+        viewport.style.overflow = 'visible';
+        viewport.style.background = 'none';
+        viewport.style.padding = '0';
+        viewport.style.cursor = 'default';
+        viewport.style.display = 'flex';
+        viewport.style.justifyContent = 'center';
+        viewport.style.alignItems = 'center';
+        viewport.removeAttribute('data-zoom');
+        viewport.removeAttribute('data-pan-x');
+        viewport.removeAttribute('data-pan-y');
+      }
+
+      if (canvas) {
+        canvas.style.transform = 'none';
+        canvas.style.transition = 'none';
+        canvas.style.display = 'block';
+        canvas.style.overflow = 'visible';
+        canvas.style.textAlign = 'center';
+      }
+
+      const svg = canvas ? canvas.querySelector('svg') : null;
+      if (svg) {
+        svg.style.maxWidth = '100%';
+        svg.style.height = 'auto';
+        svg.style.display = 'block';
+        svg.style.margin = '0 auto';
+      }
+    });
+
+    return clone.innerHTML;
+  }
+
+  function generateStandaloneHtml(title, cleanContent, theme) {
+    const isDark = theme === 'dark';
+    const bgColor = isDark ? '#0f172a' : '#ffffff';
+    const textColor = isDark ? '#e2e8f0' : '#1e293b';
+    const preBg = isDark ? '#1e293b' : '#f8fafc';
+    const preBorder = isDark ? '#334155' : '#e2e8f0';
+    const codeColor = isDark ? '#f1f5f9' : '#0f172a';
+    const tableBorder = isDark ? '#334155' : '#cbd5e1';
+    const thBg = isDark ? '#1e293b' : '#f1f5f9';
+    const bqBorder = isDark ? '#818cf8' : '#6366f1';
+    const bqColor = isDark ? '#94a3b8' : '#64748b';
+
+    return `<!DOCTYPE html>
+<html lang="en" data-theme="${isDark ? 'dark' : 'light'}">
 <head>
 <meta charset="UTF-8">
-<title>${escapeHtml(t.name)}</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(title)}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
-  body { font-family: 'Inter', sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; color: #1e293b; }
-  pre { background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0; overflow-x: auto; }
-  code { font-family: monospace; font-size: 0.9em; }
-  table { border-collapse: collapse; width: 100%; margin: 1.5em 0; }
-  th, td { border: 1px solid #cbd5e1; padding: 8px 12px; }
-  th { background: #f1f5f9; }
-  img { max-width: 100%; height: auto; }
-  blockquote { border-left: 4px solid #6366f1; margin: 0; padding-left: 16px; color: #64748b; }
-  .mermaid-header, .mermaid-actions { display: none !important; }
+  :root {
+    color-scheme: ${isDark ? 'dark' : 'light'};
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: ${textColor};
+    background: ${bgColor};
+  }
+  pre {
+    background: ${preBg};
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid ${preBorder};
+    color: ${codeColor};
+    overflow-x: auto;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5em 0;
+  }
+  th, td {
+    border: 1px solid ${tableBorder};
+    padding: 8px 12px;
+  }
+  th {
+    background: ${thBg};
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  blockquote {
+    border-left: 4px solid ${bqBorder};
+    margin: 1.5em 0;
+    padding-left: 16px;
+    color: ${bqColor};
+  }
+  .mermaid-block-card {
+    margin: 1.5em 0;
+    border: none !important;
+    background: transparent !important;
+  }
+  .mermaid-viewport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+  .mermaid-canvas {
+    transform: none !important;
+    max-width: 100%;
+    text-align: center;
+  }
+  .mermaid-canvas svg {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+  }
+  .mermaid-header, .mermaid-actions, .diag-action-btn, .mermaid-raw-code,
+  .code-block-actions, .code-action-btn {
+    display: none !important;
+  }
 </style>
 </head>
 <body>
-${previewContent}
+${cleanContent}
 </body>
 </html>`;
+  }
+
+  // Export as standalone HTML
+  document.getElementById('btnExportHtml').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
+    const t = getActiveTab();
+    if (!t) return;
+    const previewEl = document.getElementById('previewContent');
+    const cleanContent = getCleanRenderedContent(previewEl);
+    const theme = (document.documentElement.getAttribute('data-theme')) || 'light';
+    const fullHtml = generateStandaloneHtml(t.name, cleanContent, theme);
 
     const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -4711,21 +5823,26 @@ ${previewContent}
   });
 
   // Export as PDF / Print
-  document.getElementById('btnPrintPdf').addEventListener('click', () => {
+  document.getElementById('btnPrintPdf').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
     window.print();
   });
 
   // Copy Rendered HTML
-  document.getElementById('btnCopyHtml').addEventListener('click', () => {
-    const html = document.getElementById('previewContent').innerHTML;
-    navigator.clipboard.writeText(html).then(() => showToast('Rendered HTML copied to clipboard!'));
+  document.getElementById('btnCopyHtml').addEventListener('click', async () => {
+    const ready = await ensurePreviewRenderReady();
+    if (!ready) return;
+    const previewEl = document.getElementById('previewContent');
+    const cleanHtml = getCleanRenderedContent(previewEl);
+    copyToClipboard(cleanHtml, 'Rendered HTML copied to clipboard!');
   });
 
   // Copy Raw Markdown
   document.getElementById('btnCopyMd').addEventListener('click', () => {
     const t = getActiveTab();
     if (!t) return;
-    navigator.clipboard.writeText(t.content).then(() => showToast('Raw Markdown copied to clipboard!'));
+    copyToClipboard(t.content, 'Raw Markdown copied to clipboard!');
   });
 
   // File Loader (Open files)
@@ -4795,7 +5912,7 @@ ${previewContent}
       hljsThemeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
     }
     initMermaid();
-    renderAllPreviewDiagrams();
+    currentPreviewRenderPromise = renderAllPreviewDiagrams();
   }
 
   // --------------------------------------------------------------------------
@@ -4815,6 +5932,34 @@ ${previewContent}
       return;
     }
     const ctrl = e.ctrlKey || e.metaKey;
+
+    // Global dialog dismissals work everywhere
+    if (e.key === 'Escape') {
+      closeStudio();
+      document.getElementById('fsModal').classList.remove('open');
+      document.getElementById('tableModal').classList.remove('open');
+      findBar.classList.remove('show');
+      toggleErrorLog(false);
+      return;
+    }
+
+    // Shortcut guard: editor/document-mutating shortcuts must not act on the
+    // background document while the user is typing in another control
+    // (#builderCodeInput, #findInput, #replaceInput, other inputs) or while
+    // focus is inside an open overlay dialog (R10-adjacent guard). Escape is
+    // exempt (handled above).
+    const activeEl = document.activeElement;
+    const focusedInOverlay = !!(activeEl && activeEl.closest &&
+      activeEl.closest('.modal-overlay.open, .cmd-palette-overlay.open, .find-replace-bar.show'));
+    const isOtherInput = !!(activeEl && activeEl !== editorEl && (
+      activeEl.tagName === 'INPUT' ||
+      activeEl.tagName === 'TEXTAREA' ||
+      activeEl.tagName === 'SELECT' ||
+      activeEl.isContentEditable
+    ));
+    if (focusedInOverlay || isOtherInput) {
+      return;
+    }
 
     if (e.altKey && !e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
       e.preventDefault();
@@ -4849,14 +5994,6 @@ ${previewContent}
     } else if (ctrl && e.key.toLowerCase() === 'n') {
       e.preventDefault();
       addTab();
-    } else if (e.key === 'Escape' && slideDeckModal.classList.contains('open')) {
-      closeSlideDeck();
-    } else if (e.key === 'Escape') {
-      closeStudio();
-      document.getElementById('fsModal').classList.remove('open');
-      document.getElementById('tableModal').classList.remove('open');
-      findBar.classList.remove('show');
-      toggleErrorLog(false);
     }
   });
 
@@ -5231,6 +6368,25 @@ ${previewContent}
       openFileNativeOrFallback();
     }
   });
+
+  const errorLogListEl = document.getElementById('errorLogList');
+  if (errorLogListEl) {
+    errorLogListEl.addEventListener('click', (e) => {
+      const target = e.target;
+      const copyBtn = target && target.closest ? target.closest('.error-log-copy-btn') : null;
+      if (copyBtn) {
+        const errorId = copyBtn.dataset.errorId;
+        const item = errorLogs.find(x => x.id === errorId);
+        if (item) copyToClipboard(item.message, 'Error details copied to clipboard');
+        return;
+      }
+      const dismissBtn = target && target.closest ? target.closest('.error-log-dismiss-btn') : null;
+      if (dismissBtn) {
+        const errorId = dismissBtn.dataset.errorId;
+        window.dismissError(errorId);
+      }
+    });
+  }
 
   checkPendingTransfers();
   updatePreview();

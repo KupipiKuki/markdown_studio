@@ -1,0 +1,7 @@
+{
+  "browser": "firefox",
+  "testId": "P1-03",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:19:47.717Z",
+  "markdownAfterInsert": "Para one\n\n```mermaid\nflowchart TD\n  A --> D\n```\n\nPara two\n\n```mermaid\nflowchart LR\n  X --> Y\n```\n\nEnd"
+}

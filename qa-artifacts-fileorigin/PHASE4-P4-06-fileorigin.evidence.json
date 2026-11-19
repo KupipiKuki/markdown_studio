@@ -1,0 +1,18 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T19:40:24.967Z",
+  "consoleNoise": [],
+  "svg1Checks": {
+    "noForeignObject": true,
+    "label": "FCLABEL_ONE hello"
+  },
+  "svg2Checks": {
+    "label": "SEQLABEL_ping"
+  },
+  "svgState": {
+    "svg": true,
+    "widthAttr": true,
+    "texts": 2
+  },
+  "project": "firefox"
+}

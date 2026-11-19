@@ -1,0 +1,506 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T15:36:15.492Z",
+  "consoleNoise": [],
+  "nowrap": {
+    "top": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": 243,
+          "editorY": 245,
+          "driftPx": -2
+        },
+        {
+          "line": 5,
+          "gutterY": 329.4,
+          "editorY": 331,
+          "driftPx": -1.6
+        },
+        {
+          "line": 9,
+          "gutterY": 415.8,
+          "editorY": 418,
+          "driftPx": -2.2
+        },
+        {
+          "line": 15,
+          "gutterY": 545.4,
+          "editorY": 547,
+          "driftPx": -1.6
+        },
+        {
+          "line": 20,
+          "gutterY": 653.4,
+          "editorY": 655,
+          "driftPx": -1.6
+        },
+        {
+          "line": 25,
+          "gutterY": 761.4,
+          "editorY": 763,
+          "driftPx": -1.6
+        },
+        {
+          "line": 30,
+          "gutterY": 869.4,
+          "editorY": 871,
+          "driftPx": -1.6
+        },
+        {
+          "line": 35,
+          "gutterY": 977.4,
+          "editorY": 979,
+          "driftPx": -1.6
+        },
+        {
+          "line": 40,
+          "gutterY": 1085.4,
+          "editorY": 1087,
+          "driftPx": -1.6
+        }
+      ],
+      "maxAbsDrift": 2.2,
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px",
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "whiteSpace": "pre"
+    },
+    "scrolled": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": -7,
+          "editorY": -5,
+          "driftPx": -2
+        },
+        {
+          "line": 5,
+          "gutterY": 79.4,
+          "editorY": 81,
+          "driftPx": -1.6
+        },
+        {
+          "line": 9,
+          "gutterY": 165.8,
+          "editorY": 168,
+          "driftPx": -2.2
+        },
+        {
+          "line": 15,
+          "gutterY": 295.4,
+          "editorY": 297,
+          "driftPx": -1.6
+        },
+        {
+          "line": 20,
+          "gutterY": 403.4,
+          "editorY": 405,
+          "driftPx": -1.6
+        },
+        {
+          "line": 25,
+          "gutterY": 511.4,
+          "editorY": 513,
+          "driftPx": -1.6
+        },
+        {
+          "line": 30,
+          "gutterY": 619.4,
+          "editorY": 621,
+          "driftPx": -1.6
+        },
+        {
+          "line": 35,
+          "gutterY": 727.4,
+          "editorY": 729,
+          "driftPx": -1.6
+        },
+        {
+          "line": 40,
+          "gutterY": 835.4,
+          "editorY": 837,
+          "driftPx": -1.6
+        }
+      ],
+      "maxAbsDrift": 2.2,
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px",
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "whiteSpace": "pre"
+    },
+    "resized": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": 31,
+          "editorY": 33,
+          "driftPx": -2
+        },
+        {
+          "line": 5,
+          "gutterY": 117.4,
+          "editorY": 119,
+          "driftPx": -1.6
+        },
+        {
+          "line": 9,
+          "gutterY": 203.8,
+          "editorY": 206,
+          "driftPx": -2.2
+        },
+        {
+          "line": 15,
+          "gutterY": 333.4,
+          "editorY": 335,
+          "driftPx": -1.6
+        },
+        {
+          "line": 20,
+          "gutterY": 441.4,
+          "editorY": 443,
+          "driftPx": -1.6
+        },
+        {
+          "line": 25,
+          "gutterY": 549.4,
+          "editorY": 551,
+          "driftPx": -1.6
+        },
+        {
+          "line": 30,
+          "gutterY": 657.4,
+          "editorY": 659,
+          "driftPx": -1.6
+        },
+        {
+          "line": 35,
+          "gutterY": 765.4,
+          "editorY": 767,
+          "driftPx": -1.6
+        },
+        {
+          "line": 40,
+          "gutterY": 873.4,
+          "editorY": 875,
+          "driftPx": -1.6
+        }
+      ],
+      "maxAbsDrift": 2.2,
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px",
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "whiteSpace": "pre"
+    },
+    "split": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": 31,
+          "editorY": 33,
+          "driftPx": -2
+        },
+        {
+          "line": 5,
+          "gutterY": 117.4,
+          "editorY": 119,
+          "driftPx": -1.6
+        },
+        {
+          "line": 9,
+          "gutterY": 203.8,
+          "editorY": 206,
+          "driftPx": -2.2
+        },
+        {
+          "line": 15,
+          "gutterY": 333.4,
+          "editorY": 335,
+          "driftPx": -1.6
+        },
+        {
+          "line": 20,
+          "gutterY": 441.4,
+          "editorY": 443,
+          "driftPx": -1.6
+        },
+        {
+          "line": 25,
+          "gutterY": 549.4,
+          "editorY": 551,
+          "driftPx": -1.6
+        },
+        {
+          "line": 30,
+          "gutterY": 657.4,
+          "editorY": 659,
+          "driftPx": -1.6
+        },
+        {
+          "line": 35,
+          "gutterY": 765.4,
+          "editorY": 767,
+          "driftPx": -1.6
+        },
+        {
+          "line": 40,
+          "gutterY": 873.4,
+          "editorY": 875,
+          "driftPx": -1.6
+        }
+      ],
+      "maxAbsDrift": 2.2,
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px",
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "whiteSpace": "pre"
+    }
+  },
+  "wrap": {
+    "wrap_top": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": 283,
+          "editorY": 283,
+          "driftPx": 0
+        },
+        {
+          "line": 2,
+          "gutterY": 348,
+          "editorY": 348,
+          "driftPx": 0
+        },
+        {
+          "line": 8,
+          "gutterY": 477,
+          "editorY": 477,
+          "driftPx": 0
+        },
+        {
+          "line": 9,
+          "gutterY": 542,
+          "editorY": 542,
+          "driftPx": 0
+        },
+        {
+          "line": 15,
+          "gutterY": 672,
+          "editorY": 672,
+          "driftPx": 0
+        },
+        {
+          "line": 16,
+          "gutterY": 736,
+          "editorY": 736,
+          "driftPx": 0
+        },
+        {
+          "line": 22,
+          "gutterY": 866,
+          "editorY": 866,
+          "driftPx": 0
+        },
+        {
+          "line": 23,
+          "gutterY": 931,
+          "editorY": 931,
+          "driftPx": 0
+        },
+        {
+          "line": 30,
+          "gutterY": 1125,
+          "editorY": 1125,
+          "driftPx": 0
+        },
+        {
+          "line": 37,
+          "gutterY": 1320,
+          "editorY": 1320,
+          "driftPx": 0
+        },
+        {
+          "line": 40,
+          "gutterY": 1384,
+          "editorY": 1384,
+          "driftPx": 0
+        }
+      ],
+      "maxAbsDrift": 0,
+      "whiteSpace": "pre-wrap",
+      "edScrollHeight": 1155,
+      "gScrollHeight": 1158,
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px"
+    },
+    "wrap_scrolled": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": -117,
+          "editorY": -117,
+          "driftPx": 0
+        },
+        {
+          "line": 2,
+          "gutterY": -52,
+          "editorY": -52,
+          "driftPx": 0
+        },
+        {
+          "line": 8,
+          "gutterY": 77,
+          "editorY": 77,
+          "driftPx": 0
+        },
+        {
+          "line": 9,
+          "gutterY": 142,
+          "editorY": 142,
+          "driftPx": 0
+        },
+        {
+          "line": 15,
+          "gutterY": 272,
+          "editorY": 272,
+          "driftPx": 0
+        },
+        {
+          "line": 16,
+          "gutterY": 336,
+          "editorY": 336,
+          "driftPx": 0
+        },
+        {
+          "line": 22,
+          "gutterY": 466,
+          "editorY": 466,
+          "driftPx": 0
+        },
+        {
+          "line": 23,
+          "gutterY": 531,
+          "editorY": 531,
+          "driftPx": 0
+        },
+        {
+          "line": 30,
+          "gutterY": 725,
+          "editorY": 725,
+          "driftPx": 0
+        },
+        {
+          "line": 37,
+          "gutterY": 920,
+          "editorY": 920,
+          "driftPx": 0
+        },
+        {
+          "line": 40,
+          "gutterY": 984,
+          "editorY": 984,
+          "driftPx": 0
+        }
+      ],
+      "maxAbsDrift": 0,
+      "whiteSpace": "pre-wrap",
+      "edScrollHeight": 1155,
+      "gScrollHeight": 1158,
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px"
+    },
+    "wrap_window_resized": {
+      "samples": [
+        {
+          "line": 1,
+          "gutterY": -117,
+          "editorY": -117,
+          "driftPx": 0
+        },
+        {
+          "line": 2,
+          "gutterY": -52,
+          "editorY": -52,
+          "driftPx": 0
+        },
+        {
+          "line": 8,
+          "gutterY": 77,
+          "editorY": 77,
+          "driftPx": 0
+        },
+        {
+          "line": 9,
+          "gutterY": 142,
+          "editorY": 142,
+          "driftPx": 0
+        },
+        {
+          "line": 15,
+          "gutterY": 272,
+          "editorY": 272,
+          "driftPx": 0
+        },
+        {
+          "line": 16,
+          "gutterY": 336,
+          "editorY": 336,
+          "driftPx": 0
+        },
+        {
+          "line": 22,
+          "gutterY": 466,
+          "editorY": 466,
+          "driftPx": 0
+        },
+        {
+          "line": 23,
+          "gutterY": 531,
+          "editorY": 531,
+          "driftPx": 0
+        },
+        {
+          "line": 30,
+          "gutterY": 725,
+          "editorY": 725,
+          "driftPx": 0
+        },
+        {
+          "line": 37,
+          "gutterY": 920,
+          "editorY": 920,
+          "driftPx": 0
+        },
+        {
+          "line": 40,
+          "gutterY": 984,
+          "editorY": 984,
+          "driftPx": 0
+        }
+      ],
+      "maxAbsDrift": 0,
+      "whiteSpace": "pre-wrap",
+      "edScrollHeight": 1155,
+      "gScrollHeight": 1158,
+      "gFontSize": "13.5px",
+      "edFontSize": "13.5px",
+      "gLineHeight": "21.6px",
+      "edLineHeight": "21.6px"
+    }
+  },
+  "stats": {
+    "gFontSize": "13.5px",
+    "edFontSize": "13.5px",
+    "gLineHeight": "21.6px",
+    "edLineHeight": "21.6px"
+  },
+  "project": "firefox"
+}

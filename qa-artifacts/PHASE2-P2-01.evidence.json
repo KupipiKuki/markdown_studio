@@ -1,0 +1,17 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:04.157Z",
+  "consoleNoise": [],
+  "normal": {
+    "hasForeignObjectLabel": true,
+    "fontFamily": "Inter, sans-serif",
+    "margin": "0px/0px",
+    "padding": "0px/0px",
+    "seqFontFamily": "Inter, sans-serif"
+  },
+  "narrow": {
+    "fontFamily": "Inter, sans-serif",
+    "margin": "0px"
+  },
+  "project": "firefox"
+}

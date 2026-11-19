@@ -1,0 +1,16 @@
+{
+  "browser": "Chromium",
+  "candidateCommit": "9e84517122515e5e6a6e5557892bb869466e5922",
+  "candidateBlob": "567402aac4d087dd1695309fd2a561c8d033de9d",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "testDocument": "Post-fix print test with code blocks",
+  "pdfGenerated": true,
+  "pdfPages": 2,
+  "screenshotGenerated": true,
+  "codeBlockTransferButtonsVisible": false,
+  "codeBlockTransferButtonsAbsent": true,
+  "verificationMethod": "Visual inspection of PDF and screenshot + computed style check",
+  "timestamp": "2026-11-18T01:50:38.844Z",
+  "notes": "Code-block transfer buttons (Notepad++, Run in Notebook) are NOT visible in print output"
+}

@@ -1,0 +1,7 @@
+{
+  "browser": "Microsoft Edge",
+  "testId": "P1-06g",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:17:58.120Z",
+  "output": "```js\nconst s = \"```mermaid wrong```\";\n```\n\n```mermaid\nflowchart LR\n  C --> D\n```"
+}

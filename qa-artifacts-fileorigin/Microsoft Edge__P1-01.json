@@ -1,0 +1,9 @@
+{
+  "browser": "Microsoft Edge",
+  "testId": "P1-01",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T04:31:36.374Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36 Edg/159.0.8154.6",
+  "consoleIssues": [],
+  "pageErrors": []
+}

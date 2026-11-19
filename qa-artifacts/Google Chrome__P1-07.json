@@ -1,0 +1,16 @@
+{
+  "browser": "Google Chrome",
+  "testId": "P1-07",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:18:57.919Z",
+  "rerendered": true,
+  "bodyLevelArtifacts": [
+    {
+      "tag": "svg",
+      "id": "MJX-SVG-global-cache",
+      "cls": null,
+      "aria": null,
+      "sample": "<svg id=\"MJX-SVG-global-cache\" style=\"display: none;\"><defs><path id=\"MJX-TEX-I-1D438\" d=\"M492 213Q472 213 472 226Q472 230 477 250T482 285Q482 316 461 323T364 3"
+    }
+  ]
+}

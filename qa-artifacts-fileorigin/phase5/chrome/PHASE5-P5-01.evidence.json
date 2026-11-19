@@ -1,0 +1,13 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "browser": "chrome",
+  "timestamp": "2026-11-18T02:15:30.273Z",
+  "consoleNoise": [],
+  "permissionsGranted": true,
+  "mdReadbackVerified": false,
+  "htmlReadbackVerified": true,
+  "mdExactMatch": true,
+  "htmlExactMatch": true,
+  "denialAndRecoveryVerified": true
+}

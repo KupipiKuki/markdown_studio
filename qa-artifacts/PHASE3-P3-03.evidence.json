@@ -1,0 +1,11 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:11.208Z",
+  "consoleNoise": [],
+  "final": {
+    "value": "x[](https://example.com/picture.png)",
+    "selStart": 2,
+    "selEnd": 2
+  },
+  "project": "firefox"
+}

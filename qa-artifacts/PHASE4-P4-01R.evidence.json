@@ -1,0 +1,19 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:23.857Z",
+  "consoleNoise": [],
+  "renderLog": [
+    {
+      "n": 1,
+      "endedAt": 2611
+    },
+    {
+      "n": 2,
+      "endedAt": 4522
+    }
+  ],
+  "exportBlobAt": 4525,
+  "exportAfterNewestSettled": true,
+  "themeAtExport": "light",
+  "project": "firefox"
+}

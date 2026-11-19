@@ -1,0 +1,158 @@
+
+Running 152 tests using 10 workers
+
+[1/152] [chromium] › tests\phase1.spec.js:181:1 › P1-04 invalid diagram repair via Fix in Studio
+[2/152] [chromium] › tests\phase1.spec.js:272:1 › P2-02 empty fences inside blockquote and list still surface repair path
+[3/152] [chromium] › tests\phase1.spec.js:102:1 › P1-01 load and syntax smoke
+[4/152] [chromium] › tests\phase1.spec.js:258:1 › P2-01 empty tilde fence surfaces repair path and keeps ~~~ on repair
+[5/152] [chromium] › tests\phase1.spec.js:150:1 › P1-03 editing one diagram changes only its own fence (incl. after rerender)
+[6/152] [chromium] › tests\phase1.spec.js:217:1 › P1-04b empty and whitespace-only fences surface the repair path, not a blank block
+[7/152] [chromium] › tests\phase1.spec.js:117:1 › P1-02 render preserves source through SVG replacement and rerender
+[8/152] [chromium] › tests\phase1.spec.js:284:1 › P2-03 repairing the second of two empty fences targets only that span
+[9/152] [chromium] › tests\phase1.spec.js:301:1 › P2-04 empty non-mermaid fence is untouched (no card, no error)
+[10/152] [chromium] › tests\phase1.spec.js:313:1 › P2-05 tab/whitespace-only fence content surfaces repair path
+[11/152] [chromium] › tests\phase1.spec.js:324:1 › P1-05 error log Copy and Dismiss act on the selected entry only
+[12/152] [chromium] › tests\phase1.spec.js:373:1 › P1-06a tilde fence survives repair
+[13/152] [chromium] › tests\phase1.spec.js:386:1 › P1-06b info string preserved on repair
+[14/152] [chromium] › tests\phase1.spec.js:396:1 › P1-06c blockquote fence keeps > prefix on repair
+[15/152] [chromium] › tests\phase1.spec.js:407:1 › P1-06d list-item fence repair target
+[16/152] [chromium] › tests\phase1.spec.js:422:1 › P1-06e CRLF document survives repair
+[17/152] [chromium] › tests\phase1.spec.js:443:1 › P1-06f outer-fenced literal renders no diagram card
+[18/152] [chromium] › tests\phase1.spec.js:452:1 › P1-06g fake mermaid fence inside a js block is not matched
+[19/152] [chromium] › tests\phase1.spec.js:469:1 › P1-07 sequence diagram and edge-labeled flowchart render without stray cleanup damage
+[20/152] [chromium] › tests\phase1.spec.js:508:1 › SM-01 reload persists editor state
+[21/152] [chromium] › tests\phase1.spec.js:523:1 › SM-02 command palette opens
+[22/152] [chromium] › tests\phase1.spec.js:534:1 › SM-03 studio bus transfer imports a tab (shared http origin only)
+[23/152] [chromium] › tests\phase1.spec.js:551:1 › SM-04 tab switching keeps per-tab content separate
+[24/152] [chromium] › tests\phase1.spec.js:573:1 › SM-05 theme, viewer width and view mode persist across reload
+[25/152] [chromium] › tests\phase2.spec.js:91:1 › P2-01 diagram labels use Studio typography (foreignObject resets)
+[26/152] [chromium] › tests\phase2.spec.js:135:1 › P2-02 tall and wide diagrams fit and refit with pane and window resizing
+[27/152] [chromium] › tests\phase2.spec.js:210:1 › P2-03 manual zoom/pan survives rerenders and refits
+[28/152] [chromium] › tests\phase2.spec.js:270:1 › P2-04 document theme applies to diagrams; builder theme cannot leak back
+[29/152] [chromium] › tests\phase2.spec.js:334:1 › P2-05 no listener accumulation or errors across 50 render/edit/tab cycles
+[30/152] [chromium] › tests\phase2.spec.js:423:1 › P2-07 stale builder renders cannot overwrite the latest Studio state
+[31/152] [chromium] › tests\phase2.spec.js:386:1 › P2-06 delayed preview render cannot overwrite a newer document
+[32/152] [chromium] › tests\phase3.spec.js:98:1 › P3-01 snippets insert with no selection, no "text" fallback, caret between wrappers
+[33/152] [chromium] › tests\phase3.spec.js:152:1 › P3-02 selected text is wrapped, selection stays on the original text
+[34/152] [chromium] › tests\phase3.spec.js:190:1 › P3-03 image action yields a valid image markdown in all selection states
+[35/152] [chromium] › tests\phase3.spec.js:223:1 › P3-04 palette items decode escaped newlines on insertion
+[36/152] [chromium] › tests\phase3.spec.js:266:1 › P3-05 global shortcuts guarded in inputs/overlays; Escape still dismisses
+[37/152] [chromium] › tests\phase3.spec.js:358:1 › P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes
+[38/152] [chromium] › tests\phase3.spec.js:571:1 › P3-06R large-document gutter row-offset cost stays inside typing budgets
+[39/152] [Microsoft Edge] › tests\phase1.spec.js:102:1 › P1-01 load and syntax smoke
+[40/152] [Microsoft Edge] › tests\phase1.spec.js:117:1 › P1-02 render preserves source through SVG replacement and rerender
+[41/152] [Microsoft Edge] › tests\phase1.spec.js:150:1 › P1-03 editing one diagram changes only its own fence (incl. after rerender)
+[42/152] [Microsoft Edge] › tests\phase1.spec.js:181:1 › P1-04 invalid diagram repair via Fix in Studio
+[43/152] [Microsoft Edge] › tests\phase1.spec.js:217:1 › P1-04b empty and whitespace-only fences surface the repair path, not a blank block
+[44/152] [Microsoft Edge] › tests\phase1.spec.js:301:1 › P2-04 empty non-mermaid fence is untouched (no card, no error)
+[45/152] [Microsoft Edge] › tests\phase1.spec.js:313:1 › P2-05 tab/whitespace-only fence content surfaces repair path
+[46/152] [Microsoft Edge] › tests\phase1.spec.js:324:1 › P1-05 error log Copy and Dismiss act on the selected entry only
+[47/152] [Microsoft Edge] › tests\phase1.spec.js:258:1 › P2-01 empty tilde fence surfaces repair path and keeps ~~~ on repair
+[48/152] [Microsoft Edge] › tests\phase1.spec.js:284:1 › P2-03 repairing the second of two empty fences targets only that span
+[49/152] [Microsoft Edge] › tests\phase1.spec.js:272:1 › P2-02 empty fences inside blockquote and list still surface repair path
+[50/152] [Microsoft Edge] › tests\phase1.spec.js:373:1 › P1-06a tilde fence survives repair
+[51/152] [Microsoft Edge] › tests\phase1.spec.js:386:1 › P1-06b info string preserved on repair
+[52/152] [Microsoft Edge] › tests\phase1.spec.js:396:1 › P1-06c blockquote fence keeps > prefix on repair
+[53/152] [Microsoft Edge] › tests\phase1.spec.js:407:1 › P1-06d list-item fence repair target
+[54/152] [Microsoft Edge] › tests\phase1.spec.js:422:1 › P1-06e CRLF document survives repair
+[55/152] [Microsoft Edge] › tests\phase1.spec.js:443:1 › P1-06f outer-fenced literal renders no diagram card
+[56/152] [Microsoft Edge] › tests\phase1.spec.js:452:1 › P1-06g fake mermaid fence inside a js block is not matched
+[57/152] [Microsoft Edge] › tests\phase1.spec.js:469:1 › P1-07 sequence diagram and edge-labeled flowchart render without stray cleanup damage
+[58/152] [Microsoft Edge] › tests\phase1.spec.js:508:1 › SM-01 reload persists editor state
+[59/152] [Microsoft Edge] › tests\phase1.spec.js:534:1 › SM-03 studio bus transfer imports a tab (shared http origin only)
+[60/152] [Microsoft Edge] › tests\phase1.spec.js:551:1 › SM-04 tab switching keeps per-tab content separate
+[61/152] [Microsoft Edge] › tests\phase1.spec.js:573:1 › SM-05 theme, viewer width and view mode persist across reload
+[62/152] [Microsoft Edge] › tests\phase2.spec.js:91:1 › P2-01 diagram labels use Studio typography (foreignObject resets)
+[63/152] [Microsoft Edge] › tests\phase1.spec.js:523:1 › SM-02 command palette opens
+[64/152] [Microsoft Edge] › tests\phase2.spec.js:135:1 › P2-02 tall and wide diagrams fit and refit with pane and window resizing
+[65/152] [Microsoft Edge] › tests\phase2.spec.js:210:1 › P2-03 manual zoom/pan survives rerenders and refits
+[66/152] [Microsoft Edge] › tests\phase2.spec.js:270:1 › P2-04 document theme applies to diagrams; builder theme cannot leak back
+[67/152] [Microsoft Edge] › tests\phase2.spec.js:334:1 › P2-05 no listener accumulation or errors across 50 render/edit/tab cycles
+[68/152] [Microsoft Edge] › tests\phase2.spec.js:386:1 › P2-06 delayed preview render cannot overwrite a newer document
+[69/152] [Microsoft Edge] › tests\phase2.spec.js:423:1 › P2-07 stale builder renders cannot overwrite the latest Studio state
+[70/152] [Microsoft Edge] › tests\phase3.spec.js:98:1 › P3-01 snippets insert with no selection, no "text" fallback, caret between wrappers
+[71/152] [Microsoft Edge] › tests\phase3.spec.js:152:1 › P3-02 selected text is wrapped, selection stays on the original text
+[72/152] [Microsoft Edge] › tests\phase3.spec.js:190:1 › P3-03 image action yields a valid image markdown in all selection states
+[73/152] [Microsoft Edge] › tests\phase3.spec.js:266:1 › P3-05 global shortcuts guarded in inputs/overlays; Escape still dismisses
+[74/152] [Microsoft Edge] › tests\phase3.spec.js:223:1 › P3-04 palette items decode escaped newlines on insertion
+[75/152] [Microsoft Edge] › tests\phase3.spec.js:358:1 › P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes
+[76/152] [Microsoft Edge] › tests\phase3.spec.js:571:1 › P3-06R large-document gutter row-offset cost stays inside typing budgets
+[77/152] [Google Chrome] › tests\phase1.spec.js:102:1 › P1-01 load and syntax smoke
+[78/152] [Google Chrome] › tests\phase1.spec.js:117:1 › P1-02 render preserves source through SVG replacement and rerender
+[79/152] [Google Chrome] › tests\phase1.spec.js:150:1 › P1-03 editing one diagram changes only its own fence (incl. after rerender)
+[80/152] [Google Chrome] › tests\phase1.spec.js:181:1 › P1-04 invalid diagram repair via Fix in Studio
+[81/152] [Google Chrome] › tests\phase1.spec.js:217:1 › P1-04b empty and whitespace-only fences surface the repair path, not a blank block
+[82/152] [Google Chrome] › tests\phase1.spec.js:272:1 › P2-02 empty fences inside blockquote and list still surface repair path
+[83/152] [Google Chrome] › tests\phase1.spec.js:258:1 › P2-01 empty tilde fence surfaces repair path and keeps ~~~ on repair
+[84/152] [Google Chrome] › tests\phase1.spec.js:301:1 › P2-04 empty non-mermaid fence is untouched (no card, no error)
+[85/152] [Google Chrome] › tests\phase1.spec.js:313:1 › P2-05 tab/whitespace-only fence content surfaces repair path
+[86/152] [Google Chrome] › tests\phase1.spec.js:324:1 › P1-05 error log Copy and Dismiss act on the selected entry only
+[87/152] [Google Chrome] › tests\phase1.spec.js:284:1 › P2-03 repairing the second of two empty fences targets only that span
+[88/152] [Google Chrome] › tests\phase1.spec.js:386:1 › P1-06b info string preserved on repair
+[89/152] [Google Chrome] › tests\phase1.spec.js:373:1 › P1-06a tilde fence survives repair
+[90/152] [Google Chrome] › tests\phase1.spec.js:396:1 › P1-06c blockquote fence keeps > prefix on repair
+[91/152] [Google Chrome] › tests\phase1.spec.js:407:1 › P1-06d list-item fence repair target
+[92/152] [Google Chrome] › tests\phase1.spec.js:422:1 › P1-06e CRLF document survives repair
+[93/152] [Google Chrome] › tests\phase1.spec.js:443:1 › P1-06f outer-fenced literal renders no diagram card
+[94/152] [Google Chrome] › tests\phase1.spec.js:452:1 › P1-06g fake mermaid fence inside a js block is not matched
+[95/152] [Google Chrome] › tests\phase1.spec.js:508:1 › SM-01 reload persists editor state
+[96/152] [Google Chrome] › tests\phase1.spec.js:523:1 › SM-02 command palette opens
+[97/152] [Google Chrome] › tests\phase1.spec.js:469:1 › P1-07 sequence diagram and edge-labeled flowchart render without stray cleanup damage
+[98/152] [Google Chrome] › tests\phase1.spec.js:534:1 › SM-03 studio bus transfer imports a tab (shared http origin only)
+[99/152] [Google Chrome] › tests\phase1.spec.js:551:1 › SM-04 tab switching keeps per-tab content separate
+[100/152] [Google Chrome] › tests\phase1.spec.js:573:1 › SM-05 theme, viewer width and view mode persist across reload
+[101/152] [Google Chrome] › tests\phase2.spec.js:91:1 › P2-01 diagram labels use Studio typography (foreignObject resets)
+[102/152] [Google Chrome] › tests\phase2.spec.js:135:1 › P2-02 tall and wide diagrams fit and refit with pane and window resizing
+[103/152] [Google Chrome] › tests\phase2.spec.js:210:1 › P2-03 manual zoom/pan survives rerenders and refits
+[104/152] [Google Chrome] › tests\phase2.spec.js:270:1 › P2-04 document theme applies to diagrams; builder theme cannot leak back
+[105/152] [Google Chrome] › tests\phase2.spec.js:334:1 › P2-05 no listener accumulation or errors across 50 render/edit/tab cycles
+[106/152] [Google Chrome] › tests\phase2.spec.js:386:1 › P2-06 delayed preview render cannot overwrite a newer document
+[107/152] [Google Chrome] › tests\phase2.spec.js:423:1 › P2-07 stale builder renders cannot overwrite the latest Studio state
+[108/152] [Google Chrome] › tests\phase3.spec.js:98:1 › P3-01 snippets insert with no selection, no "text" fallback, caret between wrappers
+[109/152] [Google Chrome] › tests\phase3.spec.js:152:1 › P3-02 selected text is wrapped, selection stays on the original text
+[110/152] [Google Chrome] › tests\phase3.spec.js:190:1 › P3-03 image action yields a valid image markdown in all selection states
+[111/152] [Google Chrome] › tests\phase3.spec.js:223:1 › P3-04 palette items decode escaped newlines on insertion
+[112/152] [Google Chrome] › tests\phase3.spec.js:266:1 › P3-05 global shortcuts guarded in inputs/overlays; Escape still dismisses
+[113/152] [Google Chrome] › tests\phase3.spec.js:358:1 › P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes
+[114/152] [Google Chrome] › tests\phase3.spec.js:571:1 › P3-06R large-document gutter row-offset cost stays inside typing budgets
+[115/152] [firefox] › tests\phase1.spec.js:102:1 › P1-01 load and syntax smoke
+[116/152] [firefox] › tests\phase1.spec.js:117:1 › P1-02 render preserves source through SVG replacement and rerender
+[117/152] [firefox] › tests\phase1.spec.js:150:1 › P1-03 editing one diagram changes only its own fence (incl. after rerender)
+[118/152] [firefox] › tests\phase1.spec.js:181:1 › P1-04 invalid diagram repair via Fix in Studio
+[119/152] [firefox] › tests\phase1.spec.js:217:1 › P1-04b empty and whitespace-only fences surface the repair path, not a blank block
+[120/152] [firefox] › tests\phase1.spec.js:258:1 › P2-01 empty tilde fence surfaces repair path and keeps ~~~ on repair
+[121/152] [firefox] › tests\phase1.spec.js:301:1 › P2-04 empty non-mermaid fence is untouched (no card, no error)
+[122/152] [firefox] › tests\phase1.spec.js:272:1 › P2-02 empty fences inside blockquote and list still surface repair path
+[123/152] [firefox] › tests\phase1.spec.js:284:1 › P2-03 repairing the second of two empty fences targets only that span
+[124/152] [firefox] › tests\phase1.spec.js:313:1 › P2-05 tab/whitespace-only fence content surfaces repair path
+[125/152] [firefox] › tests\phase1.spec.js:324:1 › P1-05 error log Copy and Dismiss act on the selected entry only
+[126/152] [firefox] › tests\phase1.spec.js:373:1 › P1-06a tilde fence survives repair
+[127/152] [firefox] › tests\phase1.spec.js:386:1 › P1-06b info string preserved on repair
+[128/152] [firefox] › tests\phase1.spec.js:407:1 › P1-06d list-item fence repair target
+[129/152] [firefox] › tests\phase1.spec.js:422:1 › P1-06e CRLF document survives repair
+[130/152] [firefox] › tests\phase1.spec.js:443:1 › P1-06f outer-fenced literal renders no diagram card
+[131/152] [firefox] › tests\phase1.spec.js:396:1 › P1-06c blockquote fence keeps > prefix on repair
+[132/152] [firefox] › tests\phase1.spec.js:452:1 › P1-06g fake mermaid fence inside a js block is not matched
+[133/152] [firefox] › tests\phase1.spec.js:469:1 › P1-07 sequence diagram and edge-labeled flowchart render without stray cleanup damage
+[134/152] [firefox] › tests\phase1.spec.js:508:1 › SM-01 reload persists editor state
+[135/152] [firefox] › tests\phase1.spec.js:523:1 › SM-02 command palette opens
+[136/152] [firefox] › tests\phase1.spec.js:534:1 › SM-03 studio bus transfer imports a tab (shared http origin only)
+[137/152] [firefox] › tests\phase1.spec.js:551:1 › SM-04 tab switching keeps per-tab content separate
+[138/152] [firefox] › tests\phase1.spec.js:573:1 › SM-05 theme, viewer width and view mode persist across reload
+[139/152] [firefox] › tests\phase2.spec.js:135:1 › P2-02 tall and wide diagrams fit and refit with pane and window resizing
+[140/152] [firefox] › tests\phase2.spec.js:210:1 › P2-03 manual zoom/pan survives rerenders and refits
+[141/152] [firefox] › tests\phase2.spec.js:270:1 › P2-04 document theme applies to diagrams; builder theme cannot leak back
+[142/152] [firefox] › tests\phase2.spec.js:334:1 › P2-05 no listener accumulation or errors across 50 render/edit/tab cycles
+[143/152] [firefox] › tests\phase2.spec.js:91:1 › P2-01 diagram labels use Studio typography (foreignObject resets)
+[144/152] [firefox] › tests\phase2.spec.js:386:1 › P2-06 delayed preview render cannot overwrite a newer document
+[145/152] [firefox] › tests\phase2.spec.js:423:1 › P2-07 stale builder renders cannot overwrite the latest Studio state
+[146/152] [firefox] › tests\phase3.spec.js:98:1 › P3-01 snippets insert with no selection, no "text" fallback, caret between wrappers
+[147/152] [firefox] › tests\phase3.spec.js:152:1 › P3-02 selected text is wrapped, selection stays on the original text
+[148/152] [firefox] › tests\phase3.spec.js:190:1 › P3-03 image action yields a valid image markdown in all selection states
+[149/152] [firefox] › tests\phase3.spec.js:223:1 › P3-04 palette items decode escaped newlines on insertion
+[150/152] [firefox] › tests\phase3.spec.js:266:1 › P3-05 global shortcuts guarded in inputs/overlays; Escape still dismisses
+[151/152] [firefox] › tests\phase3.spec.js:358:1 › P3-06 gutter numbers align with editor rows in nowrap and soft-wrap modes
+[152/152] [firefox] › tests\phase3.spec.js:571:1 › P3-06R large-document gutter row-offset cost stays inside typing budgets
+  4 skipped
+  148 passed (1.2m)
+EXIT:0

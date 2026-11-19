@@ -1,0 +1,7 @@
+{
+  "browser": "firefox",
+  "testId": "P1-06b",
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "timestamp": "2026-11-15T04:32:34.739Z",
+  "output": "```mermaid title=\"Demo\"\nflowchart LR\n  C --> D\n```"
+}

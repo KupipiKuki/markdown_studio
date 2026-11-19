@@ -1,0 +1,9 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "firefox",
+  "timestamp": "2026-11-18T02:20:44.888Z",
+  "consoleNoise": [],
+  "pdfBlocked": true,
+  "pdfBlockReason": "page.pdf: PDF generation is only supported for Headless Chromium"
+}

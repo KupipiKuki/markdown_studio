@@ -1,0 +1,7 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:14.190Z",
+  "consoleNoise": [],
+  "builderValue": "flowchart TD\n  NodeA\nstyle NodeA fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff",
+  "project": "firefox"
+}

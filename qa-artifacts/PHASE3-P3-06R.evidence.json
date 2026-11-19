@@ -1,0 +1,28 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:19.848Z",
+  "consoleNoise": [],
+  "perf": {
+    "lineCount": 2000,
+    "childrenLookupMs": {
+      "min": 13,
+      "median": 16,
+      "max": 27
+    },
+    "perLineQuerySelectorMs": {
+      "min": 27,
+      "median": 31,
+      "max": 48
+    },
+    "inputHandlerMs": {
+      "min": 42,
+      "median": 86,
+      "max": 106
+    },
+    "budgets": {
+      "rowOffsetPassMs": 40,
+      "inputHandlerMs": 120
+    }
+  },
+  "project": "firefox"
+}

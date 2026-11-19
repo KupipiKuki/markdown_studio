@@ -1,0 +1,9 @@
+{
+  "browser": "Microsoft Edge",
+  "testId": "P1-02",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:17:45.174Z",
+  "sourceAfterRender": "flowchart TD\n  A --> B",
+  "sourceAfterRerender": "flowchart TD\n  A --> C\n  B --> C",
+  "docAfterEdit": "Intro\n\n```mermaid\nflowchart TD\n  A --> C\n  B --> C\n```\n\nOutro"
+}

@@ -1,0 +1,61 @@
+{
+  "launchURL": "file:///C:/Git/markdown_studio/scripts/markdown-studio.html",
+  "launchMode": "file",
+  "browser": "edge",
+  "timestamp": "2026-11-18T02:14:41.765Z",
+  "consoleNoise": [],
+  "pdfBlocked": false,
+  "numPages": 3,
+  "pageSummaries": [
+    {
+      "pageNumber": 1,
+      "width": 596,
+      "height": 843,
+      "nonWhitePixels": 1192,
+      "steps": []
+    },
+    {
+      "pageNumber": 2,
+      "width": 596,
+      "height": 843,
+      "nonWhitePixels": 20316,
+      "steps": [
+        "Step 1",
+        "Step 2",
+        "Step 3",
+        "Step 4",
+        "Step 5",
+        "Step 6",
+        "Step 7",
+        "Step 8",
+        "Step 9",
+        "Step 10",
+        "Step 11",
+        "Step 12",
+        "Step 13"
+      ]
+    },
+    {
+      "pageNumber": 3,
+      "width": 596,
+      "height": 843,
+      "nonWhitePixels": 21147,
+      "steps": [
+        "Step 14",
+        "Step 15",
+        "Step 16",
+        "Step 17",
+        "Step 18",
+        "Step 19",
+        "Step 20",
+        "Step 21",
+        "Step 22",
+        "Step 23",
+        "Step 24",
+        "Step 25",
+        "Step 26"
+      ]
+    }
+  ],
+  "missingSteps": []
+}

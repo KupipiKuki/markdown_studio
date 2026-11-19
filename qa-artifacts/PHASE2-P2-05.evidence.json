@@ -1,0 +1,19 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:08.217Z",
+  "consoleNoise": [],
+  "cycles": 50,
+  "regCountSamples": [
+    0,
+    0
+  ],
+  "panBefore": {
+    "panX": 0,
+    "panY": 0
+  },
+  "panAfter": {
+    "panX": 50,
+    "panY": 20
+  },
+  "project": "firefox"
+}

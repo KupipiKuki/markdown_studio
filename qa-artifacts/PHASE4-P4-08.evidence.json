@@ -1,0 +1,19 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:32.723Z",
+  "consoleNoise": [],
+  "layout": {
+    "cardDisplay": "block",
+    "cardPageBreakInside": "auto",
+    "viewportOverflow": "visible",
+    "viewportMaxHeight": "none",
+    "svgComputedHeight": 2176.08,
+    "svgLabelCount": 26,
+    "docScrollHeight": 2284,
+    "viewportHeight": 720,
+    "editorVisible": "none"
+  },
+  "pdfPages": null,
+  "pdfBlocked": "page.pdf unavailable or failed for this engine; print-layout assertions still passed",
+  "project": "firefox"
+}

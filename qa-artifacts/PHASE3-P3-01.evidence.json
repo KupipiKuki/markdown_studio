@@ -1,0 +1,11 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:20:08.935Z",
+  "consoleNoise": [],
+  "final": {
+    "value": "one ****two three",
+    "selStart": 6,
+    "selEnd": 6
+  },
+  "project": "firefox"
+}

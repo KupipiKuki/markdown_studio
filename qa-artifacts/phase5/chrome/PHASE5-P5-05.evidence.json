@@ -1,0 +1,14 @@
+{
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "launchMode": "http",
+  "browser": "chrome",
+  "timestamp": "2026-11-18T02:19:39.640Z",
+  "consoleNoise": [],
+  "storageKeys": {
+    "editorState": true,
+    "theme": "dark"
+  },
+  "reloadPreservedContent": true,
+  "transferVerified": true,
+  "transferNote": "same-origin BroadcastChannel verified"
+}

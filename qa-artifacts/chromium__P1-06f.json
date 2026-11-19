@@ -1,0 +1,7 @@
+{
+  "browser": "chromium",
+  "testId": "P1-06f",
+  "launchURL": "http://127.0.0.1:4173/scripts/markdown-studio.html",
+  "timestamp": "2026-11-18T02:16:58.938Z",
+  "cards": 0
+}
